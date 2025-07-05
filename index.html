@@ -1,13 +1,383 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Solar Truth AI - Quote Analyzer</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="./src/main.jsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Truth AI - Enhanced Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .tab-button.active { background-color: #0d9488; color: white; }
+        .tab-button { background-color: #f3f4f6; color: #374151; }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-teal-50 to-emerald-100">
+    <div class="relative min-h-screen bg-cover bg-center bg-no-repeat" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4 ), rgba(0, 0, 0, 0.4)), url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1200 800\"><rect fill=\"%23059669\" width=\"1200\" height=\"800\"/><path fill=\"%23047857\" d=\"M0 400l50-16.7C100 367 200 333 300 350s200 67 300 50 200-67 300-50 200 67 300 50 200-67 250-83.3L1200 300v500H0z\"/></svg>' )">
+        
+        <!-- Header -->
+        <div class="relative z-10 flex justify-between items-center p-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center">
+                    <span class="text-2xl">☀️</span>
+                </div>
+                <h1 class="text-2xl font-bold text-white">Solar Truth AI</h1>
+            </div>
+            <div class="text-white text-sm">
+                <div class="flex items-center space-x-2">
+                    <span class="text-yellow-400">⭐</span>
+                    <span>Enhanced with AI Analysis</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="relative z-10 flex items-center justify-center min-h-[calc(100vh-100px)] px-4">
+            <div class="w-full max-w-4xl">
+                <div class="bg-white shadow-2xl border-0 overflow-hidden rounded-lg">
+                    <div class="bg-teal-600 text-white p-6">
+                        <h2 class="text-3xl font-bold">Enhanced Solar Quote Analysis</h2>
+                        <p class="text-teal-100 mt-2">Get detailed analysis with real panel specifications</p>
+                    </div>
+                    
+                    <div class="p-8">
+                        <!-- Tab Navigation -->
+                        <div class="flex mb-6 bg-gray-100 rounded-lg p-1">
+                            <button id="manualTab" class="tab-button active flex-1 py-2 px-4 rounded-md font-medium transition-colors">
+                                Manual Entry
+                            </button>
+                            <button id="pdfTab" class="tab-button flex-1 py-2 px-4 rounded-md font-medium transition-colors">
+                                PDF Upload
+                            </button>
+                        </div>
+
+                        <!-- Manual Entry Tab -->
+                        <div id="manualContent" class="tab-content active">
+                            <form id="quoteForm" class="space-y-4">
+                                <div>
+                                    <label for="systemSize" class="block text-sm font-medium text-gray-700 mb-1">System Size (kW)</label>
+                                    <input type="number" id="systemSize" placeholder="e.g., 4.0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                </div>
+
+                                <div>
+                                    <label for="panelOutput" class="block text-sm font-medium text-gray-700 mb-1">Panel Output (W per panel)</label>
+                                    <input type="number" id="panelOutput" placeholder="e.g., 400" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                </div>
+
+                                <div>
+                                    <label for="panelBrand" class="block text-sm font-medium text-gray-700 mb-1">Panel Brand</label>
+                                    <select id="panelBrand" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                        <option value="">Select panel brand</option>
+                                        <option value="Aiko">Aiko</option>
+                                        <option value="Trina Solar">Trina Solar</option>
+                                        <option value="Longi">Longi</option>
+                                        <option value="Jinko Solar">Jinko Solar</option>
+                                        <option value="Eurener">Eurener</option>
+                                        <option value="Perlight">Perlight</option>
+                                        <option value="SolFiT BIPV">SolFiT BIPV</option>
+                                        <option value="InstaGen">InstaGen</option>
+                                        <option value="Canadian Solar">Canadian Solar</option>
+                                        <option value="SunPower">SunPower</option>
+                                        <option value="REC">REC</option>
+                                        <option value="JA Solar">JA Solar</option>
+                                        <option value="Risen Energy">Risen Energy</option>
+                                        <option value="Astronergy">Astronergy</option>
+                                        <option value="Hanwha Q Cells">Hanwha Q Cells</option>
+                                        <option value="Sharp">Sharp</option>
+                                        <option value="Panasonic">Panasonic</option>
+                                        <option value="Other (specify)">Other (specify)</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label for="hasBattery" class="block text-sm font-medium text-gray-700 mb-1">Battery Included?</label>
+                                    <select id="hasBattery" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                        <option value="yes">Yes, Battery Included</option>
+                                        <option value="no">No Battery</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label for="totalPrice" class="block text-sm font-medium text-gray-700 mb-1">Total Price (£)</label>
+                                    <input type="number" id="totalPrice" placeholder="e.g., 8000" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                </div>
+
+                                <button type="submit" class="w-full bg-gray-900 text-white py-3 px-4 rounded-md hover:bg-gray-800 font-medium text-lg transition-colors">
+                                    Analyze My Quote →
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- PDF Upload Tab -->
+                        <div id="pdfContent" class="tab-content">
+                            <div class="text-center">
+                                <h3 class="text-2xl font-bold text-gray-800 mb-4">Upload Solar Quote PDF</h3>
+                                <p class="text-gray-600 mb-8">Upload your solar installation quote PDF for automatic analysis</p>
+                                
+                                <div class="border-2 border-dashed border-gray-300 rounded-lg p-12 hover:border-teal-400 transition-colors">
+                                    <div class="text-center">
+                                        <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                        <p class="text-xl font-medium text-gray-700 mb-2">Drop your PDF here or click to browse</p>
+                                        <p class="text-gray-500">Supports PDF files up to 10MB</p>
+                                        <input type="file" id="pdfUpload" accept=".pdf" class="hidden">
+                                        <button onclick="document.getElementById('pdfUpload').click()" class="mt-4 bg-teal-600 text-white px-6 py-2 rounded-md hover:bg-teal-700 transition-colors">
+                                            Choose File
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Results Section -->
+                        <div id="results" class="mt-8 hidden">
+                            <div class="bg-gray-50 p-6 rounded-lg">
+                                <div class="text-center mb-6">
+                                    <p class="text-lg font-medium text-gray-700">Overall Assessment:</p>
+                                    <p id="overallResult" class="text-5xl font-bold text-green-600 mb-2">Excellent</p>
+                                    <p id="scoreResult" class="text-gray-600">Score: 80%</p>
+                                    <p id="priceResult" class="text-gray-600">Price: £2111.11/kW</p>
+                                </div>
+
+                                <div class="mb-6">
+                                    <h4 class="text-lg font-semibold text-gray-700 mb-3">Breakdown:</h4>
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between">
+                                            <span>Price:</span>
+                                            <span id="priceBreakdown" class="text-yellow-600 font-medium">okay</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span>Panel Output:</span>
+                                            <span id="panelOutputBreakdown" class="text-green-600 font-medium">good</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span>Panel Brand:</span>
+                                            <span id="panelBrandBreakdown" class="text-yellow-600 font-medium">okay</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span>System Size:</span>
+                                            <span id="systemSizeBreakdown" class="text-green-600 font-medium">good</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h4 class="text-lg font-semibold text-gray-700 mb-3">Recommendations:</h4>
+                                    <ul id="recommendationsList" class="list-disc list-inside text-gray-700 space-y-1">
+                                        <li>Good quote overall. This should provide solid returns on investment.</li>
+                                    </ul>
+                                </div>
+
+                                <button onclick="resetAnalysis()" class="mt-6 bg-teal-600 text-white px-6 py-2 rounded-md hover:bg-teal-700 transition-colors">
+                                    Analyze Another Quote
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab functionality
+        document.getElementById('manualTab').addEventListener('click', function() {
+            showTab('manual');
+        });
+
+        document.getElementById('pdfTab').addEventListener('click', function() {
+            showTab('pdf');
+        });
+
+        function showTab(tab) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected tab content and activate button
+            if (tab === 'manual') {
+                document.getElementById('manualContent').classList.add('active');
+                document.getElementById('manualTab').classList.add('active');
+            } else {
+                document.getElementById('pdfContent').classList.add('active');
+                document.getElementById('pdfTab').classList.add('active');
+            }
+        }
+
+        // Form submission
+        document.getElementById('quoteForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            analyzeQuote();
+        });
+
+        function analyzeQuote() {
+            const systemSize = parseFloat(document.getElementById('systemSize').value);
+            const panelOutput = parseFloat(document.getElementById('panelOutput').value);
+            const panelBrand = document.getElementById('panelBrand').value;
+            const totalPrice = parseFloat(document.getElementById('totalPrice').value);
+            const hasBattery = document.getElementById('hasBattery').value;
+
+            if (!systemSize || !panelOutput || !panelBrand || !totalPrice) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            // Enhanced analysis logic
+            const pricePerKw = totalPrice / systemSize;
+            let score = 0;
+            let breakdown = {};
+            let recommendations = [];
+
+            // Price analysis (enhanced)
+            if (pricePerKw < 1800) {
+                breakdown.price = 'excellent';
+                score += 25;
+                recommendations.push('Excellent price - well below market average');
+            } else if (pricePerKw < 2200) {
+                breakdown.price = 'good';
+                score += 20;
+                recommendations.push('Good price - competitive with market rates');
+            } else if (pricePerKw < 2800) {
+                breakdown.price = 'okay';
+                score += 15;
+                recommendations.push('Price is acceptable but consider getting additional quotes');
+            } else {
+                breakdown.price = 'poor';
+                score += 5;
+                recommendations.push('Price appears high - strongly recommend getting additional quotes');
+            }
+
+            // Panel output analysis (enhanced)
+            if (panelOutput >= 500) {
+                breakdown.panelOutput = 'excellent';
+                score += 25;
+                recommendations.push('Excellent high-output panels - great for maximizing roof space');
+            } else if (panelOutput >= 400) {
+                breakdown.panelOutput = 'good';
+                score += 20;
+                recommendations.push('Good panel output - modern efficient panels');
+            } else if (panelOutput >= 300) {
+                breakdown.panelOutput = 'okay';
+                score += 15;
+                recommendations.push('Panel output is adequate but consider higher wattage options');
+            } else {
+                breakdown.panelOutput = 'poor';
+                score += 5;
+                recommendations.push('Low panel output - consider upgrading to higher wattage panels');
+            }
+
+            // Enhanced panel brand analysis
+            const excellentBrands = ['SunPower', 'REC', 'Panasonic', 'Longi', 'Jinko Solar'];
+            const goodBrands = ['Canadian Solar', 'Trina Solar', 'JA Solar', 'Hanwha Q Cells', 'Aiko'];
+            
+            if (excellentBrands.includes(panelBrand)) {
+                breakdown.panelBrand = 'excellent';
+                score += 20;
+                recommendations.push(`${panelBrand} is a premium brand with excellent efficiency and warranties`);
+            } else if (goodBrands.includes(panelBrand)) {
+                breakdown.panelBrand = 'good';
+                score += 15;
+                recommendations.push(`${panelBrand} is a reliable brand with good performance`);
+            } else {
+                breakdown.panelBrand = 'okay';
+                score += 10;
+                recommendations.push('Consider researching panel specifications and warranty terms');
+            }
+
+            // System size analysis
+            if (systemSize >= 4.0) {
+                breakdown.systemSize = 'good';
+                score += 10;
+                recommendations.push('Good system size for typical household energy needs');
+            } else {
+                breakdown.systemSize = 'okay';
+                score += 5;
+                recommendations.push('Consider if system size meets your energy requirements');
+            }
+
+            // Determine overall rating
+            let overall;
+            if (score >= 75) overall = 'excellent';
+            else if (score >= 60) overall = 'good';
+            else if (score >= 40) overall = 'okay';
+            else overall = 'poor';
+
+            // Display results
+            displayResults(overall, score, pricePerKw, breakdown, recommendations);
+        }
+
+        function displayResults(overall, score, pricePerKw, breakdown, recommendations) {
+            document.getElementById('overallResult').textContent = overall.charAt(0).toUpperCase() + overall.slice(1);
+            document.getElementById('overallResult').className = `text-5xl font-bold mb-2 ${getOverallColor(overall)}`;
+            document.getElementById('scoreResult').textContent = `Score: ${score}%`;
+            document.getElementById('priceResult').textContent = `Price: £${pricePerKw.toFixed(2)}/kW`;
+
+            // Update breakdown
+            document.getElementById('priceBreakdown').textContent = breakdown.price;
+            document.getElementById('priceBreakdown').className = `font-medium ${getBreakdownColor(breakdown.price)}`;
+            
+            document.getElementById('panelOutputBreakdown').textContent = breakdown.panelOutput;
+            document.getElementById('panelOutputBreakdown').className = `font-medium ${getBreakdownColor(breakdown.panelOutput)}`;
+            
+            document.getElementById('panelBrandBreakdown').textContent = breakdown.panelBrand;
+            document.getElementById('panelBrandBreakdown').className = `font-medium ${getBreakdownColor(breakdown.panelBrand)}`;
+            
+            document.getElementById('systemSizeBreakdown').textContent = breakdown.systemSize;
+            document.getElementById('systemSizeBreakdown').className = `font-medium ${getBreakdownColor(breakdown.systemSize)}`;
+
+            // Update recommendations
+            const recommendationsList = document.getElementById('recommendationsList');
+            recommendationsList.innerHTML = '';
+            recommendations.forEach(rec => {
+                const li = document.createElement('li');
+                li.textContent = rec;
+                recommendationsList.appendChild(li);
+            });
+
+            document.getElementById('results').classList.remove('hidden');
+        }
+
+        function getOverallColor(overall) {
+            switch (overall) {
+                case 'excellent': return 'text-green-600';
+                case 'good': return 'text-emerald-600';
+                case 'okay': return 'text-yellow-600';
+                case 'poor': return 'text-red-600';
+                default: return 'text-gray-600';
+            }
+        }
+
+        function getBreakdownColor(status) {
+            switch (status) {
+                case 'excellent': return 'text-green-600';
+                case 'good': return 'text-green-600';
+                case 'okay': return 'text-yellow-600';
+                case 'poor': return 'text-red-600';
+                default: return 'text-gray-500';
+            }
+        }
+
+        function resetAnalysis() {
+            document.getElementById('quoteForm').reset();
+            document.getElementById('results').classList.add('hidden');
+        }
+
+        // PDF upload functionality
+        document.getElementById('pdfUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && file.type === 'application/pdf') {
+                alert('PDF upload functionality will be available soon. Please use manual entry for now.');
+            } else {
+                alert('Please select a valid PDF file.');
+            }
+        });
+    </script>
+</body>
 </html>
