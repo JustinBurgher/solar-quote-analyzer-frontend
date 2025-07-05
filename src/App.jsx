@@ -20,14 +20,19 @@ function App() {
   const [analysis, setAnalysis] = useState(null)
   const [loading, setLoading] = useState(false)
 
-  // Popular panel brands
+  // Popular panel brands based on Midsummer Wholesale UK market data
   const panelBrands = [
-    'SunPower',
-    'Longi',
-    'REC',
-    'Jinko Solar',
-    'Canadian Solar',
+    'Aiko',
     'Trina Solar',
+    'Longi',
+    'Jinko Solar',
+    'Eurener',
+    'Perlight',
+    'SolFiT BIPV',
+    'InstaGen',
+    'Canadian Solar',
+    'SunPower',
+    'REC',
     'JA Solar',
     'Risen Energy',
     'Astronergy',
@@ -37,16 +42,24 @@ function App() {
     'Other (specify)'
   ]
 
-  // Popular battery brands
+  // Popular battery brands based on Midsummer Wholesale UK market data
   const batteryBrands = [
     'Tesla Powerwall',
-    'LG Chem',
     'GivEnergy',
+    'Fox ESS',
+    'SolarEdge',
+    'SolaX',
+    'Growatt',
+    'Huawei',
+    'EcoFlow',
+    'Myenergi (Libbi)',
+    'Enphase',
+    'Sungrow',
+    'Atmoce',
+    'Eleven Energy',
+    'LG Chem',
     'Pylontech',
     'BYD',
-    'Enphase',
-    'SolarEdge',
-    'Huawei',
     'Other (specify)'
   ]
 
@@ -138,9 +151,9 @@ function App() {
         panelRating = 'poor'
       }
       
-      // Panel brand analysis
-      const goodBrands = ['sunpower', 'longi', 'rec', 'jinko', 'canadian solar', 'trina', 'ja solar']
-      const okayBrands = ['risen', 'astronergy', 'hanwha', 'sharp', 'panasonic']
+      // Panel brand analysis - updated with UK market brands
+      const goodBrands = ['aiko', 'trina', 'longi', 'jinko', 'sunpower', 'rec', 'canadian solar']
+      const okayBrands = ['eurener', 'perlight', 'instagen', 'ja solar', 'risen', 'astronergy', 'hanwha', 'sharp', 'panasonic']
       
       let brandScore = 50
       let brandRating = 'okay'
@@ -172,19 +185,23 @@ function App() {
         sizeRating = 'okay'
       }
       
-      // Battery analysis (if applicable)
+      // Battery analysis (if applicable) - updated with UK market brands
       let batteryScore = 0
       let batteryRating = 'good'
       
       if (formData.hasBattery === 'yes') {
-        const goodBatteryBrands = ['tesla', 'lg chem', 'givenergy', 'pylontech', 'byd']
+        const goodBatteryBrands = ['tesla', 'givenergy', 'fox ess', 'solaredge', 'enphase', 'lg chem', 'pylontech']
+        const okayBatteryBrands = ['solax', 'growatt', 'huawei', 'ecoflow', 'myenergi', 'sungrow', 'byd']
         const batteryBrand = getActualBatteryName().toLowerCase()
         
         if (goodBatteryBrands.some(brand => batteryBrand.includes(brand))) {
           batteryScore = 100
           batteryRating = 'good'
+        } else if (okayBatteryBrands.some(brand => batteryBrand.includes(brand))) {
+          batteryScore = 75
+          batteryRating = 'okay'
         } else {
-          batteryScore = 60
+          batteryScore = 50
           batteryRating = 'okay'
         }
       }
@@ -299,7 +316,7 @@ function App() {
       <div 
         className="relative min-h-screen bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23059669" width="1200" height="800"/><path fill="%23047857" d="M0 400l50-16.7C100 367 200 333 300 350s200 67 300 50 200-67 300-50 200 67 300 50 200-67 250-83.3L1200 300v500H0z"/></svg>' )`
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23059669" width="1200" height="800"/><path fill="%23047857" d="M0 400l50-16.7C100 367 200 333 300 350s200 67 300 50 200-67 300-50 200 67 300 50 200-67 250-83.3L1200 300v500H0z"/></svg>')`
         }}
       >
         {/* Header */}
@@ -546,21 +563,21 @@ function App() {
 
                     <div className="space-y-4">
                       <h4 className="text-xl font-semibold text-gray-800">Recommendations:</h4>
-                      <div className="space-y-2">
+                      <div className="space-y-3">
                         {analysis.recommendations.map((rec, index) => (
-                          <div key={index} className="flex items-start space-x-2">
-                            <span className="text-teal-600 mt-1">•</span>
-                            <span className="text-gray-700">{rec}</span>
+                          <div key={index} className="flex items-start space-x-3">
+                            <span className="text-blue-600 text-lg mt-0.5">•</span>
+                            <span className="text-gray-700 text-sm">{rec}</span>
                           </div>
                         ))}
                       </div>
                     </div>
                   </div>
 
-                  <div className="mt-8 flex gap-4">
+                  <div className="mt-8 text-center">
                     <Button 
                       onClick={resetForm} 
-                      className="flex-1 bg-gray-900 hover:bg-gray-800 text-white py-3 text-lg font-semibold rounded-lg"
+                      className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-semibold"
                     >
                       Analyze Another Quote
                     </Button>
@@ -570,33 +587,10 @@ function App() {
             )}
           </div>
         </div>
-
-        {/* Bottom Stats */}
-        <div className="relative z-10 bg-teal-600 text-white py-6">
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-              <div>
-                <span className="text-green-400 text-xl">✓</span>
-                <p className="text-sm mt-1">1000+ quotes analyzed</p>
-              </div>
-              <div>
-                <span className="text-green-400 text-xl">✓</span>
-                <p className="text-sm mt-1">UK market data</p>
-              </div>
-              <div>
-                <span className="text-green-400 text-xl">✓</span>
-                <p className="text-sm mt-1">Instant results</p>
-              </div>
-              <div>
-                <span className="text-green-400 text-xl">✓</span>
-                <p className="text-sm mt-1">Expert analysis</p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   )
 }
 
 export default App
+
