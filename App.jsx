@@ -13,7 +13,12 @@ const analyzeQuote = async () => {
     
     // Calculate price per kW
     const pricePerKw = systemSize > 0 ? totalPrice / systemSize : 0
-    
+
+    // DEBUG: Log the calculations
+console.log('DEBUG - systemSize:', systemSize)
+console.log('DEBUG - totalPrice:', totalPrice)
+console.log('DEBUG - pricePerKw:', pricePerKw)
+
     // Analysis logic based on UK market rates
     let priceScore = 0
     let priceRating = 'poor'
