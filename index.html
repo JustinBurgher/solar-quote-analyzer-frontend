@@ -25,6 +25,8 @@
         }
         .custom-input { display: none; }
         .custom-input.active { display: block; }
+        .battery-models { display: none; }
+        .battery-models.active { display: block; }
     </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-teal-50 to-emerald-100">
@@ -132,9 +134,14 @@
                                         <option value="Panasonic">Panasonic</option>
                                         <option value="Other (specify)">Other (specify)</option>
                                     </select>
+                                    
+                                    <!-- Custom Panel Input -->
+                                    <div id="customPanelInput" class="custom-input mt-3">
+                                        <input type="text" id="panelBrandCustom" placeholder="Enter panel brand name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                    </div>
                                 </div>
 
-                                <!-- Battery Section (Fixed) -->
+                                <!-- Battery Section -->
                                 <div>
                                     <label for="hasBattery" class="block text-sm font-medium text-gray-700 mb-1">Battery Included?</label>
                                     <select id="hasBattery" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
@@ -143,36 +150,88 @@
                                     </select>
                                 </div>
 
-                                <!-- Battery Brand Section (shows only when battery is selected) -->
+                                <!-- Battery Brand Selection (Step 1) -->
                                 <div id="batterySection" class="hidden">
-                                    <label for="batteryBrand" class="block text-sm font-medium text-gray-700 mb-1">Battery Brand</label>
-                                    <select id="batteryBrand" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
-                                        <option value="">Select battery brand</option>
-                                        <option value="Tesla Powerwall">Tesla Powerwall</option>
-                                        <option value="GivEnergy">GivEnergy</option>
-                                        <option value="Duracell">Duracell</option>
-                                        <option value="Fox ESS">Fox ESS</option>
-                                        <option value="SolarEdge">SolarEdge</option>
-                                        <option value="SolaX">SolaX</option>
-                                        <option value="Growatt">Growatt</option>
-                                        <option value="Victron Energy">Victron Energy</option>
-                                        <option value="Alpha ESS">Alpha ESS</option>
-                                        <option value="Huawei">Huawei</option>
-                                        <option value="EcoFlow">EcoFlow</option>
-                                        <option value="Myenergi (Libbi)">Myenergi (Libbi)</option>
-                                        <option value="Enphase">Enphase</option>
-                                        <option value="Sungrow">Sungrow</option>
-                                        <option value="Puredrive">Puredrive</option>
-                                        <option value="Moixa">Moixa</option>
-                                        <option value="LG Chem">LG Chem</option>
-                                        <option value="Pylontech">Pylontech</option>
-                                        <option value="BYD">BYD</option>
-                                        <option value="Other (specify)">Other (specify)</option>
-                                    </select>
+                                    <label class="block text-sm font-medium text-gray-700 mb-3">Battery Brand</label>
+                                    <div class="grid grid-cols-3 gap-3 mb-3">
+                                        <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-brand="Tesla">Tesla</button>
+                                        <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-brand="GivEnergy">GivEnergy</button>
+                                        <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-brand="Fox ESS">Fox ESS</button>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-3 mb-3">
+                                        <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-brand="SolarEdge">SolarEdge</button>
+                                        <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-brand="Duracell">Duracell</button>
+                                        <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-brand="Victron">Victron</button>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-brand="LG Chem">LG Chem</button>
+                                        <button type="button" id="customBatteryBrandBtn" class="size-button py-3 px-4 rounded-lg font-medium text-center">Other Brand</button>
+                                    </div>
                                     
-                                    <!-- Custom Battery Input (shows when "Other" is selected) -->
-                                    <div id="customBatteryInput" class="custom-input mt-3">
+                                    <!-- Custom Battery Brand Input -->
+                                    <div id="customBatteryBrandInput" class="custom-input mt-3">
                                         <input type="text" id="batteryBrandCustom" placeholder="Enter battery brand name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                    </div>
+                                </div>
+
+                                <!-- Battery Model Selection (Step 2) -->
+                                <div id="batteryModelSection" class="hidden">
+                                    <label class="block text-sm font-medium text-gray-700 mb-3">Battery Model/Size</label>
+                                    
+                                    <!-- Tesla Models -->
+                                    <div id="teslaModels" class="battery-models">
+                                        <div class="grid grid-cols-2 gap-3 mb-3">
+                                            <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-model="Powerwall 2 (13.5kWh)">Powerwall 2 (13.5kWh)</button>
+                                            <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-model="Powerwall 3 (13.5kWh)">Powerwall 3 (13.5kWh)</button>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-3">
+                                            <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-model="Don't Know Model">Don't Know Model</button>
+                                            <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-model="Other Model">Other Model</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- GivEnergy Models -->
+                                    <div id="givenergyModels" class="battery-models">
+                                        <div class="grid grid-cols-3 gap-3 mb-3">
+                                            <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-model="2.6kWh">2.6kWh</button>
+                                            <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-model="5.2kWh">5.2kWh</button>
+                                            <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-model="9.5kWh">9.5kWh</button>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-3">
+                                            <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-model="Don't Know Size">Don't Know Size</button>
+                                            <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-model="Other Size">Other Size</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Fox ESS Models -->
+                                    <div id="foxessModels" class="battery-models">
+                                        <div class="grid grid-cols-3 gap-3 mb-3">
+                                            <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-model="ECS 2.9kWh">ECS 2.9kWh</button>
+                                            <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-model="ECS 4.1kWh">ECS 4.1kWh</button>
+                                            <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-model="EP10 10.65kWh">EP10 10.65kWh</button>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-3">
+                                            <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-model="Don't Know Model">Don't Know Model</button>
+                                            <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-model="Other Model">Other Model</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Generic Models (for other brands) -->
+                                    <div id="genericModels" class="battery-models">
+                                        <div class="grid grid-cols-3 gap-3 mb-3">
+                                            <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-model="5kWh">5kWh</button>
+                                            <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-model="10kWh">10kWh</button>
+                                            <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-model="15kWh">15kWh</button>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-3">
+                                            <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-model="Don't Know Size">Don't Know Size</button>
+                                            <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-battery-model="Other Size">Other Size</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Custom Battery Model Input -->
+                                    <div id="customBatteryModelInput" class="custom-input mt-3">
+                                        <input type="text" id="batteryModelCustom" placeholder="Enter exact model/size (e.g., Powerwall 2.5, 15.2kWh)" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
                                     </div>
                                 </div>
 
@@ -236,7 +295,7 @@
                                             <span id="panelBrandBreakdown" class="text-yellow-600 font-medium">okay</span>
                                         </div>
                                         <div id="batteryBreakdownRow" class="flex justify-between hidden">
-                                            <span>Battery Brand:</span>
+                                            <span>Battery:</span>
                                             <span id="batteryBrandBreakdown" class="text-green-600 font-medium">good</span>
                                         </div>
                                         <div class="flex justify-between">
@@ -267,6 +326,8 @@
     <script>
         let selectedSystemSize = null;
         let selectedPanelOutput = null;
+        let selectedBatteryBrand = null;
+        let selectedBatteryModel = null;
 
         // Tab functionality
         document.getElementById('manualTab').addEventListener('click', function() {
@@ -295,52 +356,152 @@
             }
         }
 
+        // Panel brand custom input toggle
+        document.getElementById('panelBrand').addEventListener('change', function() {
+            const customPanelInput = document.getElementById('customPanelInput');
+            if (this.value === 'Other (specify)') {
+                customPanelInput.classList.add('active');
+                document.getElementById('panelBrandCustom').focus();
+            } else {
+                customPanelInput.classList.remove('active');
+            }
+        });
+
         // Battery section toggle
         document.getElementById('hasBattery').addEventListener('change', function() {
             const batterySection = document.getElementById('batterySection');
+            const batteryModelSection = document.getElementById('batteryModelSection');
             if (this.value === 'yes') {
                 batterySection.classList.remove('hidden');
             } else {
                 batterySection.classList.add('hidden');
+                batteryModelSection.classList.add('hidden');
+                resetBatterySelection();
             }
         });
 
-        // Battery brand custom input toggle
-        document.getElementById('batteryBrand').addEventListener('change', function() {
-            const customBatteryInput = document.getElementById('customBatteryInput');
-            if (this.value === 'Other (specify)') {
-                customBatteryInput.classList.add('active');
-                document.getElementById('batteryBrandCustom').focus();
-            } else {
-                customBatteryInput.classList.remove('active');
+        // Battery brand selection
+        document.querySelectorAll('[data-battery-brand]').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove selected class from all battery brand buttons
+                document.querySelectorAll('[data-battery-brand]').forEach(btn => btn.classList.remove('selected'));
+                document.getElementById('customBatteryBrandBtn').classList.remove('selected');
+                
+                // Add selected class to clicked button
+                this.classList.add('selected');
+                selectedBatteryBrand = this.dataset.batteryBrand;
+                
+                // Hide custom brand input
+                document.getElementById('customBatteryBrandInput').classList.remove('active');
+                
+                // Show model selection
+                showBatteryModels(selectedBatteryBrand);
+            });
+        });
+
+        // Custom battery brand button
+        document.getElementById('customBatteryBrandBtn').addEventListener('click', function() {
+            // Remove selected class from all battery brand buttons
+            document.querySelectorAll('[data-battery-brand]').forEach(btn => btn.classList.remove('selected'));
+            
+            // Add selected class to custom button
+            this.classList.add('selected');
+            
+            // Show custom input
+            document.getElementById('customBatteryBrandInput').classList.add('active');
+            document.getElementById('batteryBrandCustom').focus();
+            
+            // Show generic models
+            showBatteryModels('generic');
+        });
+
+        // Battery model selection
+        document.addEventListener('click', function(e) {
+            if (e.target.hasAttribute('data-battery-model')) {
+                // Remove selected class from all battery model buttons
+                document.querySelectorAll('[data-battery-model]').forEach(btn => btn.classList.remove('selected'));
+                
+                // Add selected class to clicked button
+                e.target.classList.add('selected');
+                selectedBatteryModel = e.target.dataset.batteryModel;
+                
+                // Handle custom model input
+                const customModelInput = document.getElementById('customBatteryModelInput');
+                if (selectedBatteryModel === 'Other Model' || selectedBatteryModel === 'Other Size') {
+                    customModelInput.classList.add('active');
+                    document.getElementById('batteryModelCustom').focus();
+                } else {
+                    customModelInput.classList.remove('active');
+                }
             }
         });
 
-        // Get actual battery brand (handles custom input)
-        function getBatteryBrand() {
-            const batteryBrand = document.getElementById('batteryBrand').value;
-            if (batteryBrand === 'Other (specify)') {
-                return document.getElementById('batteryBrandCustom').value;
+        function showBatteryModels(brand) {
+            // Hide all model sections
+            document.querySelectorAll('.battery-models').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Reset model selection
+            document.querySelectorAll('[data-battery-model]').forEach(btn => btn.classList.remove('selected'));
+            document.getElementById('customBatteryModelInput').classList.remove('active');
+            selectedBatteryModel = null;
+            
+            // Show appropriate model section
+            const batteryModelSection = document.getElementById('batteryModelSection');
+            batteryModelSection.classList.remove('hidden');
+            
+            switch(brand.toLowerCase()) {
+                case 'tesla':
+                    document.getElementById('teslaModels').classList.add('active');
+                    break;
+                case 'givnergy':
+                    document.getElementById('givenergyModels').classList.add('active');
+                    break;
+                case 'fox ess':
+                    document.getElementById('foxessModels').classList.add('active');
+                    break;
+                default:
+                    document.getElementById('genericModels').classList.add('active');
+                    break;
             }
-            return batteryBrand;
         }
 
-        // Analyze battery brand quality
-        function analyzeBatteryBrand(batteryBrand) {
-            const excellentBatteries = ['Tesla Powerwall', 'GivEnergy', 'Enphase', 'Victron Energy'];
-            const goodBatteries = ['SolarEdge', 'SolaX', 'Growatt', 'LG Chem', 'Duracell', 'Alpha ESS', 'Puredrive'];
-            const okayBatteries = ['Huawei', 'EcoFlow', 'Sungrow', 'Pylontech', 'BYD', 'Moixa', 'Fox ESS'];
-            
-            if (excellentBatteries.includes(batteryBrand)) {
-                return { rating: 'excellent', score: 10, message: `${batteryBrand} is an excellent battery choice with proven reliability` };
-            } else if (goodBatteries.includes(batteryBrand)) {
-                return { rating: 'good', score: 8, message: `${batteryBrand} is a solid battery choice with good performance` };
-            } else if (okayBatteries.includes(batteryBrand)) {
-                return { rating: 'okay', score: 5, message: `${batteryBrand} is an acceptable choice - research warranty and cycle life` };
-            } else {
-                // For custom/unknown batteries
-                return { rating: 'okay', score: 5, message: `Research ${batteryBrand} specifications including warranty and cycle life` };
+        function resetBatterySelection() {
+            selectedBatteryBrand = null;
+            selectedBatteryModel = null;
+            document.querySelectorAll('[data-battery-brand]').forEach(btn => btn.classList.remove('selected'));
+            document.querySelectorAll('[data-battery-model]').forEach(btn => btn.classList.remove('selected'));
+            document.getElementById('customBatteryBrandBtn').classList.remove('selected');
+            document.querySelectorAll('.custom-input').forEach(input => input.classList.remove('active'));
+            document.querySelectorAll('.battery-models').forEach(section => section.classList.remove('active'));
+        }
+
+        // Get panel brand (handles custom input)
+        function getPanelBrand() {
+            const panelBrand = document.getElementById('panelBrand').value;
+            if (panelBrand === 'Other (specify)') {
+                return document.getElementById('panelBrandCustom').value;
             }
+            return panelBrand;
+        }
+
+        // Get battery info (handles custom inputs)
+        function getBatteryInfo() {
+            let brand = selectedBatteryBrand;
+            let model = selectedBatteryModel;
+            
+            // Handle custom brand
+            if (document.getElementById('customBatteryBrandBtn').classList.contains('selected')) {
+                brand = document.getElementById('batteryBrandCustom').value;
+            }
+            
+            // Handle custom model
+            if (model === 'Other Model' || model === 'Other Size') {
+                model = document.getElementById('batteryModelCustom').value;
+            }
+            
+            return { brand, model };
         }
 
         // System Size Button Functionality
@@ -408,18 +569,18 @@
                 panelOutput = parseFloat(document.getElementById('panelOutput').value);
             }
 
-            const panelBrand = document.getElementById('panelBrand').value;
+            const panelBrand = getPanelBrand();
             const totalPrice = parseFloat(document.getElementById('totalPrice').value);
             const hasBattery = document.getElementById('hasBattery').value;
-            const batteryBrand = getBatteryBrand();
+            const batteryInfo = getBatteryInfo();
 
             if (!systemSize || !panelOutput || !panelBrand || !totalPrice) {
                 alert('Please fill in all required fields');
                 return;
             }
 
-            if (hasBattery === 'yes' && !batteryBrand) {
-                alert('Please select a battery brand');
+            if (hasBattery === 'yes' && (!batteryInfo.brand || !batteryInfo.model)) {
+                alert('Please select battery brand and model');
                 return;
             }
 
@@ -487,7 +648,7 @@
 
             // Battery analysis (if included)
             if (hasBattery === 'yes') {
-                const batteryAnalysis = analyzeBatteryBrand(batteryBrand);
+                const batteryAnalysis = analyzeBatteryBrand(batteryInfo.brand, batteryInfo.model);
                 breakdown.batteryBrand = batteryAnalysis.rating;
                 score += batteryAnalysis.score;
                 recommendations.push(batteryAnalysis.message);
@@ -512,10 +673,38 @@
             else overall = 'poor';
 
             // Display results
-            displayResults(overall, score, pricePerKw, breakdown, recommendations, hasBattery);
+            displayResults(overall, score, pricePerKw, breakdown, recommendations, hasBattery, batteryInfo);
         }
 
-        function displayResults(overall, score, pricePerKw, breakdown, recommendations, hasBattery) {
+        function analyzeBatteryBrand(brand, model) {
+            const excellentBatteries = ['Tesla', 'GivEnergy', 'Victron'];
+            const goodBatteries = ['SolarEdge', 'LG Chem', 'Duracell'];
+            const okayBatteries = ['Fox ESS', 'Huawei', 'Growatt'];
+            
+            let rating, score, message;
+            
+            if (excellentBatteries.includes(brand)) {
+                rating = 'excellent';
+                score = 10;
+                message = `${brand} ${model} is an excellent battery choice with proven reliability`;
+            } else if (goodBatteries.includes(brand)) {
+                rating = 'good';
+                score = 8;
+                message = `${brand} ${model} is a solid battery choice with good performance`;
+            } else if (okayBatteries.includes(brand)) {
+                rating = 'okay';
+                score = 5;
+                message = `${brand} ${model} is acceptable - research warranty and cycle life`;
+            } else {
+                rating = 'okay';
+                score = 5;
+                message = `Research ${brand} ${model} specifications including warranty and cycle life`;
+            }
+            
+            return { rating, score, message };
+        }
+
+        function displayResults(overall, score, pricePerKw, breakdown, recommendations, hasBattery, batteryInfo) {
             document.getElementById('overallResult').textContent = overall.charAt(0).toUpperCase() + overall.slice(1);
             document.getElementById('overallResult').className = `text-5xl font-bold mb-2 ${getOverallColor(overall)}`;
             document.getElementById('scoreResult').textContent = `Score: ${score}%`;
@@ -581,11 +770,14 @@
             
             document.querySelectorAll('.size-button').forEach(btn => btn.classList.remove('selected'));
             document.querySelectorAll('.custom-input').forEach(input => input.classList.remove('active'));
+            document.querySelectorAll('.battery-models').forEach(section => section.classList.remove('active'));
             
             selectedSystemSize = null;
             selectedPanelOutput = null;
+            resetBatterySelection();
             
             document.getElementById('batterySection').classList.add('hidden');
+            document.getElementById('batteryModelSection').classList.add('hidden');
             document.getElementById('results').classList.add('hidden');
         }
 
