@@ -10,13 +10,45 @@ function App() {
     systemSize: '',
     solarPanelOutput: '',
     solarPanelName: '',
+    solarPanelNameCustom: '',
     batteryBrandName: '',
+    batteryBrandNameCustom: '',
     batterySize: '',
     totalPrice: '',
     hasBattery: 'no'
   })
   const [analysis, setAnalysis] = useState(null)
   const [loading, setLoading] = useState(false)
+
+  // Popular panel brands
+  const panelBrands = [
+    'SunPower',
+    'Longi',
+    'REC',
+    'Jinko Solar',
+    'Canadian Solar',
+    'Trina Solar',
+    'JA Solar',
+    'Risen Energy',
+    'Astronergy',
+    'Hanwha Q Cells',
+    'Sharp',
+    'Panasonic',
+    'Other (specify)'
+  ]
+
+  // Popular battery brands
+  const batteryBrands = [
+    'Tesla Powerwall',
+    'LG Chem',
+    'GivEnergy',
+    'Pylontech',
+    'BYD',
+    'Enphase',
+    'SolarEdge',
+    'Huawei',
+    'Other (specify)'
+  ]
 
   const handleChange = (e) => {
     const { id, value } = e.target
@@ -31,6 +63,22 @@ function App() {
       ...prevData,
       [id]: value
     }))
+  }
+
+  // Get the actual panel name for analysis (use custom if "Other" is selected)
+  const getActualPanelName = () => {
+    if (formData.solarPanelName === 'Other (specify)') {
+      return formData.solarPanelNameCustom
+    }
+    return formData.solarPanelName
+  }
+
+  // Get the actual battery name for analysis (use custom if "Other" is selected)
+  const getActualBatteryName = () => {
+    if (formData.batteryBrandName === 'Other (specify)') {
+      return formData.batteryBrandNameCustom
+    }
+    return formData.batteryBrandName
   }
 
   const analyzeQuote = async () => {
@@ -97,7 +145,7 @@ function App() {
       let brandScore = 50
       let brandRating = 'okay'
       
-      const panelBrand = formData.solarPanelName.toLowerCase()
+      const panelBrand = getActualPanelName().toLowerCase()
       if (goodBrands.some(brand => panelBrand.includes(brand))) {
         brandScore = 100
         brandRating = 'good'
@@ -130,7 +178,7 @@ function App() {
       
       if (formData.hasBattery === 'yes') {
         const goodBatteryBrands = ['tesla', 'lg chem', 'givenergy', 'pylontech', 'byd']
-        const batteryBrand = formData.batteryBrandName.toLowerCase()
+        const batteryBrand = getActualBatteryName().toLowerCase()
         
         if (goodBatteryBrands.some(brand => batteryBrand.includes(brand))) {
           batteryScore = 100
@@ -209,7 +257,9 @@ function App() {
       systemSize: '',
       solarPanelOutput: '',
       solarPanelName: '',
+      solarPanelNameCustom: '',
       batteryBrandName: '',
+      batteryBrandNameCustom: '',
       batterySize: '',
       totalPrice: '',
       hasBattery: 'no'
@@ -309,14 +359,26 @@ function App() {
                         </div>
 
                         <div>
-                          <Label htmlFor="solarPanelName" className="text-gray-700 font-medium">Panel Brand/Name</Label>
-                          <Input 
-                            id="solarPanelName" 
-                            placeholder="e.g., SunPower Maxeon 3" 
-                            value={formData.solarPanelName} 
-                            onChange={handleChange}
-                            className="mt-2 border-gray-300 focus:border-teal-500 focus:ring-teal-500"
-                          />
+                          <Label htmlFor="solarPanelName" className="text-gray-700 font-medium">Panel Brand</Label>
+                          <Select value={formData.solarPanelName} onValueChange={(value) => handleSelectChange(value, 'solarPanelName')}>
+                            <SelectTrigger className="mt-2 border-gray-300 focus:border-teal-500 focus:ring-teal-500">
+                              <SelectValue placeholder="Select panel brand" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {panelBrands.map((brand) => (
+                                <SelectItem key={brand} value={brand}>{brand}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          {formData.solarPanelName === 'Other (specify)' && (
+                            <Input 
+                              id="solarPanelNameCustom" 
+                              placeholder="Enter panel brand name" 
+                              value={formData.solarPanelNameCustom} 
+                              onChange={handleChange}
+                              className="mt-2 border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                            />
+                          )}
                         </div>
 
                         <div>
@@ -336,13 +398,25 @@ function App() {
                           <>
                             <div>
                               <Label htmlFor="batteryBrandName" className="text-gray-700 font-medium">Battery Brand</Label>
-                              <Input 
-                                id="batteryBrandName" 
-                                placeholder="e.g., Tesla Powerwall" 
-                                value={formData.batteryBrandName} 
-                                onChange={handleChange}
-                                className="mt-2 border-gray-300 focus:border-teal-500 focus:ring-teal-500"
-                              />
+                              <Select value={formData.batteryBrandName} onValueChange={(value) => handleSelectChange(value, 'batteryBrandName')}>
+                                <SelectTrigger className="mt-2 border-gray-300 focus:border-teal-500 focus:ring-teal-500">
+                                  <SelectValue placeholder="Select battery brand" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {batteryBrands.map((brand) => (
+                                    <SelectItem key={brand} value={brand}>{brand}</SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              {formData.batteryBrandName === 'Other (specify)' && (
+                                <Input 
+                                  id="batteryBrandNameCustom" 
+                                  placeholder="Enter battery brand name" 
+                                  value={formData.batteryBrandNameCustom} 
+                                  onChange={handleChange}
+                                  className="mt-2 border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                                />
+                              )}
                             </div>
                             <div>
                               <Label htmlFor="batterySize" className="text-gray-700 font-medium">Battery Size (kWh)</Label>
