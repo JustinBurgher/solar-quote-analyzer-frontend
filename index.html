@@ -7,10 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .gradient-bg {
-            background: linear-gradient(135deg, #0f766e 0%, #059669 50%, #10b981 100% );
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100% );
         }
         .hero-pattern {
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E" );
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E" );
         }
         .pulse-animation {
             animation: pulse 2s infinite;
@@ -30,43 +30,52 @@
         /* Tool Integration Styles */
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .tab-button.active { background-color: #0d9488; color: white; }
-        .tab-button { background-color: #f3f4f6; color: #374151; }
+        .tab-button.active { background-color: #3b82f6; color: white; }
+        .tab-button { background-color: #f8fafc; color: #475569; border: 1px solid #e2e8f0; }
         .size-button { 
             transition: all 0.2s; 
-            border: 2px solid #e5e7eb;
+            border: 2px solid #e2e8f0;
+            background-color: #ffffff;
         }
         .size-button:hover { 
-            border-color: #0d9488; 
-            background-color: #f0fdfa;
+            border-color: #3b82f6; 
+            background-color: #eff6ff;
         }
         .size-button.selected { 
-            background-color: #0d9488; 
+            background-color: #3b82f6; 
             color: white; 
-            border-color: #0d9488;
+            border-color: #3b82f6;
         }
         .custom-input { display: none; }
         .custom-input.active { display: block; }
         .battery-models { display: none; }
         .battery-models.active { display: block; }
+        
+        /* Samsung-inspired card shadows */
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .card-shadow-lg {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-slate-50">
     <!-- Header -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
+    <header class="bg-white shadow-sm sticky top-0 z-50 border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                    <div class="w-10 h-10 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
                         <span class="text-2xl">☀️</span>
                     </div>
-                    <h1 class="text-2xl font-bold text-gray-900">Solar Truth AI</h1>
+                    <h1 class="text-2xl font-bold text-slate-900">Solar Truth AI</h1>
                 </div>
                 <nav class="hidden md:flex space-x-8">
-                    <a href="#problem" class="text-gray-600 hover:text-teal-600 transition-colors">The Problem</a>
-                    <a href="#solution" class="text-gray-600 hover:text-teal-600 transition-colors">Our Solution</a>
-                    <a href="#tool" class="text-gray-600 hover:text-teal-600 transition-colors">Free Analysis</a>
-                    <a href="#contact" class="text-gray-600 hover:text-teal-600 transition-colors">Contact</a>
+                    <a href="#problem" class="text-slate-600 hover:text-blue-600 transition-colors font-medium">The Problem</a>
+                    <a href="#solution" class="text-slate-600 hover:text-blue-600 transition-colors font-medium">Our Solution</a>
+                    <a href="#tool" class="text-slate-600 hover:text-blue-600 transition-colors font-medium">Free Analysis</a>
+                    <a href="#contact" class="text-slate-600 hover:text-blue-600 transition-colors font-medium">Contact</a>
                 </nav>
             </div>
         </div>
@@ -79,42 +88,42 @@
                 <div class="text-white">
                     <h1 class="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
                         Don't Get 
-                        <span class="text-yellow-300">Ripped Off</span> 
+                        <span class="text-amber-300">Ripped Off</span> 
                         on Solar
                     </h1>
-                    <p class="text-xl mb-8 text-teal-50 leading-relaxed">
+                    <p class="text-xl mb-8 text-blue-50 leading-relaxed">
                         UK homeowners lose <strong>£1,000s</strong> on overpriced solar quotes with poor quality panels. 
                         Our AI analyzes your quotes in seconds to reveal the truth.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#tool" class="bg-yellow-400 text-gray-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-yellow-300 transition-all transform hover:scale-105 text-center pulse-animation">
+                        <a href="#tool" class="bg-amber-400 text-slate-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-amber-300 transition-all transform hover:scale-105 text-center pulse-animation shadow-lg">
                             Analyze My Quote FREE
                         </a>
-                        <a href="#problem" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-teal-600 transition-all text-center">
+                        <a href="#problem" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition-all text-center">
                             Learn More
                         </a>
                     </div>
                 </div>
                 <div class="relative">
                     <div class="floating">
-                        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md mx-auto">
+                        <div class="bg-white rounded-2xl card-shadow-lg p-8 max-w-md mx-auto">
                             <div class="text-center mb-6">
-                                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
                                     <span class="text-3xl">⚠️</span>
                                 </div>
-                                <h3 class="text-xl font-bold text-gray-900 mb-2">Quote Analysis Result</h3>
+                                <h3 class="text-xl font-bold text-slate-900 mb-2">Quote Analysis Result</h3>
                             </div>
                             <div class="space-y-4">
                                 <div class="flex justify-between items-center">
-                                    <span class="text-gray-600">Panel Quality:</span>
+                                    <span class="text-slate-600">Panel Quality:</span>
                                     <span class="text-red-600 font-semibold">Poor</span>
                                 </div>
                                 <div class="flex justify-between items-center">
-                                    <span class="text-gray-600">Price Rating:</span>
+                                    <span class="text-slate-600">Price Rating:</span>
                                     <span class="text-red-600 font-semibold">Overpriced</span>
                                 </div>
                                 <div class="flex justify-between items-center">
-                                    <span class="text-gray-600">Overall Score:</span>
+                                    <span class="text-slate-600">Overall Score:</span>
                                     <span class="text-red-600 font-bold text-xl">3/10</span>
                                 </div>
                                 <div class="bg-red-50 border border-red-200 rounded-lg p-3 mt-4">
@@ -134,59 +143,59 @@
     <section id="problem" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">The Solar Industry Has a Problem</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-900 mb-6">The Solar Industry Has a Problem</h2>
+                <p class="text-xl text-slate-600 max-w-3xl mx-auto">
                     Most homeowners have no idea if they're getting a good deal on solar. 
                     Unscrupulous installers take advantage of this knowledge gap.
                 </p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8 mb-16">
-                <div class="text-center p-8 bg-red-50 rounded-xl border border-red-100">
-                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div class="text-center p-8 bg-slate-50 rounded-xl border border-slate-200 card-shadow">
+                    <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
                         <span class="text-3xl">💸</span>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-4">Overpriced Quotes</h3>
-                    <p class="text-gray-600">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">Overpriced Quotes</h3>
+                    <p class="text-slate-600">
                         Many installers charge 20-40% above market rate, knowing customers can't easily compare.
                     </p>
                 </div>
 
-                <div class="text-center p-8 bg-red-50 rounded-xl border border-red-100">
-                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div class="text-center p-8 bg-slate-50 rounded-xl border border-slate-200 card-shadow">
+                    <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
                         <span class="text-3xl">📉</span>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-4">Poor Quality Panels</h3>
-                    <p class="text-gray-600">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">Poor Quality Panels</h3>
+                    <p class="text-slate-600">
                         Cheap, low-efficiency panels that produce less energy and degrade faster than premium options.
                     </p>
                 </div>
 
-                <div class="text-center p-8 bg-red-50 rounded-xl border border-red-100">
-                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div class="text-center p-8 bg-slate-50 rounded-xl border border-slate-200 card-shadow">
+                    <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
                         <span class="text-3xl">🤷</span>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-4">No Way to Compare</h3>
-                    <p class="text-gray-600">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">No Way to Compare</h3>
+                    <p class="text-slate-600">
                         Technical jargon and complex specifications make it impossible for homeowners to evaluate quotes.
                     </p>
                 </div>
             </div>
 
             <!-- Statistics -->
-            <div class="bg-gray-900 rounded-2xl p-8 text-white">
+            <div class="bg-slate-900 rounded-2xl p-8 text-white card-shadow-lg">
                 <div class="grid md:grid-cols-3 gap-8 text-center">
                     <div>
-                        <div class="text-4xl font-bold text-yellow-400 mb-2">73%</div>
-                        <p class="text-gray-300">of homeowners get overcharged on solar</p>
+                        <div class="text-4xl font-bold text-amber-400 mb-2">73%</div>
+                        <p class="text-slate-300">of homeowners get overcharged on solar</p>
                     </div>
                     <div>
-                        <div class="text-4xl font-bold text-yellow-400 mb-2">£2,400</div>
-                        <p class="text-gray-300">average overpayment on solar systems</p>
+                        <div class="text-4xl font-bold text-amber-400 mb-2">£2,400</div>
+                        <p class="text-slate-300">average overpayment on solar systems</p>
                     </div>
                     <div>
-                        <div class="text-4xl font-bold text-yellow-400 mb-2">89%</div>
-                        <p class="text-gray-300">wish they had expert analysis before buying</p>
+                        <div class="text-4xl font-bold text-amber-400 mb-2">89%</div>
+                        <p class="text-slate-300">wish they had expert analysis before buying</p>
                     </div>
                 </div>
             </div>
@@ -194,11 +203,11 @@
     </section>
 
     <!-- Solution Section -->
-    <section id="solution" class="py-20 bg-teal-50">
+    <section id="solution" class="py-20 bg-slate-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">Introducing Solar Truth AI</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-900 mb-6">Introducing Solar Truth AI</h2>
+                <p class="text-xl text-slate-600 max-w-3xl mx-auto">
                     The UK's first AI-powered solar quote analyzer. Get expert-level analysis 
                     of your quotes in seconds, not days.
                 </p>
@@ -208,12 +217,12 @@
                 <div>
                     <div class="space-y-8">
                         <div class="flex items-start space-x-4">
-                            <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
                                 <span class="text-2xl">🔍</span>
                             </div>
                             <div>
-                                <h3 class="text-xl font-bold text-gray-900 mb-2">Instant Quote Analysis</h3>
-                                <p class="text-gray-600">
+                                <h3 class="text-xl font-bold text-slate-900 mb-2">Instant Quote Analysis</h3>
+                                <p class="text-slate-600">
                                     Upload your quote or enter details manually. Our AI analyzes panel quality, 
                                     pricing, and system specifications in seconds.
                                 </p>
@@ -221,12 +230,12 @@
                         </div>
 
                         <div class="flex items-start space-x-4">
-                            <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
                                 <span class="text-2xl">🎯</span>
                             </div>
                             <div>
-                                <h3 class="text-xl font-bold text-gray-900 mb-2">UK Market Intelligence</h3>
-                                <p class="text-gray-600">
+                                <h3 class="text-xl font-bold text-slate-900 mb-2">UK Market Intelligence</h3>
+                                <p class="text-slate-600">
                                     Real UK panel brands, current market prices, and quality ratings 
                                     from actual wholesale suppliers like Midsummer Wholesale.
                                 </p>
@@ -234,12 +243,12 @@
                         </div>
 
                         <div class="flex items-start space-x-4">
-                            <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
                                 <span class="text-2xl">💡</span>
                             </div>
                             <div>
-                                <h3 class="text-xl font-bold text-gray-900 mb-2">Actionable Recommendations</h3>
-                                <p class="text-gray-600">
+                                <h3 class="text-xl font-bold text-slate-900 mb-2">Actionable Recommendations</h3>
+                                <p class="text-slate-600">
                                     Get specific advice on what to negotiate, which panels to upgrade to, 
                                     and red flags to watch out for.
                                 </p>
@@ -247,12 +256,12 @@
                         </div>
 
                         <div class="flex items-start space-x-4">
-                            <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
                                 <span class="text-2xl">🆓</span>
                             </div>
                             <div>
-                                <h3 class="text-xl font-bold text-gray-900 mb-2">Completely Free</h3>
-                                <p class="text-gray-600">
+                                <h3 class="text-xl font-bold text-slate-900 mb-2">Completely Free</h3>
+                                <p class="text-slate-600">
                                     No hidden fees, no email required. Just honest, expert analysis 
                                     to help you make the right decision.
                                 </p>
@@ -262,24 +271,24 @@
                 </div>
 
                 <div class="relative">
-                    <div class="bg-white rounded-2xl shadow-2xl p-8">
+                    <div class="bg-white rounded-2xl card-shadow-lg p-8">
                         <div class="text-center mb-6">
-                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <span class="text-3xl">✅</span>
                             </div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">Great Quote Detected!</h3>
+                            <h3 class="text-xl font-bold text-slate-900 mb-2">Great Quote Detected!</h3>
                         </div>
                         <div class="space-y-4">
                             <div class="flex justify-between items-center">
-                                <span class="text-gray-600">Panel Quality:</span>
+                                <span class="text-slate-600">Panel Quality:</span>
                                 <span class="text-green-600 font-semibold">Excellent</span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="text-gray-600">Price Rating:</span>
+                                <span class="text-slate-600">Price Rating:</span>
                                 <span class="text-green-600 font-semibold">Fair Value</span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="text-gray-600">Overall Score:</span>
+                                <span class="text-slate-600">Overall Score:</span>
                                 <span class="text-green-600 font-bold text-xl">9/10</span>
                             </div>
                             <div class="bg-green-50 border border-green-200 rounded-lg p-3 mt-4">
@@ -298,25 +307,25 @@
     <section id="tool" class="py-20 bg-white">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">Analyze Your Solar Quote Now</h2>
-                <p class="text-xl text-gray-600">
+                <h2 class="text-4xl font-bold text-slate-900 mb-6">Analyze Your Solar Quote Now</h2>
+                <p class="text-xl text-slate-600">
                     Get instant expert analysis of your solar quote. Takes less than 2 minutes.
                 </p>
             </div>
 
             <!-- Integrated Solar Truth AI Tool -->
-            <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-2xl p-8 border border-teal-100">
+            <div class="bg-gradient-to-br from-blue-50 to-slate-50 rounded-2xl p-8 border border-slate-200">
                 <div class="text-center mb-8">
-                    <div class="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">
                         <span class="text-4xl">🤖</span>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Solar Truth AI Analyzer</h3>
-                    <p class="text-gray-600">Enter your quote details below for instant analysis</p>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-2">Solar Truth AI Analyzer</h3>
+                    <p class="text-slate-600">Enter your quote details below for instant analysis</p>
                 </div>
 
-                <div class="bg-white rounded-xl p-6 shadow-lg">
+                <div class="bg-white rounded-xl p-6 card-shadow-lg">
                     <!-- Tab Navigation -->
-                    <div class="flex border-b border-gray-200 mb-6">
+                    <div class="flex border-b border-slate-200 mb-6">
                         <button class="tab-button active px-6 py-3 font-medium rounded-t-lg" onclick="switchTab('manual')">
                             Manual Entry
                         </button>
@@ -330,7 +339,7 @@
                         <form id="quoteForm" class="space-y-6">
                             <!-- System Size Selection -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-3">System Size (kW)</label>
+                                <label class="block text-sm font-medium text-slate-700 mb-3">System Size (kW)</label>
                                 <div class="grid grid-cols-4 gap-3 mb-3">
                                     <button type="button" class="size-button px-4 py-2 rounded-lg text-sm font-medium" onclick="selectSystemSize(2)">2kW</button>
                                     <button type="button" class="size-button px-4 py-2 rounded-lg text-sm font-medium" onclick="selectSystemSize(3)">3kW</button>
@@ -342,13 +351,13 @@
                                     <button type="button" class="size-button px-4 py-2 rounded-lg text-sm font-medium" onclick="selectCustomSystemSize()">Other</button>
                                 </div>
                                 <div id="customSystemSize" class="custom-input">
-                                    <input type="number" step="0.1" placeholder="Enter system size (kW)" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                    <input type="number" step="0.1" placeholder="Enter system size (kW)" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                 </div>
                             </div>
 
                             <!-- Panel Output Selection -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-3">Panel Output (W)</label>
+                                <label class="block text-sm font-medium text-slate-700 mb-3">Panel Output (W)</label>
                                 <div class="grid grid-cols-3 gap-3 mb-3">
                                     <button type="button" class="size-button px-4 py-2 rounded-lg text-sm font-medium" onclick="selectPanelOutput(300)">300W</button>
                                     <button type="button" class="size-button px-4 py-2 rounded-lg text-sm font-medium" onclick="selectPanelOutput(350)">350W</button>
@@ -359,14 +368,14 @@
                                     <button type="button" class="size-button px-4 py-2 rounded-lg text-sm font-medium" onclick="selectCustomPanelOutput()">Other</button>
                                 </div>
                                 <div id="customPanelOutput" class="custom-input">
-                                    <input type="number" placeholder="Enter panel output (W)" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                    <input type="number" placeholder="Enter panel output (W)" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                 </div>
                             </div>
 
                             <!-- Panel Brand -->
                             <div>
-                                <label for="panelBrand" class="block text-sm font-medium text-gray-700 mb-1">Panel Brand</label>
-                                <select id="panelBrand" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500" onchange="toggleCustomPanelBrand()">
+                                <label for="panelBrand" class="block text-sm font-medium text-slate-700 mb-1">Panel Brand</label>
+                                <select id="panelBrand" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" onchange="toggleCustomPanelBrand()">
                                     <option value="">Select panel brand</option>
                                     <option value="Aiko">Aiko</option>
                                     <option value="Trina Solar">Trina Solar</option>
@@ -384,20 +393,20 @@
                                     <option value="Other (specify)">Other (specify)</option>
                                 </select>
                                 <div id="customPanelBrand" class="custom-input mt-2">
-                                    <input type="text" placeholder="Enter panel brand" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                    <input type="text" placeholder="Enter panel brand" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                 </div>
                             </div>
 
                             <!-- Total Price -->
                             <div>
-                                <label for="totalPrice" class="block text-sm font-medium text-gray-700 mb-1">Total Price (£)</label>
-                                <input type="number" id="totalPrice" placeholder="e.g. 9500" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                <label for="totalPrice" class="block text-sm font-medium text-slate-700 mb-1">Total Price (£)</label>
+                                <input type="number" id="totalPrice" placeholder="e.g. 9500" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             </div>
 
                             <!-- Battery Section -->
                             <div>
-                                <label for="hasBattery" class="block text-sm font-medium text-gray-700 mb-1">Battery Included?</label>
-                                <select id="hasBattery" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500" onchange="toggleBatterySection()">
+                                <label for="hasBattery" class="block text-sm font-medium text-slate-700 mb-1">Battery Included?</label>
+                                <select id="hasBattery" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" onchange="toggleBatterySection()">
                                     <option value="no">No Battery</option>
                                     <option value="yes">Yes, Battery Included</option>
                                 </select>
@@ -407,7 +416,7 @@
                             <div id="batterySection" class="hidden space-y-4">
                                 <!-- Battery Brand Selection -->
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-3">Battery Brand</label>
+                                    <label class="block text-sm font-medium text-slate-700 mb-3">Battery Brand</label>
                                     <div class="grid grid-cols-3 gap-3 mb-3">
                                         <button type="button" class="size-button px-4 py-2 rounded-lg text-sm font-medium" onclick="selectBatteryBrand('Tesla')">Tesla</button>
                                         <button type="button" class="size-button px-4 py-2 rounded-lg text-sm font-medium" onclick="selectBatteryBrand('GivEnergy')">GivEnergy</button>
@@ -417,24 +426,24 @@
                                         <button type="button" class="size-button px-4 py-2 rounded-lg text-sm font-medium" onclick="selectBatteryBrand('Other Brand')">Other Brand</button>
                                     </div>
                                     <div id="customBatteryBrand" class="custom-input">
-                                        <input type="text" placeholder="Enter battery brand" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                        <input type="text" placeholder="Enter battery brand" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                     </div>
                                 </div>
 
                                 <!-- Battery Model Section (shows after brand selection) -->
                                 <div id="batteryModelSection" class="hidden">
-                                    <label class="block text-sm font-medium text-gray-700 mb-3">Battery Model/Size</label>
+                                    <label class="block text-sm font-medium text-slate-700 mb-3">Battery Model/Size</label>
                                     <div id="batteryModels" class="grid grid-cols-2 gap-3 mb-3">
                                         <!-- Models will be populated based on brand selection -->
                                     </div>
                                     <div id="customBatteryModel" class="custom-input">
-                                        <input type="text" placeholder="Enter battery model/size" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                        <input type="text" placeholder="Enter battery model/size" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Analyze Button -->
-                            <button type="button" onclick="analyzeQuote()" class="w-full bg-teal-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-teal-700 transition-colors">
+                            <button type="button" onclick="analyzeQuote()" class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg">
                                 Analyze My Quote
                             </button>
                         </form>
@@ -443,23 +452,23 @@
                     <!-- PDF Upload Tab -->
                     <div id="pdf-tab" class="tab-content">
                         <div class="text-center py-12">
-                            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <span class="text-2xl">📄</span>
                             </div>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-4">Upload Your Solar Quote</h3>
-                            <p class="text-gray-600 mb-6">
+                            <h3 class="text-xl font-semibold text-slate-900 mb-4">Upload Your Solar Quote</h3>
+                            <p class="text-slate-600 mb-6">
                                 Upload your PDF quote for automatic analysis (Coming Soon)
                             </p>
                             <input type="file" accept=".pdf" class="hidden" id="pdfUpload">
-                            <label for="pdfUpload" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors cursor-pointer inline-block">
+                            <label for="pdfUpload" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors cursor-pointer inline-block shadow-lg">
                                 Choose PDF File
                             </label>
                         </div>
                     </div>
 
                     <!-- Results Section -->
-                    <div id="results" class="hidden mt-8 p-6 bg-gray-50 rounded-lg">
-                        <h3 class="text-xl font-bold text-gray-900 mb-4">Analysis Results</h3>
+                    <div id="results" class="hidden mt-8 p-6 bg-slate-50 rounded-lg border border-slate-200">
+                        <h3 class="text-xl font-bold text-slate-900 mb-4">Analysis Results</h3>
                         <div id="analysisResults"></div>
                     </div>
                 </div>
@@ -468,72 +477,72 @@
     </section>
 
     <!-- Social Proof Section -->
-    <section class="py-20 bg-gray-50">
+    <section class="py-20 bg-slate-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">Trusted by UK Homeowners</h2>
-                <p class="text-xl text-gray-600">
+                <h2 class="text-4xl font-bold text-slate-900 mb-6">Trusted by UK Homeowners</h2>
+                <p class="text-xl text-slate-600">
                     Join thousands who've saved money with Solar Truth AI
                 </p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white rounded-xl p-6 shadow-lg">
+                <div class="bg-white rounded-xl p-6 card-shadow-lg">
                     <div class="flex items-center mb-4">
-                        <div class="flex text-yellow-400 text-xl">★★★★★</div>
-                        <span class="ml-2 text-gray-600">5/5</span>
+                        <div class="flex text-amber-400 text-xl">★★★★★</div>
+                        <span class="ml-2 text-slate-600">5/5</span>
                     </div>
-                    <p class="text-gray-700 mb-4">
+                    <p class="text-slate-700 mb-4">
                         "Saved me £1,800! The analysis showed my quote was using cheap panels. 
                         Got a much better deal after using Solar Truth AI."
                     </p>
                     <div class="flex items-center">
-                        <div class="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
-                            <span class="font-semibold text-teal-600">SM</span>
+                        <div class="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
+                            <span class="font-semibold text-blue-600">SM</span>
                         </div>
                         <div class="ml-3">
-                            <p class="font-semibold text-gray-900">Sarah M.</p>
-                            <p class="text-gray-600 text-sm">Manchester</p>
+                            <p class="font-semibold text-slate-900">Sarah M.</p>
+                            <p class="text-slate-600 text-sm">Manchester</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl p-6 shadow-lg">
+                <div class="bg-white rounded-xl p-6 card-shadow-lg">
                     <div class="flex items-center mb-4">
-                        <div class="flex text-yellow-400 text-xl">★★★★★</div>
-                        <span class="ml-2 text-gray-600">5/5</span>
+                        <div class="flex text-amber-400 text-xl">★★★★★</div>
+                        <span class="ml-2 text-slate-600">5/5</span>
                     </div>
-                    <p class="text-gray-700 mb-4">
+                    <p class="text-slate-700 mb-4">
                         "Finally understood what I was buying! The tool explained everything 
                         in simple terms. Avoided a terrible quote."
                     </p>
                     <div class="flex items-center">
-                        <div class="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
-                            <span class="font-semibold text-teal-600">JT</span>
+                        <div class="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
+                            <span class="font-semibold text-blue-600">JT</span>
                         </div>
                         <div class="ml-3">
-                            <p class="font-semibold text-gray-900">James T.</p>
-                            <p class="text-gray-600 text-sm">Birmingham</p>
+                            <p class="font-semibold text-slate-900">James T.</p>
+                            <p class="text-slate-600 text-sm">Birmingham</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl p-6 shadow-lg">
+                <div class="bg-white rounded-xl p-6 card-shadow-lg">
                     <div class="flex items-center mb-4">
-                        <div class="flex text-yellow-400 text-xl">★★★★★</div>
-                        <span class="ml-2 text-gray-600">5/5</span>
+                        <div class="flex text-amber-400 text-xl">★★★★★</div>
+                        <span class="ml-2 text-slate-600">5/5</span>
                     </div>
-                    <p class="text-gray-700 mb-4">
+                    <p class="text-slate-700 mb-4">
                         "Brilliant tool! Showed me exactly which panels were worth the money. 
                         My installer was impressed I knew so much."
                     </p>
                     <div class="flex items-center">
-                        <div class="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
-                            <span class="font-semibold text-teal-600">LW</span>
+                        <div class="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
+                            <span class="font-semibold text-blue-600">LW</span>
                         </div>
                         <div class="ml-3">
-                            <p class="font-semibold text-gray-900">Lisa W.</p>
-                            <p class="text-gray-600 text-sm">Leeds</p>
+                            <p class="font-semibold text-slate-900">Lisa W.</p>
+                            <p class="text-slate-600 text-sm">Leeds</p>
                         </div>
                     </div>
                 </div>
@@ -547,15 +556,15 @@
             <h2 class="text-4xl font-bold text-white mb-6">
                 Don't Let Solar Installers Take Advantage of You
             </h2>
-            <p class="text-xl text-teal-50 mb-8 max-w-2xl mx-auto">
+            <p class="text-xl text-blue-50 mb-8 max-w-2xl mx-auto">
                 Get the expert analysis you need to make an informed decision. 
                 Your future self will thank you.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#tool" class="bg-yellow-400 text-gray-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-yellow-300 transition-all transform hover:scale-105">
+                <a href="#tool" class="bg-amber-400 text-slate-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-amber-300 transition-all transform hover:scale-105 shadow-lg">
                     Analyze My Quote FREE
                 </a>
-                <a href="mailto:hello@solartruth.ai" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-teal-600 transition-all">
+                <a href="mailto:hello@solartruth.ai" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition-all">
                     Get Expert Help
                 </a>
             </div>
@@ -563,40 +572,40 @@
     </section>
 
     <!-- Footer -->
-    <footer id="contact" class="bg-gray-900 text-white py-12">
+    <footer id="contact" class="bg-slate-900 text-white py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid md:grid-cols-4 gap-8">
                 <div class="md:col-span-2">
                     <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-10 h-10 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                        <div class="w-10 h-10 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
                             <span class="text-2xl">☀️</span>
                         </div>
                         <h3 class="text-2xl font-bold">Solar Truth AI</h3>
                     </div>
-                    <p class="text-gray-400 mb-4 max-w-md">
+                    <p class="text-slate-400 mb-4 max-w-md">
                         Empowering UK homeowners with AI-powered solar quote analysis. 
                         Make informed decisions and avoid overpaying for solar.
                     </p>
                     <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">Twitter</a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">LinkedIn</a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">Facebook</a>
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors">Twitter</a>
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors">LinkedIn</a>
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors">Facebook</a>
                     </div>
                 </div>
                 
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
                     <ul class="space-y-2">
-                        <li><a href="#problem" class="text-gray-400 hover:text-white transition-colors">The Problem</a></li>
-                        <li><a href="#solution" class="text-gray-400 hover:text-white transition-colors">Our Solution</a></li>
-                        <li><a href="#tool" class="text-gray-400 hover:text-white transition-colors">Free Analysis</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#problem" class="text-slate-400 hover:text-white transition-colors">The Problem</a></li>
+                        <li><a href="#solution" class="text-slate-400 hover:text-white transition-colors">Our Solution</a></li>
+                        <li><a href="#tool" class="text-slate-400 hover:text-white transition-colors">Free Analysis</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-white transition-colors">Privacy Policy</a></li>
                     </ul>
                 </div>
                 
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Contact</h4>
-                    <ul class="space-y-2 text-gray-400">
+                    <ul class="space-y-2 text-slate-400">
                         <li>📧 hello@solartruth.ai</li>
                         <li>📱 +44 (0) 123 456 789</li>
                         <li>📍 London, UK</li>
@@ -604,7 +613,7 @@
                 </div>
             </div>
             
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+            <div class="border-t border-slate-800 mt-8 pt-8 text-center text-slate-400">
                 <p>&copy; 2025 Solar Truth AI. All rights reserved. | Helping UK homeowners make informed solar decisions.</p>
             </div>
         </div>
@@ -799,16 +808,16 @@
             document.getElementById('results').classList.remove('hidden');
             document.getElementById('analysisResults').innerHTML = `
                 <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-white p-4 rounded-lg border">
-                        <h4 class="font-semibold text-gray-900 mb-3">System Overview</h4>
+                    <div class="bg-white p-4 rounded-lg border border-slate-200">
+                        <h4 class="font-semibold text-slate-900 mb-3">System Overview</h4>
                         <p><strong>Size:</strong> ${systemSize}kW</p>
                         <p><strong>Panels:</strong> ${panelBrand} ${panelOutput}W</p>
                         <p><strong>Total Price:</strong> £${totalPrice}</p>
                         ${batteryInfo}
                         <p><strong>Price per kW:</strong> £${pricePerKw}</p>
                     </div>
-                    <div class="bg-white p-4 rounded-lg border">
-                        <h4 class="font-semibold text-gray-900 mb-3">Analysis Results</h4>
+                    <div class="bg-white p-4 rounded-lg border border-slate-200">
+                        <h4 class="font-semibold text-slate-900 mb-3">Analysis Results</h4>
                         <div class="space-y-2">
                             <div class="flex justify-between">
                                 <span>Panel Quality:</span>
@@ -887,13 +896,13 @@
         function getQualityColor(rating) {
             if (rating.includes('Excellent')) return 'text-green-600';
             if (rating.includes('Good')) return 'text-green-600';
-            if (rating.includes('Okay') || rating.includes('Above')) return 'text-yellow-600';
+            if (rating.includes('Okay') || rating.includes('Above')) return 'text-amber-600';
             return 'text-red-600';
         }
 
         function getScoreColor(score) {
             if (score >= 8) return 'text-green-600';
-            if (score >= 6) return 'text-yellow-600';
+            if (score >= 6) return 'text-amber-600';
             return 'text-red-600';
         }
 
