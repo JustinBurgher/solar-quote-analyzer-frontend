@@ -135,48 +135,46 @@
                                 </div>
 
                                 <!-- Battery Section (Fixed) -->
-                                <!-- Battery Section (Fixed) -->
-<div>
-    <label for="hasBattery" class="block text-sm font-medium text-gray-700 mb-1">Battery Included?</label>
-    <select id="hasBattery" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
-        <option value="no">No Battery</option>
-        <option value="yes">Yes, Battery Included</option>
-    </select>
-</div>
+                                <div>
+                                    <label for="hasBattery" class="block text-sm font-medium text-gray-700 mb-1">Battery Included?</label>
+                                    <select id="hasBattery" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                        <option value="no">No Battery</option>
+                                        <option value="yes">Yes, Battery Included</option>
+                                    </select>
+                                </div>
 
-<!-- Battery Brand Section (shows only when battery is selected) -->
-<div id="batterySection" class="hidden">
-    <label for="batteryBrand" class="block text-sm font-medium text-gray-700 mb-1">Battery Brand</label>
-    <select id="batteryBrand" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
-        <option value="">Select battery brand</option>
-        <option value="Tesla Powerwall">Tesla Powerwall</option>
-        <option value="GivEnergy">GivEnergy</option>
-        <option value="Duracell">Duracell</option>
-        <option value="Fox ESS">Fox ESS</option>
-        <option value="SolarEdge">SolarEdge</option>
-        <option value="SolaX">SolaX</option>
-        <option value="Growatt">Growatt</option>
-        <option value="Victron Energy">Victron Energy</option>
-        <option value="Alpha ESS">Alpha ESS</option>
-        <option value="Huawei">Huawei</option>
-        <option value="EcoFlow">EcoFlow</option>
-        <option value="Myenergi (Libbi)">Myenergi (Libbi)</option>
-        <option value="Enphase">Enphase</option>
-        <option value="Sungrow">Sungrow</option>
-        <option value="Puredrive">Puredrive</option>
-        <option value="Moixa">Moixa</option>
-        <option value="LG Chem">LG Chem</option>
-        <option value="Pylontech">Pylontech</option>
-        <option value="BYD">BYD</option>
-        <option value="Other (specify)">Other (specify)</option>
-    </select>
-    
-    <!-- Custom Battery Input (shows when "Other" is selected) -->
-    <div id="customBatteryInput" class="custom-input mt-3">
-        <input type="text" id="batteryBrandCustom" placeholder="Enter battery brand name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
-    </div>
-</div>
-
+                                <!-- Battery Brand Section (shows only when battery is selected) -->
+                                <div id="batterySection" class="hidden">
+                                    <label for="batteryBrand" class="block text-sm font-medium text-gray-700 mb-1">Battery Brand</label>
+                                    <select id="batteryBrand" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                        <option value="">Select battery brand</option>
+                                        <option value="Tesla Powerwall">Tesla Powerwall</option>
+                                        <option value="GivEnergy">GivEnergy</option>
+                                        <option value="Duracell">Duracell</option>
+                                        <option value="Fox ESS">Fox ESS</option>
+                                        <option value="SolarEdge">SolarEdge</option>
+                                        <option value="SolaX">SolaX</option>
+                                        <option value="Growatt">Growatt</option>
+                                        <option value="Victron Energy">Victron Energy</option>
+                                        <option value="Alpha ESS">Alpha ESS</option>
+                                        <option value="Huawei">Huawei</option>
+                                        <option value="EcoFlow">EcoFlow</option>
+                                        <option value="Myenergi (Libbi)">Myenergi (Libbi)</option>
+                                        <option value="Enphase">Enphase</option>
+                                        <option value="Sungrow">Sungrow</option>
+                                        <option value="Puredrive">Puredrive</option>
+                                        <option value="Moixa">Moixa</option>
+                                        <option value="LG Chem">LG Chem</option>
+                                        <option value="Pylontech">Pylontech</option>
+                                        <option value="BYD">BYD</option>
+                                        <option value="Other (specify)">Other (specify)</option>
+                                    </select>
+                                    
+                                    <!-- Custom Battery Input (shows when "Other" is selected) -->
+                                    <div id="customBatteryInput" class="custom-input mt-3">
+                                        <input type="text" id="batteryBrandCustom" placeholder="Enter battery brand name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                    </div>
+                                </div>
 
                                 <!-- Total Price Section -->
                                 <div>
@@ -307,6 +305,44 @@
             }
         });
 
+        // Battery brand custom input toggle
+        document.getElementById('batteryBrand').addEventListener('change', function() {
+            const customBatteryInput = document.getElementById('customBatteryInput');
+            if (this.value === 'Other (specify)') {
+                customBatteryInput.classList.add('active');
+                document.getElementById('batteryBrandCustom').focus();
+            } else {
+                customBatteryInput.classList.remove('active');
+            }
+        });
+
+        // Get actual battery brand (handles custom input)
+        function getBatteryBrand() {
+            const batteryBrand = document.getElementById('batteryBrand').value;
+            if (batteryBrand === 'Other (specify)') {
+                return document.getElementById('batteryBrandCustom').value;
+            }
+            return batteryBrand;
+        }
+
+        // Analyze battery brand quality
+        function analyzeBatteryBrand(batteryBrand) {
+            const excellentBatteries = ['Tesla Powerwall', 'GivEnergy', 'Enphase', 'Victron Energy'];
+            const goodBatteries = ['SolarEdge', 'SolaX', 'Growatt', 'LG Chem', 'Duracell', 'Alpha ESS', 'Puredrive'];
+            const okayBatteries = ['Huawei', 'EcoFlow', 'Sungrow', 'Pylontech', 'BYD', 'Moixa', 'Fox ESS'];
+            
+            if (excellentBatteries.includes(batteryBrand)) {
+                return { rating: 'excellent', score: 10, message: `${batteryBrand} is an excellent battery choice with proven reliability` };
+            } else if (goodBatteries.includes(batteryBrand)) {
+                return { rating: 'good', score: 8, message: `${batteryBrand} is a solid battery choice with good performance` };
+            } else if (okayBatteries.includes(batteryBrand)) {
+                return { rating: 'okay', score: 5, message: `${batteryBrand} is an acceptable choice - research warranty and cycle life` };
+            } else {
+                // For custom/unknown batteries
+                return { rating: 'okay', score: 5, message: `Research ${batteryBrand} specifications including warranty and cycle life` };
+            }
+        }
+
         // System Size Button Functionality
         document.querySelectorAll('[data-size]').forEach(button => {
             button.addEventListener('click', function() {
@@ -375,7 +411,7 @@
             const panelBrand = document.getElementById('panelBrand').value;
             const totalPrice = parseFloat(document.getElementById('totalPrice').value);
             const hasBattery = document.getElementById('hasBattery').value;
-            const batteryBrand = document.getElementById('batteryBrand').value;
+            const batteryBrand = getBatteryBrand();
 
             if (!systemSize || !panelOutput || !panelBrand || !totalPrice) {
                 alert('Please fill in all required fields');
@@ -451,22 +487,10 @@
 
             // Battery analysis (if included)
             if (hasBattery === 'yes') {
-                const excellentBatteries = ['Tesla Powerwall', 'GivEnergy', 'Enphase'];
-                const goodBatteries = ['SolarEdge', 'SolaX', 'Growatt', 'LG Chem'];
-                
-                if (excellentBatteries.includes(batteryBrand)) {
-                    breakdown.batteryBrand = 'excellent';
-                    score += 10;
-                    recommendations.push(`${batteryBrand} is an excellent battery choice with proven reliability`);
-                } else if (goodBatteries.includes(batteryBrand)) {
-                    breakdown.batteryBrand = 'good';
-                    score += 8;
-                    recommendations.push(`${batteryBrand} is a solid battery choice`);
-                } else {
-                    breakdown.batteryBrand = 'okay';
-                    score += 5;
-                    recommendations.push('Research battery warranty and cycle life specifications');
-                }
+                const batteryAnalysis = analyzeBatteryBrand(batteryBrand);
+                breakdown.batteryBrand = batteryAnalysis.rating;
+                score += batteryAnalysis.score;
+                recommendations.push(batteryAnalysis.message);
             }
 
             // System size analysis
