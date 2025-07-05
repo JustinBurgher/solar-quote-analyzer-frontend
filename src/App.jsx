@@ -13,7 +13,7 @@ function App() {
     batteryBrandName: '',
     batterySize: '',
     totalPrice: '',
-    hasBattery: 'no' // Default to no battery
+    hasBattery: 'no'
   })
   const [analysis, setAnalysis] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -222,7 +222,7 @@ function App() {
       case 'excellent':
         return 'text-green-600'
       case 'good':
-        return 'text-yellow-600'
+        return 'text-emerald-600'
       case 'poor':
         return 'text-red-600'
       default:
@@ -233,123 +233,294 @@ function App() {
   const getBreakdownColor = (status) => {
     switch (status) {
       case 'good':
-        return 'text-green-500'
+        return 'text-green-600'
       case 'okay':
-        return 'text-yellow-500'
-      case 'bad':
-        return 'text-red-500'
+        return 'text-yellow-600'
+      case 'poor':
+        return 'text-red-600'
       default:
         return 'text-gray-500'
     }
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <Card className="w-full max-w-2xl shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-3xl font-bold text-center text-gray-800">Solar Truth AI</CardTitle>
-          <CardDescription className="text-center text-gray-600">Analyze your solar quote instantly</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-gray-700">Solar Quote Details</h3>
-              <p className="text-gray-500 text-sm">Enter your solar installation quote details to get an instant analysis</p>
-
-              <div className="space-y-2">
-                <Label htmlFor="systemSize">System Size (kW)</Label>
-                <Input id="systemSize" type="number" placeholder="e.g., 4.0" value={formData.systemSize} onChange={handleChange} />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="solarPanelOutput">Solar Panel Output (W per panel)</Label>
-                <Input id="solarPanelOutput" type="number" placeholder="e.g., 400" value={formData.solarPanelOutput} onChange={handleChange} />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="solarPanelName">Solar Panel Brand/Name</Label>
-                <Input id="solarPanelName" placeholder="e.g., SunPower Maxeon 3" value={formData.solarPanelName} onChange={handleChange} />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="hasBattery">Battery Included?</Label>
-                <Select id="hasBattery" value={formData.hasBattery} onValueChange={(value) => handleSelectChange(value, 'hasBattery')}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="yes">Yes, Battery Included</SelectItem>
-                    <SelectItem value="no">No Battery</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {formData.hasBattery === 'yes' && (
-                <div className="space-y-2">
-                  <Label htmlFor="batteryBrandName">Battery Brand Name</Label>
-                  <Input id="batteryBrandName" placeholder="e.g., Tesla Powerwall" value={formData.batteryBrandName} onChange={handleChange} />
-                </div>
-              )}
-
-              {formData.hasBattery === 'yes' && (
-                <div className="space-y-2">
-                  <Label htmlFor="batterySize">Battery Size (kWh)</Label>
-                  <Input id="batterySize" type="number" placeholder="e.g., 10" value={formData.batterySize} onChange={handleChange} />
-                </div>
-              )}
-
-              <div className="space-y-2">
-                <Label htmlFor="totalPrice">Total Price (£)</Label>
-                <Input id="totalPrice" type="number" placeholder="e.g., 6000" value={formData.totalPrice} onChange={handleChange} />
-              </div>
-
-              <div className="flex gap-4 mt-6">
-                <Button onClick={analyzeQuote} disabled={loading} className="flex-1 py-3 text-lg">
-                  {loading ? 'Analyzing...' : 'Analyze Quote'}
-                </Button>
-                <Button onClick={resetForm} variant="outline" className="flex-1 py-3 text-lg">
-                  Reset
-                </Button>
-              </div>
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-emerald-100">
+      {/* Hero Section */}
+      <div 
+        className="relative min-h-screen bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23059669" width="1200" height="800"/><path fill="%23047857" d="M0 400l50-16.7C100 367 200 333 300 350s200 67 300 50 200-67 300-50 200 67 300 50 200-67 250-83.3L1200 300v500H0z"/></svg>' )`
+        }}
+      >
+        {/* Header */}
+        <div className="relative z-10 flex justify-between items-center p-6">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center">
+              <span className="text-2xl">☀️</span>
             </div>
+            <h1 className="text-2xl font-bold text-white">Solar Truth AI</h1>
+          </div>
+          <div className="text-white text-sm">
+            <div className="flex items-center space-x-2">
+              <span className="text-yellow-400">⭐</span>
+              <span>Trusted by 1000+ customers</span>
+            </div>
+          </div>
+        </div>
 
-            {analysis && (
-              <div className="space-y-4 bg-gray-50 p-6 rounded-lg shadow-inner">
-                <h3 className="text-xl font-semibold text-gray-700">Analysis Results</h3>
-                <div className="text-center">
-                  <p className="text-lg font-medium">Overall Assessment:</p>
-                  <p className={`text-5xl font-bold ${getOverallColor(analysis.overall)}`}>
-                    {analysis.overall.charAt(0).toUpperCase() + analysis.overall.slice(1)}
-                  </p>
-                  <p className="text-sm text-gray-500">Score: {analysis.score}%</p>
+        {/* Main Content */}
+        <div className="relative z-10 flex items-center justify-center min-h-[calc(100vh-100px)] px-4">
+          <div className="w-full max-w-4xl">
+            {!analysis ? (
+              /* Initial Form */
+              <Card className="bg-white shadow-2xl border-0 overflow-hidden">
+                <div className="bg-teal-600 text-white p-6">
+                  <h2 className="text-3xl font-bold mb-2">Solar Quote Analysis</h2>
+                  <p className="text-teal-100">Get instant analysis of your solar installation quote</p>
                 </div>
+                
+                <CardContent className="p-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* Form Section */}
+                    <div className="space-y-6">
+                      <div className="space-y-4">
+                        <div>
+                          <Label htmlFor="systemSize" className="text-gray-700 font-medium">System Size (kW)</Label>
+                          <Input 
+                            id="systemSize" 
+                            type="number" 
+                            placeholder="e.g., 4.0" 
+                            value={formData.systemSize} 
+                            onChange={handleChange}
+                            className="mt-2 border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                          />
+                        </div>
 
-                <div className="space-y-2">
-                  <h4 className="text-md font-semibold text-gray-700">Breakdown:</h4>
-                  <ul className="list-disc list-inside text-gray-700">
-                    <li>Price: <span className={getBreakdownColor(analysis.breakdown.price)}>{analysis.breakdown.price}</span></li>
-                    <li>Panel Output: <span className={getBreakdownColor(analysis.breakdown.panelOutput)}>{analysis.breakdown.panelOutput}</span></li>
-                    <li>Panel Brand: <span className={getBreakdownColor(analysis.breakdown.panelBrand)}>{analysis.breakdown.panelBrand}</span></li>
-                    {formData.hasBattery === 'yes' && (
-                      <li>Battery Brand: <span className={getBreakdownColor(analysis.breakdown.batteryBrand)}>{analysis.breakdown.batteryBrand}</span></li>
-                    )}
-                    <li>System Size: <span className={getBreakdownColor(analysis.breakdown.systemSize)}>{analysis.breakdown.systemSize}</span></li>
-                  </ul>
-                </div>
+                        <div>
+                          <Label htmlFor="solarPanelOutput" className="text-gray-700 font-medium">Panel Output (W per panel)</Label>
+                          <Input 
+                            id="solarPanelOutput" 
+                            type="number" 
+                            placeholder="e.g., 400" 
+                            value={formData.solarPanelOutput} 
+                            onChange={handleChange}
+                            className="mt-2 border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                          />
+                        </div>
 
-                <div className="space-y-2">
-                  <h4 className="text-md font-semibold text-gray-700">Recommendations:</h4>
-                  <ul className="list-disc list-inside text-gray-700">
-                    {analysis.recommendations.map((rec, index) => (
-                      <li key={index}>{rec}</li>
-                    ))}
-                  </ul>
+                        <div>
+                          <Label htmlFor="solarPanelName" className="text-gray-700 font-medium">Panel Brand/Name</Label>
+                          <Input 
+                            id="solarPanelName" 
+                            placeholder="e.g., SunPower Maxeon 3" 
+                            value={formData.solarPanelName} 
+                            onChange={handleChange}
+                            className="mt-2 border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                          />
+                        </div>
+
+                        <div>
+                          <Label htmlFor="hasBattery" className="text-gray-700 font-medium">Battery Included?</Label>
+                          <Select value={formData.hasBattery} onValueChange={(value) => handleSelectChange(value, 'hasBattery')}>
+                            <SelectTrigger className="mt-2 border-gray-300 focus:border-teal-500 focus:ring-teal-500">
+                              <SelectValue placeholder="Select" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="yes">Yes, Battery Included</SelectItem>
+                              <SelectItem value="no">No Battery</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        {formData.hasBattery === 'yes' && (
+                          <>
+                            <div>
+                              <Label htmlFor="batteryBrandName" className="text-gray-700 font-medium">Battery Brand</Label>
+                              <Input 
+                                id="batteryBrandName" 
+                                placeholder="e.g., Tesla Powerwall" 
+                                value={formData.batteryBrandName} 
+                                onChange={handleChange}
+                                className="mt-2 border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="batterySize" className="text-gray-700 font-medium">Battery Size (kWh)</Label>
+                              <Input 
+                                id="batterySize" 
+                                type="number" 
+                                placeholder="e.g., 10" 
+                                value={formData.batterySize} 
+                                onChange={handleChange}
+                                className="mt-2 border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                              />
+                            </div>
+                          </>
+                        )}
+
+                        <div>
+                          <Label htmlFor="totalPrice" className="text-gray-700 font-medium">Total Price (£)</Label>
+                          <Input 
+                            id="totalPrice" 
+                            type="number" 
+                            placeholder="e.g., 8000" 
+                            value={formData.totalPrice} 
+                            onChange={handleChange}
+                            className="mt-2 border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                          />
+                        </div>
+                      </div>
+
+                      <Button 
+                        onClick={analyzeQuote} 
+                        disabled={loading} 
+                        className="w-full bg-gray-900 hover:bg-gray-800 text-white py-4 text-lg font-semibold rounded-lg transition-colors"
+                      >
+                        {loading ? 'Analyzing...' : 'Analyze My Quote →'}
+                      </Button>
+                    </div>
+
+                    {/* Trust Indicators */}
+                    <div className="space-y-6">
+                      <div className="bg-teal-50 rounded-lg p-6">
+                        <h3 className="text-xl font-bold text-gray-800 mb-4">WE ANALYZE:</h3>
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-3">
+                            <span className="text-green-600 text-xl">✓</span>
+                            <span className="text-gray-700">Price per kW</span>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <span className="text-green-600 text-xl">✓</span>
+                            <span className="text-gray-700">Panel efficiency</span>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <span className="text-green-600 text-xl">✓</span>
+                            <span className="text-gray-700">Brand quality</span>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <span className="text-green-600 text-xl">✓</span>
+                            <span className="text-gray-700">System sizing</span>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <span className="text-green-600 text-xl">✓</span>
+                            <span className="text-gray-700">Market comparison</span>
+                          </div>
+                        </div>
+                        <div className="mt-4 text-sm text-teal-600 font-medium">
+                          + 15 additional factors
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              /* Results Display */
+              <Card className="bg-white shadow-2xl border-0 overflow-hidden">
+                <div className="bg-teal-600 text-white p-6">
+                  <h2 className="text-3xl font-bold mb-2">Analysis Complete</h2>
+                  <p className="text-teal-100">Here's your solar quote assessment</p>
                 </div>
-              </div>
+                
+                <CardContent className="p-8">
+                  <div className="text-center mb-8">
+                    <p className="text-lg font-medium text-gray-600 mb-2">Overall Assessment:</p>
+                    <p className={`text-6xl font-bold mb-2 ${getOverallColor(analysis.overall)}`}>
+                      {analysis.overall.charAt(0).toUpperCase() + analysis.overall.slice(1)}
+                    </p>
+                    <p className="text-gray-500">Score: {analysis.score}%</p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-4">
+                      <h4 className="text-xl font-semibold text-gray-800">Breakdown:</h4>
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-700">Price:</span>
+                          <span className={`font-semibold ${getBreakdownColor(analysis.breakdown.price)}`}>
+                            {analysis.breakdown.price}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-700">Panel Output:</span>
+                          <span className={`font-semibold ${getBreakdownColor(analysis.breakdown.panelOutput)}`}>
+                            {analysis.breakdown.panelOutput}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-700">Panel Brand:</span>
+                          <span className={`font-semibold ${getBreakdownColor(analysis.breakdown.panelBrand)}`}>
+                            {analysis.breakdown.panelBrand}
+                          </span>
+                        </div>
+                        {formData.hasBattery === 'yes' && (
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-700">Battery Brand:</span>
+                            <span className={`font-semibold ${getBreakdownColor(analysis.breakdown.batteryBrand)}`}>
+                              {analysis.breakdown.batteryBrand}
+                            </span>
+                          </div>
+                        )}
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-700">System Size:</span>
+                          <span className={`font-semibold ${getBreakdownColor(analysis.breakdown.systemSize)}`}>
+                            {analysis.breakdown.systemSize}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <h4 className="text-xl font-semibold text-gray-800">Recommendations:</h4>
+                      <div className="space-y-2">
+                        {analysis.recommendations.map((rec, index) => (
+                          <div key={index} className="flex items-start space-x-2">
+                            <span className="text-teal-600 mt-1">•</span>
+                            <span className="text-gray-700">{rec}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-8 flex gap-4">
+                    <Button 
+                      onClick={resetForm} 
+                      className="flex-1 bg-gray-900 hover:bg-gray-800 text-white py-3 text-lg font-semibold rounded-lg"
+                    >
+                      Analyze Another Quote
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
             )}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+
+        {/* Bottom Stats */}
+        <div className="relative z-10 bg-teal-600 text-white py-6">
+          <div className="max-w-6xl mx-auto px-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+              <div>
+                <span className="text-green-400 text-xl">✓</span>
+                <p className="text-sm mt-1">1000+ quotes analyzed</p>
+              </div>
+              <div>
+                <span className="text-green-400 text-xl">✓</span>
+                <p className="text-sm mt-1">UK market data</p>
+              </div>
+              <div>
+                <span className="text-green-400 text-xl">✓</span>
+                <p className="text-sm mt-1">Instant results</p>
+              </div>
+              <div>
+                <span className="text-green-400 text-xl">✓</span>
+                <p className="text-sm mt-1">Expert analysis</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
