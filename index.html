@@ -135,36 +135,48 @@
                                 </div>
 
                                 <!-- Battery Section (Fixed) -->
-                                <div>
-                                    <label for="hasBattery" class="block text-sm font-medium text-gray-700 mb-1">Battery Included?</label>
-                                    <select id="hasBattery" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
-                                        <option value="no">No Battery</option>
-                                        <option value="yes">Yes, Battery Included</option>
-                                    </select>
-                                </div>
+                                <!-- Battery Section (Fixed) -->
+<div>
+    <label for="hasBattery" class="block text-sm font-medium text-gray-700 mb-1">Battery Included?</label>
+    <select id="hasBattery" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+        <option value="no">No Battery</option>
+        <option value="yes">Yes, Battery Included</option>
+    </select>
+</div>
 
-                                <!-- Battery Brand Section (shows only when battery is selected) -->
-                                <div id="batterySection" class="hidden">
-                                    <label for="batteryBrand" class="block text-sm font-medium text-gray-700 mb-1">Battery Brand</label>
-                                    <select id="batteryBrand" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
-                                        <option value="">Select battery brand</option>
-                                        <option value="Tesla Powerwall">Tesla Powerwall</option>
-                                        <option value="GivEnergy">GivEnergy</option>
-                                        <option value="Fox ESS">Fox ESS</option>
-                                        <option value="SolarEdge">SolarEdge</option>
-                                        <option value="SolaX">SolaX</option>
-                                        <option value="Growatt">Growatt</option>
-                                        <option value="Huawei">Huawei</option>
-                                        <option value="EcoFlow">EcoFlow</option>
-                                        <option value="Myenergi (Libbi)">Myenergi (Libbi)</option>
-                                        <option value="Enphase">Enphase</option>
-                                        <option value="Sungrow">Sungrow</option>
-                                        <option value="LG Chem">LG Chem</option>
-                                        <option value="Pylontech">Pylontech</option>
-                                        <option value="BYD">BYD</option>
-                                        <option value="Other (specify)">Other (specify)</option>
-                                    </select>
-                                </div>
+<!-- Battery Brand Section (shows only when battery is selected) -->
+<div id="batterySection" class="hidden">
+    <label for="batteryBrand" class="block text-sm font-medium text-gray-700 mb-1">Battery Brand</label>
+    <select id="batteryBrand" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+        <option value="">Select battery brand</option>
+        <option value="Tesla Powerwall">Tesla Powerwall</option>
+        <option value="GivEnergy">GivEnergy</option>
+        <option value="Duracell">Duracell</option>
+        <option value="Fox ESS">Fox ESS</option>
+        <option value="SolarEdge">SolarEdge</option>
+        <option value="SolaX">SolaX</option>
+        <option value="Growatt">Growatt</option>
+        <option value="Victron Energy">Victron Energy</option>
+        <option value="Alpha ESS">Alpha ESS</option>
+        <option value="Huawei">Huawei</option>
+        <option value="EcoFlow">EcoFlow</option>
+        <option value="Myenergi (Libbi)">Myenergi (Libbi)</option>
+        <option value="Enphase">Enphase</option>
+        <option value="Sungrow">Sungrow</option>
+        <option value="Puredrive">Puredrive</option>
+        <option value="Moixa">Moixa</option>
+        <option value="LG Chem">LG Chem</option>
+        <option value="Pylontech">Pylontech</option>
+        <option value="BYD">BYD</option>
+        <option value="Other (specify)">Other (specify)</option>
+    </select>
+    
+    <!-- Custom Battery Input (shows when "Other" is selected) -->
+    <div id="customBatteryInput" class="custom-input mt-3">
+        <input type="text" id="batteryBrandCustom" placeholder="Enter battery brand name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+    </div>
+</div>
+
 
                                 <!-- Total Price Section -->
                                 <div>
