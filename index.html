@@ -10,11 +10,25 @@
         .tab-content.active { display: block; }
         .tab-button.active { background-color: #0d9488; color: white; }
         .tab-button { background-color: #f3f4f6; color: #374151; }
+        .size-button { 
+            transition: all 0.2s; 
+            border: 2px solid #e5e7eb;
+        }
+        .size-button:hover { 
+            border-color: #0d9488; 
+            background-color: #f0fdfa;
+        }
+        .size-button.selected { 
+            background-color: #0d9488; 
+            color: white; 
+            border-color: #0d9488;
+        }
+        .custom-input { display: none; }
+        .custom-input.active { display: block; }
     </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-teal-50 to-emerald-100">
     <div class="relative min-h-screen bg-teal-600">
-
         
         <!-- Header -->
         <div class="relative z-10 flex justify-between items-center p-6">
@@ -33,7 +47,7 @@
         </div>
 
         <!-- Main Content -->
-        <div class="relative z-10 flex items-center justify-center min-h-[calc(100vh-100px)] px-4">
+        <div class="relative z-10 flex items-center justify-center min-h-[calc(100vh-100px )] px-4">
             <div class="w-full max-w-4xl">
                 <div class="bg-white shadow-2xl border-0 overflow-hidden rounded-lg">
                     <div class="bg-teal-600 text-white p-6">
@@ -54,15 +68,44 @@
 
                         <!-- Manual Entry Tab -->
                         <div id="manualContent" class="tab-content active">
-                            <form id="quoteForm" class="space-y-4">
+                            <form id="quoteForm" class="space-y-6">
+                                <!-- System Size Section -->
                                 <div>
-                                    <label for="systemSize" class="block text-sm font-medium text-gray-700 mb-1">System Size (kW)</label>
-                                    <input type="number" id="systemSize" placeholder="e.g., 4.0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                    <label class="block text-sm font-medium text-gray-700 mb-3">System Size (kW)</label>
+                                    <div class="grid grid-cols-4 gap-3 mb-3">
+                                        <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-size="2">2kW</button>
+                                        <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-size="3">3kW</button>
+                                        <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-size="4">4kW</button>
+                                        <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-size="5">5kW</button>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-3 mb-3">
+                                        <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-size="6">6kW</button>
+                                        <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-size="8">8kW</button>
+                                        <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-size="10">10kW</button>
+                                    </div>
+                                    <button type="button" id="customSizeBtn" class="size-button w-full py-3 px-4 rounded-lg font-medium text-center">Other Size</button>
+                                    <div id="customSizeInput" class="custom-input mt-3">
+                                        <input type="number" id="systemSize" placeholder="Enter exact size (e.g., 5.15)" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                    </div>
                                 </div>
 
+                                <!-- Panel Output Section -->
                                 <div>
-                                    <label for="panelOutput" class="block text-sm font-medium text-gray-700 mb-1">Panel Output (W per panel)</label>
-                                    <input type="number" id="panelOutput" placeholder="e.g., 400" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                    <label class="block text-sm font-medium text-gray-700 mb-3">Panel Output (W per panel)</label>
+                                    <div class="grid grid-cols-3 gap-3 mb-3">
+                                        <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-output="300">300W</button>
+                                        <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-output="350">350W</button>
+                                        <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-output="400">400W</button>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-3 mb-3">
+                                        <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-output="450">450W</button>
+                                        <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-output="500">500W</button>
+                                        <button type="button" class="size-button py-3 px-4 rounded-lg font-medium text-center" data-output="550">550W</button>
+                                    </div>
+                                    <button type="button" id="customOutputBtn" class="size-button w-full py-3 px-4 rounded-lg font-medium text-center">Other Wattage</button>
+                                    <div id="customOutputInput" class="custom-input mt-3">
+                                        <input type="number" id="panelOutput" placeholder="Enter exact wattage (e.g., 415)" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                    </div>
                                 </div>
 
                                 <div>
@@ -182,6 +225,9 @@
     </div>
 
     <script>
+        let selectedSystemSize = null;
+        let selectedPanelOutput = null;
+
         // Tab functionality
         document.getElementById('manualTab').addEventListener('click', function() {
             showTab('manual');
@@ -192,17 +238,14 @@
         });
 
         function showTab(tab) {
-            // Hide all tab contents
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active');
             });
             
-            // Remove active class from all tab buttons
             document.querySelectorAll('.tab-button').forEach(button => {
                 button.classList.remove('active');
             });
 
-            // Show selected tab content and activate button
             if (tab === 'manual') {
                 document.getElementById('manualContent').classList.add('active');
                 document.getElementById('manualTab').classList.add('active');
@@ -212,6 +255,64 @@
             }
         }
 
+        // System Size Button Functionality
+        document.querySelectorAll('[data-size]').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove selected class from all size buttons
+                document.querySelectorAll('[data-size]').forEach(btn => btn.classList.remove('selected'));
+                document.getElementById('customSizeBtn').classList.remove('selected');
+                
+                // Add selected class to clicked button
+                this.classList.add('selected');
+                selectedSystemSize = parseFloat(this.dataset.size);
+                
+                // Hide custom input
+                document.getElementById('customSizeInput').classList.remove('active');
+            });
+        });
+
+        // Custom Size Button
+        document.getElementById('customSizeBtn').addEventListener('click', function() {
+            // Remove selected class from all size buttons
+            document.querySelectorAll('[data-size]').forEach(btn => btn.classList.remove('selected'));
+            
+            // Add selected class to custom button
+            this.classList.add('selected');
+            
+            // Show custom input
+            document.getElementById('customSizeInput').classList.add('active');
+            document.getElementById('systemSize').focus();
+        });
+
+        // Panel Output Button Functionality
+        document.querySelectorAll('[data-output]').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove selected class from all output buttons
+                document.querySelectorAll('[data-output]').forEach(btn => btn.classList.remove('selected'));
+                document.getElementById('customOutputBtn').classList.remove('selected');
+                
+                // Add selected class to clicked button
+                this.classList.add('selected');
+                selectedPanelOutput = parseFloat(this.dataset.output);
+                
+                // Hide custom input
+                document.getElementById('customOutputInput').classList.remove('active');
+            });
+        });
+
+        // Custom Output Button
+        document.getElementById('customOutputBtn').addEventListener('click', function() {
+            // Remove selected class from all output buttons
+            document.querySelectorAll('[data-output]').forEach(btn => btn.classList.remove('selected'));
+            
+            // Add selected class to custom button
+            this.classList.add('selected');
+            
+            // Show custom input
+            document.getElementById('customOutputInput').classList.add('active');
+            document.getElementById('panelOutput').focus();
+        });
+
         // Form submission
         document.getElementById('quoteForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -219,8 +320,18 @@
         });
 
         function analyzeQuote() {
-            const systemSize = parseFloat(document.getElementById('systemSize').value);
-            const panelOutput = parseFloat(document.getElementById('panelOutput').value);
+            // Get system size (from button or custom input)
+            let systemSize = selectedSystemSize;
+            if (document.getElementById('customSizeBtn').classList.contains('selected')) {
+                systemSize = parseFloat(document.getElementById('systemSize').value);
+            }
+
+            // Get panel output (from button or custom input)
+            let panelOutput = selectedPanelOutput;
+            if (document.getElementById('customOutputBtn').classList.contains('selected')) {
+                panelOutput = parseFloat(document.getElementById('panelOutput').value);
+            }
+
             const panelBrand = document.getElementById('panelBrand').value;
             const totalPrice = parseFloat(document.getElementById('totalPrice').value);
             const hasBattery = document.getElementById('hasBattery').value;
@@ -230,13 +341,13 @@
                 return;
             }
 
-            // Enhanced analysis logic
+            // Enhanced analysis logic (same as before)
             const pricePerKw = totalPrice / systemSize;
             let score = 0;
             let breakdown = {};
             let recommendations = [];
 
-            // Price analysis (enhanced)
+            // Price analysis
             if (pricePerKw < 1800) {
                 breakdown.price = 'excellent';
                 score += 25;
@@ -255,7 +366,7 @@
                 recommendations.push('Price appears high - strongly recommend getting additional quotes');
             }
 
-            // Panel output analysis (enhanced)
+            // Panel output analysis
             if (panelOutput >= 500) {
                 breakdown.panelOutput = 'excellent';
                 score += 25;
@@ -274,7 +385,7 @@
                 recommendations.push('Low panel output - consider upgrading to higher wattage panels');
             }
 
-            // Enhanced panel brand analysis
+            // Panel brand analysis
             const excellentBrands = ['SunPower', 'REC', 'Panasonic', 'Longi', 'Jinko Solar'];
             const goodBrands = ['Canadian Solar', 'Trina Solar', 'JA Solar', 'Hanwha Q Cells', 'Aiko'];
             
@@ -366,7 +477,18 @@
         }
 
         function resetAnalysis() {
+            // Reset form
             document.getElementById('quoteForm').reset();
+            
+            // Reset button selections
+            document.querySelectorAll('.size-button').forEach(btn => btn.classList.remove('selected'));
+            document.querySelectorAll('.custom-input').forEach(input => input.classList.remove('active'));
+            
+            // Reset variables
+            selectedSystemSize = null;
+            selectedPanelOutput = null;
+            
+            // Hide results
             document.getElementById('results').classList.add('hidden');
         }
 
