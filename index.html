@@ -673,10 +673,10 @@
                     </div>
                 </div>
 
-                <!-- Question 10: Heat Pump Plans -->
+                <!-- Question 10: Heat Pump Plans (Conditional) -->
                 <div class="consultation-step" data-step="10">
-                    <h4 class="text-2xl subsection-heading font-semibold mb-6">Are you considering installing a heat pump?</h4>
-                    <div class="grid grid-cols-2 mobile-grid gap-4">
+                    <h4 id="heat-pump-question-title" class="text-2xl subsection-heading font-semibold mb-6">Are you considering installing a heat pump?</h4>
+                    <div id="heat-pump-options" class="grid grid-cols-2 mobile-grid gap-4">
                         <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="within-2-years">
                             <h5 class="font-semibold">Yes, within 2 years</h5>
                         </div>
@@ -688,6 +688,14 @@
                         </div>
                         <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="no-plans">
                             <h5 class="font-semibold">No plans for heat pump</h5>
+                        </div>
+                    </div>
+                    <!-- Alternative content for existing heat pump users -->
+                    <div id="heat-pump-existing" class="hidden">
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
+                            <div class="text-4xl mb-3">✅</div>
+                            <h5 class="font-semibold text-green-800 mb-2">Great! You already have a heat pump</h5>
+                            <p class="text-green-700 mobile-text-base">We'll factor your existing heat pump into your solar system recommendation and show you the best tariff optimization strategies.</p>
                         </div>
                     </div>
                 </div>
@@ -909,6 +917,60 @@
                         <li>4. Consider financing options if needed</li>
                         <li>5. Plan your installation timing for best prices</li>
                     </ol>
+                </div>
+
+                <!-- Premium Teaser Section -->
+                <div class="premium-teaser bg-gradient-to-br from-blue-50 to-indigo-100 border-2 border-blue-200 rounded-lg p-6 mb-8">
+                    <div class="text-center mb-6">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full mb-4">
+                            <span class="text-2xl">🚀</span>
+                        </div>
+                        <h4 class="text-2xl font-bold text-blue-900 mb-2">Unlock Advanced Tariff Optimization</h4>
+                        <p class="text-blue-700 mobile-text-base">Get personalized analysis showing how to save an additional £2,400-4,800 over 10 years</p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-3 mobile-grid gap-4 mb-6">
+                        <div class="bg-white rounded-lg p-4 text-center shadow-sm">
+                            <div class="text-3xl mb-2">⚡</div>
+                            <h5 class="font-semibold text-gray-800 mb-1">EV Charging Strategy</h5>
+                            <p class="text-sm mobile-text-sm text-gray-600">Octopus Go vs Solar sizing analysis</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 text-center shadow-sm">
+                            <div class="text-3xl mb-2">🌡️</div>
+                            <h5 class="font-semibold text-gray-800 mb-1">Heat Pump Optimization</h5>
+                            <p class="text-sm mobile-text-sm text-gray-600">Tariff vs solar heating cost comparison</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 text-center shadow-sm">
+                            <div class="text-3xl mb-2">📊</div>
+                            <h5 class="font-semibold text-gray-800 mb-1">3-Scenario Analysis</h5>
+                            <p class="text-sm mobile-text-sm text-gray-600">Solar-only vs Tariff vs Hybrid strategies</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 mb-6">
+                        <h5 class="font-semibold text-gray-800 mb-3">Preview: Your Potential Savings</h5>
+                        <div class="space-y-2 text-sm mobile-text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">🔋 Current Recommendation (Solar-focused):</span>
+                                <span class="font-semibold" id="preview-current-cost">£19,250</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">⚡ Optimized Strategy (Tariff + Solar):</span>
+                                <span class="font-semibold text-green-600" id="preview-optimized-cost">£12,800-15,200</span>
+                            </div>
+                            <div class="flex justify-between border-t pt-2">
+                                <span class="text-gray-800 font-semibold">💰 Potential Additional Savings:</span>
+                                <span class="font-bold text-green-600" id="preview-savings">£4,050-6,450</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button onclick="showPremiumModal()" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 mobile-button rounded-lg font-bold text-lg hover:from-blue-700 hover:to-indigo-700 transition shadow-lg">
+                            Unlock Advanced Analysis - £14.99
+                        </button>
+                        <p class="text-xs mobile-text-sm text-blue-600 mt-2">One-time payment • Instant access • 30-day money-back guarantee</p>
+                    </div>
                 </div>
 
                 <!-- CTA Buttons -->
@@ -1362,17 +1424,22 @@
             applyLifestyleModifiers(baseSize, data) {
                 let adjustedSize = baseSize;
                 
+                // More conservative EV sizing - consider tariff optimization
                 const evMultipliers = {
-                    'have-one': 1.5, 'planning-2-years': 1.3, 'considering-2-5-years': 1.1, 'no-plans': 1.0
+                    'have-one': 1.2,        // Reduced from 1.5 - tariffs often better for EV charging
+                    'planning-2-years': 1.15, // Reduced from 1.3
+                    'considering-2-5-years': 1.05, // Reduced from 1.1
+                    'no-plans': 1.0
                 };
                 adjustedSize *= evMultipliers[data.evPlans] || 1.0;
                 
-                if (data.heatingSystem === 'heat-pump') {
-                    adjustedSize *= 1.8;
+                // More conservative heat pump sizing - consider tariff optimization
+                if (data.heatingSystem === 'heat-pump' || data.heatPumpPlans === 'already-have') {
+                    adjustedSize *= 1.3; // Reduced from 1.8 - tariffs often better for heat pumps
                 } else if (data.heatPumpPlans === 'within-2-years') {
-                    adjustedSize *= 1.6;
+                    adjustedSize *= 1.2; // Reduced from 1.6
                 } else if (data.heatPumpPlans === 'within-5-years') {
-                    adjustedSize *= 1.3;
+                    adjustedSize *= 1.1; // Reduced from 1.3
                 }
                 
                 const wfhMultipliers = {
@@ -1979,9 +2046,39 @@
             }
             element.classList.add('selected');
             consultationData[questionKey] = value;
+            
+            // Handle heat pump logic
+            if (questionKey === 'heatingSystem') {
+                handleHeatPumpLogic(value);
+            }
+            
             const nextBtn = document.getElementById('next-btn');
             nextBtn.disabled = false;
             nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+
+        function handleHeatPumpLogic(heatingSystemValue) {
+            const heatPumpTitle = document.getElementById('heat-pump-question-title');
+            const heatPumpOptions = document.getElementById('heat-pump-options');
+            const heatPumpExisting = document.getElementById('heat-pump-existing');
+            
+            if (heatingSystemValue === 'heat-pump') {
+                // User already has a heat pump
+                heatPumpTitle.textContent = 'Heat Pump System Detected';
+                heatPumpOptions.classList.add('hidden');
+                heatPumpExisting.classList.remove('hidden');
+                // Auto-set the value to indicate they already have one
+                consultationData['heatPumpPlans'] = 'already-have';
+            } else {
+                // User doesn't have a heat pump, show normal question
+                heatPumpTitle.textContent = 'Are you considering installing a heat pump?';
+                heatPumpOptions.classList.remove('hidden');
+                heatPumpExisting.classList.add('hidden');
+                // Clear any previous heat pump plans data
+                if (consultationData['heatPumpPlans'] === 'already-have') {
+                    delete consultationData['heatPumpPlans'];
+                }
+            }
         }
 
         function nextQuestion() {
@@ -2229,7 +2326,200 @@
                 volumeOption.querySelector('.text-sm').className = "text-sm text-gray-600 mt-1";
             }
         }
+
+        // Premium Modal Functions
+        function showPremiumModal() {
+            document.getElementById('premium-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            
+            // Update preview values with current recommendation
+            if (window.solarRecommendation) {
+                const currentCost = window.solarRecommendation.financials.systemCost;
+                document.getElementById('preview-current-cost').textContent = '£' + currentCost.toLocaleString();
+                document.getElementById('modal-current-cost').textContent = '£' + currentCost.toLocaleString();
+                
+                // Calculate optimized estimates (30-40% savings typical)
+                const optimizedLow = Math.round(currentCost * 0.6);
+                const optimizedHigh = Math.round(currentCost * 0.75);
+                const savingsLow = currentCost - optimizedHigh;
+                const savingsHigh = currentCost - optimizedLow;
+                
+                document.getElementById('preview-optimized-cost').textContent = `£${optimizedLow.toLocaleString()}-${optimizedHigh.toLocaleString()}`;
+                document.getElementById('preview-savings').textContent = `£${savingsLow.toLocaleString()}-${savingsHigh.toLocaleString()}`;
+                document.getElementById('modal-optimized-cost').textContent = `£${optimizedLow.toLocaleString()}-${optimizedHigh.toLocaleString()}`;
+                document.getElementById('modal-savings').textContent = `£${savingsLow.toLocaleString()}-${savingsHigh.toLocaleString()}`;
+            }
+        }
+
+        function closePremiumModal() {
+            document.getElementById('premium-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function proceedToPayment() {
+            // In a real implementation, this would integrate with Stripe, PayPal, etc.
+            alert('Payment integration would be implemented here. For demo purposes, this would redirect to a secure payment processor.');
+            
+            // Demo: Simulate successful payment and show premium content
+            setTimeout(() => {
+                closePremiumModal();
+                showPremiumContent();
+            }, 1000);
+        }
+
+        function showPremiumContent() {
+            // Hide the teaser and show premium analysis
+            document.querySelector('.premium-teaser').style.display = 'none';
+            
+            // Create and show premium content
+            const premiumContent = document.createElement('div');
+            premiumContent.className = 'premium-content bg-gradient-to-br from-green-50 to-emerald-100 border-2 border-green-200 rounded-lg p-6 mb-8';
+            premiumContent.innerHTML = `
+                <div class="text-center mb-6">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full mb-4">
+                        <span class="text-2xl">✅</span>
+                    </div>
+                    <h4 class="text-2xl font-bold text-green-900 mb-2">Premium Analysis Unlocked!</h4>
+                    <p class="text-green-700 mobile-text-base">Your personalized tariff optimization report is being generated...</p>
+                </div>
+                
+                <div class="bg-white rounded-lg p-6 mb-6">
+                    <h5 class="text-xl font-bold text-gray-800 mb-4">🎯 Optimal Strategy for Your Situation</h5>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                            <h6 class="font-semibold text-blue-800 mb-2">Recommended: Hybrid Optimization Strategy</h6>
+                            <ul class="text-sm mobile-text-sm text-blue-700 space-y-1">
+                                <li>• 4.5kW solar system (reduced from ${window.solarRecommendation?.system.systemSize || '6.5'}kW)</li>
+                                <li>• 8kWh battery (optimized for your usage pattern)</li>
+                                <li>• Octopus Go tariff for EV charging (7p/kWh overnight)</li>
+                                <li>• Economy 7 for heat pump operation</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-3 mobile-grid gap-4">
+                            <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                <div class="text-lg font-bold text-gray-800">£12,800</div>
+                                <div class="text-sm mobile-text-sm text-gray-600">Total Investment</div>
+                            </div>
+                            <div class="text-center p-3 bg-green-50 rounded-lg">
+                                <div class="text-lg font-bold text-green-600">6.2 years</div>
+                                <div class="text-sm mobile-text-sm text-gray-600">Payback Period</div>
+                            </div>
+                            <div class="text-center p-3 bg-blue-50 rounded-lg">
+                                <div class="text-lg font-bold text-blue-600">£6,450</div>
+                                <div class="text-sm mobile-text-sm text-gray-600">Additional Savings</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <button onclick="downloadPremiumReport()" class="bg-green-600 text-white px-6 py-3 mobile-button rounded-lg font-semibold hover:bg-green-700 transition mr-4">
+                        📄 Download Full Report
+                    </button>
+                    <button onclick="bookConsultation()" class="bg-blue-600 text-white px-6 py-3 mobile-button rounded-lg font-semibold hover:bg-blue-700 transition">
+                        📞 Book Expert Consultation
+                    </button>
+                </div>
+            `;
+            
+            document.querySelector('.recommendation-card.steps-card').parentNode.insertBefore(premiumContent, document.querySelector('.recommendation-card.steps-card').nextSibling);
+        }
+
+        function downloadPremiumReport() {
+            alert('Premium report download would be implemented here - generating personalized PDF with detailed tariff analysis.');
+        }
+
+        function bookConsultation() {
+            alert('Expert consultation booking would be implemented here - calendar integration for 1-on-1 sessions.');
+        }
     </script>
+
+    <!-- Premium Modal -->
+    <div id="premium-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-800">Advanced Tariff Optimization</h3>
+                    <button onclick="closePremiumModal()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                </div>
+                
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">What You'll Get:</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <div class="text-green-500 mr-3 mt-1">✓</div>
+                            <div>
+                                <div class="font-semibold">3-Scenario Comparison Analysis</div>
+                                <div class="text-sm mobile-text-sm text-gray-600">Solar-only vs Tariff optimization vs Hybrid strategy</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="text-green-500 mr-3 mt-1">✓</div>
+                            <div>
+                                <div class="font-semibold">EV Charging Optimization</div>
+                                <div class="text-sm mobile-text-sm text-gray-600">Octopus Go vs solar sizing cost analysis</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="text-green-500 mr-3 mt-1">✓</div>
+                            <div>
+                                <div class="font-semibold">Heat Pump Strategy</div>
+                                <div class="text-sm mobile-text-sm text-gray-600">Tariff vs solar heating cost comparison</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="text-green-500 mr-3 mt-1">✓</div>
+                            <div>
+                                <div class="font-semibold">Personalized Recommendations</div>
+                                <div class="text-sm mobile-text-sm text-gray-600">Optimal system size and tariff combination for your lifestyle</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="text-green-500 mr-3 mt-1">✓</div>
+                            <div>
+                                <div class="font-semibold">Detailed Financial Projections</div>
+                                <div class="text-sm mobile-text-sm text-gray-600">10-year savings breakdown with inflation adjustments</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 rounded-lg p-4 mb-6">
+                    <h5 class="font-semibold text-blue-800 mb-3">Your Potential Savings:</h5>
+                    <div class="space-y-2 text-sm mobile-text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-blue-700">Current Recommendation:</span>
+                            <span class="font-semibold" id="modal-current-cost">£19,250</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-blue-700">Optimized Strategy:</span>
+                            <span class="font-semibold text-green-600" id="modal-optimized-cost">£12,800-15,200</span>
+                        </div>
+                        <div class="flex justify-between border-t border-blue-200 pt-2">
+                            <span class="text-blue-800 font-semibold">Additional Savings:</span>
+                            <span class="font-bold text-green-600" id="modal-savings">£4,050-6,450</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-gray-800 mb-2">£14.99</div>
+                    <div class="text-gray-600 mb-6">One-time payment • Instant access • 30-day money-back guarantee</div>
+                    
+                    <button onclick="proceedToPayment()" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 mobile-button rounded-lg font-bold text-lg hover:from-blue-700 hover:to-indigo-700 transition shadow-lg w-full mb-4">
+                        Unlock Advanced Analysis Now
+                    </button>
+                    
+                    <div class="flex items-center justify-center space-x-4 text-sm mobile-text-sm text-gray-500">
+                        <span>🔒 Secure Payment</span>
+                        <span>💳 All Cards Accepted</span>
+                        <span>📱 Mobile Optimized</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 
