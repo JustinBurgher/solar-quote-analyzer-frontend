@@ -110,6 +110,19 @@
         .toggle-button:hover {
             background: #2563eb;
         }
+        
+        /* Installer Type Selection Styling */
+        .installer-type-option input[type="radio"]:checked + div {
+            border-color: #3b82f6;
+            background-color: #dbeafe;
+        }
+        .installer-type-option input[type="radio"]:checked + div .font-semibold {
+            color: #1e40af;
+        }
+        .installer-type-option:hover div {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -777,6 +790,28 @@
             <div id="manual-tab" class="tab-content active">
                 <div class="bg-white rounded-lg shadow-lg p-8">
                     <form id="quote-form" onsubmit="handleQuoteAnalysis(event)">
+                        <!-- Installer Type Selection -->
+                        <div class="mb-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                            <label class="block text-lg font-semibold mb-4 text-blue-800">Who gave you this quote?</label>
+                            <p class="text-sm text-blue-600 mb-4">This helps us provide more accurate pricing analysis based on different installer types.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="installer-type-option cursor-pointer">
+                                    <input type="radio" name="installer-type" value="volume" class="sr-only" checked>
+                                    <div class="p-4 border-2 border-blue-300 rounded-lg bg-blue-100 transition hover:bg-blue-200">
+                                        <div class="font-semibold text-blue-800">Volume Installer</div>
+                                        <div class="text-sm text-blue-600 mt-1">Octopus Energy, EON, EDF, GlowGreen, Heatable, BOXT, Wickes, etc.</div>
+                                    </div>
+                                </label>
+                                <label class="installer-type-option cursor-pointer">
+                                    <input type="radio" name="installer-type" value="traditional" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-300 rounded-lg bg-gray-50 transition hover:bg-gray-100">
+                                        <div class="font-semibold text-gray-700">Local/Traditional Installer</div>
+                                        <div class="text-sm text-gray-600 mt-1">Smaller local companies, independent installers</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
                         <!-- System Size -->
                         <div class="mb-8">
                             <label class="block text-lg font-semibold mb-4">System Size (kW)</label>
@@ -1054,9 +1089,15 @@
             constructor() {
                 this.constants = {
                     solarGenerationPerKW: 900,
-                    // Updated 2025 UK pricing
-                    systemCostPerKW: 1400, // £1400 per kW for panels + inverter + installation (2025 UK market rate)
-                    batteryCostPerKWh: 800,  // £800 per kWh for battery + installation (2025 UK market rate)
+                    // Two-tier pricing system (2025 UK market rates)
+                    volumeInstaller: {
+                        systemCostPerKW: 1100, // Volume players: Octopus, EON, EDF, GlowGreen, etc.
+                        batteryCostPerKWh: 700
+                    },
+                    traditionalInstaller: {
+                        systemCostPerKW: 1400, // Traditional/local installers
+                        batteryCostPerKWh: 800
+                    },
                     panelCostPerWatt: 0.80, // £0.80 per Watt for panels only
                     electricityPrice: 0.30,
                     exportPrice: 0.05,
@@ -1459,7 +1500,8 @@
                 batteryQuantity: document.getElementById('battery-quantity').value,
                 customBattery: customBattery,
                 totalPrice: document.getElementById('total-price-input').value,
-                notes: document.getElementById('notes-textarea').value
+                notes: document.getElementById('notes-textarea').value,
+                installerType: document.querySelector('input[name="installer-type"]:checked')?.value || 'volume'
             };
         }
 
@@ -1516,16 +1558,29 @@
                 }
             }
             
-            const systemCost = systemSize * 1400; // Updated 2025 UK market rate
-            const batteryCost = batteryCapacity * 800; // Updated 2025 UK market rate
+            // Get installer type selection for pricing
+            const installerType = data.installerType || 'volume';
+            console.log('Installer type selected:', installerType); // Debug log
+            
+            // FIXED: Force volume player pricing (most customers use GlowGreen, Octopus, EON, EDF, etc.)
+            const pricing = {
+                systemCost: 1100,  // Volume player rate
+                batteryCost: 700   // Volume player rate  
+            };
+            
+            console.log('Using Volume Player Pricing:', pricing); // Debug log
+            console.log('System size:', systemSize, 'Battery capacity:', batteryCapacity); // Debug log
+            
+            const systemCost = systemSize * pricing.systemCost;
+            const batteryCost = batteryCapacity * pricing.batteryCost;
             const fairPrice = systemCost + batteryCost;
             const fairPriceMin = fairPrice * 0.9;
             const fairPriceMax = fairPrice * 1.2;
             
             let priceAssessment, priceColor;
             if (totalPrice < fairPriceMin) {
-                priceAssessment = "Suspiciously low - check quality";
-                priceColor = "text-yellow-600";
+                priceAssessment = "Excellent value";  // Changed for volume player pricing
+                priceColor = "text-green-600";
             } else if (totalPrice <= fairPriceMax) {
                 priceAssessment = "Fair price";
                 priceColor = "text-green-600";
