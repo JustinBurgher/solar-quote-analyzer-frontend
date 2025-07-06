@@ -3,1300 +3,1144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solar Truth AI - Don't Get Ripped Off on Solar</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Solar Truth AI - Independent Solar Analysis</title>
     <style>
-        .hero-gradient {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        .tab-button.active { background-color: #3b82f6; color: white; }
-        .tab-button { background-color: #f8fafc; color: #475569; }
-        .size-button { 
-            transition: all 0.2s; 
-            border: 2px solid #e2e8f0;
-            background-color: #ffffff;
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
         }
-        .size-button:hover { 
-            border-color: #3b82f6; 
-            background-color: #eff6ff;
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
-        .size-button.selected { 
-            background-color: #3b82f6; 
-            color: white; 
-            border-color: #3b82f6;
-        }
-        .custom-input { display: none; }
-        .custom-input.active { display: block; }
-        .battery-models { display: none; }
-        .battery-models.active { display: block; }
-        .consultation-step { display: none; }
-        .consultation-step.active { display: block; }
-        .progress-bar {
-            transition: width 0.3s ease;
-        }
-        .consultation-option {
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-        .consultation-option:hover {
-            border-color: #3b82f6 !important;
-            background-color: #eff6ff !important;
-        }
-        .consultation-option.selected {
-            border-color: #3b82f6 !important;
-            background-color: #eff6ff !important;
-        }
-        .recommendation-card {
+
+        /* Header */
+        header {
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e5e7eb;
-            transition: all 0.2s;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .recommendation-card:hover {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .confidence-badge {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            display: inline-block;
-        }
-        .insight-card {
-            border-left: 4px solid #f59e0b;
-            background: #fffbeb;
-        }
-        .tips-card {
-            border-left: 4px solid #8b5cf6;
-            background: #f5f3ff;
-        }
-        .steps-card {
-            border-left: 4px solid #3b82f6;
-            background: #eff6ff;
-        }
-        .system-icon {
-            width: 48px;
-            height: 48px;
-            background: #3b82f6;
-            border-radius: 12px;
+
+        .logo {
             display: flex;
             align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .logo::before {
+            content: "☀️";
+            margin-right: 0.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #2563eb;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
             justify-content: center;
-            color: white;
-            font-size: 24px;
+            flex-wrap: wrap;
         }
-        .hidden { display: none !important; }
-        .inflation-toggle {
-            background: #f3f4f6;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 8px;
-        }
-        .toggle-button {
-            background: #3b82f6;
-            color: white;
+
+        .btn {
+            padding: 1rem 2rem;
             border: none;
-            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #2563eb;
+        }
+
+        .btn-primary:hover {
+            background: #f8fafc;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #2563eb;
+        }
+
+        /* Problem Section */
+        .problem {
+            padding: 4rem 0;
+            background: #f8fafc;
+        }
+
+        .problem h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1e293b;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .problem-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .problem-card .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .problem-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        /* Solution Section */
+        .solution {
+            padding: 4rem 0;
+        }
+
+        .solution h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1e293b;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .feature .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .sample-results {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 3rem;
+        }
+
+        .sample-results h3 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #1e293b;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .result-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .result-score {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .score-good { color: #059669; }
+        .score-okay { color: #d97706; }
+        .score-poor { color: #dc2626; }
+
+        /* Consultation Section */
+        .consultation {
+            padding: 4rem 0;
+            background: #f8fafc;
+        }
+
+        .consultation h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .consultation-subtitle {
+            text-align: center;
+            font-size: 1.25rem;
+            color: #64748b;
+            margin-bottom: 3rem;
+        }
+
+        .consultation-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2563eb, #3b82f6);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .question-container {
+            margin-bottom: 2rem;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .question-number {
+            background: #2563eb;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .question-title {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .option-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option-card:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .option-card.selected {
+            border-color: #2563eb;
+            background: #eff6ff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .option-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .option-text {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .btn-nav {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-previous {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-previous:hover {
+            background: #4b5563;
+        }
+
+        .btn-next {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-next:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-nav:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Results Section */
+        .results {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .results h3 {
+            font-size: 2rem;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .recommendation-card {
+            background: #f0f9ff;
+            border: 2px solid #0ea5e9;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .system-size {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #0369a1;
+            margin-bottom: 1rem;
+        }
+
+        .financial-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .financial-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .financial-value {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #059669;
+        }
+
+        .financial-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .inflation-toggle {
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .toggle-button {
+            background: #e2e8f0;
+            border: none;
+            padding: 0.5rem 1rem;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.2s;
+            margin: 0 0.5rem;
+            transition: all 0.3s;
         }
-        .toggle-button:hover {
+
+        .toggle-button.active {
             background: #2563eb;
+            color: white;
+        }
+
+        .insights {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .insights h4 {
+            color: #92400e;
+            margin-bottom: 0.5rem;
+        }
+
+        .cta-section {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        /* Analyzer Section */
+        .analyzer {
+            padding: 4rem 0;
+        }
+
+        .analyzer h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1e293b;
+        }
+
+        .analyzer-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            background: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-button.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .size-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .size-btn {
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .size-btn:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .size-btn.selected {
+            border-color: #2563eb;
+            background: #2563eb;
+            color: white;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .battery-section {
+            margin-top: 1rem;
+        }
+
+        .battery-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+
+        .battery-dropdown {
+            flex: 2;
+            min-width: 200px;
+        }
+
+        .battery-quantity {
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .custom-battery {
+            margin-top: 1rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .analyze-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .analyze-btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* Analysis Results */
+        .analysis-results {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .analysis-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .analysis-header h3 {
+            font-size: 2rem;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .overall-score {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .score-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 150px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .score-emoji {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .score-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .score-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .analysis-sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .analysis-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .analysis-section h4 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .analysis-section ul {
+            list-style: none;
+        }
+
+        .analysis-section li {
+            margin-bottom: 0.5rem;
+            color: #4b5563;
+        }
+
+        /* Get Advice Section */
+        .get-advice {
+            padding: 4rem 0;
+            background: #f8fafc;
+            text-align: center;
+        }
+
+        .get-advice h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .get-advice p {
+            font-size: 1.25rem;
+            color: #64748b;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .advice-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .advice-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .advice-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .advice-card p {
+            color: #64748b;
+            margin-bottom: 2rem;
+        }
+
+        .advice-card .btn {
+            width: 100%;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .problem-grid,
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .size-buttons {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .battery-controls {
+                flex-direction: column;
+            }
+
+            .battery-dropdown,
+            .battery-quantity {
+                flex: none;
+                width: 100%;
+            }
+
+            .overall-score {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .analysis-sections {
+                grid-template-columns: 1fr;
+            }
+
+            .advice-options {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
-<body class="bg-gray-50">
+<body>
     <!-- Header -->
-    <header class="bg-white shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex items-center">
-                    <div class="text-2xl">☀️</div>
-                    <h1 class="ml-2 text-xl font-bold text-gray-900">Solar Truth AI</h1>
-                </div>
-                <nav class="hidden md:flex space-x-8">
-                    <a href="#problem" class="text-gray-600 hover:text-gray-900">The Problem</a>
-                    <a href="#solution" class="text-gray-600 hover:text-gray-900">Our Solution</a>
-                    <a href="#consultation" class="text-gray-600 hover:text-gray-900">Free Analysis</a>
-                    <a href="#contact" class="text-gray-600 hover:text-gray-900">Contact</a>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Solar Truth AI</div>
+                <nav>
+                    <ul>
+                        <li><a href="#problem">The Problem</a></li>
+                        <li><a href="#solution">Our Solution</a></li>
+                        <li><a href="#analyzer">Free Analysis</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
                 </nav>
             </div>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero-gradient text-white py-20">
-        <div class="max-w-4xl mx-auto text-center px-4">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6">
-                Don't Get Ripped Off on Solar
-            </h1>
-            <p class="text-xl md:text-2xl mb-8 opacity-90">
-                Most UK homeowners overpay by £1,000s because they don't know what system they actually need. Get independent, unbiased analysis.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button onclick="scrollToConsultation()" class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition">
-                    Find Out What You Need FREE
-                </button>
-                <button onclick="scrollToAnalyzer()" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition">
-                    Analyze My Quote FREE
-                </button>
+    <section class="hero">
+        <div class="container">
+            <h1>Don't Get Ripped Off on Solar</h1>
+            <p>Get independent analysis of your solar quotes. No installer bias, just honest advice.</p>
+            <div class="cta-buttons">
+                <button class="btn btn-primary" onclick="scrollToConsultation()">Find Out What You Need FREE</button>
+                <button class="btn btn-secondary" onclick="scrollToAnalyzer()">Analyze My Quote FREE</button>
             </div>
         </div>
     </section>
 
     <!-- Problem Section -->
-    <section id="problem" class="py-16 bg-white">
-        <div class="max-w-6xl mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">The Solar Industry Has a Problem</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="text-center">
-                    <div class="text-4xl mb-4">💸</div>
-                    <h3 class="text-xl font-semibold mb-2">Overpriced Systems</h3>
-                    <p class="text-gray-600">Installers recommend oversized systems to maximize their profit, not your savings.</p>
+    <section id="problem" class="problem">
+        <div class="container">
+            <h2>The Solar Industry Has a Problem</h2>
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <div class="icon">💸</div>
+                    <h3>Overpriced Quotes</h3>
+                    <p>Many homeowners pay 20-40% more than they should for solar installations due to lack of independent advice.</p>
                 </div>
-                <div class="text-center">
-                    <div class="text-4xl mb-4">📉</div>
-                    <h3 class="text-xl font-semibold mb-2">Poor ROI</h3>
-                    <p class="text-gray-600">Generic calculators ignore your actual energy usage patterns and work schedule.</p>
+                <div class="problem-card">
+                    <div class="icon">📉</div>
+                    <h3>Poor Quality Equipment</h3>
+                    <p>Installers often push cheaper panels and batteries to maximize their profits, not your savings.</p>
                 </div>
-                <div class="text-center">
-                    <div class="text-4xl mb-4">🤷</div>
-                    <h3 class="text-xl font-semibold mb-2">No Independent Advice</h3>
-                    <p class="text-gray-600">Every quote comes from someone trying to sell you something. Where's the unbiased analysis?</p>
+                <div class="problem-card">
+                    <div class="icon">🤷</div>
+                    <h3>Biased Advice</h3>
+                    <p>Every installer has a vested interest in selling you their preferred system, not what's best for you.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Solution Section -->
-    <section id="solution" class="py-16 bg-gray-50">
-        <div class="max-w-6xl mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">Introducing Solar Truth AI</h2>
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h3 class="text-2xl font-semibold mb-6">Independent Analysis You Can Trust</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-start">
-                            <div class="text-green-500 mr-3 mt-1">✓</div>
-                            <div>
-                                <strong>Personalized System Sizing:</strong> Based on your actual energy usage, work patterns, and lifestyle
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="text-green-500 mr-3 mt-1">✓</div>
-                            <div>
-                                <strong>Quote Analysis:</strong> Instantly spot overpriced systems and poor-quality components
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="text-green-500 mr-3 mt-1">✓</div>
-                            <div>
-                                <strong>No Installer Bias:</strong> We don't sell solar panels - just honest advice
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="text-green-500 mr-3 mt-1">✓</div>
-                            <div>
-                                <strong>UK Market Data:</strong> Real pricing and performance data from thousands of installations
-                            </div>
-                        </div>
-                    </div>
+    <section id="solution" class="solution">
+        <div class="container">
+            <h2>Introducing Solar Truth AI</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="icon">🔍</div>
+                    <h3>Independent Analysis</h3>
+                    <p>We're not installers. We don't sell solar. We just tell you the truth about your quotes.</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h4 class="font-semibold mb-4">Sample Analysis Result:</h4>
-                    <div class="space-y-3 text-sm">
-                        <div class="flex justify-between">
-                            <span>System Size:</span>
-                            <span class="font-semibold">6.5kW (not 8kW as quoted)</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>Fair Price:</span>
-                            <span class="font-semibold">£11,200 - £13,800</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>Your Quote:</span>
-                            <span class="font-semibold text-red-600">£16,500 (19% overpriced)</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>Panel Quality:</span>
-                            <span class="font-semibold text-green-600">Good (Tier 1)</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>Payback Period:</span>
-                            <span class="font-semibold">10.4 years</span>
-                        </div>
+                <div class="feature">
+                    <div class="icon">💰</div>
+                    <h3>Price Comparison</h3>
+                    <p>See if you're paying a fair price compared to current UK market rates.</p>
+                </div>
+                <div class="feature">
+                    <div class="icon">⭐</div>
+                    <h3>Quality Assessment</h3>
+                    <p>Get honest ratings on panel and battery quality from industry experts.</p>
+                </div>
+                <div class="feature">
+                    <div class="icon">📊</div>
+                    <h3>Value Score</h3>
+                    <p>Our algorithm calculates an overall value score to help you make the right decision.</p>
+                </div>
+            </div>
+
+            <div class="sample-results">
+                <h3>Sample Analysis Results</h3>
+                <div class="results-grid">
+                    <div class="result-item">
+                        <div class="result-score score-good">8.5/10</div>
+                        <div>Overall Value</div>
                     </div>
-                    <div class="mt-4 p-3 bg-blue-50 rounded">
-                        <p class="text-sm"><strong>Recommendation:</strong> Negotiate down to £13,500 or get additional quotes. Consider 6.5kW system instead.</p>
+                    <div class="result-item">
+                        <div class="result-score score-okay">£14,750</div>
+                        <div>Fair Price Range</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-score score-good">Good</div>
+                        <div>Panel Quality</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-score score-poor">Poor</div>
+                        <div>Battery Choice</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- System Sizing Consultation -->
-    <section id="consultation" class="py-16 bg-white">
-        <div class="max-w-4xl mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold mb-4">What Solar System Do You Need?</h2>
-                <p class="text-xl text-gray-600">Answer 15 quick questions to get your personalized recommendation</p>
-            </div>
-
-            <!-- Progress Bar -->
-            <div class="mb-8">
-                <div class="flex justify-between text-sm text-gray-600 mb-2">
-                    <span>Progress</span>
-                    <span id="progress-text">1 of 15</span>
+    <!-- Consultation Section -->
+    <section id="consultation" class="consultation">
+        <div class="container">
+            <h2>What Solar System Do You Need?</h2>
+            <p class="consultation-subtitle">Answer 14 quick questions to get your personalized recommendation</p>
+            
+            <div class="consultation-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
                 </div>
-                <div class="w-full bg-gray-200 rounded-full h-2">
-                    <div id="progress-bar" class="progress-bar bg-blue-600 h-2 rounded-full" style="width: 6.67%"></div>
-                </div>
-            </div>
-
-            <!-- Consultation Questions -->
-            <div id="consultation-container">
-                <!-- Question 1: Property Type -->
-                <div class="consultation-step active" data-step="1">
-                    <h3 class="text-2xl font-semibold mb-6">What type of property do you live in?</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="detached">
-                            <div class="text-4xl mb-2">🏠</div>
-                            <div class="font-medium">Detached House</div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="semi-detached">
-                            <div class="text-4xl mb-2">🏘️</div>
-                            <div class="font-medium">Semi-Detached</div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="terraced">
-                            <div class="text-4xl mb-2">🏚️</div>
-                            <div class="font-medium">Terraced House</div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="bungalow">
-                            <div class="text-4xl mb-2">🏡</div>
-                            <div class="font-medium">Bungalow</div>
-                        </div>
-                    </div>
+                
+                <div class="question-container" id="question-container">
+                    <!-- Questions will be dynamically inserted here -->
                 </div>
 
-                <!-- Question 2: Bedrooms -->
-                <div class="consultation-step" data-step="2">
-                    <h3 class="text-2xl font-semibold mb-6">How many bedrooms does your home have?</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="1">
-                            <div class="text-3xl mb-2">1️⃣</div>
-                            <div class="font-medium">1 Bedroom</div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="2">
-                            <div class="text-3xl mb-2">2️⃣</div>
-                            <div class="font-medium">2 Bedrooms</div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="3">
-                            <div class="text-3xl mb-2">3️⃣</div>
-                            <div class="font-medium">3 Bedrooms</div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="4">
-                            <div class="text-3xl mb-2">4️⃣</div>
-                            <div class="font-medium">4 Bedrooms</div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="5+">
-                            <div class="text-3xl mb-2">5️⃣</div>
-                            <div class="font-medium">5+ Bedrooms</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question 3: Occupation -->
-                <div class="consultation-step" data-step="3">
-                    <h3 class="text-2xl font-semibold mb-6">What best describes your work situation?</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="healthcare">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">👩‍⚕️</div>
-                                <div>
-                                    <div class="font-medium">Healthcare Worker</div>
-                                    <div class="text-sm text-gray-600">Nurse, doctor, care worker</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="office">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">💼</div>
-                                <div>
-                                    <div class="font-medium">Office Worker</div>
-                                    <div class="text-sm text-gray-600">Standard 9-5 job</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="teacher">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">👨‍🏫</div>
-                                <div>
-                                    <div class="font-medium">Teacher</div>
-                                    <div class="text-sm text-gray-600">School holidays at home</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="remote">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🏠</div>
-                                <div>
-                                    <div class="font-medium">Work from Home</div>
-                                    <div class="text-sm text-gray-600">Remote worker</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="shift">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🌙</div>
-                                <div>
-                                    <div class="font-medium">Shift Worker</div>
-                                    <div class="text-sm text-gray-600">Rotating or night shifts</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="retired">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">👴</div>
-                                <div>
-                                    <div class="font-medium">Retired</div>
-                                    <div class="text-sm text-gray-600">Home most of the day</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question 4: Work Schedule -->
-                <div class="consultation-step" data-step="4">
-                    <h3 class="text-2xl font-semibold mb-6">What's your typical work schedule?</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="standard-days">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🌅</div>
-                                <div>
-                                    <div class="font-medium">Standard Days (9am-5pm)</div>
-                                    <div class="text-sm text-gray-600">Away during peak solar hours</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="shift-rotating">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🌙</div>
-                                <div>
-                                    <div class="font-medium">Shift Work - Rotating</div>
-                                    <div class="text-sm text-gray-600">Variable schedule, sometimes home during day</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="home-days">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🏠</div>
-                                <div>
-                                    <div class="font-medium">Home During Days</div>
-                                    <div class="text-sm text-gray-600">Work from home or retired</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="flexible">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">⏰</div>
-                                <div>
-                                    <div class="font-medium">Flexible Schedule</div>
-                                    <div class="text-sm text-gray-600">Can adjust when I use electricity</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question 5: Home During Day -->
-                <div class="consultation-step" data-step="5">
-                    <h3 class="text-2xl font-semibold mb-6">How often are you home during the day (9am-4pm)?</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="always">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🏠</div>
-                                <div>
-                                    <div class="font-medium">Always Home</div>
-                                    <div class="text-sm text-gray-600">Retired or work from home</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="often">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🕐</div>
-                                <div>
-                                    <div class="font-medium">Often Home</div>
-                                    <div class="text-sm text-gray-600">3-4 days per week</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="sometimes">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🕑</div>
-                                <div>
-                                    <div class="font-medium">Sometimes Home</div>
-                                    <div class="text-sm text-gray-600">1-2 days per week</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="rarely">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🚗</div>
-                                <div>
-                                    <div class="font-medium">Rarely Home</div>
-                                    <div class="text-sm text-gray-600">Away most weekdays</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question 6: Household -->
-                <div class="consultation-step" data-step="6">
-                    <h3 class="text-2xl font-semibold mb-6">How many people live in your household?</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="1">
-                            <div class="text-3xl mb-2">👤</div>
-                            <div class="font-medium">1 Person</div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="2">
-                            <div class="text-3xl mb-2">👥</div>
-                            <div class="font-medium">2 People</div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="3">
-                            <div class="text-3xl mb-2">👨‍👩‍👧</div>
-                            <div class="font-medium">3 People</div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="4">
-                            <div class="text-3xl mb-2">👨‍👩‍👧‍👦</div>
-                            <div class="font-medium">4 People</div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="5+">
-                            <div class="text-3xl mb-2">👨‍👩‍👧‍👦‍👶</div>
-                            <div class="font-medium">5+ People</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question 7: Current Bills -->
-                <div class="consultation-step" data-step="7">
-                    <h3 class="text-2xl font-semibold mb-6">What's your current monthly electricity bill?</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="under-50">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">💷</div>
-                                <div>
-                                    <div class="font-medium">Under £50/month</div>
-                                    <div class="text-sm text-gray-600">Low usage household</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="50-100">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">💷💷</div>
-                                <div>
-                                    <div class="font-medium">£50-100/month</div>
-                                    <div class="text-sm text-gray-600">Average household</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="100-150">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">💷💷💷</div>
-                                <div>
-                                    <div class="font-medium">£100-150/month</div>
-                                    <div class="text-sm text-gray-600">Above average usage</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="over-150">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">💷💷💷💷</div>
-                                <div>
-                                    <div class="font-medium">Over £150/month</div>
-                                    <div class="text-sm text-gray-600">High usage household</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question 8: EV Plans -->
-                <div class="consultation-step" data-step="8">
-                    <h3 class="text-2xl font-semibold mb-6">Do you have or plan to get an electric vehicle?</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="have-ev">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🚗</div>
-                                <div>
-                                    <div class="font-medium">Already Have EV</div>
-                                    <div class="text-sm text-gray-600">Currently charging at home</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="planning-ev">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🔌</div>
-                                <div>
-                                    <div class="font-medium">Planning to Get EV</div>
-                                    <div class="text-sm text-gray-600">Within next 2-3 years</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="considering-ev">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🤔</div>
-                                <div>
-                                    <div class="font-medium">Considering EV</div>
-                                    <div class="text-sm text-gray-600">Might get one eventually</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="no-ev">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">⛽</div>
-                                <div>
-                                    <div class="font-medium">No EV Plans</div>
-                                    <div class="text-sm text-gray-600">Sticking with petrol/diesel</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question 9: Heating -->
-                <div class="consultation-step" data-step="9">
-                    <h3 class="text-2xl font-semibold mb-6">What heating system do you have?</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="gas-boiler">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🔥</div>
-                                <div>
-                                    <div class="font-medium">Gas Boiler</div>
-                                    <div class="text-sm text-gray-600">Standard gas central heating</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="heat-pump">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🌡️</div>
-                                <div>
-                                    <div class="font-medium">Heat Pump</div>
-                                    <div class="text-sm text-gray-600">Air source or ground source</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="planning-heat-pump">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🔄</div>
-                                <div>
-                                    <div class="font-medium">Planning Heat Pump</div>
-                                    <div class="text-sm text-gray-600">Will upgrade from gas boiler</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="electric-heating">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">⚡</div>
-                                <div>
-                                    <div class="font-medium">Electric Heating</div>
-                                    <div class="text-sm text-gray-600">Electric radiators or storage heaters</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question 10: Home Improvements -->
-                <div class="consultation-step" data-step="10">
-                    <h3 class="text-2xl font-semibold mb-6">Any planned home improvements that use electricity?</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="hot-tub">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🛁</div>
-                                <div>
-                                    <div class="font-medium">Hot Tub/Spa</div>
-                                    <div class="text-sm text-gray-600">High electricity usage</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="pool">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🏊</div>
-                                <div>
-                                    <div class="font-medium">Swimming Pool</div>
-                                    <div class="text-sm text-gray-600">Pumps and heating</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="workshop">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🔨</div>
-                                <div>
-                                    <div class="font-medium">Workshop/Garage</div>
-                                    <div class="text-sm text-gray-600">Power tools and equipment</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="none">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🏠</div>
-                                <div>
-                                    <div class="font-medium">No Major Changes</div>
-                                    <div class="text-sm text-gray-600">Standard household usage</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question 11: Goals -->
-                <div class="consultation-step" data-step="11">
-                    <h3 class="text-2xl font-semibold mb-6">What's your main goal with solar?</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="save-money">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">💰</div>
-                                <div>
-                                    <div class="font-medium">Save Money</div>
-                                    <div class="text-sm text-gray-600">Reduce electricity bills</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="environment">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🌱</div>
-                                <div>
-                                    <div class="font-medium">Help Environment</div>
-                                    <div class="text-sm text-gray-600">Reduce carbon footprint</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="independence">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🔋</div>
-                                <div>
-                                    <div class="font-medium">Energy Independence</div>
-                                    <div class="text-sm text-gray-600">Less reliant on grid</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="property-value">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🏡</div>
-                                <div>
-                                    <div class="font-medium">Increase Property Value</div>
-                                    <div class="text-sm text-gray-600">Investment in home</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question 12: Battery Interest -->
-                <div class="consultation-step" data-step="12">
-                    <h3 class="text-2xl font-semibold mb-6">How interested are you in battery storage?</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="very-interested">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🔋</div>
-                                <div>
-                                    <div class="font-medium">Very Interested</div>
-                                    <div class="text-sm text-gray-600">Want maximum energy independence</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="somewhat-interested">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🤔</div>
-                                <div>
-                                    <div class="font-medium">Somewhat Interested</div>
-                                    <div class="text-sm text-gray-600">If the numbers make sense</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="not-sure">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">❓</div>
-                                <div>
-                                    <div class="font-medium">Not Sure</div>
-                                    <div class="text-sm text-gray-600">Need more information</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="not-interested">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">❌</div>
-                                <div>
-                                    <div class="font-medium">Not Interested</div>
-                                    <div class="text-sm text-gray-600">Just want solar panels</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question 13: Roof Orientation -->
-                <div class="consultation-step" data-step="13">
-                    <h3 class="text-2xl font-semibold mb-6">Which direction does your roof mainly face?</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="south">
-                            <div class="text-3xl mb-2">☀️</div>
-                            <div class="font-medium">South</div>
-                            <div class="text-sm text-gray-600">Best for solar</div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="south-west">
-                            <div class="text-3xl mb-2">🌅</div>
-                            <div class="font-medium">South-West</div>
-                            <div class="text-sm text-gray-600">Very good</div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="south-east">
-                            <div class="text-3xl mb-2">🌄</div>
-                            <div class="font-medium">South-East</div>
-                            <div class="text-sm text-gray-600">Very good</div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="east-west">
-                            <div class="text-3xl mb-2">🌤️</div>
-                            <div class="font-medium">East/West</div>
-                            <div class="text-sm text-gray-600">Good</div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="north">
-                            <div class="text-3xl mb-2">☁️</div>
-                            <div class="font-medium">North</div>
-                            <div class="text-sm text-gray-600">Limited potential</div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="multiple">
-                            <div class="text-3xl mb-2">🏠</div>
-                            <div class="font-medium">Multiple Directions</div>
-                            <div class="text-sm text-gray-600">Complex roof</div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="not-sure">
-                            <div class="text-3xl mb-2">🤷</div>
-                            <div class="font-medium">Not Sure</div>
-                            <div class="text-sm text-gray-600">Need to check</div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="flat">
-                            <div class="text-3xl mb-2">📐</div>
-                            <div class="font-medium">Flat Roof</div>
-                            <div class="text-sm text-gray-600">Can optimize direction</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question 14: Budget -->
-                <div class="consultation-step" data-step="14">
-                    <h3 class="text-2xl font-semibold mb-6">What's your budget for a solar system?</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="under-8k">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">💷</div>
-                                <div>
-                                    <div class="font-medium">Under £8,000</div>
-                                    <div class="text-sm text-gray-600">Small system, panels only</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="8k-15k">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">💷💷</div>
-                                <div>
-                                    <div class="font-medium">£8,000 - £15,000</div>
-                                    <div class="text-sm text-gray-600">Medium system, maybe small battery</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="15k-25k">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">💷💷💷</div>
-                                <div>
-                                    <div class="font-medium">£15,000 - £25,000</div>
-                                    <div class="text-sm text-gray-600">Large system with battery storage</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="over-25k">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">💷💷💷💷</div>
-                                <div>
-                                    <div class="font-medium">Over £25,000</div>
-                                    <div class="text-sm text-gray-600">Premium system, maximum independence</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question 15: Timeline -->
-                <div class="consultation-step" data-step="15">
-                    <h3 class="text-2xl font-semibold mb-6">When are you looking to install solar?</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="asap">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🚀</div>
-                                <div>
-                                    <div class="font-medium">As Soon As Possible</div>
-                                    <div class="text-sm text-gray-600">Ready to move forward now</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="3-months">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">📅</div>
-                                <div>
-                                    <div class="font-medium">Within 3 Months</div>
-                                    <div class="text-sm text-gray-600">Getting quotes and planning</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="6-months">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">🗓️</div>
-                                <div>
-                                    <div class="font-medium">Within 6 Months</div>
-                                    <div class="text-sm text-gray-600">Still researching options</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6" data-value="just-looking">
-                            <div class="flex items-center">
-                                <div class="text-3xl mr-4">👀</div>
-                                <div>
-                                    <div class="font-medium">Just Looking</div>
-                                    <div class="text-sm text-gray-600">Early research phase</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="navigation-buttons">
+                    <button class="btn-nav btn-previous" id="prev-btn" onclick="previousQuestion()" disabled>Previous</button>
+                    <button class="btn-nav btn-next" id="next-btn" onclick="nextQuestion()" disabled>Next</button>
                 </div>
             </div>
 
-            <!-- Results Section -->
-            <div id="consultation-results" class="hidden">
-                <div class="text-center mb-8">
-                    <div class="confidence-badge mb-4">
-                        <span id="confidence-score">92% Confidence</span>
-                    </div>
-                    <h2 class="text-3xl font-bold mb-4">Your Personalized Solar Recommendation</h2>
-                    <p class="text-xl text-gray-600">Based on your lifestyle and energy needs</p>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-8 mb-8">
-                    <!-- System Overview -->
-                    <div class="recommendation-card p-6">
-                        <div class="flex items-center mb-4">
-                            <div class="system-icon">☀️</div>
-                            <div class="ml-4">
-                                <h3 class="text-xl font-semibold">System Overview</h3>
-                                <p class="text-gray-600">Optimized for your needs</p>
-                            </div>
-                        </div>
-                        <div class="space-y-3">
-                            <div class="flex justify-between">
-                                <span>Solar System Size:</span>
-                                <span class="font-semibold" id="recommended-size">6.5kW</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Battery Storage:</span>
-                                <span class="font-semibold" id="recommended-battery">13.5kWh</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Annual Generation:</span>
-                                <span class="font-semibold" id="annual-generation">5,850 kWh</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Self-Consumption:</span>
-                                <span class="font-semibold" id="self-consumption">75%</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Financial Summary -->
-                    <div class="recommendation-card p-6">
-                        <div class="flex items-center mb-4">
-                            <div class="system-icon">💰</div>
-                            <div class="ml-4">
-                                <h3 class="text-xl font-semibold">Financial Summary</h3>
-                                <p class="text-gray-600">Investment and returns</p>
-                            </div>
-                        </div>
-                        <div class="space-y-3">
-                            <div class="flex justify-between">
-                                <span>Total Investment:</span>
-                                <span class="font-semibold" id="total-cost">£19,250</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Annual Savings:</span>
-                                <span class="font-semibold text-green-600" id="annual-savings">£1,850</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Payback Period:</span>
-                                <span class="font-semibold" id="payback-period">10.4 years</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>25-Year Savings:</span>
-                                <span class="font-semibold text-green-600" id="total-savings">£62,750</span>
-                            </div>
-                        </div>
-                        
-                        <!-- Inflation Toggle -->
-                        <div class="inflation-toggle">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-sm font-medium">Inflation Rate:</span>
-                                <button id="inflation-toggle-btn" class="toggle-button">
-                                    Show 7% inflation
-                                </button>
-                            </div>
-                            <div class="text-xs text-gray-600">
-                                <span id="inflation-explanation">
-                                    Based on 3.5% annual energy price increases (industry standard)
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Lifestyle Insights -->
-                <div class="recommendation-card insight-card p-6 mb-6">
-                    <h3 class="text-xl font-semibold mb-4">💡 Lifestyle Insights</h3>
-                    <p id="lifestyle-insights" class="text-gray-700">
-                        As a healthcare worker with irregular shifts, your energy usage doesn't align well with solar generation. Your shift work means you need large battery storage for energy flexibility when working nights.
-                    </p>
-                </div>
-
-                <!-- Optimization Tips -->
-                <div class="recommendation-card tips-card p-6 mb-6">
-                    <h3 class="text-xl font-semibold mb-4">🎯 Optimization Tips</h3>
-                    <ul id="optimization-tips" class="space-y-2 text-gray-700">
-                        <li>• Set your washing machine and dishwasher to run during peak solar hours (11am-3pm)</li>
-                        <li>• Consider a smart EV charger to use excess solar power</li>
-                        <li>• Use battery power during evening peak rate hours (4pm-7pm)</li>
-                        <li>• Monitor your system performance with a smart app</li>
-                    </ul>
-                </div>
-
-                <!-- Next Steps -->
-                <div class="recommendation-card steps-card p-6 mb-8">
-                    <h3 class="text-xl font-semibold mb-4">🚀 Next Steps</h3>
-                    <ol id="next-steps" class="space-y-2 text-gray-700">
-                        <li>1. Get quotes from 3-4 MCS certified installers</li>
-                        <li>2. Use our quote analyzer to check for overpricing</li>
-                        <li>3. Ensure quotes match your recommended system size</li>
-                        <li>4. Check installer reviews and certifications</li>
-                        <li>5. Schedule installation for optimal timing</li>
-                    </ol>
-                </div>
-
-                <!-- CTA Button -->
-                <div class="text-center">
-                    <button onclick="scrollToAnalyzer()" class="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition">
-                        Now Analyze Your Quotes
-                    </button>
-                </div>
+            <div class="results hidden" id="consultation-results">
+                <!-- Results will be shown here -->
             </div>
         </div>
     </section>
 
-    <!-- Quote Analyzer Section -->
-    <section id="analyzer" class="py-16 bg-gray-50">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold mb-4">Analyze Your Solar Quote Now</h2>
-                <p class="text-xl text-gray-600">Get instant analysis of pricing, quality, and value</p>
-            </div>
-
-            <!-- Tab Navigation -->
-            <div class="flex justify-center mb-8">
-                <div class="bg-white rounded-lg p-1 shadow-sm">
-                    <button class="tab-button active px-6 py-3 rounded-md font-medium transition" onclick="switchTab('manual')">
-                        Manual Entry
-                    </button>
-                    <button class="tab-button px-6 py-3 rounded-md font-medium transition" onclick="switchTab('pdf')">
-                        PDF Upload
-                    </button>
+    <!-- Analyzer Section -->
+    <section id="analyzer" class="analyzer">
+        <div class="container">
+            <h2>Analyze Your Solar Quote Now</h2>
+            
+            <div class="analyzer-container">
+                <div class="tabs">
+                    <button class="tab-button active" onclick="switchTab('manual')">Manual Entry</button>
+                    <button class="tab-button" onclick="switchTab('pdf')">PDF Upload</button>
                 </div>
-            </div>
 
-            <!-- Manual Entry Tab -->
-            <div id="manual-tab" class="tab-content active">
-                <div class="bg-white rounded-lg shadow-lg p-8">
+                <div id="manual-tab" class="tab-content active">
                     <form id="quote-form">
-                        <!-- System Size -->
-                        <div class="mb-8">
-                            <label class="block text-lg font-semibold mb-4">System Size (kW)</label>
-                            <div class="grid grid-cols-3 md:grid-cols-6 gap-3">
-                                <button type="button" class="size-button p-3 rounded-lg font-medium" data-size="2">2kW</button>
-                                <button type="button" class="size-button p-3 rounded-lg font-medium" data-size="3">3kW</button>
-                                <button type="button" class="size-button p-3 rounded-lg font-medium" data-size="4">4kW</button>
-                                <button type="button" class="size-button p-3 rounded-lg font-medium" data-size="5">5kW</button>
-                                <button type="button" class="size-button p-3 rounded-lg font-medium" data-size="6">6kW</button>
-                                <button type="button" class="size-button p-3 rounded-lg font-medium" data-size="7">7kW</button>
-                                <button type="button" class="size-button p-3 rounded-lg font-medium" data-size="8">8kW</button>
-                                <button type="button" class="size-button p-3 rounded-lg font-medium" data-size="9">9kW</button>
-                                <button type="button" class="size-button p-3 rounded-lg font-medium" data-size="10">10kW</button>
-                                <button type="button" class="size-button p-3 rounded-lg font-medium" data-size="12">12kW</button>
-                                <button type="button" class="size-button p-3 rounded-lg font-medium" data-size="15">15kW</button>
-                                <button type="button" class="size-button p-3 rounded-lg font-medium" data-size="custom">Custom</button>
-                            </div>
-                            <div class="custom-input mt-4">
-                                <input type="number" id="custom-size" placeholder="Enter custom size (kW)" class="w-full p-3 border border-gray-300 rounded-lg">
+                        <div class="form-group">
+                            <label class="form-label">System Size</label>
+                            <div class="size-buttons" id="system-size-buttons">
+                                <button type="button" class="size-btn" data-size="2">2kW</button>
+                                <button type="button" class="size-btn" data-size="3">3kW</button>
+                                <button type="button" class="size-btn" data-size="4">4kW</button>
+                                <button type="button" class="size-btn" data-size="5">5kW</button>
+                                <button type="button" class="size-btn" data-size="6">6kW</button>
+                                <button type="button" class="size-btn" data-size="7">7kW</button>
+                                <button type="button" class="size-btn" data-size="8">8kW</button>
+                                <button type="button" class="size-btn" data-size="9">9kW</button>
+                                <button type="button" class="size-btn" data-size="10">10kW</button>
                             </div>
                         </div>
 
-                        <!-- Panel Output -->
-                        <div class="mb-8">
-                            <label class="block text-lg font-semibold mb-4">Panel Output (Watts per panel)</label>
-                            <div class="grid grid-cols-3 md:grid-cols-6 gap-3">
-                                <button type="button" class="size-button p-3 rounded-lg font-medium" data-output="300">300W</button>
-                                <button type="button" class="size-button p-3 rounded-lg font-medium" data-output="350">350W</button>
-                                <button type="button" class="size-button p-3 rounded-lg font-medium" data-output="400">400W</button>
-                                <button type="button" class="size-button p-3 rounded-lg font-medium" data-output="450">450W</button>
-                                <button type="button" class="size-button p-3 rounded-lg font-medium" data-output="500">500W</button>
-                                <button type="button" class="size-button p-3 rounded-lg font-medium" data-output="550">550W</button>
+                        <div class="form-group">
+                            <label class="form-label">Panel Output</label>
+                            <div class="size-buttons" id="panel-output-buttons">
+                                <button type="button" class="size-btn" data-output="300">300W</button>
+                                <button type="button" class="size-btn" data-output="350">350W</button>
+                                <button type="button" class="size-btn" data-output="400">400W</button>
+                                <button type="button" class="size-btn" data-output="450">450W</button>
+                                <button type="button" class="size-btn" data-output="500">500W</button>
+                                <button type="button" class="size-btn" data-output="550">550W</button>
                             </div>
                         </div>
 
-                        <!-- Panel Brand -->
-                        <div class="mb-8">
-                            <label for="panel-brand" class="block text-lg font-semibold mb-4">Panel Brand</label>
-                            <select id="panel-brand" class="w-full p-3 border border-gray-300 rounded-lg">
+                        <div class="form-group">
+                            <label class="form-label" for="panel-brand">Panel Brand</label>
+                            <select class="form-select" id="panel-brand" required>
                                 <option value="">Select panel brand...</option>
-                                <optgroup label="Premium Brands (Tier 1)">
-                                    <option value="longi">LONGi Solar</option>
-                                    <option value="jinko">Jinko Solar</option>
-                                    <option value="trina">Trina Solar</option>
-                                    <option value="canadian">Canadian Solar</option>
-                                    <option value="ja-solar">JA Solar</option>
-                                    <option value="sunpower">SunPower</option>
-                                    <option value="rec">REC Solar</option>
-                                    <option value="panasonic">Panasonic</option>
-                                </optgroup>
-                                <optgroup label="UK Market Brands">
-                                    <option value="dmegc">DMEGC</option>
-                                    <option value="perlight">Perlight Solar</option>
-                                    <option value="aiko">Aiko Solar</option>
-                                    <option value="eurener">Eurener</option>
-                                    <option value="solfit">SolFiT BIPV</option>
-                                    <option value="instagen">InstaGen</option>
-                                </optgroup>
-                                <optgroup label="Budget Brands">
-                                    <option value="risen">Risen Energy</option>
-                                    <option value="astronergy">Astronergy</option>
-                                    <option value="znshine">Znshine Solar</option>
-                                    <option value="seraphim">Seraphim</option>
-                                </optgroup>
-                                <option value="other">Other (specify in notes)</option>
+                                <option value="DMEGC">DMEGC</option>
+                                <option value="Perlight">Perlight</option>
+                                <option value="LONGi">LONGi</option>
+                                <option value="Jinko Solar">Jinko Solar</option>
+                                <option value="Trina Solar">Trina Solar</option>
+                                <option value="Canadian Solar">Canadian Solar</option>
+                                <option value="JA Solar">JA Solar</option>
+                                <option value="Risen Energy">Risen Energy</option>
+                                <option value="Aiko Solar">Aiko Solar</option>
+                                <option value="SunPower">SunPower</option>
+                                <option value="REC">REC</option>
+                                <option value="Panasonic">Panasonic</option>
+                                <option value="LG">LG</option>
+                                <option value="Q CELLS">Q CELLS</option>
+                                <option value="Hyundai">Hyundai</option>
+                                <option value="Eurener">Eurener</option>
+                                <option value="SolFiT BIPV">SolFiT BIPV</option>
+                                <option value="InstaGen">InstaGen</option>
+                                <option value="Other">Other (specify)</option>
                             </select>
                         </div>
 
-                        <!-- Battery Options -->
-                        <div class="mb-8">
-                            <label class="block text-lg font-semibold mb-4">Battery Storage</label>
-                            <div class="grid grid-cols-2 gap-4 mb-4">
-                                <button type="button" id="include-battery" class="size-button p-4 rounded-lg font-medium">
-                                    Include Battery
-                                </button>
-                                <button type="button" id="no-battery" class="size-button p-4 rounded-lg font-medium selected">
-                                    No Battery
-                                </button>
+                        <div class="form-group">
+                            <label class="form-label">Include Battery Storage?</label>
+                            <div class="size-buttons">
+                                <button type="button" class="size-btn" data-battery="yes">Yes</button>
+                                <button type="button" class="size-btn" data-battery="no">No</button>
                             </div>
+                        </div>
 
-                            <!-- Battery Models (shown when battery is selected) -->
-                            <div id="battery-options" class="battery-models space-y-4">
-                                <div>
-                                    <label for="battery-brand" class="block font-medium mb-2">Battery Brand</label>
-                                    <select id="battery-brand" class="w-full p-3 border border-gray-300 rounded-lg">
-                                        <option value="">Select battery brand...</option>
-                                        <optgroup label="GivEnergy">
-                                            <option value="givenergy-5.12">GivEnergy 5.12kWh GEN3</option>
-                                            <option value="givenergy-9.5">GivEnergy 9.5kWh GEN3</option>
-                                            <option value="givenergy-14.62">GivEnergy 14.62kWh (3x GEN3)</option>
-                                            <option value="givenergy-19.74">GivEnergy 19.74kWh (4x GEN3)</option>
-                                        </optgroup>
-                                        <optgroup label="Fox ESS">
-                                            <option value="fox-2.56">Fox ESS 2.56kWh</option>
-                                            <option value="fox-5.12">Fox ESS 5.12kWh</option>
-                                            <option value="fox-7.68">Fox ESS 7.68kWh</option>
-                                            <option value="fox-10.24">Fox ESS 10.24kWh</option>
-                                            <option value="fox-12.8">Fox ESS 12.8kWh</option>
-                                        </optgroup>
-                                        <optgroup label="SolarEdge">
-                                            <option value="solaredge-9.7">SolarEdge 9.7kWh</option>
-                                            <option value="solaredge-19.4">SolarEdge 19.4kWh</option>
-                                            <option value="solaredge-29.1">SolarEdge 29.1kWh</option>
-                                        </optgroup>
-                                        <optgroup label="Tesla">
-                                            <option value="tesla-13.5">Tesla Powerwall 13.5kWh</option>
-                                            <option value="tesla-27">Tesla Powerwall 27kWh (2x units)</option>
-                                        </optgroup>
-                                        <optgroup label="Huawei">
-                                            <option value="huawei-5">Huawei LUNA 5kWh</option>
-                                            <option value="huawei-10">Huawei LUNA 10kWh</option>
-                                            <option value="huawei-15">Huawei LUNA 15kWh</option>
-                                        </optgroup>
-                                        <optgroup label="SolaX">
-                                            <option value="solax-5.8">SolaX Triple Power 5.8kWh</option>
-                                            <option value="solax-11.6">SolaX Triple Power 11.6kWh</option>
-                                            <option value="solax-17.4">SolaX Triple Power 17.4kWh</option>
-                                        </optgroup>
-                                        <optgroup label="Growatt">
-                                            <option value="growatt-2.56">Growatt ARK 2.56kWh</option>
-                                            <option value="growatt-5.12">Growatt ARK 5.12kWh</option>
-                                            <option value="growatt-7.68">Growatt ARK 7.68kWh</option>
-                                            <option value="growatt-10.24">Growatt ARK 10.24kWh</option>
-                                        </optgroup>
-                                        <optgroup label="Enphase">
-                                            <option value="enphase-3.36">Enphase IQ Battery 3.36kWh</option>
-                                            <option value="enphase-10.08">Enphase IQ Battery 10.08kWh (3x units)</option>
-                                            <option value="enphase-13.44">Enphase IQ Battery 13.44kWh (4x units)</option>
-                                        </optgroup>
-                                        <optgroup label="LG Chem">
-                                            <option value="lg-6.5">LG Chem RESU 6.5kWh</option>
-                                            <option value="lg-9.8">LG Chem RESU 9.8kWh</option>
-                                            <option value="lg-13">LG Chem RESU 13kWh</option>
-                                        </optgroup>
-                                        <optgroup label="Pylontech">
-                                            <option value="pylontech-2.4">Pylontech US2000 2.4kWh</option>
-                                            <option value="pylontech-4.8">Pylontech US3000 4.8kWh (2x US2000)</option>
-                                            <option value="pylontech-7.2">Pylontech Force L1 7.2kWh (3x US2000)</option>
-                                            <option value="pylontech-9.6">Pylontech Force L2 9.6kWh (4x US2000)</option>
-                                        </optgroup>
-                                        <optgroup label="BYD">
-                                            <option value="byd-2.56">BYD Battery-Box LV 2.56kWh</option>
-                                            <option value="byd-5.12">BYD Battery-Box LV 5.12kWh</option>
-                                            <option value="byd-7.68">BYD Battery-Box LV 7.68kWh</option>
-                                            <option value="byd-10.24">BYD Battery-Box LV 10.24kWh</option>
-                                        </optgroup>
-                                        <optgroup label="Myenergi">
-                                            <option value="myenergi-5">Myenergi Libbi 5kWh</option>
-                                            <option value="myenergi-10">Myenergi Libbi 10kWh</option>
-                                            <option value="myenergi-15">Myenergi Libbi 15kWh</option>
-                                            <option value="myenergi-20">Myenergi Libbi 20kWh</option>
-                                        </optgroup>
-                                        <optgroup label="EcoFlow">
-                                            <option value="ecoflow-5">EcoFlow Power Ocean 5kWh</option>
-                                            <option value="ecoflow-10">EcoFlow Power Ocean 10kWh</option>
-                                            <option value="ecoflow-15">EcoFlow Power Ocean 15kWh</option>
-                                        </optgroup>
-                                        <option value="other-battery">Other (specify in notes)</option>
-                                    </select>
+                        <div class="battery-section hidden" id="battery-section">
+                            <div class="form-group">
+                                <label class="form-label">Battery Details</label>
+                                <div class="battery-controls">
+                                    <div class="battery-dropdown">
+                                        <select class="form-select" id="battery-brand">
+                                            <option value="">Select battery...</option>
+                                            <option value="GivEnergy 5.12kWh GEN3">GivEnergy 5.12kWh GEN3</option>
+                                            <option value="GivEnergy 9.5kWh GEN3">GivEnergy 9.5kWh GEN3</option>
+                                            <option value="GivEnergy 13.5kWh (3x 4.5kWh)">GivEnergy 13.5kWh (3x 4.5kWh)</option>
+                                            <option value="Fox ESS ECS2900 (2.6kWh)">Fox ESS ECS2900 (2.6kWh)</option>
+                                            <option value="Fox ESS ECS4100 (3.7kWh)">Fox ESS ECS4100 (3.7kWh)</option>
+                                            <option value="Fox ESS ECS5200 (5.2kWh)">Fox ESS ECS5200 (5.2kWh)</option>
+                                            <option value="Fox ESS ECS7800 (7.8kWh)">Fox ESS ECS7800 (7.8kWh)</option>
+                                            <option value="Fox ESS ECS10400 (10.4kWh)">Fox ESS ECS10400 (10.4kWh)</option>
+                                            <option value="SolarEdge Energy Bank 10kWh">SolarEdge Energy Bank 10kWh</option>
+                                            <option value="SolarEdge Energy Bank 20kWh">SolarEdge Energy Bank 20kWh</option>
+                                            <option value="SolarEdge Energy Bank 30kWh">SolarEdge Energy Bank 30kWh</option>
+                                            <option value="Tesla Powerwall 2 (13.5kWh)">Tesla Powerwall 2 (13.5kWh)</option>
+                                            <option value="Tesla Powerwall 3 (13.5kWh)">Tesla Powerwall 3 (13.5kWh)</option>
+                                            <option value="SolaX Triple Power T58 (5.8kWh)">SolaX Triple Power T58 (5.8kWh)</option>
+                                            <option value="SolaX Triple Power T63 (6.3kWh)">SolaX Triple Power T63 (6.3kWh)</option>
+                                            <option value="Growatt ARK-2.5H-A1 (2.5kWh)">Growatt ARK-2.5H-A1 (2.5kWh)</option>
+                                            <option value="Growatt ARK XH (5.12kWh)">Growatt ARK XH (5.12kWh)</option>
+                                            <option value="Huawei LUNA2000 (5kWh)">Huawei LUNA2000 (5kWh)</option>
+                                            <option value="Huawei LUNA2000 (10kWh)">Huawei LUNA2000 (10kWh)</option>
+                                            <option value="Huawei LUNA2000 (15kWh)">Huawei LUNA2000 (15kWh)</option>
+                                            <option value="Enphase IQ Battery 5P (5kWh)">Enphase IQ Battery 5P (5kWh)</option>
+                                            <option value="Enphase IQ Battery 10 (10kWh)">Enphase IQ Battery 10 (10kWh)</option>
+                                            <option value="Sungrow SBR HV (9.6kWh)">Sungrow SBR HV (9.6kWh)</option>
+                                            <option value="Sungrow SBR HV (12.8kWh)">Sungrow SBR HV (12.8kWh)</option>
+                                            <option value="Pylontech US3000C (3.55kWh)">Pylontech US3000C (3.55kWh)</option>
+                                            <option value="Pylontech US5000 (4.8kWh)">Pylontech US5000 (4.8kWh)</option>
+                                            <option value="BYD Battery-Box Premium LVS (4kWh)">BYD Battery-Box Premium LVS (4kWh)</option>
+                                            <option value="BYD Battery-Box Premium HVS (5.1kWh)">BYD Battery-Box Premium HVS (5.1kWh)</option>
+                                            <option value="LG Chem RESU10H (9.8kWh)">LG Chem RESU10H (9.8kWh)</option>
+                                            <option value="LG Chem RESU16H (16kWh)">LG Chem RESU16H (16kWh)</option>
+                                            <option value="Myenergi Libbi (5kWh)">Myenergi Libbi (5kWh)</option>
+                                            <option value="Myenergi Libbi (10kWh)">Myenergi Libbi (10kWh)</option>
+                                            <option value="Myenergi Libbi (15kWh)">Myenergi Libbi (15kWh)</option>
+                                            <option value="Myenergi Libbi (20kWh)">Myenergi Libbi (20kWh)</option>
+                                            <option value="Other">Other (specify)</option>
+                                        </select>
+                                    </div>
+                                    <div class="battery-quantity">
+                                        <select class="form-select" id="battery-quantity">
+                                            <option value="1">1 Battery</option>
+                                            <option value="2">2 Batteries</option>
+                                            <option value="3">3 Batteries</option>
+                                            <option value="4">4+ Batteries</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="custom-battery hidden" id="custom-battery">
+                                    <input type="text" class="form-input" id="custom-battery-input" placeholder="Enter battery model and capacity (e.g., Custom LiFePO4 8kWh)">
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Quote Price -->
-                        <div class="mb-8">
-                            <label for="quote-price" class="block text-lg font-semibold mb-4">Total Quote Price (£)</label>
-                            <input type="number" id="quote-price" placeholder="e.g. 12500" class="w-full p-3 border border-gray-300 rounded-lg">
+                        <div class="form-group">
+                            <label class="form-label" for="quote-price">Total Quote Price (£)</label>
+                            <input type="number" class="form-input" id="quote-price" placeholder="e.g., 15000" required>
                         </div>
 
-                        <!-- Additional Notes -->
-                        <div class="mb-8">
-                            <label for="notes" class="block text-lg font-semibold mb-4">Additional Notes (Optional)</label>
-                            <textarea id="notes" rows="3" placeholder="Any additional details about the quote..." class="w-full p-3 border border-gray-300 rounded-lg"></textarea>
-                        </div>
-
-                        <!-- Submit Button -->
-                        <div class="text-center">
-                            <button type="submit" class="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition">
-                                Analyze Quote
-                            </button>
-                        </div>
+                        <button type="submit" class="analyze-btn">Analyze Quote</button>
                     </form>
                 </div>
-            </div>
 
-            <!-- PDF Upload Tab -->
-            <div id="pdf-tab" class="tab-content">
-                <div class="bg-white rounded-lg shadow-lg p-8 text-center">
-                    <div class="mb-6">
-                        <div class="text-6xl mb-4">📄</div>
-                        <h3 class="text-2xl font-semibold mb-2">Upload Your Quote PDF</h3>
-                        <p class="text-gray-600">We'll automatically extract and analyze all the details</p>
+                <div id="pdf-tab" class="tab-content">
+                    <div style="text-align: center; padding: 3rem; color: #64748b;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📄</div>
+                        <h3>PDF Upload Coming Soon</h3>
+                        <p>We're working on automatic PDF quote analysis. For now, please use manual entry above.</p>
                     </div>
-                    
-                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-12 mb-6">
-                        <input type="file" id="pdf-upload" accept=".pdf" class="hidden">
-                        <label for="pdf-upload" class="cursor-pointer">
-                            <div class="text-4xl mb-4">📁</div>
-                            <div class="text-lg font-medium mb-2">Drop your PDF here or click to browse</div>
-                            <div class="text-gray-500">Supports PDF files up to 10MB</div>
-                        </label>
-                    </div>
-                    
-                    <button class="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition">
-                        Analyze PDF Quote
-                    </button>
                 </div>
-            </div>
 
-            <!-- Analysis Results -->
-            <div id="analysis-results" class="hidden mt-12">
-                <div class="bg-white rounded-lg shadow-lg p-8">
-                    <h3 class="text-2xl font-bold mb-6 text-center">Quote Analysis Results</h3>
-                    
-                    <div class="grid md:grid-cols-3 gap-6 mb-8">
-                        <!-- Price Assessment -->
-                        <div class="text-center p-6 rounded-lg border">
-                            <div class="text-3xl mb-2" id="price-emoji">💰</div>
-                            <div class="text-lg font-semibold mb-2">Price Assessment</div>
-                            <div class="text-2xl font-bold" id="price-verdict">Fair Price</div>
-                            <div class="text-sm text-gray-600" id="price-details">Within market range</div>
+                <div class="analysis-results hidden" id="analysis-results">
+                    <div class="analysis-header">
+                        <h3>Your Quote Analysis</h3>
+                        <p>Independent assessment of your solar quote</p>
+                    </div>
+
+                    <div class="overall-score">
+                        <div class="score-card">
+                            <div class="score-emoji" id="price-emoji">💰</div>
+                            <div class="score-value" id="price-score">-</div>
+                            <div class="score-label">Price Assessment</div>
                         </div>
-
-                        <!-- Quality Rating -->
-                        <div class="text-center p-6 rounded-lg border">
-                            <div class="text-3xl mb-2" id="quality-emoji">⭐</div>
-                            <div class="text-lg font-semibold mb-2">Component Quality</div>
-                            <div class="text-2xl font-bold" id="quality-verdict">Good Quality</div>
-                            <div class="text-sm text-gray-600" id="quality-details">Tier 1 components</div>
+                        <div class="score-card">
+                            <div class="score-emoji" id="quality-emoji">⭐</div>
+                            <div class="score-value" id="quality-score">-</div>
+                            <div class="score-label">Quality Rating</div>
                         </div>
-
-                        <!-- Value Score -->
-                        <div class="text-center p-6 rounded-lg border">
-                            <div class="text-3xl mb-2" id="value-emoji">📊</div>
-                            <div class="text-lg font-semibold mb-2">Overall Value</div>
-                            <div class="text-2xl font-bold" id="value-score">8.5/10</div>
-                            <div class="text-sm text-gray-600" id="value-details">Excellent value</div>
+                        <div class="score-card">
+                            <div class="score-emoji" id="value-emoji">🎯</div>
+                            <div class="score-value" id="value-score">-</div>
+                            <div class="score-label">Overall Value</div>
                         </div>
                     </div>
 
-                    <!-- Detailed Breakdown -->
-                    <div class="space-y-6">
-                        <div class="border-l-4 border-blue-500 pl-4">
-                            <h4 class="font-semibold mb-2">💡 Key Insights</h4>
-                            <ul id="key-insights" class="space-y-1 text-gray-700">
-                                <li>• System size is appropriate for your energy needs</li>
-                                <li>• Panel quality is good (Tier 1 manufacturer)</li>
-                                <li>• Price is competitive for current market</li>
-                                <li>• Battery storage will provide good energy independence</li>
+                    <div class="analysis-sections">
+                        <div class="analysis-section">
+                            <h4>Key Insights</h4>
+                            <ul id="key-insights">
+                                <!-- Insights will be populated here -->
                             </ul>
                         </div>
-
-                        <div class="border-l-4 border-yellow-500 pl-4">
-                            <h4 class="font-semibold mb-2">⚠️ Things to Consider</h4>
-                            <ul id="considerations" class="space-y-1 text-gray-700">
-                                <li>• Get quotes from 2-3 other installers for comparison</li>
-                                <li>• Verify installer is MCS certified</li>
-                                <li>• Check warranty terms and conditions</li>
-                                <li>• Confirm installation timeline and payment schedule</li>
+                        <div class="analysis-section">
+                            <h4>Things to Consider</h4>
+                            <ul id="considerations">
+                                <!-- Considerations will be populated here -->
                             </ul>
                         </div>
-
-                        <div class="border-l-4 border-green-500 pl-4">
-                            <h4 class="font-semibold mb-2">✅ Recommendations</h4>
-                            <ul id="recommendations" class="space-y-1 text-gray-700">
-                                <li>• This quote represents good value for money</li>
-                                <li>• Consider proceeding with this installer</li>
-                                <li>• Negotiate payment terms if needed</li>
-                                <li>• Schedule installation for optimal timing</li>
+                        <div class="analysis-section">
+                            <h4>Our Recommendations</h4>
+                            <ul id="recommendations">
+                                <!-- Recommendations will be populated here -->
                             </ul>
                         </div>
                     </div>
@@ -1305,590 +1149,497 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-16 bg-white">
-        <div class="max-w-4xl mx-auto text-center px-4">
-            <h2 class="text-3xl font-bold mb-8">Get Independent Solar Advice</h2>
-            <p class="text-xl text-gray-600 mb-8">
-                Have questions? Need help analyzing a complex quote? Our solar experts are here to help.
-            </p>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="bg-gray-50 p-6 rounded-lg">
-                    <h3 class="text-xl font-semibold mb-4">Free Analysis</h3>
-                    <p class="text-gray-600 mb-4">Get instant analysis of your solar quotes with our free tools.</p>
-                    <button onclick="scrollToAnalyzer()" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition">
-                        Start Analysis
-                    </button>
+    <!-- Get Advice Section -->
+    <section class="get-advice">
+        <div class="container">
+            <h2>Get Independent Solar Advice</h2>
+            <p>Have questions? Need help analyzing a complex quote? Our solar experts are here to help.</p>
+            
+            <div class="advice-options">
+                <div class="advice-card">
+                    <h3>Free Analysis</h3>
+                    <p>Get instant analysis of your solar quotes with our free tools.</p>
+                    <button class="btn btn-primary" onclick="scrollToAnalyzer()">Start Analysis</button>
                 </div>
-                <div class="bg-gray-50 p-6 rounded-lg">
-                    <h3 class="text-xl font-semibold mb-4">Expert Consultation</h3>
-                    <p class="text-gray-600 mb-4">Book a call with our solar experts for personalized advice.</p>
-                    <button class="bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 transition">
-                        Book Consultation
-                    </button>
+                <div class="advice-card">
+                    <h3>Expert Consultation</h3>
+                    <p>Book a call with our solar experts for personalized advice.</p>
+                    <button class="btn btn-secondary">Book Consultation</button>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="grid md:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center mb-4">
-                        <div class="text-2xl">☀️</div>
-                        <h3 class="ml-2 text-xl font-bold">Solar Truth AI</h3>
-                    </div>
-                    <p class="text-gray-400">Independent solar analysis you can trust. No installer bias, just honest advice.</p>
-                </div>
-                <div>
-                    <h4 class="font-semibold mb-4">Tools</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#consultation" class="hover:text-white">System Sizing</a></li>
-                        <li><a href="#analyzer" class="hover:text-white">Quote Analysis</a></li>
-                        <li><a href="#" class="hover:text-white">ROI Calculator</a></li>
-                        <li><a href="#" class="hover:text-white">Installer Reviews</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold mb-4">Resources</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white">Solar Guide</a></li>
-                        <li><a href="#" class="hover:text-white">Battery Guide</a></li>
-                        <li><a href="#" class="hover:text-white">Installer Directory</a></li>
-                        <li><a href="#" class="hover:text-white">FAQ</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold mb-4">Company</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white">About Us</a></li>
-                        <li><a href="#" class="hover:text-white">Contact</a></li>
-                        <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-white">Terms of Service</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2024 Solar Truth AI. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
 
     <script>
-        // Solar Recommendation Engine with Accurate Payback Calculation
-        class SolarRecommendationEngine {
-            constructor() {
-                this.constants = {
-                    // Pricing (£ per kW installed)
-                    SOLAR_COST_PER_KW: 1850,
-                    BATTERY_COST_PER_KWH: 800,
-                    
-                    // Generation (kWh per kW per year in UK)
-                    ANNUAL_GENERATION_PER_KW: 900,
-                    
-                    // Energy prices and inflation
-                    ELECTRICITY_RATE: 0.28, // £ per kWh
-                    EXPORT_RATE: 0.15, // £ per kWh
-                    INFLATION_RATE_DEFAULT: 0.035, // 3.5% (industry standard)
-                    INFLATION_RATE_CURRENT: 0.07, // 7% (current UK inflation)
-                    
-                    // System efficiency factors
-                    SYSTEM_EFFICIENCY: 0.85,
-                    BATTERY_EFFICIENCY: 0.90,
-                    
-                    // Lifestyle factors
-                    OCCUPATION_FACTORS: {
-                        'healthcare': { homeUsage: 0.3, batteryNeed: 1.4 },
-                        'office': { homeUsage: 0.25, batteryNeed: 1.2 },
-                        'teacher': { homeUsage: 0.4, batteryNeed: 0.9 },
-                        'remote': { homeUsage: 0.7, batteryNeed: 0.6 },
-                        'shift': { homeUsage: 0.4, batteryNeed: 1.5 },
-                        'retired': { homeUsage: 0.8, batteryNeed: 0.4 }
-                    }
-                };
+        // Consultation Questions Data
+        const consultationQuestions = [
+            {
+                id: 1,
+                title: "What type of property do you live in?",
+                options: [
+                    { value: "detached", text: "Detached House", icon: "🏠" },
+                    { value: "semi-detached", text: "Semi-Detached House", icon: "🏘️" },
+                    { value: "terraced", text: "Terraced House", icon: "🏚️" },
+                    { value: "bungalow", text: "Bungalow", icon: "🏡" }
+                ]
+            },
+            {
+                id: 2,
+                title: "How many bedrooms does your home have?",
+                options: [
+                    { value: "1-2", text: "1-2 Bedrooms", icon: "🛏️" },
+                    { value: "3", text: "3 Bedrooms", icon: "🛏️" },
+                    { value: "4", text: "4 Bedrooms", icon: "🛏️" },
+                    { value: "5+", text: "5+ Bedrooms", icon: "🛏️" }
+                ]
+            },
+            {
+                id: 3,
+                title: "What best describes your work situation?",
+                options: [
+                    { value: "healthcare", text: "Healthcare Worker", icon: "👩‍⚕️" },
+                    { value: "teacher", text: "Teacher/Education", icon: "👨‍🏫" },
+                    { value: "office", text: "Office Worker", icon: "💼" },
+                    { value: "remote", text: "Work from Home", icon: "🏠" },
+                    { value: "shift", text: "Shift Worker", icon: "🌙" },
+                    { value: "retired", text: "Retired", icon: "👴" },
+                    { value: "other", text: "Other", icon: "👤" }
+                ]
+            },
+            {
+                id: 4,
+                title: "What's your typical work schedule?",
+                options: [
+                    { value: "standard", text: "Standard Days (9am-5pm)", icon: "🌅" },
+                    { value: "shift-rotating", text: "Shift Work - Rotating", icon: "🌙" },
+                    { value: "shift-nights", text: "Mostly Night Shifts", icon: "🌃" },
+                    { value: "flexible", text: "Flexible Hours", icon: "⏰" },
+                    { value: "home", text: "Work from Home", icon: "🏠" },
+                    { value: "retired", text: "Retired/Not Working", icon: "🏖️" }
+                ]
+            },
+            {
+                id: 5,
+                title: "How often are you home during the day (9am-4pm)?",
+                options: [
+                    { value: "always", text: "Always Home", icon: "🏠" },
+                    { value: "mostly", text: "Mostly Home", icon: "🏡" },
+                    { value: "sometimes", text: "Sometimes Home", icon: "🚪" },
+                    { value: "rarely", text: "Rarely Home", icon: "🚗" }
+                ]
+            },
+            {
+                id: 6,
+                title: "How many people live in your household?",
+                options: [
+                    { value: "1", text: "1 Person", icon: "👤" },
+                    { value: "2", text: "2 People", icon: "👥" },
+                    { value: "3-4", text: "3-4 People", icon: "👨‍👩‍👧" },
+                    { value: "5+", text: "5+ People", icon: "👨‍👩‍👧‍👦" }
+                ]
+            },
+            {
+                id: 7,
+                title: "What's your current monthly electricity bill?",
+                options: [
+                    { value: "under-50", text: "Under £50", icon: "💷" },
+                    { value: "50-100", text: "£50-£100", icon: "💷" },
+                    { value: "100-150", text: "£100-£150", icon: "💷" },
+                    { value: "150-200", text: "£150-£200", icon: "💷" },
+                    { value: "over-200", text: "Over £200", icon: "💷" }
+                ]
+            },
+            {
+                id: 8,
+                title: "Do you plan to get an electric vehicle?",
+                options: [
+                    { value: "have-one", text: "Already Have One", icon: "🚗" },
+                    { value: "within-year", text: "Within 1 Year", icon: "🚙" },
+                    { value: "1-3-years", text: "In 1-3 Years", icon: "🚕" },
+                    { value: "maybe-future", text: "Maybe in Future", icon: "🤔" },
+                    { value: "no-plans", text: "No Plans", icon: "⛽" }
+                ]
+            },
+            {
+                id: 9,
+                title: "What type of heating system do you have?",
+                options: [
+                    { value: "gas-boiler", text: "Gas Boiler", icon: "🔥" },
+                    { value: "heat-pump", text: "Heat Pump", icon: "♨️" },
+                    { value: "electric", text: "Electric Heating", icon: "⚡" },
+                    { value: "oil", text: "Oil Heating", icon: "🛢️" },
+                    { value: "other", text: "Other", icon: "🏠" }
+                ]
+            },
+            {
+                id: 10,
+                title: "Are you planning to install a heat pump?",
+                options: [
+                    { value: "have-one", text: "Already Have One", icon: "♨️" },
+                    { value: "within-year", text: "Within 1 Year", icon: "📅" },
+                    { value: "1-3-years", text: "In 1-3 Years", icon: "📆" },
+                    { value: "considering", text: "Considering It", icon: "🤔" },
+                    { value: "no-plans", text: "No Plans", icon: "❌" }
+                ]
+            },
+            {
+                id: 11,
+                title: "Which direction does your roof mainly face?",
+                options: [
+                    { value: "south", text: "South", icon: "☀️" },
+                    { value: "south-east", text: "South-East", icon: "🌅" },
+                    { value: "south-west", text: "South-West", icon: "🌇" },
+                    { value: "east-west", text: "East/West", icon: "🌄" },
+                    { value: "north", text: "North", icon: "🧭" },
+                    { value: "not-sure", text: "Not Sure", icon: "❓" }
+                ]
+            },
+            {
+                id: 12,
+                title: "What's your main goal with solar?",
+                options: [
+                    { value: "save-money", text: "Save Money on Bills", icon: "💰" },
+                    { value: "environmental", text: "Environmental Impact", icon: "🌱" },
+                    { value: "energy-independence", text: "Energy Independence", icon: "🔋" },
+                    { value: "property-value", text: "Increase Property Value", icon: "🏠" },
+                    { value: "all-above", text: "All of the Above", icon: "⭐" }
+                ]
+            },
+            {
+                id: 13,
+                title: "How interested are you in battery storage?",
+                options: [
+                    { value: "very-interested", text: "Very Interested", icon: "🔋" },
+                    { value: "somewhat", text: "Somewhat Interested", icon: "🤔" },
+                    { value: "not-sure", text: "Not Sure", icon: "❓" },
+                    { value: "not-interested", text: "Not Interested", icon: "❌" }
+                ]
+            },
+            {
+                id: 14,
+                title: "Do you have any other major electrical appliances planned?",
+                options: [
+                    { value: "hot-tub", text: "Hot Tub/Spa", icon: "🛁" },
+                    { value: "pool", text: "Swimming Pool", icon: "🏊" },
+                    { value: "workshop", text: "Workshop/Garage", icon: "🔧" },
+                    { value: "home-office", text: "Home Office Setup", icon: "💻" },
+                    { value: "none", text: "None Planned", icon: "✅" }
+                ]
             }
+        ];
 
-            calculateSolarRecommendation(answers) {
-                // Base system sizing
-                const baseSize = this.calculateBaseSystemSize(answers);
-                const batterySize = this.calculateBatterySize(answers, baseSize);
-                
-                // Financial calculations with proper inflation
-                const financials = this.calculateFinancials(baseSize, batterySize, answers);
-                
-                // Generate insights
-                const insights = this.generateInsights(answers, baseSize, batterySize);
-                
-                return {
-                    systemSize: baseSize,
-                    batterySize: batterySize,
-                    confidence: this.calculateConfidence(answers),
-                    ...financials,
-                    insights: insights,
-                    tips: this.generateOptimizationTips(answers),
-                    nextSteps: this.generateNextSteps(answers)
-                };
-            }
-
-            calculateBaseSystemSize(answers) {
-                let baseSize = 4; // Start with 4kW base
-                
-                // Property type adjustment
-                const propertyMultipliers = {
-                    'detached': 1.3,
-                    'semi-detached': 1.1,
-                    'terraced': 0.9,
-                    'bungalow': 1.0
-                };
-                baseSize *= propertyMultipliers[answers.propertyType] || 1.0;
-                
-                // Bedroom adjustment
-                const bedroomMultipliers = {
-                    '1': 0.6, '2': 0.8, '3': 1.0, '4': 1.2, '5+': 1.4
-                };
-                baseSize *= bedroomMultipliers[answers.bedrooms] || 1.0;
-                
-                // Household size adjustment
-                const householdMultipliers = {
-                    '1': 0.7, '2': 0.9, '3': 1.0, '4': 1.1, '5+': 1.3
-                };
-                baseSize *= householdMultipliers[answers.household] || 1.0;
-                
-                // Bill-based adjustment
-                const billMultipliers = {
-                    'under-50': 0.7,
-                    '50-100': 1.0,
-                    '100-150': 1.3,
-                    'over-150': 1.6
-                };
-                baseSize *= billMultipliers[answers.currentBills] || 1.0;
-                
-                // Future needs
-                if (answers.evPlans === 'have-ev' || answers.evPlans === 'planning-ev') {
-                    baseSize += 2.5; // Add 2.5kW for EV charging
-                }
-                
-                if (answers.heating === 'heat-pump' || answers.heating === 'planning-heat-pump') {
-                    baseSize += 1.5; // Add 1.5kW for heat pump
-                }
-                
-                // Home improvements
-                if (answers.homeImprovements === 'hot-tub') baseSize += 1.0;
-                if (answers.homeImprovements === 'pool') baseSize += 2.0;
-                if (answers.homeImprovements === 'workshop') baseSize += 1.5;
-                
-                // Budget constraints
-                const budgetLimits = {
-                    'under-8k': 4.0,
-                    '8k-15k': 7.0,
-                    '15k-25k': 12.0,
-                    'over-25k': 20.0
-                };
-                const budgetLimit = budgetLimits[answers.budget];
-                if (budgetLimit && baseSize > budgetLimit) {
-                    baseSize = budgetLimit;
-                }
-                
-                // Round to nearest 0.5kW
-                return Math.round(baseSize * 2) / 2;
-            }
-
-            calculateBatterySize(answers, systemSize) {
-                if (answers.batteryInterest === 'not-interested') return 0;
-                
-                let batterySize = systemSize * 0.8; // Base: 0.8kWh per kW
-                
-                // Occupation-based adjustment
-                const occupationFactor = this.constants.OCCUPATION_FACTORS[answers.occupation];
-                if (occupationFactor) {
-                    batterySize *= occupationFactor.batteryNeed;
-                }
-                
-                // Work schedule adjustment
-                const scheduleMultipliers = {
-                    'standard-days': 1.2,
-                    'shift-rotating': 1.5,
-                    'home-days': 0.6,
-                    'flexible': 0.8
-                };
-                batterySize *= scheduleMultipliers[answers.workSchedule] || 1.0;
-                
-                // Home during day adjustment
-                const homeDayMultipliers = {
-                    'always': 0.5,
-                    'often': 0.7,
-                    'sometimes': 1.0,
-                    'rarely': 1.3
-                };
-                batterySize *= homeDayMultipliers[answers.homeDuringDay] || 1.0;
-                
-                // Interest level adjustment
-                const interestMultipliers = {
-                    'very-interested': 1.3,
-                    'somewhat-interested': 1.0,
-                    'not-sure': 0.8,
-                    'not-interested': 0
-                };
-                batterySize *= interestMultipliers[answers.batteryInterest] || 1.0;
-                
-                // EV charging needs
-                if (answers.evPlans === 'have-ev' || answers.evPlans === 'planning-ev') {
-                    batterySize += 5; // Add 5kWh for EV charging flexibility
-                }
-                
-                // Budget constraints for battery
-                const budgetBatteryLimits = {
-                    'under-8k': 0,
-                    '8k-15k': 5,
-                    '15k-25k': 15,
-                    'over-25k': 25
-                };
-                const batteryBudgetLimit = budgetBatteryLimits[answers.budget];
-                if (batteryBudgetLimit !== undefined && batterySize > batteryBudgetLimit) {
-                    batterySize = batteryBudgetLimit;
-                }
-                
-                // Round to nearest 0.5kWh, minimum 2.5kWh if any battery
-                if (batterySize > 0) {
-                    batterySize = Math.max(2.5, Math.round(batterySize * 2) / 2);
-                }
-                
-                return batterySize;
-            }
-
-            calculateFinancials(systemSize, batterySize, answers) {
-                // System costs
-                const solarCost = systemSize * this.constants.SOLAR_COST_PER_KW;
-                const batteryCost = batterySize * this.constants.BATTERY_COST_PER_KWH;
-                const totalCost = solarCost + batteryCost;
-                
-                // Annual generation and usage
-                const annualGeneration = systemSize * this.constants.ANNUAL_GENERATION_PER_KW * this.constants.SYSTEM_EFFICIENCY;
-                
-                // Self-consumption based on lifestyle
-                let selfConsumption = 0.4; // Base 40%
-                const occupationFactor = this.constants.OCCUPATION_FACTORS[answers.occupation];
-                if (occupationFactor) {
-                    selfConsumption = occupationFactor.homeUsage * 0.6 + 0.2; // 20-80% range
-                }
-                
-                // Battery increases self-consumption
-                if (batterySize > 0) {
-                    const batteryBoost = Math.min(0.3, batterySize / systemSize * 0.1);
-                    selfConsumption = Math.min(0.85, selfConsumption + batteryBoost);
-                }
-                
-                // Annual savings calculation
-                const selfConsumedEnergy = annualGeneration * selfConsumption;
-                const exportedEnergy = annualGeneration * (1 - selfConsumption);
-                const annualSavings = (selfConsumedEnergy * this.constants.ELECTRICITY_RATE) + 
-                                   (exportedEnergy * this.constants.EXPORT_RATE);
-                
-                // Payback calculation with inflation (3.5% default)
-                const paybackDefault = this.calculateInflationAdjustedPayback(totalCost, annualSavings, this.constants.INFLATION_RATE_DEFAULT);
-                const paybackCurrent = this.calculateInflationAdjustedPayback(totalCost, annualSavings, this.constants.INFLATION_RATE_CURRENT);
-                
-                // 25-year savings with inflation
-                const totalSavingsDefault = this.calculateTotalSavingsWithInflation(annualSavings, 25, this.constants.INFLATION_RATE_DEFAULT);
-                const totalSavingsCurrent = this.calculateTotalSavingsWithInflation(annualSavings, 25, this.constants.INFLATION_RATE_CURRENT);
-                
-                return {
-                    totalCost: Math.round(totalCost),
-                    annualSavings: Math.round(annualSavings),
-                    paybackPeriod: paybackDefault,
-                    paybackPeriodCurrent: paybackCurrent,
-                    totalSavings: Math.round(totalSavingsDefault),
-                    totalSavingsCurrent: Math.round(totalSavingsCurrent),
-                    annualGeneration: Math.round(annualGeneration),
-                    selfConsumption: Math.round(selfConsumption * 100)
-                };
-            }
-
-            calculateInflationAdjustedPayback(totalCost, annualSavings, inflationRate) {
-                let cumulativeSavings = 0;
-                let year = 0;
-                
-                while (cumulativeSavings < totalCost && year < 30) {
-                    year++;
-                    const yearSavings = annualSavings * Math.pow(1 + inflationRate, year - 1);
-                    cumulativeSavings += yearSavings;
-                }
-                
-                return Math.round(year * 10) / 10; // Round to 1 decimal place
-            }
-
-            calculateTotalSavingsWithInflation(annualSavings, years, inflationRate) {
-                let totalSavings = 0;
-                for (let year = 1; year <= years; year++) {
-                    totalSavings += annualSavings * Math.pow(1 + inflationRate, year - 1);
-                }
-                return totalSavings;
-            }
-
-            calculateConfidence(answers) {
-                let confidence = 85; // Base confidence
-                
-                // Increase confidence for complete answers
-                const completeAnswers = Object.values(answers).filter(v => v && v !== '').length;
-                confidence += Math.min(15, completeAnswers);
-                
-                // Specific high-confidence scenarios
-                if (answers.currentBills && answers.currentBills !== '') confidence += 5;
-                if (answers.occupation && answers.occupation !== '') confidence += 5;
-                if (answers.workSchedule && answers.workSchedule !== '') confidence += 5;
-                
-                return Math.min(99, confidence);
-            }
-
-            generateInsights(answers, systemSize, batterySize) {
-                const occupationInsights = {
-                    'healthcare': `As a healthcare worker with irregular shifts, your energy usage doesn't align well with solar generation. Your shift work means you need large battery storage for energy flexibility when working nights.`,
-                    'office': `As an office worker away during peak solar hours (9am-5pm), you'll benefit significantly from battery storage to use your solar energy in the evenings.`,
-                    'teacher': `As a teacher, you're home during school holidays when solar generation is high, giving you good solar alignment. You'll need moderate battery storage for term-time flexibility.`,
-                    'remote': `Working from home means excellent solar alignment - you'll use most of your solar energy as it's generated. You need minimal battery storage since you're home during peak solar hours.`,
-                    'shift': `Your rotating shift work creates variable energy patterns. Large battery storage is essential to provide flexibility regardless of when you're home or working.`,
-                    'retired': `Being retired gives you perfect solar alignment - you're home when the sun shines brightest. You need minimal battery storage since you can time your energy usage with solar generation.`
-                };
-                
-                return occupationInsights[answers.occupation] || 
-                       `Based on your lifestyle and energy needs, this system is optimized for your specific situation.`;
-            }
-
-            generateOptimizationTips(answers) {
-                const tips = [
-                    "Set your washing machine and dishwasher to run during peak solar hours (11am-3pm)",
-                    "Monitor your system performance with a smart app to optimize usage"
-                ];
-                
-                if (answers.evPlans === 'have-ev' || answers.evPlans === 'planning-ev') {
-                    tips.push("Consider a smart EV charger to use excess solar power");
-                }
-                
-                if (answers.batteryInterest !== 'not-interested') {
-                    tips.push("Use battery power during evening peak rate hours (4pm-7pm)");
-                }
-                
-                if (answers.occupation === 'shift' || answers.occupation === 'healthcare') {
-                    tips.push("Program your battery to charge during off-peak hours when you're working");
-                }
-                
-                return tips;
-            }
-
-            generateNextSteps(answers) {
-                return [
-                    "Get quotes from 3-4 MCS certified installers",
-                    "Use our quote analyzer to check for overpricing",
-                    "Ensure quotes match your recommended system size",
-                    "Check installer reviews and certifications",
-                    "Schedule installation for optimal timing"
-                ];
-            }
-        }
-
-        // Global variables
-        let currentStep = 1;
+        // Consultation State
+        let currentQuestion = 0;
         let consultationAnswers = {};
-        let selectedSystemSize = null;
-        let selectedPanelOutput = null;
-        let selectedBatteryBrand = null;
-        let hasBattery = false;
-        let useCurrentInflation = false;
-        const engine = new SolarRecommendationEngine();
 
-        // Consultation functionality
+        // Initialize consultation
         function initializeConsultation() {
-            const options = document.querySelectorAll('.consultation-option');
-            options.forEach(option => {
-                option.addEventListener('click', function() {
-                    const step = this.closest('.consultation-step');
-                    const stepNumber = parseInt(step.dataset.step);
-                    const value = this.dataset.value;
-                    
-                    // Remove previous selections in this step
-                    step.querySelectorAll('.consultation-option').forEach(opt => {
-                        opt.classList.remove('selected');
-                    });
-                    
-                    // Add selection to clicked option
-                    this.classList.add('selected');
-                    
-                    // Store answer
-                    const questionKeys = [
-                        '', 'propertyType', 'bedrooms', 'occupation', 'workSchedule', 'homeDuringDay',
-                        'household', 'currentBills', 'evPlans', 'heating', 'homeImprovements',
-                        'goals', 'batteryInterest', 'roofOrientation', 'budget', 'timeline'
-                    ];
-                    consultationAnswers[questionKeys[stepNumber]] = value;
-                    
-                    // Auto-advance after short delay
-                    setTimeout(() => {
-                        if (stepNumber < 15) {
-                            nextConsultationStep();
-                        } else {
-                            showConsultationResults();
-                        }
-                    }, 500);
-                });
-            });
+            showQuestion(0);
+            updateProgress();
         }
 
-        function nextConsultationStep() {
-            if (currentStep < 15) {
-                // Hide current step
-                document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
-                
-                // Show next step
-                currentStep++;
-                document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
-                
-                // Update progress
+        function showQuestion(questionIndex) {
+            const question = consultationQuestions[questionIndex];
+            const container = document.getElementById('question-container');
+            
+            container.innerHTML = `
+                <div class="question-header">
+                    <div class="question-number">${question.id} of ${consultationQuestions.length}</div>
+                </div>
+                <h3 class="question-title">${question.title}</h3>
+                <div class="options-grid">
+                    ${question.options.map(option => `
+                        <div class="option-card" onclick="selectOption('${question.id}', '${option.value}')">
+                            <div class="option-icon">${option.icon}</div>
+                            <div class="option-text">${option.text}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            // Update navigation buttons
+            document.getElementById('prev-btn').disabled = questionIndex === 0;
+            document.getElementById('next-btn').disabled = true;
+            
+            // Restore previous selection if exists
+            if (consultationAnswers[question.id]) {
+                const selectedCard = container.querySelector(`[onclick*="'${consultationAnswers[question.id]}'"]`);
+                if (selectedCard) {
+                    selectedCard.classList.add('selected');
+                    document.getElementById('next-btn').disabled = false;
+                }
+            }
+        }
+
+        function selectOption(questionId, value) {
+            // Remove previous selection
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selection to clicked card
+            event.target.closest('.option-card').classList.add('selected');
+            
+            // Store answer
+            consultationAnswers[questionId] = value;
+            
+            // Enable next button
+            document.getElementById('next-btn').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < consultationQuestions.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+                updateProgress();
+            } else {
+                // Show results
+                showConsultationResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
                 updateProgress();
             }
         }
 
         function updateProgress() {
-            const progressBar = document.getElementById('progress-bar');
-            const progressText = document.getElementById('progress-text');
-            const percentage = (currentStep / 15) * 100;
-            
-            progressBar.style.width = percentage + '%';
-            progressText.textContent = `${currentStep} of 15`;
+            const progress = ((currentQuestion + 1) / consultationQuestions.length) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
         }
 
         function showConsultationResults() {
-            // Hide consultation questions
-            document.getElementById('consultation-container').style.display = 'none';
+            // Calculate recommendation based on answers
+            const recommendation = calculateRecommendation(consultationAnswers);
             
-            // Calculate recommendation
-            const recommendation = engine.calculateSolarRecommendation(consultationAnswers);
+            const resultsContainer = document.getElementById('consultation-results');
+            resultsContainer.innerHTML = `
+                <h3>Your Personalized Solar Recommendation</h3>
+                <div class="recommendation-card">
+                    <div class="system-size">${recommendation.systemSize}kW Solar System${recommendation.batterySize ? ' + ' + recommendation.batterySize + 'kWh Battery' : ''}</div>
+                    <div class="financial-summary">
+                        <div class="financial-item">
+                            <div class="financial-value">£${recommendation.estimatedCost.toLocaleString()}</div>
+                            <div class="financial-label">Estimated Cost</div>
+                        </div>
+                        <div class="financial-item">
+                            <div class="financial-value">£${recommendation.annualSavings}</div>
+                            <div class="financial-label">Annual Savings</div>
+                        </div>
+                        <div class="financial-item">
+                            <div class="financial-value" id="payback-display">${recommendation.paybackYears} years</div>
+                            <div class="financial-label">Payback Period</div>
+                        </div>
+                    </div>
+                    <div class="inflation-toggle">
+                        <span>Inflation rate: </span>
+                        <button class="toggle-button active" onclick="toggleInflation(3.5)">3.5%</button>
+                        <button class="toggle-button" onclick="toggleInflation(7)">7%</button>
+                    </div>
+                    <div class="insights">
+                        <h4>Personalized Insights</h4>
+                        <p>${recommendation.insights}</p>
+                    </div>
+                </div>
+                <div class="cta-section">
+                    <h3>Ready to Analyze Your Quotes?</h3>
+                    <p>Now that you know what system you need, let's analyze installer quotes to make sure you get the best deal.</p>
+                    <button class="btn btn-primary" onclick="scrollToAnalyzer()">Now Analyze Your Quotes</button>
+                </div>
+            `;
             
-            // Update results display
-            document.getElementById('confidence-score').textContent = `${recommendation.confidence}% Confidence`;
-            document.getElementById('recommended-size').textContent = `${recommendation.systemSize}kW`;
-            document.getElementById('recommended-battery').textContent = recommendation.batterySize > 0 ? `${recommendation.batterySize}kWh` : 'Not recommended';
-            document.getElementById('annual-generation').textContent = `${recommendation.annualGeneration.toLocaleString()} kWh`;
-            document.getElementById('self-consumption').textContent = `${recommendation.selfConsumption}%`;
-            document.getElementById('total-cost').textContent = `£${recommendation.totalCost.toLocaleString()}`;
-            document.getElementById('annual-savings').textContent = `£${recommendation.annualSavings.toLocaleString()}`;
-            document.getElementById('payback-period').textContent = `${recommendation.paybackPeriod} years`;
-            document.getElementById('total-savings').textContent = `£${recommendation.totalSavings.toLocaleString()}`;
-            document.getElementById('lifestyle-insights').textContent = recommendation.insights;
+            resultsContainer.classList.remove('hidden');
+            resultsContainer.scrollIntoView({ behavior: 'smooth' });
             
-            // Update tips and next steps
-            const tipsList = document.getElementById('optimization-tips');
-            tipsList.innerHTML = recommendation.tips.map(tip => `<li>• ${tip}</li>`).join('');
-            
-            const stepsList = document.getElementById('next-steps');
-            stepsList.innerHTML = recommendation.nextSteps.map((step, index) => `<li>${index + 1}. ${step}</li>`).join('');
-            
-            // Set up inflation toggle
-            setupInflationToggle(recommendation);
-            
-            // Show results
-            document.getElementById('consultation-results').classList.remove('hidden');
-            
-            // Store recommendation for quote analyzer
-            window.solarRecommendation = recommendation;
+            // Hide consultation form
+            document.querySelector('.consultation-container').style.display = 'none';
         }
 
-        function setupInflationToggle(recommendation) {
-            const toggleBtn = document.getElementById('inflation-toggle-btn');
-            const paybackElement = document.getElementById('payback-period');
-            const savingsElement = document.getElementById('total-savings');
-            const explanationElement = document.getElementById('inflation-explanation');
+        function calculateRecommendation(answers) {
+            // Base system size calculation
+            let systemSize = 4; // Base 4kW
+            let batterySize = 0;
+            let estimatedCost = 12000;
             
-            toggleBtn.addEventListener('click', function() {
-                useCurrentInflation = !useCurrentInflation;
-                
-                if (useCurrentInflation) {
-                    paybackElement.textContent = `${recommendation.paybackPeriodCurrent} years`;
-                    savingsElement.textContent = `£${recommendation.totalSavingsCurrent.toLocaleString()}`;
-                    explanationElement.textContent = 'Based on 7% annual energy price increases (current UK inflation)';
-                    toggleBtn.textContent = 'Show 3.5% inflation';
-                } else {
-                    paybackElement.textContent = `${recommendation.paybackPeriod} years`;
-                    savingsElement.textContent = `£${recommendation.totalSavings.toLocaleString()}`;
-                    explanationElement.textContent = 'Based on 3.5% annual energy price increases (industry standard)';
-                    toggleBtn.textContent = 'Show 7% inflation';
-                }
+            // Adjust based on property type
+            if (answers['1'] === 'detached') systemSize += 2;
+            else if (answers['1'] === 'semi-detached') systemSize += 1;
+            
+            // Adjust based on bedrooms
+            if (answers['2'] === '4') systemSize += 1;
+            else if (answers['2'] === '5+') systemSize += 2;
+            
+            // Adjust based on household size
+            if (answers['6'] === '3-4') systemSize += 0.5;
+            else if (answers['6'] === '5+') systemSize += 1;
+            
+            // Adjust based on electricity bill
+            if (answers['7'] === '150-200') systemSize += 1;
+            else if (answers['7'] === 'over-200') systemSize += 2;
+            
+            // EV considerations
+            if (answers['8'] === 'have-one' || answers['8'] === 'within-year') {
+                systemSize += 2;
+                batterySize += 5;
+            } else if (answers['8'] === '1-3-years') {
+                systemSize += 1;
+                batterySize += 3;
+            }
+            
+            // Heat pump considerations
+            if (answers['10'] === 'have-one' || answers['10'] === 'within-year') {
+                systemSize += 2;
+                batterySize += 3;
+            }
+            
+            // Work pattern battery sizing
+            if (answers['3'] === 'healthcare' || answers['4'] === 'shift-rotating') {
+                batterySize += 8; // High battery need for irregular schedules
+            } else if (answers['3'] === 'office' || answers['5'] === 'rarely') {
+                batterySize += 6; // Medium battery need for away during day
+            } else if (answers['3'] === 'retired' || answers['5'] === 'always') {
+                batterySize += 2; // Low battery need for home during solar hours
+            }
+            
+            // Battery interest
+            if (answers['13'] === 'very-interested') {
+                batterySize += 3;
+            } else if (answers['13'] === 'not-interested') {
+                batterySize = Math.max(0, batterySize - 5);
+            }
+            
+            // Round to reasonable sizes
+            systemSize = Math.round(systemSize * 2) / 2; // Round to nearest 0.5kW
+            systemSize = Math.min(Math.max(systemSize, 3), 10); // Cap between 3-10kW
+            
+            if (batterySize > 0) {
+                batterySize = Math.round(batterySize);
+                batterySize = Math.min(Math.max(batterySize, 5), 20); // Cap between 5-20kWh
+            }
+            
+            // Calculate costs
+            estimatedCost = (systemSize * 1800) + (batterySize * 800);
+            
+            // Calculate savings (rough estimate)
+            const annualGeneration = systemSize * 900; // kWh per year
+            const annualSavings = Math.round(annualGeneration * 0.30); // 30p per kWh average
+            
+            // Calculate payback with 3.5% inflation
+            const paybackYears = calculateInflationAdjustedPayback(estimatedCost, annualSavings, 3.5);
+            
+            // Generate insights
+            let insights = generatePersonalizedInsights(answers, systemSize, batterySize);
+            
+            return {
+                systemSize,
+                batterySize,
+                estimatedCost,
+                annualSavings,
+                paybackYears,
+                insights
+            };
+        }
+
+        function calculateInflationAdjustedPayback(cost, annualSavings, inflationRate) {
+            let totalSavings = 0;
+            let year = 0;
+            
+            while (totalSavings < cost && year < 25) {
+                year++;
+                const yearSavings = annualSavings * Math.pow(1 + inflationRate/100, year - 1);
+                totalSavings += yearSavings;
+            }
+            
+            return Math.round(year * 10) / 10; // Round to 1 decimal place
+        }
+
+        function toggleInflation(rate) {
+            // Update button states
+            document.querySelectorAll('.toggle-button').forEach(btn => {
+                btn.classList.remove('active');
             });
+            event.target.classList.add('active');
+            
+            // Recalculate payback with new rate
+            const recommendation = calculateRecommendation(consultationAnswers);
+            const newPayback = calculateInflationAdjustedPayback(
+                recommendation.estimatedCost, 
+                recommendation.annualSavings, 
+                rate
+            );
+            
+            document.getElementById('payback-display').textContent = `${newPayback} years`;
         }
 
-        // Quote analyzer functionality
+        function generatePersonalizedInsights(answers, systemSize, batterySize) {
+            let insights = [];
+            
+            // Work pattern insights
+            if (answers['3'] === 'healthcare' || answers['4'] === 'shift-rotating') {
+                insights.push("As a healthcare worker with irregular shifts, your energy usage doesn't align well with solar generation. Your shift work means you need large battery storage for energy flexibility.");
+            } else if (answers['3'] === 'retired' || answers['5'] === 'always') {
+                insights.push("Being home during the day means you can use solar energy as it's generated, reducing your need for battery storage and maximizing your savings.");
+            } else if (answers['3'] === 'office' || answers['5'] === 'rarely') {
+                insights.push("Working standard hours means you're away during peak solar generation. Battery storage will help you use your solar energy when you're home in the evenings.");
+            }
+            
+            // EV insights
+            if (answers['8'] === 'have-one' || answers['8'] === 'within-year') {
+                insights.push("Your electric vehicle will significantly increase your electricity usage. We've sized your system to handle EV charging while maintaining savings.");
+            }
+            
+            // Heat pump insights
+            if (answers['10'] === 'have-one' || answers['10'] === 'within-year') {
+                insights.push("Heat pumps use substantial electricity, especially in winter. Your system is sized to offset this increased consumption.");
+            }
+            
+            return insights.join(' ');
+        }
+
+        // Quote Analyzer Functions
         function initializeQuoteAnalyzer() {
             // System size buttons
-            const sizeButtons = document.querySelectorAll('[data-size]');
-            sizeButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // Remove previous selections
-                    sizeButtons.forEach(btn => btn.classList.remove('selected'));
-                    
-                    // Add selection to clicked button
+            document.querySelectorAll('#system-size-buttons .size-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('#system-size-buttons .size-btn').forEach(b => b.classList.remove('selected'));
                     this.classList.add('selected');
-                    
-                    const size = this.dataset.size;
-                    if (size === 'custom') {
-                        document.querySelector('.custom-input').classList.add('active');
-                        selectedSystemSize = null;
-                    } else {
-                        document.querySelector('.custom-input').classList.remove('active');
-                        selectedSystemSize = parseFloat(size);
-                    }
                 });
             });
 
             // Panel output buttons
-            const outputButtons = document.querySelectorAll('[data-output]');
-            outputButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // Remove previous selections
-                    outputButtons.forEach(btn => btn.classList.remove('selected'));
-                    
-                    // Add selection to clicked button
+            document.querySelectorAll('#panel-output-buttons .size-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('#panel-output-buttons .size-btn').forEach(b => b.classList.remove('selected'));
                     this.classList.add('selected');
-                    
-                    selectedPanelOutput = parseInt(this.dataset.output);
                 });
             });
 
-            // Battery options
-            const batteryButtons = document.querySelectorAll('#include-battery, #no-battery');
-            batteryButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // Remove previous selections
-                    batteryButtons.forEach(btn => btn.classList.remove('selected'));
-                    
-                    // Add selection to clicked button
+            // Battery inclusion buttons
+            document.querySelectorAll('[data-battery]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('[data-battery]').forEach(b => b.classList.remove('selected'));
                     this.classList.add('selected');
                     
-                    if (this.id === 'include-battery') {
-                        hasBattery = true;
-                        document.getElementById('battery-options').classList.add('active');
+                    const batterySection = document.getElementById('battery-section');
+                    if (this.dataset.battery === 'yes') {
+                        batterySection.classList.remove('hidden');
                     } else {
-                        hasBattery = false;
-                        document.getElementById('battery-options').classList.remove('active');
-                        selectedBatteryBrand = null;
+                        batterySection.classList.add('hidden');
                     }
                 });
             });
 
-            // Custom size input
-            document.getElementById('custom-size').addEventListener('input', function() {
-                selectedSystemSize = parseFloat(this.value) || null;
-            });
-
-            // Battery brand selection
+            // Battery brand dropdown
             document.getElementById('battery-brand').addEventListener('change', function() {
-                selectedBatteryBrand = this.value;
+                const customBattery = document.getElementById('custom-battery');
+                if (this.value === 'Other') {
+                    customBattery.classList.remove('hidden');
+                } else {
+                    customBattery.classList.add('hidden');
+                }
             });
 
             // Form submission
@@ -1896,175 +1647,202 @@
                 e.preventDefault();
                 analyzeQuote();
             });
-
-            // Pre-fill from consultation if available
-            if (window.solarRecommendation) {
-                prefillFromConsultation();
-            }
-        }
-
-        function prefillFromConsultation() {
-            const recommendation = window.solarRecommendation;
-            
-            // Pre-select system size
-            const sizeButton = document.querySelector(`[data-size="${recommendation.systemSize}"]`);
-            if (sizeButton) {
-                sizeButton.click();
-            } else {
-                // Use custom size
-                document.querySelector('[data-size="custom"]').click();
-                document.getElementById('custom-size').value = recommendation.systemSize;
-                selectedSystemSize = recommendation.systemSize;
-            }
-            
-            // Pre-select battery if recommended
-            if (recommendation.batterySize > 0) {
-                document.getElementById('include-battery').click();
-            }
         }
 
         function analyzeQuote() {
             // Get form data
-            const quotePrice = parseFloat(document.getElementById('quote-price').value);
+            const systemSize = document.querySelector('#system-size-buttons .size-btn.selected')?.dataset.size;
+            const panelOutput = document.querySelector('#panel-output-buttons .size-btn.selected')?.dataset.output;
             const panelBrand = document.getElementById('panel-brand').value;
-            const notes = document.getElementById('notes').value;
-            
+            const hasBattery = document.querySelector('[data-battery].selected')?.dataset.battery === 'yes';
+            const batteryBrand = document.getElementById('battery-brand').value;
+            const batteryQuantity = document.getElementById('battery-quantity').value;
+            const customBattery = document.getElementById('custom-battery-input').value;
+            const quotePrice = parseFloat(document.getElementById('quote-price').value);
+
             // Validate required fields
-            if (!selectedSystemSize || !quotePrice) {
-                alert('Please select system size and enter quote price');
+            if (!systemSize || !panelOutput || !panelBrand || !quotePrice) {
+                alert('Please fill in all required fields');
                 return;
             }
-            
-            // Perform analysis
-            const analysis = performQuoteAnalysis({
-                systemSize: selectedSystemSize,
-                panelOutput: selectedPanelOutput,
-                panelBrand: panelBrand,
-                hasBattery: hasBattery,
-                batteryBrand: selectedBatteryBrand,
-                quotePrice: quotePrice,
-                notes: notes
+
+            if (hasBattery && !batteryBrand && !customBattery) {
+                alert('Please select a battery or specify a custom battery');
+                return;
+            }
+
+            // Calculate analysis
+            const analysis = calculateQuoteAnalysis({
+                systemSize: parseFloat(systemSize),
+                panelOutput: parseInt(panelOutput),
+                panelBrand,
+                hasBattery,
+                batteryBrand: batteryBrand === 'Other' ? customBattery : batteryBrand,
+                batteryQuantity: parseInt(batteryQuantity),
+                quotePrice
             });
-            
+
             // Display results
             displayAnalysisResults(analysis);
         }
 
-        function performQuoteAnalysis(quoteData) {
-            // Calculate expected price range
-            const basePricePerKW = 1850;
-            const batteryPricePerKWh = 800;
+        function calculateQuoteAnalysis(quoteData) {
+            // Market price calculation
+            const basePricePerKW = 1800; // £1800 per kW
+            const batteryPricePerKWh = 800; // £800 per kWh
             
-            let expectedPrice = quoteData.systemSize * basePricePerKW;
+            let marketPrice = quoteData.systemSize * basePricePerKW;
             
-            // Add battery cost if included
-            if (quoteData.hasBattery && quoteData.batteryBrand) {
-                // Extract battery size from brand selection
-                const batterySize = extractBatterySize(quoteData.batteryBrand);
-                expectedPrice += batterySize * batteryPricePerKWh;
+            if (quoteData.hasBattery) {
+                // Estimate battery capacity from brand name
+                let batteryCapacity = estimateBatteryCapacity(quoteData.batteryBrand);
+                marketPrice += (batteryCapacity * quoteData.batteryQuantity * batteryPricePerKWh);
             }
-            
+
             // Price assessment
-            const priceRatio = quoteData.quotePrice / expectedPrice;
-            let priceVerdict, priceEmoji, priceDetails;
+            const priceRatio = quoteData.quotePrice / marketPrice;
+            let priceScore, priceEmoji, priceDetails;
             
-            if (priceRatio < 0.85) {
-                priceVerdict = "Suspiciously Low";
-                priceEmoji = "⚠️";
-                priceDetails = "Check for hidden costs";
-            } else if (priceRatio < 1.1) {
-                priceVerdict = "Fair Price";
-                priceEmoji = "💰";
-                priceDetails = "Within market range";
-            } else if (priceRatio < 1.25) {
-                priceVerdict = "Above Average";
-                priceEmoji = "📈";
-                priceDetails = "Consider negotiating";
+            if (priceRatio <= 0.9) {
+                priceScore = "Excellent";
+                priceEmoji = "🟢";
+                priceDetails = "Below market average - great value";
+            } else if (priceRatio <= 1.1) {
+                priceScore = "Good";
+                priceEmoji = "🟡";
+                priceDetails = "Around market average - fair price";
+            } else if (priceRatio <= 1.3) {
+                priceScore = "High";
+                priceEmoji = "🟠";
+                priceDetails = "Above market average - consider negotiating";
             } else {
-                priceVerdict = "Overpriced";
-                priceEmoji = "🚨";
-                priceDetails = "Significantly above market";
+                priceScore = "Very High";
+                priceEmoji = "🔴";
+                priceDetails = "Significantly overpriced - shop around";
             }
-            
+
             // Quality assessment
-            const qualityRating = assessPanelQuality(quoteData.panelBrand);
+            const qualityRating = assessEquipmentQuality(quoteData.panelBrand, quoteData.batteryBrand);
             
             // Overall value score
-            const valueScore = calculateValueScore(priceRatio, qualityRating);
-            
+            const valueScore = calculateValueScore(priceRatio, qualityRating.score);
+
             return {
-                priceVerdict,
-                priceEmoji,
-                priceDetails,
+                marketPrice,
+                priceRatio,
+                priceScore: { score: priceScore, emoji: priceEmoji, details: priceDetails },
                 qualityRating,
-                valueScore,
-                expectedPrice,
-                priceRatio
+                valueScore
             };
         }
 
-        function extractBatterySize(batteryBrand) {
-            // Extract kWh from battery brand string
-            const match = batteryBrand.match(/(\d+\.?\d*)/);
-            return match ? parseFloat(match[1]) : 5; // Default to 5kWh if not found
-        }
-
-        function assessPanelQuality(panelBrand) {
-            const tier1Brands = ['longi', 'jinko', 'trina', 'canadian', 'ja-solar', 'sunpower', 'rec', 'panasonic'];
-            const goodBrands = ['dmegc', 'perlight', 'aiko', 'eurener'];
-            
-            if (tier1Brands.includes(panelBrand)) {
-                return { verdict: "Excellent Quality", emoji: "⭐", details: "Tier 1 manufacturer" };
-            } else if (goodBrands.includes(panelBrand)) {
-                return { verdict: "Good Quality", emoji: "👍", details: "Reliable brand" };
-            } else {
-                return { verdict: "Average Quality", emoji: "⚡", details: "Budget option" };
-            }
-        }
-
-        function calculateValueScore(priceRatio, qualityRating) {
-            let score = 10;
-            
-            // Price factor
-            if (priceRatio > 1.25) score -= 3;
-            else if (priceRatio > 1.1) score -= 1;
-            else if (priceRatio < 0.85) score -= 2;
-            
-            // Quality factor
-            if (qualityRating.verdict === "Excellent Quality") score += 0;
-            else if (qualityRating.verdict === "Good Quality") score -= 0.5;
-            else score -= 1;
-            
-            score = Math.max(1, Math.min(10, score));
-            
-            let valueEmoji, valueDetails;
-            if (score >= 8.5) {
-                valueEmoji = "🏆";
-                valueDetails = "Excellent value";
-            } else if (score >= 7) {
-                valueEmoji = "📊";
-                valueDetails = "Good value";
-            } else if (score >= 5) {
-                valueEmoji = "⚖️";
-                valueDetails = "Average value";
-            } else {
-                valueEmoji = "⚠️";
-                valueDetails = "Poor value";
+        function estimateBatteryCapacity(batteryBrand) {
+            // Extract capacity from battery brand string
+            const capacityMatch = batteryBrand.match(/(\d+\.?\d*)\s*kWh/i);
+            if (capacityMatch) {
+                return parseFloat(capacityMatch[1]);
             }
             
-            return { score: score.toFixed(1), emoji: valueEmoji, details: valueDetails };
+            // Default estimates for common batteries
+            if (batteryBrand.includes('GivEnergy')) return 5.12;
+            if (batteryBrand.includes('Fox')) return 5.2;
+            if (batteryBrand.includes('Tesla')) return 13.5;
+            if (batteryBrand.includes('SolarEdge')) return 10;
+            
+            return 5; // Default 5kWh
+        }
+
+        function assessEquipmentQuality(panelBrand, batteryBrand) {
+            // Panel quality ratings
+            const panelRatings = {
+                'SunPower': 9.5, 'REC': 9.0, 'Panasonic': 9.0, 'LG': 8.5,
+                'LONGi': 8.0, 'Jinko Solar': 7.5, 'Trina Solar': 7.5, 'Canadian Solar': 7.5,
+                'JA Solar': 7.0, 'Q CELLS': 7.0, 'Risen Energy': 6.5, 'Aiko Solar': 7.0,
+                'DMEGC': 6.0, 'Perlight': 6.0, 'Eurener': 6.5, 'Hyundai': 7.0
+            };
+
+            // Battery quality ratings
+            const batteryRatings = {
+                'Tesla': 9.5, 'SolarEdge': 9.0, 'Enphase': 8.5, 'GivEnergy': 8.0,
+                'LG Chem': 8.5, 'SolaX': 7.5, 'Fox ESS': 7.0, 'Growatt': 6.5,
+                'Huawei': 7.5, 'Sungrow': 7.0, 'Pylontech': 7.0, 'BYD': 7.5
+            };
+
+            const panelScore = panelRatings[panelBrand] || 6.0;
+            let batteryScore = 7.0; // Default if no battery
+            
+            if (batteryBrand) {
+                // Find matching battery rating
+                for (const [brand, rating] of Object.entries(batteryRatings)) {
+                    if (batteryBrand.includes(brand)) {
+                        batteryScore = rating;
+                        break;
+                    }
+                }
+            }
+
+            const overallScore = batteryBrand ? (panelScore + batteryScore) / 2 : panelScore;
+            
+            let verdict, emoji;
+            if (overallScore >= 8.5) {
+                verdict = "Excellent";
+                emoji = "⭐";
+            } else if (overallScore >= 7.5) {
+                verdict = "Good";
+                emoji = "👍";
+            } else if (overallScore >= 6.5) {
+                verdict = "Okay";
+                emoji = "👌";
+            } else {
+                verdict = "Poor";
+                emoji = "👎";
+            }
+
+            return {
+                score: overallScore,
+                verdict,
+                emoji,
+                details: `Panel: ${panelScore}/10, Battery: ${batteryScore}/10`
+            };
+        }
+
+        function calculateValueScore(priceRatio, qualityScore) {
+            // Value score combines price and quality
+            let priceScore = 10;
+            if (priceRatio > 1.1) priceScore = Math.max(1, 10 - (priceRatio - 1.1) * 20);
+            
+            const valueScore = (priceScore + qualityScore) / 2;
+            
+            let emoji, details;
+            if (valueScore >= 8.5) {
+                emoji = "🎯";
+                details = "Excellent value for money";
+            } else if (valueScore >= 7.0) {
+                emoji = "👍";
+                details = "Good value overall";
+            } else if (valueScore >= 5.5) {
+                emoji = "👌";
+                details = "Acceptable value";
+            } else {
+                emoji = "👎";
+                details = "Poor value - consider alternatives";
+            }
+
+            return {
+                score: Math.round(valueScore * 10) / 10,
+                emoji,
+                details
+            };
         }
 
         function displayAnalysisResults(analysis) {
-            // Update price assessment
-            document.getElementById('price-emoji').textContent = analysis.priceEmoji;
-            document.getElementById('price-verdict').textContent = analysis.priceVerdict;
-            document.getElementById('price-details').textContent = analysis.priceDetails;
+            // Update price score
+            document.getElementById('price-emoji').textContent = analysis.priceScore.emoji;
+            document.getElementById('price-score').textContent = analysis.priceScore.score;
             
-            // Update quality rating
+            // Update quality score
             document.getElementById('quality-emoji').textContent = analysis.qualityRating.emoji;
-            document.getElementById('quality-verdict').textContent = analysis.qualityRating.verdict;
-            document.getElementById('quality-details').textContent = analysis.qualityRating.details;
+            document.getElementById('quality-score').textContent = analysis.qualityRating.verdict;
             
             // Update value score
             document.getElementById('value-emoji').textContent = analysis.valueScore.emoji;
