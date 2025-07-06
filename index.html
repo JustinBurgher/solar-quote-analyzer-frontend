@@ -868,22 +868,61 @@
                                         <label class="block font-semibold mb-2">Battery Brand & Model</label>
                                         <select id="battery-brand-select" class="w-full p-3 border border-gray-300 rounded-lg">
                                             <option value="">Select battery...</option>
-                                            <optgroup label="Popular UK Brands">
-                                                <option value="givenergy-5.12">GivEnergy 5.12kWh GEN3</option>
-                                                <option value="givenergy-9.5">GivEnergy 9.5kWh GEN3</option>
-                                                <option value="fox-ess-2.6">Fox ESS ECS2900 (2.6kWh)</option>
-                                                <option value="fox-ess-5.2">Fox ESS ECS5200 (5.2kWh)</option>
-                                                <option value="fox-ess-7.8">Fox ESS ECS7800 (7.8kWh)</option>
-                                                <option value="solaredge-10">SolarEdge Energy Bank 10kWh</option>
-                                                <option value="pylontech-us3000c">Pylontech US3000C (3.55kWh)</option>
-                                                <option value="alpha-ess-5.7">Alpha ESS SMILE5 (5.7kWh)</option>
-                                                <option value="solax-5.8">SolaX Triple Power 5.8kWh</option>
-                                                <option value="duracell-5.12">Duracell Energy Bank 5.12kWh</option>
+                                            <optgroup label="Fox ESS">
+                                                <option value="fox-ess-ep11">Fox ESS EP11 (10.36kWh)</option>
+                                                <option value="fox-ess-ep5">Fox ESS EP5 (5.18kWh)</option>
+                                                <option value="fox-ess-eq4800">Fox ESS EQ4800 (4.66kWh)</option>
+                                                <option value="fox-ess-hv2600">Fox ESS HV2600 (2.6kWh)</option>
+                                                <option value="fox-ess-ecs2900">Fox ESS ECS2900 (2.88kWh)</option>
+                                                <option value="fox-ess-ecs4300">Fox ESS ECS4300 (4.14kWh)</option>
+                                                <option value="fox-ess-ec4100">Fox ESS Energy Cube (4.03kWh)</option>
                                             </optgroup>
-                                            <optgroup label="Premium Brands">
+                                            <optgroup label="GivEnergy">
+                                                <option value="givenergy-2.6">GivEnergy Giv-Bat 2.6kWh</option>
+                                                <option value="givenergy-5.2">GivEnergy Giv-Bat 5.2kWh GEN3</option>
+                                                <option value="givenergy-9.5">GivEnergy Giv-Bat 9.5kWh GEN3</option>
+                                                <option value="givenergy-stack3">GivEnergy Stack-3 (10.2kWh)</option>
+                                                <option value="givenergy-stack4">GivEnergy Stack-4 (13.6kWh)</option>
+                                                <option value="givenergy-stack5">GivEnergy Stack-5 (17.0kWh)</option>
+                                                <option value="givenergy-stack6">GivEnergy Stack-6 (20.4kWh)</option>
+                                                <option value="givenergy-aio-6">GivEnergy All in One 6.0 (13.5kWh)</option>
+                                                <option value="givenergy-aio-3.6">GivEnergy All in One 3.6 (13.5kWh)</option>
+                                            </optgroup>
+                                            <optgroup label="Tesla">
                                                 <option value="tesla-powerwall-2">Tesla Powerwall 2 (13.5kWh)</option>
-                                                <option value="sonnen-eco-10">Sonnen Eco 10 (10kWh)</option>
-                                                <option value="enphase-iq-10t">Enphase IQ 10T (10.08kWh)</option>
+                                                <option value="tesla-powerwall-3">Tesla Powerwall 3 (13.5kWh)</option>
+                                            </optgroup>
+                                            <optgroup label="SolarEdge">
+                                                <option value="solaredge-10">SolarEdge Energy Bank 10kWh</option>
+                                                <option value="solaredge-9.7">SolarEdge Home Battery 9.7kWh</option>
+                                                <option value="solaredge-23">SolarEdge Home Battery 23kWh</option>
+                                            </optgroup>
+                                            <optgroup label="Pylontech">
+                                                <option value="pylontech-us3000c">Pylontech US3000C (3.55kWh)</option>
+                                                <option value="pylontech-us5000">Pylontech US5000-1C (4.8kWh)</option>
+                                                <option value="pylontech-h48074">Pylontech H48074 (3.55kWh)</option>
+                                                <option value="pylontech-force-h2">Pylontech FORCE H2 (14.21kWh)</option>
+                                            </optgroup>
+                                            <optgroup label="Alpha ESS">
+                                                <option value="alpha-ess-5.7">Alpha ESS SMILE5 (5.7kWh)</option>
+                                                <option value="alpha-ess-5.04">Alpha ESS SMILE-B3 PLUS (5.04kWh)</option>
+                                                <option value="alpha-ess-12">Alpha ESS SMILE G3 (12kWh)</option>
+                                                <option value="alpha-ess-2.9">Alpha ESS Battery Module (2.9kWh)</option>
+                                                <option value="alpha-ess-10.1">Alpha ESS Battery Module (10.1kWh)</option>
+                                            </optgroup>
+                                            <optgroup label="Sonnen">
+                                                <option value="sonnen-10">sonnenBatterie 10 (5.5-22kWh)</option>
+                                                <option value="sonnen-eco">sonnenBatterie eco</option>
+                                                <option value="sonnen-hybrid">sonnenBatterie hybrid</option>
+                                            </optgroup>
+                                            <optgroup label="Enphase">
+                                                <option value="enphase-iq-5p">Enphase IQ Battery 5P (5.0kWh)</option>
+                                                <option value="enphase-iq-3t">Enphase IQ Battery 3T (3.36kWh)</option>
+                                                <option value="enphase-iq-10t">Enphase IQ Battery 10T (10.08kWh)</option>
+                                            </optgroup>
+                                            <optgroup label="Other Brands">
+                                                <option value="duracell-5.12">Duracell Energy Bank 5.12kWh</option>
+                                                <option value="solax-5.8">SolaX Triple Power 5.8kWh</option>
                                             </optgroup>
                                             <option value="other-battery">Other (specify below)</option>
                                         </select>
