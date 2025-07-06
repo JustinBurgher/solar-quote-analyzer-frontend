@@ -2345,10 +2345,16 @@
             }
         }
 
+        // Premium access tracking
+        let premiumUnlocked = false;
+
         // Premium Modal Functions
         function showPremiumModal() {
             document.getElementById('premium-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
+            
+            // Personalize the modal content based on consultation answers
+            personalizePremiumModal();
             
             // Update preview values with current recommendation
             if (window.solarRecommendation) {
@@ -2369,6 +2375,125 @@
             }
         }
 
+        function personalizePremiumModal() {
+            // Get customer profile from consultation data
+            const profile = getCustomerProfile();
+            
+            // Update modal title and description based on profile
+            const modalTitle = document.querySelector('#premium-modal h3');
+            const modalDescription = document.querySelector('#premium-modal .text-blue-700');
+            
+            modalTitle.textContent = profile.title;
+            modalDescription.textContent = profile.description;
+            
+            // Update feature list based on customer needs
+            updatePremiumFeatures(profile);
+        }
+
+        function getCustomerProfile() {
+            const data = consultationData;
+            
+            // Retired + Low Usage Profile
+            if (data.occupation === 'retired' && ['40-70', '70-100'].includes(data.monthlyBill)) {
+                return {
+                    title: 'Maximize Your Solar Investment',
+                    description: 'As a retiree with excellent solar alignment, discover advanced strategies to maximize your system\'s value and reduce bills even further.',
+                    features: [
+                        { icon: '☀️', title: 'Optimal Usage Timing', desc: 'Best times to run appliances for maximum solar benefit' },
+                        { icon: '💰', title: 'Export Optimization', desc: 'Strategies to maximize your solar export earnings' },
+                        { icon: '🔋', title: 'Right-Sized Battery', desc: 'Avoid oversized batteries - get exactly what you need' },
+                        { icon: '📊', title: 'Seasonal Planning', desc: 'How to adapt usage patterns throughout the year' }
+                    ]
+                };
+            }
+            
+            // EV Owner Profile
+            if (data.evPlans === 'have-one') {
+                return {
+                    title: 'EV + Solar Optimization Strategy',
+                    description: 'Discover the optimal balance between solar sizing and EV tariffs to minimize your total energy costs.',
+                    features: [
+                        { icon: '⚡', title: 'EV Charging Strategy', desc: 'Octopus Go vs solar charging cost analysis' },
+                        { icon: '🔋', title: 'Smart Charging Schedule', desc: 'When to charge from solar vs grid tariffs' },
+                        { icon: '💡', title: 'Right System Size', desc: 'Avoid oversizing - smaller solar + tariffs often better' },
+                        { icon: '📈', title: 'Total Cost Analysis', desc: 'EV + home energy optimized together' }
+                    ]
+                };
+            }
+            
+            // Heat Pump Owner Profile
+            if (data.heatingSystem === 'heat-pump' || data.heatPumpPlans === 'already-have') {
+                return {
+                    title: 'Heat Pump + Solar Optimization',
+                    description: 'Optimize your heat pump and solar system together for maximum efficiency and minimum cost.',
+                    features: [
+                        { icon: '🌡️', title: 'Heat Pump Scheduling', desc: 'Best times to run heat pump with solar' },
+                        { icon: '⚡', title: 'Tariff vs Solar Analysis', desc: 'When tariffs beat solar for heating' },
+                        { icon: '🔋', title: 'Battery Sizing', desc: 'Right battery size for heat pump backup' },
+                        { icon: '📊', title: 'Seasonal Strategy', desc: 'Winter vs summer optimization plans' }
+                    ]
+                };
+            }
+            
+            // High Usage Profile
+            if (['140-200', '200+'].includes(data.monthlyBill)) {
+                return {
+                    title: 'High Usage Optimization Strategy',
+                    description: 'With high energy usage, discover advanced strategies to maximize your solar investment and minimize bills.',
+                    features: [
+                        { icon: '📊', title: 'Usage Pattern Analysis', desc: 'Identify your biggest savings opportunities' },
+                        { icon: '🔋', title: 'Battery Strategy', desc: 'Optimal battery size for high usage homes' },
+                        { icon: '⚡', title: 'Load Shifting', desc: 'Move usage to solar hours for maximum benefit' },
+                        { icon: '💰', title: 'Tariff Optimization', desc: 'Best tariffs for high usage + solar' }
+                    ]
+                };
+            }
+            
+            // Shift Worker Profile
+            if (data.occupation === 'healthcare' || data.occupation === 'shift') {
+                return {
+                    title: 'Shift Worker Solar Strategy',
+                    description: 'Your irregular schedule requires a specialized approach to maximize solar benefits despite unpredictable usage patterns.',
+                    features: [
+                        { icon: '🔋', title: 'Enhanced Battery Strategy', desc: 'Larger battery for schedule flexibility' },
+                        { icon: '⏰', title: 'Flexible Usage Plans', desc: 'Strategies for rotating shift patterns' },
+                        { icon: '💡', title: 'Smart Home Integration', desc: 'Automate usage when you\'re not home' },
+                        { icon: '📈', title: 'ROI Optimization', desc: 'Maximize returns despite irregular patterns' }
+                    ]
+                };
+            }
+            
+            // Default Profile
+            return {
+                title: 'Advanced Solar Optimization',
+                description: 'Unlock personalized strategies to maximize your solar investment and minimize your energy costs.',
+                features: [
+                    { icon: '📊', title: '3-Scenario Analysis', desc: 'Solar-only vs Tariff vs Hybrid strategies' },
+                    { icon: '💰', title: 'Cost Optimization', desc: 'Find the most cost-effective approach' },
+                    { icon: '🔋', title: 'Battery Strategy', desc: 'Right-sized storage for your needs' },
+                    { icon: '⚡', title: 'Usage Optimization', desc: 'Maximize your solar generation benefit' }
+                ]
+            };
+        }
+
+        function updatePremiumFeatures(profile) {
+            const featuresContainer = document.querySelector('#premium-modal .space-y-3');
+            featuresContainer.innerHTML = '';
+            
+            profile.features.forEach(feature => {
+                const featureDiv = document.createElement('div');
+                featureDiv.className = 'flex items-start';
+                featureDiv.innerHTML = `
+                    <div class="text-green-500 mr-3 mt-1">✓</div>
+                    <div>
+                        <div class="font-semibold">${feature.icon} ${feature.title}</div>
+                        <div class="text-sm mobile-text-sm text-gray-600">${feature.desc}</div>
+                    </div>
+                `;
+                featuresContainer.appendChild(featureDiv);
+            });
+        }
+
         function closePremiumModal() {
             document.getElementById('premium-modal').classList.add('hidden');
             document.body.style.overflow = 'auto';
@@ -2378,16 +2503,26 @@
             // In a real implementation, this would integrate with Stripe, PayPal, etc.
             alert('Payment integration would be implemented here. For demo purposes, this would redirect to a secure payment processor.');
             
-            // Demo: Simulate successful payment and show premium content
+            // Demo: Simulate successful payment and unlock premium
             setTimeout(() => {
+                premiumUnlocked = true;
                 closePremiumModal();
                 showPremiumContent();
             }, 1000);
         }
 
         function showPremiumContent() {
+            // Only show if premium is unlocked
+            if (!premiumUnlocked) {
+                showPremiumModal();
+                return;
+            }
+            
             // Hide the teaser and show premium analysis
             document.querySelector('.premium-teaser').style.display = 'none';
+            
+            // Get personalized content based on customer profile
+            const profile = getCustomerProfile();
             
             // Create and show premium content
             const premiumContent = document.createElement('div');
@@ -2397,34 +2532,31 @@
                     <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full mb-4">
                         <span class="text-2xl">✅</span>
                     </div>
-                    <h4 class="text-2xl font-bold text-green-900 mb-2">Premium Analysis Unlocked!</h4>
-                    <p class="text-green-700 mobile-text-base">Your personalized tariff optimization report is being generated...</p>
+                    <h4 class="text-2xl font-bold text-green-900 mb-2">${profile.title} - Unlocked!</h4>
+                    <p class="text-green-700 mobile-text-base">${profile.description}</p>
                 </div>
                 
                 <div class="bg-white rounded-lg p-6 mb-6">
-                    <h5 class="text-xl font-bold text-gray-800 mb-4">🎯 Optimal Strategy for Your Situation</h5>
+                    <h5 class="text-xl font-bold text-gray-800 mb-4">🎯 Personalized Strategy for You</h5>
                     <div class="space-y-4">
                         <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                            <h6 class="font-semibold text-blue-800 mb-2">Recommended: Hybrid Optimization Strategy</h6>
+                            <h6 class="font-semibold text-blue-800 mb-2">${getPersonalizedRecommendation()}</h6>
                             <ul class="text-sm mobile-text-sm text-blue-700 space-y-1">
-                                <li>• 4.5kW solar system (reduced from ${window.solarRecommendation?.system.systemSize || '6.5'}kW)</li>
-                                <li>• 8kWh battery (optimized for your usage pattern)</li>
-                                <li>• Octopus Go tariff for EV charging (7p/kWh overnight)</li>
-                                <li>• Economy 7 for heat pump operation</li>
+                                ${getPersonalizedBulletPoints().map(point => `<li>• ${point}</li>`).join('')}
                             </ul>
                         </div>
                         
                         <div class="grid md:grid-cols-3 mobile-grid gap-4">
                             <div class="text-center p-3 bg-gray-50 rounded-lg">
-                                <div class="text-lg font-bold text-gray-800">£12,800</div>
-                                <div class="text-sm mobile-text-sm text-gray-600">Total Investment</div>
+                                <div class="text-lg font-bold text-gray-800">£${getOptimizedCost()}</div>
+                                <div class="text-sm mobile-text-sm text-gray-600">Optimized Investment</div>
                             </div>
                             <div class="text-center p-3 bg-green-50 rounded-lg">
-                                <div class="text-lg font-bold text-green-600">6.2 years</div>
+                                <div class="text-lg font-bold text-green-600">${getOptimizedPayback()} years</div>
                                 <div class="text-sm mobile-text-sm text-gray-600">Payback Period</div>
                             </div>
                             <div class="text-center p-3 bg-blue-50 rounded-lg">
-                                <div class="text-lg font-bold text-blue-600">£6,450</div>
+                                <div class="text-lg font-bold text-blue-600">£${getAdditionalSavings()}</div>
                                 <div class="text-sm mobile-text-sm text-gray-600">Additional Savings</div>
                             </div>
                         </div>
@@ -2442,6 +2574,122 @@
             `;
             
             document.querySelector('.recommendation-card.steps-card').parentNode.insertBefore(premiumContent, document.querySelector('.recommendation-card.steps-card').nextSibling);
+        }
+
+        function getPersonalizedRecommendation() {
+            const data = consultationData;
+            
+            if (data.occupation === 'retired' && ['40-70', '70-100'].includes(data.monthlyBill)) {
+                return 'Recommended: Export-Optimized Strategy';
+            } else if (data.evPlans === 'have-one') {
+                return 'Recommended: EV Tariff + Right-Sized Solar';
+            } else if (data.heatingSystem === 'heat-pump' || data.heatPumpPlans === 'already-have') {
+                return 'Recommended: Heat Pump Tariff Optimization';
+            } else if (['140-200', '200+'].includes(data.monthlyBill)) {
+                return 'Recommended: High Usage Load Shifting Strategy';
+            } else if (data.occupation === 'healthcare' || data.occupation === 'shift') {
+                return 'Recommended: Flexible Battery Strategy';
+            }
+            return 'Recommended: Hybrid Optimization Strategy';
+        }
+
+        function getPersonalizedBulletPoints() {
+            const data = consultationData;
+            
+            if (data.occupation === 'retired' && ['40-70', '70-100'].includes(data.monthlyBill)) {
+                return [
+                    `${Math.round((window.solarRecommendation?.system.systemSize || 4) * 0.8)}kW solar system (optimized for export)`,
+                    `${Math.round((window.solarRecommendation?.system.batterySize || 8) * 0.6)}kWh battery (minimal storage needed)`,
+                    'Run appliances 10am-3pm for maximum solar benefit',
+                    'Export optimization strategy for maximum earnings'
+                ];
+            } else if (data.evPlans === 'have-one') {
+                return [
+                    `${Math.round((window.solarRecommendation?.system.systemSize || 6) * 0.75)}kW solar system (right-sized)`,
+                    `${Math.round((window.solarRecommendation?.system.batterySize || 10) * 0.8)}kWh battery (home usage focus)`,
+                    'Octopus Go tariff for EV charging (7p/kWh overnight)',
+                    'Solar for daytime home usage, tariff for EV'
+                ];
+            } else if (data.heatingSystem === 'heat-pump' || data.heatPumpPlans === 'already-have') {
+                return [
+                    `${Math.round((window.solarRecommendation?.system.systemSize || 6) * 0.8)}kW solar system (balanced)`,
+                    `${Math.round((window.solarRecommendation?.system.batterySize || 10) * 0.9)}kWh battery (heat pump backup)`,
+                    'Economy 7 or Cosy tariff for heat pump operation',
+                    'Solar for daytime, tariff for heating'
+                ];
+            }
+            return [
+                `${Math.round((window.solarRecommendation?.system.systemSize || 6) * 0.85)}kW solar system (optimized)`,
+                `${Math.round((window.solarRecommendation?.system.batterySize || 10) * 0.85)}kWh battery (right-sized)`,
+                'Time-of-use tariff optimization',
+                'Load shifting for maximum benefit'
+            ];
+        }
+
+        function getOptimizedCost() {
+            const currentCost = window.solarRecommendation?.financials.systemCost || 15000;
+            return Math.round(currentCost * 0.7).toLocaleString();
+        }
+
+        function getOptimizedPayback() {
+            return (Math.round((window.solarRecommendation?.financials.paybackYears || 10) * 0.7 * 10) / 10).toFixed(1);
+        }
+
+        function getAdditionalSavings() {
+            const currentCost = window.solarRecommendation?.financials.systemCost || 15000;
+            return Math.round(currentCost * 0.3).toLocaleString();
+        }
+
+        // Reset premium access when consultation restarts
+        function restartConsultation() {
+            premiumUnlocked = false; // Reset premium access
+            
+            // Hide any existing premium content
+            const existingPremiumContent = document.querySelector('.premium-content');
+            if (existingPremiumContent) {
+                existingPremiumContent.remove();
+            }
+            
+            // Show premium teaser again
+            const premiumTeaser = document.querySelector('.premium-teaser');
+            if (premiumTeaser) {
+                premiumTeaser.style.display = 'block';
+            }
+            
+            // Reset consultation data and UI
+            consultationData = {};
+            currentStep = 1;
+            
+            // Hide results and show consultation
+            document.getElementById('consultation-results').classList.add('hidden');
+            document.getElementById('consultation-container').style.display = 'block';
+            document.querySelector('.flex.justify-between.mt-8').style.display = 'flex';
+            
+            // Reset all questions
+            document.querySelectorAll('.consultation-step').forEach((step, index) => {
+                if (index === 0) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+            
+            // Reset all selections
+            document.querySelectorAll('.consultation-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Reset navigation
+            updateProgress();
+            document.getElementById('prev-btn').classList.add('hidden');
+            const nextBtn = document.getElementById('next-btn');
+            nextBtn.textContent = 'Next Question';
+            nextBtn.onclick = nextQuestion;
+            nextBtn.disabled = true;
+            nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            
+            // Scroll to consultation
+            document.getElementById('consultation').scrollIntoView({ behavior: 'smooth' });
         }
 
         function downloadPremiumReport() {
