@@ -123,6 +123,158 @@
             transform: translateY(-1px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
+
+        /* Mobile Optimization Styles */
+        @media (max-width: 768px) {
+            /* Typography adjustments for mobile */
+            .hero-gradient h2 {
+                font-size: 2.5rem !important; /* Reduce from text-5xl to text-4xl equivalent */
+                line-height: 1.2 !important;
+                margin-bottom: 1rem !important;
+            }
+            
+            .hero-gradient p {
+                font-size: 1.125rem !important; /* Reduce from text-xl to text-lg */
+                margin-bottom: 2rem !important;
+            }
+
+            /* Header mobile optimization */
+            .header-title {
+                font-size: 1.5rem !important; /* Reduce from text-2xl to text-xl */
+            }
+
+            /* Section headings mobile optimization */
+            .section-heading {
+                font-size: 2rem !important; /* Reduce from text-3xl to text-2xl */
+                margin-bottom: 2rem !important;
+            }
+
+            .subsection-heading {
+                font-size: 1.5rem !important; /* Reduce from text-2xl to text-xl */
+                margin-bottom: 1.5rem !important;
+            }
+
+            /* Button optimization for mobile */
+            .mobile-button {
+                min-height: 48px !important; /* Touch-friendly minimum */
+                padding: 12px 24px !important;
+                font-size: 1rem !important;
+                width: 100% !important;
+                margin-bottom: 0.75rem !important;
+            }
+
+            /* Consultation options mobile optimization */
+            .consultation-option {
+                padding: 1rem !important;
+                margin-bottom: 0.75rem !important;
+                min-height: 60px !important; /* Touch-friendly */
+            }
+
+            .consultation-option h5 {
+                font-size: 1.125rem !important;
+                margin-bottom: 0.25rem !important;
+            }
+
+            .consultation-option p {
+                font-size: 0.875rem !important;
+            }
+
+            /* Grid adjustments for mobile */
+            .mobile-grid {
+                display: block !important;
+            }
+
+            .mobile-grid > div {
+                margin-bottom: 1.5rem !important;
+            }
+
+            /* Form elements mobile optimization */
+            .mobile-form-input {
+                min-height: 48px !important;
+                font-size: 1rem !important;
+                padding: 12px !important;
+            }
+
+            .mobile-form-select {
+                min-height: 48px !important;
+                font-size: 1rem !important;
+                padding: 12px !important;
+            }
+
+            /* Navigation mobile optimization */
+            .mobile-nav {
+                display: none !important;
+            }
+
+            /* Spacing adjustments */
+            .mobile-section-padding {
+                padding-top: 3rem !important;
+                padding-bottom: 3rem !important;
+            }
+
+            /* Text size adjustments */
+            .mobile-text-base {
+                font-size: 1rem !important;
+            }
+
+            .mobile-text-sm {
+                font-size: 0.875rem !important;
+            }
+
+            /* Card adjustments for mobile */
+            .mobile-card {
+                margin-bottom: 1rem !important;
+                padding: 1.25rem !important;
+            }
+
+            /* Installer type selection mobile */
+            .installer-type-option {
+                margin-bottom: 0.75rem !important;
+            }
+
+            .installer-type-option div {
+                padding: 1rem !important;
+                min-height: 60px !important;
+            }
+
+            /* Quote analyzer mobile optimization */
+            .quote-analyzer-mobile {
+                padding: 1rem !important;
+            }
+
+            .quote-analyzer-mobile .form-group {
+                margin-bottom: 1.5rem !important;
+            }
+
+            .quote-analyzer-mobile label {
+                font-size: 1rem !important;
+                margin-bottom: 0.5rem !important;
+                display: block !important;
+            }
+
+            /* Results display mobile */
+            .results-mobile {
+                padding: 1rem !important;
+            }
+
+            .results-mobile h3 {
+                font-size: 1.5rem !important;
+                margin-bottom: 1rem !important;
+            }
+
+            .results-mobile .result-item {
+                margin-bottom: 1rem !important;
+                padding: 0.75rem !important;
+            }
+        }
+
+        /* Ensure touch targets are large enough */
+        @media (max-width: 768px) {
+            button, .consultation-option, .size-button, input, select {
+                min-height: 44px;
+                min-width: 44px;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -134,9 +286,9 @@
                     <div class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mr-3">
                         <span class="text-white font-bold text-lg">☀</span>
                     </div>
-                    <h1 class="text-2xl font-bold text-gray-900">Solar Truth AI</h1>
+                    <h1 class="text-2xl header-title font-bold text-gray-900">Solar Truth AI</h1>
                 </div>
-                <nav class="hidden md:flex space-x-8">
+                <nav class="hidden md:flex mobile-nav space-x-8">
                     <a href="#problem" class="text-gray-600 hover:text-gray-900">The Problem</a>
                     <a href="#solution" class="text-gray-600 hover:text-gray-900">Our Solution</a>
                     <a href="#consultation" class="text-gray-600 hover:text-gray-900">Free Analysis</a>
@@ -147,15 +299,15 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero-gradient text-white py-20">
+    <section class="hero-gradient text-white py-20 mobile-section-padding">
         <div class="max-w-4xl mx-auto text-center px-4">
             <h2 class="text-5xl font-bold mb-6">Don't Get Ripped Off on Solar</h2>
             <p class="text-xl mb-8 opacity-90">UK homeowners lose thousands on overpriced, undersized solar systems. Get independent, unbiased analysis before you buy.</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button onclick="scrollToConsultation()" class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition">
+                <button onclick="scrollToConsultation()" class="bg-white text-blue-600 px-8 py-4 mobile-button rounded-lg font-semibold text-lg hover:bg-gray-100 transition">
                     Find Out What You Need FREE
                 </button>
-                <button onclick="scrollToAnalyzer()" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition">
+                <button onclick="scrollToAnalyzer()" class="border-2 border-white text-white px-8 py-4 mobile-button rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition">
                     Analyze My Quote FREE
                 </button>
             </div>
@@ -163,36 +315,36 @@
     </section>
 
     <!-- Problem Section -->
-    <section id="problem" class="py-16 bg-white">
+    <section id="problem" class="py-16 mobile-section-padding bg-white">
         <div class="max-w-6xl mx-auto px-4">
-            <h3 class="text-3xl font-bold text-center mb-12">The Solar Industry Has a Problem</h3>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="text-center">
+            <h3 class="text-3xl section-heading font-bold text-center mb-12">The Solar Industry Has a Problem</h3>
+            <div class="grid md:grid-cols-3 mobile-grid gap-8">
+                <div class="text-center mobile-card">
                     <div class="text-4xl mb-4">💸</div>
                     <h4 class="text-xl font-semibold mb-3">Overpriced Systems</h4>
-                    <p class="text-gray-600">Installers mark up systems by 40-60% because customers can't compare fairly</p>
+                    <p class="text-gray-600 mobile-text-base">Installers mark up systems by 40-60% because customers can't compare fairly</p>
                 </div>
-                <div class="text-center">
+                <div class="text-center mobile-card">
                     <div class="text-4xl mb-4">📉</div>
                     <h4 class="text-xl font-semibold mb-3">Wrong System Size</h4>
-                    <p class="text-gray-600">Generic calculators ignore your lifestyle, leading to undersized or oversized systems</p>
+                    <p class="text-gray-600 mobile-text-base">Generic calculators ignore your lifestyle, leading to undersized or oversized systems</p>
                 </div>
-                <div class="text-center">
+                <div class="text-center mobile-card">
                     <div class="text-4xl mb-4">🤷</div>
                     <h4 class="text-xl font-semibold mb-3">Biased Advice</h4>
-                    <p class="text-gray-600">Installers recommend what makes them the most profit, not what's best for you</p>
+                    <p class="text-gray-600 mobile-text-base">Installers recommend what makes them the most profit, not what's best for you</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Solution Section -->
-    <section id="solution" class="py-16 bg-gray-50">
+    <section id="solution" class="py-16 mobile-section-padding bg-gray-50">
         <div class="max-w-6xl mx-auto px-4">
-            <h3 class="text-3xl font-bold text-center mb-12">Introducing Solar Truth AI</h3>
-            <div class="grid md:grid-cols-2 gap-12 items-center">
+            <h3 class="text-3xl section-heading font-bold text-center mb-12">Introducing Solar Truth AI</h3>
+            <div class="grid md:grid-cols-2 mobile-grid gap-12 items-center">
                 <div>
-                    <h4 class="text-2xl font-semibold mb-6">Independent Analysis You Can Trust</h4>
+                    <h4 class="text-2xl subsection-heading font-semibold mb-6">Independent Analysis You Can Trust</h4>
                     <div class="space-y-4">
                         <div class="flex items-start">
                             <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3 mt-1">
@@ -200,7 +352,7 @@
                             </div>
                             <div>
                                 <h5 class="font-semibold">Personalized System Sizing</h5>
-                                <p class="text-gray-600">AI analyzes your lifestyle, work patterns, and energy usage for accurate recommendations</p>
+                                <p class="text-gray-600 mobile-text-base">AI analyzes your lifestyle, work patterns, and energy usage for accurate recommendations</p>
                             </div>
                         </div>
                         <div class="flex items-start">
@@ -209,7 +361,7 @@
                             </div>
                             <div>
                                 <h5 class="font-semibold">Quote Analysis</h5>
-                                <p class="text-gray-600">Compare installer quotes against fair market prices and quality standards</p>
+                                <p class="text-gray-600 mobile-text-base">Compare installer quotes against fair market prices and quality standards</p>
                             </div>
                         </div>
                         <div class="flex items-start">
@@ -218,14 +370,14 @@
                             </div>
                             <div>
                                 <h5 class="font-semibold">No Installer Bias</h5>
-                                <p class="text-gray-600">We don't sell solar - just honest, independent advice</p>
+                                <p class="text-gray-600 mobile-text-base">We don't sell solar - just honest, independent advice</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="bg-white p-6 mobile-card rounded-lg shadow-lg">
                     <h5 class="font-semibold mb-4">Sample Analysis Result:</h5>
-                    <div class="space-y-3 text-sm">
+                    <div class="space-y-3 text-sm mobile-text-sm">
                         <div class="flex justify-between">
                             <span>Recommended System:</span>
                             <span class="font-semibold">6.5kW + 13.5kWh battery</span>
@@ -243,7 +395,7 @@
                             <span class="font-semibold text-green-600">Excellent (Tier 1)</span>
                         </div>
                         <div class="pt-2 border-t">
-                            <p class="text-xs text-gray-600"><strong>Recommendation:</strong> This quote is significantly overpriced. The panels are good quality, but you should negotiate or get additional quotes.</p>
+                            <p class="text-xs mobile-text-sm text-gray-600"><strong>Recommendation:</strong> This quote is significantly overpriced. The panels are good quality, but you should negotiate or get additional quotes.</p>
                         </div>
                     </div>
                 </div>
@@ -251,17 +403,18 @@
         </div>
     </section>
 
+
     <!-- System Sizing Consultation -->
-    <section id="consultation" class="py-16 bg-white">
+    <section id="consultation" class="py-16 mobile-section-padding bg-white">
         <div class="max-w-4xl mx-auto px-4">
             <div class="text-center mb-12">
-                <h3 class="text-3xl font-bold mb-4">What Solar System Do You Need?</h3>
-                <p class="text-xl text-gray-600">Answer 14 quick questions to get your personalized recommendation</p>
+                <h3 class="text-3xl section-heading font-bold mb-4">What Solar System Do You Need?</h3>
+                <p class="text-xl mobile-text-base text-gray-600">Answer 14 quick questions to get your personalized recommendation</p>
             </div>
 
             <!-- Progress Bar -->
             <div class="mb-8">
-                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                <div class="flex justify-between text-sm mobile-text-sm text-gray-600 mb-2">
                     <span>Progress</span>
                     <span id="progress-text">Question 1 of 14</span>
                 </div>
@@ -274,48 +427,48 @@
             <div id="consultation-container">
                 <!-- Question 1: Property Type -->
                 <div class="consultation-step active" data-step="1">
-                    <h4 class="text-2xl font-semibold mb-6">What type of property do you live in?</h4>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="detached">
+                    <h4 class="text-2xl subsection-heading font-semibold mb-6">What type of property do you live in?</h4>
+                    <div class="grid grid-cols-2 mobile-grid gap-4">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 mobile-card text-center" data-value="detached">
                             <div class="text-4xl mb-3">🏘️</div>
                             <h5 class="font-semibold">Detached House</h5>
-                            <p class="text-sm text-gray-600">Standalone property</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Standalone property</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="semi-detached">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 mobile-card text-center" data-value="semi-detached">
                             <div class="text-4xl mb-3">🏡</div>
                             <h5 class="font-semibold">Semi-Detached</h5>
-                            <p class="text-sm text-gray-600">Attached to one other property</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Attached to one other property</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="terraced">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 mobile-card text-center" data-value="terraced">
                             <div class="text-4xl mb-3">🏘️</div>
                             <h5 class="font-semibold">Terraced House</h5>
-                            <p class="text-sm text-gray-600">Row of connected houses</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Row of connected houses</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="bungalow">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 mobile-card text-center" data-value="bungalow">
                             <div class="text-4xl mb-3">🏠</div>
                             <h5 class="font-semibold">Bungalow</h5>
-                            <p class="text-sm text-gray-600">Single-story property</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Single-story property</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Question 2: Bedrooms -->
                 <div class="consultation-step" data-step="2">
-                    <h4 class="text-2xl font-semibold mb-6">How many bedrooms does your property have?</h4>
-                    <div class="grid grid-cols-3 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="1">
+                    <h4 class="text-2xl subsection-heading font-semibold mb-6">How many bedrooms does your property have?</h4>
+                    <div class="grid grid-cols-3 mobile-grid gap-4">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 mobile-card text-center" data-value="1">
                             <h5 class="font-semibold text-xl">1 Bedroom</h5>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="2">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 mobile-card text-center" data-value="2">
                             <h5 class="font-semibold text-xl">2 Bedrooms</h5>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="3">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 mobile-card text-center" data-value="3">
                             <h5 class="font-semibold text-xl">3 Bedrooms</h5>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="4">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 mobile-card text-center" data-value="4">
                             <h5 class="font-semibold text-xl">4 Bedrooms</h5>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 text-center" data-value="5+">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-6 mobile-card text-center" data-value="5+">
                             <h5 class="font-semibold text-xl">5+ Bedrooms</h5>
                         </div>
                     </div>
@@ -323,217 +476,217 @@
 
                 <!-- Question 3: Occupation -->
                 <div class="consultation-step" data-step="3">
-                    <h4 class="text-2xl font-semibold mb-6">What best describes your work situation?</h4>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="healthcare">
+                    <h4 class="text-2xl subsection-heading font-semibold mb-6">What best describes your work situation?</h4>
+                    <div class="grid grid-cols-2 mobile-grid gap-4">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="healthcare">
                             <div class="text-3xl mb-2">👩‍⚕️</div>
                             <h5 class="font-semibold">Healthcare Worker</h5>
-                            <p class="text-sm text-gray-600">Nurse, doctor, care worker</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Nurse, doctor, care worker</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="teacher">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="teacher">
                             <div class="text-3xl mb-2">👨‍🏫</div>
                             <h5 class="font-semibold">Teacher/Education</h5>
-                            <p class="text-sm text-gray-600">Teacher, lecturer, school staff</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Teacher, lecturer, school staff</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="office">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="office">
                             <div class="text-3xl mb-2">💼</div>
                             <h5 class="font-semibold">Office Worker</h5>
-                            <p class="text-sm text-gray-600">Standard 9-5 office job</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Standard 9-5 office job</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="shift">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="shift">
                             <div class="text-3xl mb-2">🏭</div>
                             <h5 class="font-semibold">Shift Worker</h5>
-                            <p class="text-sm text-gray-600">Manufacturing, security, emergency</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Manufacturing, security, emergency</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="remote">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="remote">
                             <div class="text-3xl mb-2">💻</div>
                             <h5 class="font-semibold">Remote Worker</h5>
-                            <p class="text-sm text-gray-600">Work from home full-time</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Work from home full-time</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="retired">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="retired">
                             <div class="text-3xl mb-2">🏡</div>
                             <h5 class="font-semibold">Retired</h5>
-                            <p class="text-sm text-gray-600">No longer working</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">No longer working</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Question 4: Work Schedule -->
                 <div class="consultation-step" data-step="4">
-                    <h4 class="text-2xl font-semibold mb-6">What's your typical work schedule?</h4>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="standard-days">
+                    <h4 class="text-2xl subsection-heading font-semibold mb-6">What's your typical work schedule?</h4>
+                    <div class="grid grid-cols-2 mobile-grid gap-4">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="standard-days">
                             <div class="text-3xl mb-2">🌅</div>
                             <h5 class="font-semibold">Standard Days</h5>
-                            <p class="text-sm text-gray-600">Regular 9am-5pm hours</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Regular 9am-5pm hours</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="shift-rotating">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="shift-rotating">
                             <div class="text-3xl mb-2">🌙</div>
                             <h5 class="font-semibold">Shift Work - Rotating</h5>
-                            <p class="text-sm text-gray-600">Days, nights, and weekends</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Days, nights, and weekends</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="work-from-home">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="work-from-home">
                             <div class="text-3xl mb-2">🏠</div>
                             <h5 class="font-semibold">Work from Home</h5>
-                            <p class="text-sm text-gray-600">Flexible home schedule</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Flexible home schedule</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="retired">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="retired">
                             <div class="text-3xl mb-2">😴</div>
                             <h5 class="font-semibold">Retired/No Schedule</h5>
-                            <p class="text-sm text-gray-600">No work commitments</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">No work commitments</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Question 5: Home During Day -->
                 <div class="consultation-step" data-step="5">
-                    <h4 class="text-2xl font-semibold mb-6">How often are you home during weekdays (9am-5pm)?</h4>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="rarely">
+                    <h4 class="text-2xl subsection-heading font-semibold mb-6">How often are you home during weekdays (9am-5pm)?</h4>
+                    <div class="grid grid-cols-2 mobile-grid gap-4">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="rarely">
                             <h5 class="font-semibold">Rarely</h5>
-                            <p class="text-sm text-gray-600">Out most weekdays 9-5</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Out most weekdays 9-5</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="sometimes">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="sometimes">
                             <h5 class="font-semibold">Sometimes</h5>
-                            <p class="text-sm text-gray-600">Home 1-2 days per week</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Home 1-2 days per week</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="often">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="often">
                             <h5 class="font-semibold">Often</h5>
-                            <p class="text-sm text-gray-600">Home 3-4 days per week</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Home 3-4 days per week</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="always">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="always">
                             <h5 class="font-semibold">Always</h5>
-                            <p class="text-sm text-gray-600">Home most weekdays</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Home most weekdays</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Question 6: Household -->
                 <div class="consultation-step" data-step="6">
-                    <h4 class="text-2xl font-semibold mb-6">Who lives in your household?</h4>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="just-me">
+                    <h4 class="text-2xl subsection-heading font-semibold mb-6">Who lives in your household?</h4>
+                    <div class="grid grid-cols-2 mobile-grid gap-4">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="just-me">
                             <div class="text-3xl mb-2">👤</div>
                             <h5 class="font-semibold">Just me</h5>
-                            <p class="text-sm text-gray-600">Single person household</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Single person household</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="couple-no-children">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="couple-no-children">
                             <div class="text-3xl mb-2">👫</div>
                             <h5 class="font-semibold">Couple, no children</h5>
-                            <p class="text-sm text-gray-600">Two adults</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Two adults</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="family-young-children">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="family-young-children">
                             <div class="text-3xl mb-2">👨‍👩‍👧</div>
                             <h5 class="font-semibold">Family with young children</h5>
-                            <p class="text-sm text-gray-600">Children under 12</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Children under 12</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="family-teenagers">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="family-teenagers">
                             <div class="text-3xl mb-2">👨‍👩‍👦‍👦</div>
                             <h5 class="font-semibold">Family with teenagers</h5>
-                            <p class="text-sm text-gray-600">Children 12-18</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Children 12-18</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Question 7: Monthly Bill -->
                 <div class="consultation-step" data-step="7">
-                    <h4 class="text-2xl font-semibold mb-6">What's your average monthly electricity bill?</h4>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="40-70">
+                    <h4 class="text-2xl subsection-heading font-semibold mb-6">What's your average monthly electricity bill?</h4>
+                    <div class="grid grid-cols-2 mobile-grid gap-4">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="40-70">
                             <h5 class="font-semibold">£40-70</h5>
-                            <p class="text-sm text-gray-600">Lower usage household</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Lower usage household</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="70-100">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="70-100">
                             <h5 class="font-semibold">£70-100</h5>
-                            <p class="text-sm text-gray-600">Average usage household</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Average usage household</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="100-140">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="100-140">
                             <h5 class="font-semibold">£100-140</h5>
-                            <p class="text-sm text-gray-600">Higher usage household</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Higher usage household</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="140-200">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="140-200">
                             <h5 class="font-semibold">£140-200</h5>
-                            <p class="text-sm text-gray-600">High usage household</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">High usage household</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="200+">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="200+">
                             <h5 class="font-semibold">£200+</h5>
-                            <p class="text-sm text-gray-600">Very high usage household</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Very high usage household</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="not-sure">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="not-sure">
                             <h5 class="font-semibold">Not sure</h5>
-                            <p class="text-sm text-gray-600">Don't know/varies a lot</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Don't know/varies a lot</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Question 8: EV Plans -->
                 <div class="consultation-step" data-step="8">
-                    <h4 class="text-2xl font-semibold mb-6">Do you have or plan to get an electric vehicle?</h4>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="have-one">
+                    <h4 class="text-2xl subsection-heading font-semibold mb-6">Do you have or plan to get an electric vehicle?</h4>
+                    <div class="grid grid-cols-2 mobile-grid gap-4">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="have-one">
                             <div class="text-3xl mb-2">⚡</div>
                             <h5 class="font-semibold">Yes, I have one now</h5>
-                            <p class="text-sm text-gray-600">Current EV owner</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Current EV owner</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="planning-2-years">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="planning-2-years">
                             <div class="text-3xl mb-2">📅</div>
                             <h5 class="font-semibold">Planning within 2 years</h5>
-                            <p class="text-sm text-gray-600">Definite EV plans</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Definite EV plans</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="considering-2-5-years">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="considering-2-5-years">
                             <div class="text-3xl mb-2">🤔</div>
                             <h5 class="font-semibold">Considering in 2-5 years</h5>
-                            <p class="text-sm text-gray-600">Possible future EV</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Possible future EV</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="no-plans">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="no-plans">
                             <div class="text-3xl mb-2">🚫</div>
                             <h5 class="font-semibold">No plans for EV</h5>
-                            <p class="text-sm text-gray-600">Sticking with petrol/diesel</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Sticking with petrol/diesel</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Question 9: Heating System -->
                 <div class="consultation-step" data-step="9">
-                    <h4 class="text-2xl font-semibold mb-6">What's your current heating system?</h4>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="gas-boiler">
+                    <h4 class="text-2xl subsection-heading font-semibold mb-6">What's your current heating system?</h4>
+                    <div class="grid grid-cols-2 mobile-grid gap-4">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="gas-boiler">
                             <div class="text-3xl mb-2">🔥</div>
                             <h5 class="font-semibold">Gas Boiler</h5>
-                            <p class="text-sm text-gray-600">Traditional gas central heating</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Traditional gas central heating</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="heat-pump">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="heat-pump">
                             <div class="text-3xl mb-2">🌡️</div>
                             <h5 class="font-semibold">Heat Pump</h5>
-                            <p class="text-sm text-gray-600">Air source or ground source</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Air source or ground source</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="electric-heating">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="electric-heating">
                             <div class="text-3xl mb-2">⚡</div>
                             <h5 class="font-semibold">Electric Heating</h5>
-                            <p class="text-sm text-gray-600">Electric radiators/storage heaters</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Electric radiators/storage heaters</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="oil-boiler">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="oil-boiler">
                             <div class="text-3xl mb-2">🛢️</div>
                             <h5 class="font-semibold">Oil Boiler</h5>
-                            <p class="text-sm text-gray-600">Oil-fired heating</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Oil-fired heating</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Question 10: Heat Pump Plans -->
                 <div class="consultation-step" data-step="10">
-                    <h4 class="text-2xl font-semibold mb-6">Are you considering installing a heat pump?</h4>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="within-2-years">
+                    <h4 class="text-2xl subsection-heading font-semibold mb-6">Are you considering installing a heat pump?</h4>
+                    <div class="grid grid-cols-2 mobile-grid gap-4">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="within-2-years">
                             <h5 class="font-semibold">Yes, within 2 years</h5>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="within-5-years">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="within-5-years">
                             <h5 class="font-semibold">Yes, within 5 years</h5>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="considering">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="considering">
                             <h5 class="font-semibold">Considering but unsure when</h5>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="no-plans">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="no-plans">
                             <h5 class="font-semibold">No plans for heat pump</h5>
                         </div>
                     </div>
@@ -541,100 +694,100 @@
 
                 <!-- Question 11: Primary Goal -->
                 <div class="consultation-step" data-step="11">
-                    <h4 class="text-2xl font-semibold mb-6">What's your main reason for considering solar?</h4>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="save-money">
+                    <h4 class="text-2xl subsection-heading font-semibold mb-6">What's your main reason for considering solar?</h4>
+                    <div class="grid grid-cols-2 mobile-grid gap-4">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="save-money">
                             <div class="text-3xl mb-2">💵</div>
                             <h5 class="font-semibold">Save money on bills</h5>
-                            <p class="text-sm text-gray-600">Reduce monthly costs</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Reduce monthly costs</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="environmental">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="environmental">
                             <div class="text-3xl mb-2">🌱</div>
                             <h5 class="font-semibold">Environmental impact</h5>
-                            <p class="text-sm text-gray-600">Reduce carbon footprint</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Reduce carbon footprint</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="energy-independence">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="energy-independence">
                             <div class="text-3xl mb-2">🔋</div>
                             <h5 class="font-semibold">Energy independence</h5>
-                            <p class="text-sm text-gray-600">Generate own power</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Generate own power</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="property-value">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="property-value">
                             <div class="text-3xl mb-2">🏠</div>
                             <h5 class="font-semibold">Increase property value</h5>
-                            <p class="text-sm text-gray-600">Home investment</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Home investment</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Question 12: Battery Interest -->
                 <div class="consultation-step" data-step="12">
-                    <h4 class="text-2xl font-semibold mb-6">How important is battery storage to you?</h4>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="essential">
+                    <h4 class="text-2xl subsection-heading font-semibold mb-6">How important is battery storage to you?</h4>
+                    <div class="grid grid-cols-2 mobile-grid gap-4">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="essential">
                             <h5 class="font-semibold">Essential</h5>
-                            <p class="text-sm text-gray-600">Must have battery storage</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Must have battery storage</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="very-interested">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="very-interested">
                             <h5 class="font-semibold">Very interested</h5>
-                            <p class="text-sm text-gray-600">Want battery if budget allows</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Want battery if budget allows</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="somewhat-interested">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="somewhat-interested">
                             <h5 class="font-semibold">Somewhat interested</h5>
-                            <p class="text-sm text-gray-600">Depends on cost/benefit</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Depends on cost/benefit</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="not-interested">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="not-interested">
                             <h5 class="font-semibold">Not interested</h5>
-                            <p class="text-sm text-gray-600">Just want solar panels</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Just want solar panels</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Question 13: Roof Orientation -->
                 <div class="consultation-step" data-step="13">
-                    <h4 class="text-2xl font-semibold mb-6">Which direction does your main roof face?</h4>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="south">
+                    <h4 class="text-2xl subsection-heading font-semibold mb-6">Which direction does your main roof face?</h4>
+                    <div class="grid grid-cols-2 mobile-grid gap-4">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="south">
                             <div class="text-3xl mb-2">☀️</div>
                             <h5 class="font-semibold">South</h5>
-                            <p class="text-sm text-gray-600">Best for solar generation</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Best for solar generation</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="east">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="east">
                             <div class="text-3xl mb-2">🌅</div>
                             <h5 class="font-semibold">East</h5>
-                            <p class="text-sm text-gray-600">Good morning generation</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Good morning generation</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="west">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="west">
                             <div class="text-3xl mb-2">🌇</div>
                             <h5 class="font-semibold">West</h5>
-                            <p class="text-sm text-gray-600">Good afternoon generation</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Good afternoon generation</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="east-west">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="east-west">
                             <div class="text-3xl mb-2">🔄</div>
                             <h5 class="font-semibold">East/West</h5>
-                            <p class="text-sm text-gray-600">Multiple roof sections</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Multiple roof sections</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Question 14: Timeline -->
                 <div class="consultation-step" data-step="14">
-                    <h4 class="text-2xl font-semibold mb-6">When are you looking to install solar?</h4>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="asap">
+                    <h4 class="text-2xl subsection-heading font-semibold mb-6">When are you looking to install solar?</h4>
+                    <div class="grid grid-cols-2 mobile-grid gap-4">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="asap">
                             <h5 class="font-semibold">ASAP</h5>
-                            <p class="text-sm text-gray-600">Ready to proceed immediately</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Ready to proceed immediately</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="next-3-months">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="next-3-months">
                             <h5 class="font-semibold">Next 3 months</h5>
-                            <p class="text-sm text-gray-600">Soon but need time to plan</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Soon but need time to plan</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="next-6-months">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="next-6-months">
                             <h5 class="font-semibold">Next 6 months</h5>
-                            <p class="text-sm text-gray-600">This year definitely</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">This year definitely</p>
                         </div>
-                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 text-center" data-value="just-researching">
+                        <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="just-researching">
                             <h5 class="font-semibold">Just researching</h5>
-                            <p class="text-sm text-gray-600">Early stages, no timeline</p>
+                            <p class="text-sm mobile-text-sm text-gray-600">Early stages, no timeline</p>
                         </div>
                     </div>
                 </div>
@@ -642,11 +795,11 @@
 
             <!-- Navigation Buttons -->
             <div class="flex justify-between mt-8">
-                <button id="prev-btn" onclick="previousQuestion()" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-400 transition hidden">
+                <button id="prev-btn" onclick="previousQuestion()" class="bg-gray-300 text-gray-700 px-6 py-3 mobile-button rounded-lg font-semibold hover:bg-gray-400 transition hidden">
                     Previous
                 </button>
                 <div class="flex-1"></div>
-                <button id="next-btn" onclick="nextQuestion()" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition opacity-50 cursor-not-allowed" disabled>
+                <button id="next-btn" onclick="nextQuestion()" class="bg-blue-600 text-white px-6 py-3 mobile-button rounded-lg font-semibold hover:bg-blue-700 transition opacity-50 cursor-not-allowed" disabled>
                     Next Question
                 </button>
             </div>
@@ -654,15 +807,15 @@
             <!-- Results Section -->
             <div id="consultation-results" class="hidden mt-12">
                 <div class="text-center mb-8">
-                    <h3 class="text-3xl font-bold mb-4">Your Personalized Solar Recommendation</h3>
+                    <h3 class="text-3xl section-heading font-bold mb-4">Your Personalized Solar Recommendation</h3>
                     <div class="confidence-badge">
                         <span id="confidence-score">92% Confidence</span>
                     </div>
                 </div>
 
-                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="grid md:grid-cols-2 mobile-grid gap-6 mb-8">
                     <!-- System Overview -->
-                    <div class="recommendation-card p-6">
+                    <div class="recommendation-card mobile-card p-6">
                         <div class="flex items-center mb-4">
                             <div class="system-icon mr-4">⚡</div>
                             <h4 class="text-xl font-semibold">System Overview</h4>
@@ -674,7 +827,7 @@
                                 </div>
                                 <div>
                                     <span id="system-size" class="font-semibold text-lg">6.5kW</span>
-                                    <span class="text-gray-600"> Solar System</span>
+                                    <span class="text-gray-600 mobile-text-base"> Solar System</span>
                                 </div>
                             </div>
                             <div class="flex items-center">
@@ -683,41 +836,41 @@
                                 </div>
                                 <div>
                                     <span id="battery-size" class="font-semibold text-lg">13.5kWh</span>
-                                    <span class="text-gray-600"> Battery Storage</span>
+                                    <span class="text-gray-600 mobile-text-base"> Battery Storage</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Financial Summary -->
-                    <div class="recommendation-card p-6">
+                    <div class="recommendation-card mobile-card p-6">
                         <h4 class="text-xl font-semibold mb-4">Financial Summary</h4>
                         <div class="space-y-3">
                             <div class="flex justify-between">
-                                <span class="text-gray-600">Total Cost:</span>
+                                <span class="text-gray-600 mobile-text-base">Total Cost:</span>
                                 <span id="total-cost" class="font-semibold">£19,250</span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-gray-600">Annual Savings:</span>
+                                <span class="text-gray-600 mobile-text-base">Annual Savings:</span>
                                 <span id="annual-savings" class="font-semibold text-green-600">£1,850</span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-gray-600">Payback Period:</span>
+                                <span class="text-gray-600 mobile-text-base">Payback Period:</span>
                                 <span id="payback-period" class="font-semibold">10.4 years</span>
                             </div>
                             <div class="inflation-toggle">
                                 <div class="flex justify-between items-center mb-2">
-                                    <span class="text-sm text-gray-600">Inflation Rate:</span>
+                                    <span class="text-sm mobile-text-sm text-gray-600">Inflation Rate:</span>
                                     <button id="inflation-toggle-btn" class="toggle-button" onclick="toggleInflationRate()">
                                         Show 7% inflation
                                     </button>
                                 </div>
-                                <div id="inflation-explanation" class="text-xs text-gray-500">
+                                <div id="inflation-explanation" class="text-xs mobile-text-sm text-gray-500">
                                     Based on 3.5% annual energy price increases (standard UK assumption)
                                 </div>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-gray-600">25-Year ROI:</span>
+                                <span class="text-gray-600 mobile-text-base">25-Year ROI:</span>
                                 <span id="roi" class="font-semibold text-green-600">285%</span>
                             </div>
                         </div>
@@ -725,20 +878,20 @@
                 </div>
 
                 <!-- Lifestyle Insights -->
-                <div class="recommendation-card insight-card p-6 mb-6">
+                <div class="recommendation-card insight-card mobile-card p-6 mb-6">
                     <h4 class="text-xl font-semibold mb-4">Personalized for Your Lifestyle</h4>
-                    <p id="lifestyle-insight" class="text-gray-700 mb-4">
+                    <p id="lifestyle-insight" class="text-gray-700 mobile-text-base mb-4">
                         As a healthcare worker with irregular shifts, your energy usage doesn't align well with solar generation. Your shift work means you need large battery storage for energy flexibility when working nights.
                     </p>
-                    <p id="battery-insight" class="text-gray-700">
+                    <p id="battery-insight" class="text-gray-700 mobile-text-base">
                         A 13.5kWh battery gives you excellent energy independence. This size handles most of your evening and night usage, with backup for cloudy days.
                     </p>
                 </div>
 
                 <!-- Optimization Tips -->
-                <div class="recommendation-card tips-card p-6 mb-6">
+                <div class="recommendation-card tips-card mobile-card p-6 mb-6">
                     <h4 class="text-xl font-semibold mb-4">Optimization Tips</h4>
-                    <ul id="optimization-tips" class="space-y-2 text-gray-700">
+                    <ul id="optimization-tips" class="space-y-2 text-gray-700 mobile-text-base">
                         <li>• Run appliances during the day when solar production is highest</li>
                         <li>• Delay EV charging to off-peak hours when possible</li>
                         <li>• Keep battery charge above 20% for longevity</li>
@@ -747,9 +900,9 @@
                 </div>
 
                 <!-- Next Steps -->
-                <div class="recommendation-card steps-card p-6 mb-8">
+                <div class="recommendation-card steps-card mobile-card p-6 mb-8">
                     <h4 class="text-xl font-semibold mb-4">Next Steps</h4>
-                    <ol id="next-steps" class="space-y-2 text-gray-700">
+                    <ol id="next-steps" class="space-y-2 text-gray-700 mobile-text-base">
                         <li>1. Get quotes for a 6.5kW solar system with 13.5kWh battery storage</li>
                         <li>2. Use our quote analyzer below to evaluate each installer's proposal</li>
                         <li>3. Check your roof condition and any planning requirements</li>
@@ -760,7 +913,7 @@
 
                 <!-- CTA Button -->
                 <div class="text-center">
-                    <button onclick="scrollToAnalyzer()" class="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition">
+                    <button onclick="scrollToAnalyzer()" class="bg-blue-600 text-white px-8 py-4 mobile-button rounded-lg font-semibold text-lg hover:bg-blue-700 transition">
                         Now Analyze Your Quotes
                     </button>
                 </div>
@@ -768,93 +921,94 @@
         </div>
     </section>
 
+
     <!-- Quote Analyzer Section -->
-    <section id="analyzer" class="py-16 bg-gray-50">
+    <section id="analyzer" class="py-16 mobile-section-padding bg-gray-50">
         <div class="max-w-4xl mx-auto px-4">
             <div class="text-center mb-12">
-                <h3 class="text-3xl font-bold mb-4">Analyze Your Solar Quote Now</h3>
-                <p class="text-xl text-gray-600">Get instant analysis of any solar quote - completely free and unbiased</p>
+                <h3 class="text-3xl section-heading font-bold mb-4">Analyze Your Solar Quote Now</h3>
+                <p class="text-xl mobile-text-base text-gray-600">Get instant analysis of any solar quote - completely free and unbiased</p>
             </div>
 
             <!-- Tab Navigation -->
             <div class="flex mb-8 bg-white rounded-lg p-1 shadow-sm">
-                <button class="tab-button active flex-1 py-3 px-6 rounded-md font-semibold transition" onclick="switchTab('manual')">
+                <button class="tab-button active flex-1 py-3 px-6 mobile-button rounded-md font-semibold transition" onclick="switchTab('manual')">
                     Manual Entry
                 </button>
-                <button class="tab-button flex-1 py-3 px-6 rounded-md font-semibold transition" onclick="switchTab('pdf')">
+                <button class="tab-button flex-1 py-3 px-6 mobile-button rounded-md font-semibold transition" onclick="switchTab('pdf')">
                     PDF Upload
                 </button>
             </div>
 
             <!-- Manual Entry Tab -->
             <div id="manual-tab" class="tab-content active">
-                <div class="bg-white rounded-lg shadow-lg p-8">
+                <div class="bg-white rounded-lg shadow-lg p-8 quote-analyzer-mobile">
                     <form id="quote-form" onsubmit="handleQuoteAnalysis(event)">
                         <!-- Installer Type Selection -->
-                        <div class="mb-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                        <div class="mb-8 p-4 bg-blue-50 rounded-lg border border-blue-200 form-group">
                             <label class="block text-lg font-semibold mb-4 text-blue-800">Who gave you this quote?</label>
-                            <p class="text-sm text-blue-600 mb-4">This helps us provide more accurate pricing analysis based on different installer types.</p>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <p class="text-sm mobile-text-sm text-blue-600 mb-4">This helps us provide more accurate pricing analysis based on different installer types.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 mobile-grid gap-4">
                                 <label class="installer-type-option cursor-pointer" onclick="selectInstallerType('volume')">
                                     <input type="radio" name="installer-type" value="volume" class="sr-only" checked>
-                                    <div id="volume-option" class="p-4 border-2 border-blue-300 rounded-lg bg-blue-100 transition hover:bg-blue-200">
+                                    <div id="volume-option" class="p-4 border-2 border-blue-300 rounded-lg bg-blue-100 transition hover:bg-blue-200 mobile-card">
                                         <div class="font-semibold text-blue-800">Volume Installer</div>
-                                        <div class="text-sm text-blue-600 mt-1">Octopus Energy, EON, EDF, GlowGreen, Heatable, BOXT, Wickes, etc.</div>
+                                        <div class="text-sm mobile-text-sm text-blue-600 mt-1">Octopus Energy, EON, EDF, GlowGreen, Heatable, BOXT, Wickes, etc.</div>
                                     </div>
                                 </label>
                                 <label class="installer-type-option cursor-pointer" onclick="selectInstallerType('traditional')">
                                     <input type="radio" name="installer-type" value="traditional" class="sr-only">
-                                    <div id="traditional-option" class="p-4 border-2 border-gray-300 rounded-lg bg-gray-50 transition hover:bg-gray-100">
+                                    <div id="traditional-option" class="p-4 border-2 border-gray-300 rounded-lg bg-gray-50 transition hover:bg-gray-100 mobile-card">
                                         <div class="font-semibold text-gray-700">Local/Traditional Installer</div>
-                                        <div class="text-sm text-gray-600 mt-1">Smaller local companies, independent installers</div>
+                                        <div class="text-sm mobile-text-sm text-gray-600 mt-1">Smaller local companies, independent installers</div>
                                     </div>
                                 </label>
                             </div>
                         </div>
 
                         <!-- System Size -->
-                        <div class="mb-8">
+                        <div class="mb-8 form-group">
                             <label class="block text-lg font-semibold mb-4">System Size (kW)</label>
-                            <div class="grid grid-cols-5 gap-3">
-                                <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-size="2">2kW</button>
-                                <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-size="3">3kW</button>
-                                <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-size="4">4kW</button>
-                                <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-size="5">5kW</button>
-                                <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-size="6">6kW</button>
-                                <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-size="7">7kW</button>
-                                <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-size="8">8kW</button>
-                                <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-size="9">9kW</button>
-                                <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-size="10">10kW</button>
-                                <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-size="custom">Custom</button>
+                            <div class="grid grid-cols-5 mobile-grid gap-3">
+                                <button type="button" class="size-button py-3 px-4 mobile-form-input rounded-lg font-semibold" data-size="2">2kW</button>
+                                <button type="button" class="size-button py-3 px-4 mobile-form-input rounded-lg font-semibold" data-size="3">3kW</button>
+                                <button type="button" class="size-button py-3 px-4 mobile-form-input rounded-lg font-semibold" data-size="4">4kW</button>
+                                <button type="button" class="size-button py-3 px-4 mobile-form-input rounded-lg font-semibold" data-size="5">5kW</button>
+                                <button type="button" class="size-button py-3 px-4 mobile-form-input rounded-lg font-semibold" data-size="6">6kW</button>
+                                <button type="button" class="size-button py-3 px-4 mobile-form-input rounded-lg font-semibold" data-size="7">7kW</button>
+                                <button type="button" class="size-button py-3 px-4 mobile-form-input rounded-lg font-semibold" data-size="8">8kW</button>
+                                <button type="button" class="size-button py-3 px-4 mobile-form-input rounded-lg font-semibold" data-size="9">9kW</button>
+                                <button type="button" class="size-button py-3 px-4 mobile-form-input rounded-lg font-semibold" data-size="10">10kW</button>
+                                <button type="button" class="size-button py-3 px-4 mobile-form-input rounded-lg font-semibold" data-size="custom">Custom</button>
                             </div>
                             <div id="custom-size-input" class="custom-input mt-4">
-                                <input type="number" step="0.1" placeholder="Enter system size (e.g., 8.24 for 8.24kW or 8240 for 8240W)" class="w-full p-3 border border-gray-300 rounded-lg">
-                                <p class="text-sm text-gray-600 mt-1">You can enter in kW (e.g., 8.24) or W (e.g., 8240) - we'll convert automatically</p>
+                                <input type="number" step="0.1" placeholder="Enter system size (e.g., 8.24 for 8.24kW or 8240 for 8240W)" class="w-full p-3 mobile-form-input border border-gray-300 rounded-lg">
+                                <p class="text-sm mobile-text-sm text-gray-600 mt-1">You can enter in kW (e.g., 8.24) or W (e.g., 8240) - we'll convert automatically</p>
                             </div>
                         </div>
 
                         <!-- Panel Output -->
-                        <div class="mb-8">
+                        <div class="mb-8 form-group">
                             <label class="block text-lg font-semibold mb-4">Panel Output (Watts per panel)</label>
-                            <div class="grid grid-cols-4 gap-3">
-                                <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-output="300">300W</button>
-                                <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-output="350">350W</button>
-                                <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-output="400">400W</button>
-                                <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-output="450">450W</button>
-                                <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-output="500">500W</button>
-                                <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-output="550">550W</button>
-                                <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-output="600">600W</button>
-                                <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-output="custom-output">Custom</button>
+                            <div class="grid grid-cols-4 mobile-grid gap-3">
+                                <button type="button" class="size-button py-3 px-4 mobile-form-input rounded-lg font-semibold" data-output="300">300W</button>
+                                <button type="button" class="size-button py-3 px-4 mobile-form-input rounded-lg font-semibold" data-output="350">350W</button>
+                                <button type="button" class="size-button py-3 px-4 mobile-form-input rounded-lg font-semibold" data-output="400">400W</button>
+                                <button type="button" class="size-button py-3 px-4 mobile-form-input rounded-lg font-semibold" data-output="450">450W</button>
+                                <button type="button" class="size-button py-3 px-4 mobile-form-input rounded-lg font-semibold" data-output="500">500W</button>
+                                <button type="button" class="size-button py-3 px-4 mobile-form-input rounded-lg font-semibold" data-output="550">550W</button>
+                                <button type="button" class="size-button py-3 px-4 mobile-form-input rounded-lg font-semibold" data-output="600">600W</button>
+                                <button type="button" class="size-button py-3 px-4 mobile-form-input rounded-lg font-semibold" data-output="custom-output">Custom</button>
                             </div>
                             <div id="custom-output-input" class="custom-input mt-4">
-                                <input type="number" placeholder="Enter custom output (W)" class="w-full p-3 border border-gray-300 rounded-lg">
+                                <input type="number" placeholder="Enter custom output (W)" class="w-full p-3 mobile-form-input border border-gray-300 rounded-lg">
                             </div>
                         </div>
 
                         <!-- Panel Brand -->
-                        <div class="mb-8">
+                        <div class="mb-8 form-group">
                             <label class="block text-lg font-semibold mb-4">Panel Brand</label>
-                            <select id="panel-brand-select" class="w-full p-3 border border-gray-300 rounded-lg">
+                            <select id="panel-brand-select" class="w-full p-3 mobile-form-select border border-gray-300 rounded-lg">
                                 <option value="">Select panel brand...</option>
                                 <optgroup label="Premium Brands (Excellent)">
                                     <option value="sunpower">SunPower</option>
@@ -891,18 +1045,18 @@
                         </div>
 
                         <!-- Battery Section -->
-                        <div class="mb-8">
+                        <div class="mb-8 form-group">
                             <label class="block text-lg font-semibold mb-4">Battery Storage</label>
                             <div class="grid grid-cols-2 gap-4 mb-4">
-                                <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-battery="none">No Battery</button>
-                                <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-battery="yes">Include Battery</button>
+                                <button type="button" class="size-button py-3 px-4 mobile-form-input rounded-lg font-semibold" data-battery="none">No Battery</button>
+                                <button type="button" class="size-button py-3 px-4 mobile-form-input rounded-lg font-semibold" data-battery="yes">Include Battery</button>
                             </div>
                             
                             <div id="battery-details" class="battery-models space-y-4">
-                                <div class="flex items-end gap-4">
-                                    <div class="flex-grow">
+                                <div class="flex flex-col md:flex-row items-end gap-4">
+                                    <div class="flex-grow w-full">
                                         <label class="block font-semibold mb-2">Battery Brand & Model</label>
-                                        <select id="battery-brand-select" class="w-full p-3 border border-gray-300 rounded-lg">
+                                        <select id="battery-brand-select" class="w-full p-3 mobile-form-select border border-gray-300 rounded-lg">
                                             <option value="">Select battery...</option>
                                             <optgroup label="Fox ESS">
                                                 <option value="fox-ess-ep11">Fox ESS EP11 (10.36kWh)</option>
@@ -963,9 +1117,9 @@
                                             <option value="other-battery">Other (specify below)</option>
                                         </select>
                                     </div>
-                                    <div>
+                                    <div class="w-full md:w-auto">
                                         <label class="block font-semibold mb-2">Quantity</label>
-                                        <select id="battery-quantity" class="w-full p-3 border border-gray-300 rounded-lg">
+                                        <select id="battery-quantity" class="w-full p-3 mobile-form-select border border-gray-300 rounded-lg">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
@@ -974,25 +1128,25 @@
                                     </div>
                                 </div>
                                 <div id="custom-battery-input" class="custom-input mt-4">
-                                    <input type="text" placeholder="Enter custom battery model and capacity (e.g., MyBattery 10kWh)" class="w-full p-3 border border-gray-300 rounded-lg">
+                                    <input type="text" placeholder="Enter custom battery model and capacity (e.g., MyBattery 10kWh)" class="w-full p-3 mobile-form-input border border-gray-300 rounded-lg">
                                 </div>
                             </div>
                         </div>
 
                         <!-- Total Price -->
-                        <div class="mb-8">
+                        <div class="mb-8 form-group">
                             <label class="block text-lg font-semibold mb-4">Total Quote Price (£)</label>
-                            <input id="total-price-input" type="number" placeholder="Enter total price including VAT" class="w-full p-3 border border-gray-300 rounded-lg text-lg">
+                            <input id="total-price-input" type="number" placeholder="Enter total price including VAT" class="w-full p-3 mobile-form-input border border-gray-300 rounded-lg text-lg">
                         </div>
 
                         <!-- Additional Notes -->
-                        <div class="mb-8">
+                        <div class="mb-8 form-group">
                             <label class="block text-lg font-semibold mb-4">Additional Notes (Optional)</label>
-                            <textarea id="notes-textarea" placeholder="Any additional details about the quote, installer, or specific requirements..." class="w-full p-3 border border-gray-300 rounded-lg h-24"></textarea>
+                            <textarea id="notes-textarea" placeholder="Any additional details about the quote, installer, or specific requirements..." class="w-full p-3 mobile-form-input border border-gray-300 rounded-lg h-24"></textarea>
                         </div>
 
                         <!-- Analyze Button -->
-                        <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition">
+                        <button type="submit" class="w-full bg-blue-600 text-white py-4 mobile-button rounded-lg font-semibold text-lg hover:bg-blue-700 transition">
                             Analyze This Quote FREE
                         </button>
                     </form>
@@ -1001,13 +1155,13 @@
 
             <!-- PDF Upload Tab -->
             <div id="pdf-tab" class="tab-content">
-                <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+                <div class="bg-white rounded-lg shadow-lg p-8 mobile-card text-center">
                     <div class="mb-6">
                         <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                             <span class="text-blue-600 text-2xl">📄</span>
                         </div>
                         <h4 class="text-xl font-semibold mb-2">Upload Your Solar Quote</h4>
-                        <p class="text-gray-600">Drag and drop your PDF quote or click to browse</p>
+                        <p class="text-gray-600 mobile-text-base">Drag and drop your PDF quote or click to browse</p>
                     </div>
                     
                     <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 mb-6 hover:border-blue-400 transition">
@@ -1016,57 +1170,57 @@
                             <div class="text-gray-400 mb-2">
                                 <span class="text-4xl">📁</span>
                             </div>
-                            <p class="text-gray-600">Click here or drag your PDF quote</p>
-                            <p class="text-sm text-gray-500 mt-2">Supports PDF files up to 10MB</p>
+                            <p class="text-gray-600 mobile-text-base">Click here or drag your PDF quote</p>
+                            <p class="text-sm mobile-text-sm text-gray-500 mt-2">Supports PDF files up to 10MB</p>
                         </label>
                     </div>
                     
-                    <button class="bg-blue-600 text-white py-3 px-8 rounded-lg font-semibold hover:bg-blue-700 transition">
+                    <button class="bg-blue-600 text-white py-3 px-8 mobile-button rounded-lg font-semibold hover:bg-blue-700 transition">
                         Analyze PDF Quote
                     </button>
                 </div>
             </div>
 
             <!-- Quote Analysis Results -->
-            <div id="quote-results" class="hidden mt-12"></div>
+            <div id="quote-results" class="hidden mt-12 results-mobile"></div>
 
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
+    <footer class="bg-gray-900 text-white py-12 mobile-section-padding">
         <div class="max-w-6xl mx-auto px-4">
-            <div class="grid md:grid-cols-4 gap-8">
-                <div>
+            <div class="grid md:grid-cols-4 mobile-grid gap-8">
+                <div class="mobile-card">
                     <div class="flex items-center mb-4">
                         <div class="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mr-2">
                             <span class="text-white font-bold">☀</span>
                         </div>
                         <h3 class="text-xl font-bold">Solar Truth AI</h3>
                     </div>
-                    <p class="text-gray-400">Independent solar analysis you can trust. No installer bias, just honest advice.</p>
+                    <p class="text-gray-400 mobile-text-base">Independent solar analysis you can trust. No installer bias, just honest advice.</p>
                 </div>
-                <div>
+                <div class="mobile-card">
                     <h4 class="font-semibold mb-4">Services</h4>
-                    <ul class="space-y-2 text-gray-400">
+                    <ul class="space-y-2 text-gray-400 mobile-text-base">
                         <li><a href="#consultation" class="hover:text-white">System Sizing</a></li>
                         <li><a href="#analyzer" class="hover:text-white">Quote Analysis</a></li>
                         <li><a href="#" class="hover:text-white">Installer Vetting</a></li>
                         <li><a href="#" class="hover:text-white">Performance Monitoring</a></li>
                     </ul>
                 </div>
-                <div>
+                <div class="mobile-card">
                     <h4 class="font-semibold mb-4">Resources</h4>
-                    <ul class="space-y-2 text-gray-400">
+                    <ul class="space-y-2 text-gray-400 mobile-text-base">
                         <li><a href="#" class="hover:text-white">Solar Guide</a></li>
                         <li><a href="#" class="hover:text-white">Battery Guide</a></li>
                         <li><a href="#" class="hover:text-white">ROI Calculator</a></li>
                         <li><a href="#" class="hover:text-white">FAQ</a></li>
                     </ul>
                 </div>
-                <div>
+                <div class="mobile-card">
                     <h4 class="font-semibold mb-4">Contact</h4>
-                    <ul class="space-y-2 text-gray-400">
+                    <ul class="space-y-2 text-gray-400 mobile-text-base">
                         <li>Email: hello@solartruth.ai</li>
                         <li>Phone: 0800 123 4567</li>
                         <li>Mon-Fri: 9am-6pm</li>
@@ -1074,10 +1228,11 @@
                 </div>
             </div>
             <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2025 Solar Truth AI. All rights reserved. | Privacy Policy | Terms of Service</p>
+                <p class="mobile-text-sm">&copy; 2025 Solar Truth AI. All rights reserved. | Privacy Policy | Terms of Service</p>
             </div>
         </div>
     </footer>
+
 
     <!-- Solar Recommendation Algorithm -->
     <script>
@@ -1725,30 +1880,30 @@
         function displayQuoteAnalysis(analysis) {
             const resultsSection = document.getElementById('quote-results');
             resultsSection.innerHTML = `
-                <h3 class="text-2xl font-bold mb-6 text-center">Quote Analysis Results</h3>
-                <div class="grid md:grid-cols-2 gap-6 mb-6">
-                    <div class="border rounded-lg p-6">
+                <h3 class="text-2xl section-heading font-bold mb-6 text-center">Quote Analysis Results</h3>
+                <div class="grid md:grid-cols-2 mobile-grid gap-6 mb-6">
+                    <div class="border rounded-lg p-6 mobile-card">
                         <h4 class="text-lg font-semibold mb-4">Price Analysis</h4>
                         <div class="space-y-3">
-                            <div class="flex justify-between"><span>Your Quote:</span><span class="font-semibold">£${analysis.totalPrice.toLocaleString()}</span></div>
-                            <div class="flex justify-between"><span>Fair Price Range:</span><span class="font-semibold">${analysis.fairPriceRange}</span></div>
-                            <div class="flex justify-between"><span>Assessment:</span><span class="font-semibold ${analysis.priceColor}">${analysis.priceAssessment}</span></div>
-                            ${analysis.overpricePercentage > 0 ? `<div class="flex justify-between"><span>Overprice:</span><span class="font-semibold text-red-600">${analysis.overpricePercentage}%</span></div>` : ''}
+                            <div class="flex justify-between"><span class="mobile-text-base">Your Quote:</span><span class="font-semibold">£${analysis.totalPrice.toLocaleString()}</span></div>
+                            <div class="flex justify-between"><span class="mobile-text-base">Fair Price Range:</span><span class="font-semibold mobile-text-base">${analysis.fairPriceRange}</span></div>
+                            <div class="flex justify-between"><span class="mobile-text-base">Assessment:</span><span class="font-semibold mobile-text-base ${analysis.priceColor}">${analysis.priceAssessment}</span></div>
+                            ${analysis.overpricePercentage > 0 ? `<div class="flex justify-between"><span class="mobile-text-base">Overprice:</span><span class="font-semibold text-red-600">${analysis.overpricePercentage}%</span></div>` : ''}
                         </div>
                     </div>
-                    <div class="border rounded-lg p-6">
+                    <div class="border rounded-lg p-6 mobile-card">
                         <h4 class="text-lg font-semibold mb-4">System Quality</h4>
                         <div class="space-y-3">
-                            <div class="flex justify-between"><span>Panel Quality:</span><span class="font-semibold ${analysis.panelQuality.color}">${analysis.panelQuality.rating}</span></div>
-                            ${analysis.batteryQuality ? `<div class="flex justify-between"><span>Battery Quality:</span><span class="font-semibold ${analysis.batteryQuality.color}">${analysis.batteryQuality.rating}</span></div>` : ''}
-                            <div class="flex justify-between"><span>System Size:</span><span class="font-semibold">${analysis.systemSize}kW</span></div>
-                            ${analysis.batteryCapacity > 0 ? `<div class="flex justify-between"><span>Battery Size:</span><span class="font-semibold">${analysis.batteryCapacity.toFixed(2)}kWh</span></div>` : ''}
+                            <div class="flex justify-between"><span class="mobile-text-base">Panel Quality:</span><span class="font-semibold mobile-text-base ${analysis.panelQuality.color}">${analysis.panelQuality.rating}</span></div>
+                            ${analysis.batteryQuality ? `<div class="flex justify-between"><span class="mobile-text-base">Battery Quality:</span><span class="font-semibold mobile-text-base ${analysis.batteryQuality.color}">${analysis.batteryQuality.rating}</span></div>` : ''}
+                            <div class="flex justify-between"><span class="mobile-text-base">System Size:</span><span class="font-semibold">${analysis.systemSize}kW</span></div>
+                            ${analysis.batteryCapacity > 0 ? `<div class="flex justify-between"><span class="mobile-text-base">Battery Size:</span><span class="font-semibold">${analysis.batteryCapacity.toFixed(2)}kWh</span></div>` : ''}
                         </div>
                     </div>
                 </div>
-                <div class="border-l-4 border-blue-500 bg-blue-50 p-6 mb-6">
+                <div class="border-l-4 border-blue-500 bg-blue-50 p-6 mb-6 mobile-card">
                     <h4 class="text-lg font-semibold mb-3">Recommendations</h4>
-                    <div class="space-y-2 text-gray-700">
+                    <div class="space-y-2 text-gray-700 mobile-text-base">
                         <p><strong>Panel Quality:</strong> ${analysis.panelQuality.description}</p>
                         ${analysis.batteryQuality ? `<p><strong>Battery Quality:</strong> ${analysis.batteryQuality.description}</p>` : ''}
                         ${analysis.overpricePercentage > 20 ? 
@@ -1760,8 +1915,8 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <button onclick="getAnotherQuote()" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition mr-4">Analyze Another Quote</button>
-                    <button onclick="scrollToConsultation()" class="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition">Get System Recommendation</button>
+                    <button onclick="getAnotherQuote()" class="bg-blue-600 text-white px-6 py-3 mobile-button rounded-lg font-semibold hover:bg-blue-700 transition mr-4">Analyze Another Quote</button>
+                    <button onclick="scrollToConsultation()" class="bg-green-600 text-white px-6 py-3 mobile-button rounded-lg font-semibold hover:bg-green-700 transition">Get System Recommendation</button>
                 </div>
             `;
         }
