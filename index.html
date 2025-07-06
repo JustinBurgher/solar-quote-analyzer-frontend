@@ -2069,6 +2069,11 @@
                 heatPumpExisting.classList.remove('hidden');
                 // Auto-set the value to indicate they already have one
                 consultationData['heatPumpPlans'] = 'already-have';
+                
+                // Enable the Next button since we've automatically handled this question
+                const nextBtn = document.getElementById('next-btn');
+                nextBtn.disabled = false;
+                nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
             } else {
                 // User doesn't have a heat pump, show normal question
                 heatPumpTitle.textContent = 'Are you considering installing a heat pump?';
@@ -2078,6 +2083,11 @@
                 if (consultationData['heatPumpPlans'] === 'already-have') {
                     delete consultationData['heatPumpPlans'];
                 }
+                
+                // Disable the Next button until user makes a selection
+                const nextBtn = document.getElementById('next-btn');
+                nextBtn.disabled = true;
+                nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
             }
         }
 
