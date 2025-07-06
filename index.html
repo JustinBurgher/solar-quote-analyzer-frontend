@@ -2103,8 +2103,16 @@
                     nextBtn.textContent = 'Get My Recommendation';
                     nextBtn.onclick = showResults;
                 } else {
-                    nextBtn.disabled = true;
-                    nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    // Check if this is the heat pump question and user already has one
+                    if (currentStep === 10 && consultationData['heatingSystem'] === 'heat-pump') {
+                        // Keep button enabled for heat pump detection case
+                        nextBtn.disabled = false;
+                        nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    } else {
+                        // Normal behavior - disable until user makes selection
+                        nextBtn.disabled = true;
+                        nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    }
                 }
             }
         }
