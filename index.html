@@ -911,11 +911,17 @@
                     </ol>
                 </div>
 
-                <!-- CTA Button -->
-                <div class="text-center">
+                <!-- CTA Buttons -->
+                <div class="text-center space-y-4">
                     <button onclick="scrollToAnalyzer()" class="bg-blue-600 text-white px-8 py-4 mobile-button rounded-lg font-semibold text-lg hover:bg-blue-700 transition">
                         Now Analyze Your Quotes
                     </button>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <button onclick="restartConsultation()" class="bg-gray-600 text-white px-6 py-3 mobile-button rounded-lg font-semibold hover:bg-gray-700 transition">
+                            🔄 Take Consultation Again
+                        </button>
+                        <span class="text-gray-500 mobile-text-sm">Want to try different answers or run it for someone else?</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2147,6 +2153,47 @@
 
         function scrollToAnalyzer() {
             document.getElementById('analyzer').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Restart Consultation Function
+        function restartConsultation() {
+            // Reset all consultation data
+            currentStep = 1;
+            consultationData = {};
+            currentInflationRate = 'standard';
+            
+            // Clear all selected options
+            document.querySelectorAll('.consultation-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Reset progress bar
+            updateProgress();
+            
+            // Hide results and show consultation
+            document.getElementById('consultation-results').classList.add('hidden');
+            document.getElementById('consultation-container').style.display = 'block';
+            document.querySelector('.flex.justify-between.mt-8').style.display = 'flex';
+            
+            // Reset all consultation steps
+            document.querySelectorAll('.consultation-step').forEach(step => {
+                step.classList.remove('active');
+            });
+            document.querySelector('[data-step="1"]').classList.add('active');
+            
+            // Reset navigation buttons
+            document.getElementById('prev-btn').classList.add('hidden');
+            const nextBtn = document.getElementById('next-btn');
+            nextBtn.textContent = 'Next Question';
+            nextBtn.onclick = nextQuestion;
+            nextBtn.disabled = true;
+            nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            
+            // Clear window recommendation
+            window.solarRecommendation = null;
+            
+            // Scroll to consultation section
+            document.getElementById('consultation').scrollIntoView({ behavior: 'smooth' });
         }
 
         // Installer Type Selection Handler
