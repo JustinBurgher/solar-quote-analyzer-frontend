@@ -807,7 +807,7 @@
             <!-- Manual Entry Tab -->
             <div id="manual-tab" class="tab-content active">
                 <div class="bg-white rounded-lg shadow-lg p-8">
-                    <form id="quote-form">
+                    <form id="quote-form" onsubmit="handleQuoteAnalysis(event)">
                         <!-- System Size -->
                         <div class="mb-8">
                             <label class="block text-lg font-semibold mb-4">System Size (kW)</label>
@@ -849,7 +849,7 @@
                         <!-- Panel Brand -->
                         <div class="mb-8">
                             <label class="block text-lg font-semibold mb-4">Panel Brand</label>
-                            <select class="w-full p-3 border border-gray-300 rounded-lg">
+                            <select id="panel-brand-select" class="w-full p-3 border border-gray-300 rounded-lg">
                                 <option value="">Select panel brand...</option>
                                 <optgroup label="Premium Brands (Excellent)">
                                     <option value="sunpower">SunPower</option>
@@ -896,7 +896,7 @@
                             <div id="battery-details" class="battery-models space-y-4">
                                 <div>
                                     <label class="block font-semibold mb-2">Battery Brand</label>
-                                    <select class="w-full p-3 border border-gray-300 rounded-lg">
+                                    <select id="battery-brand-select" class="w-full p-3 border border-gray-300 rounded-lg">
                                         <option value="">Select battery brand...</option>
                                         <optgroup label="Premium Brands">
                                             <option value="tesla">Tesla Powerwall</option>
@@ -942,13 +942,13 @@
                         <!-- Total Price -->
                         <div class="mb-8">
                             <label class="block text-lg font-semibold mb-4">Total Quote Price (£)</label>
-                            <input type="number" placeholder="Enter total price including VAT" class="w-full p-3 border border-gray-300 rounded-lg text-lg">
+                            <input id="total-price-input" type="number" placeholder="Enter total price including VAT" class="w-full p-3 border border-gray-300 rounded-lg text-lg">
                         </div>
 
                         <!-- Additional Notes -->
                         <div class="mb-8">
                             <label class="block text-lg font-semibold mb-4">Additional Notes (Optional)</label>
-                            <textarea placeholder="Any additional details about the quote, installer, or specific requirements..." class="w-full p-3 border border-gray-300 rounded-lg h-24"></textarea>
+                            <textarea id="notes-textarea" placeholder="Any additional details about the quote, installer, or specific requirements..." class="w-full p-3 border border-gray-300 rounded-lg h-24"></textarea>
                         </div>
 
                         <!-- Analyze Button -->
@@ -1450,6 +1450,240 @@
             }
         }
 
+        // Quote Analyzer Functions
+        function handleQuoteAnalysis(event) {
+            event.preventDefault(); // Prevent form from refreshing page
+            
+            // Collect form data
+            const formData = collectQuoteData();
+            
+            // Validate required fields
+            if (!validateQuoteData(formData)) {
+                alert('Please fill in all required fields (System Size, Panel Output, and Total Price)');
+                return;
+            }
+            
+            // Analyze the quote
+            const analysis = analyzeQuote(formData);
+            
+            // Display results
+            displayQuoteAnalysis(analysis);
+            
+            // Scroll to results
+            document.getElementById('quote-results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function collectQuoteData() {
+            return {
+                systemSize: selectedSystemSize || document.querySelector('#custom-size-input input')?.value,
+                panelOutput: selectedPanelOutput || document.querySelector('#custom-output-input input')?.value,
+                panelBrand: document.getElementById('panel-brand-select').value,
+                hasBattery: selectedBattery === 'yes',
+                batteryBrand: document.getElementById('battery-brand-select')?.value,
+                batteryCapacity: selectedBatteryCapacity || document.querySelector('#custom-capacity-input input')?.value,
+                totalPrice: document.getElementById('total-price-input').value,
+                notes: document.getElementById('notes-textarea').value
+            };
+        }
+
+        function validateQuoteData(data) {
+            return data.systemSize && data.panelOutput && data.totalPrice;
+        }
+
+        function analyzeQuote(data) {
+            // Simple quote analysis logic
+            const systemSize = parseFloat(data.systemSize);
+            const totalPrice = parseFloat(data.totalPrice);
+            const batteryCapacity = data.hasBattery ? parseFloat(data.batteryCapacity || 0) : 0;
+            
+            // Calculate fair price range
+            const systemCost = systemSize * 1300; // £1300 per kW
+            const batteryCost = batteryCapacity * 800; // £800 per kWh
+            const fairPrice = systemCost + batteryCost;
+            const fairPriceMin = fairPrice * 0.9;
+            const fairPriceMax = fairPrice * 1.2;
+            
+            // Determine if quote is fair
+            let priceAssessment;
+            let priceColor;
+            if (totalPrice < fairPriceMin) {
+                priceAssessment = "Suspiciously low - check quality";
+                priceColor = "text-yellow-600";
+            } else if (totalPrice <= fairPriceMax) {
+                priceAssessment = "Fair price";
+                priceColor = "text-green-600";
+            } else if (totalPrice <= fairPriceMax * 1.3) {
+                priceAssessment = "Slightly overpriced";
+                priceColor = "text-orange-600";
+            } else {
+                priceAssessment = "Significantly overpriced";
+                priceColor = "text-red-600";
+            }
+            
+            // Panel brand assessment
+            const panelQuality = assessPanelBrand(data.panelBrand);
+            
+            // Battery assessment
+            const batteryQuality = data.hasBattery ? assessBatteryBrand(data.batteryBrand) : null;
+            
+            return {
+                systemSize,
+                totalPrice,
+                fairPriceRange: `£${Math.round(fairPriceMin).toLocaleString()} - £${Math.round(fairPriceMax).toLocaleString()}`,
+                priceAssessment,
+                priceColor,
+                panelQuality,
+                batteryQuality,
+                batteryCapacity,
+                overpricePercentage: Math.round(((totalPrice - fairPrice) / fairPrice) * 100)
+            };
+        }
+
+        function assessPanelBrand(brand) {
+            const premiumBrands = ['sunpower', 'panasonic', 'lg', 'rec'];
+            const tier1Brands = ['dmegc', 'perlight', 'longi', 'jinko', 'trina', 'canadian', 'ja-solar', 'risen', 'aiko', 'eurener'];
+            const goodBrands = ['qcells', 'solaria', 'silfab', 'astronergy', 'seraphim'];
+            
+            if (premiumBrands.includes(brand)) {
+                return { rating: 'Excellent', color: 'text-green-600', description: 'Premium Tier 1 brand with excellent warranty and performance' };
+            } else if (tier1Brands.includes(brand)) {
+                return { rating: 'Very Good', color: 'text-green-600', description: 'Reliable Tier 1 brand with good performance and warranty' };
+            } else if (goodBrands.includes(brand)) {
+                return { rating: 'Good', color: 'text-blue-600', description: 'Solid brand with decent performance and warranty' };
+            } else {
+                return { rating: 'Unknown/Budget', color: 'text-gray-600', description: 'Research this brand carefully for warranty and performance' };
+            }
+        }
+
+        function assessBatteryBrand(brand) {
+            const premiumBrands = ['tesla', 'lg-chem', 'sonnen', 'enphase'];
+            const popularBrands = ['givenergy', 'fox-ess', 'solaredge', 'solax', 'growatt', 'huawei', 'sungrow', 'pylontech'];
+            
+            if (premiumBrands.includes(brand)) {
+                return { rating: 'Excellent', color: 'text-green-600', description: 'Premium battery with excellent warranty and performance' };
+            } else if (popularBrands.includes(brand)) {
+                return { rating: 'Very Good', color: 'text-green-600', description: 'Popular UK brand with good reliability' };
+            } else {
+                return { rating: 'Good', color: 'text-blue-600', description: 'Decent battery option' };
+            }
+        }
+
+        function displayQuoteAnalysis(analysis) {
+            // Create or update results section
+            let resultsSection = document.getElementById('quote-results');
+            if (!resultsSection) {
+                resultsSection = document.createElement('div');
+                resultsSection.id = 'quote-results';
+                resultsSection.className = 'mt-12 bg-white rounded-lg shadow-lg p-8';
+                document.getElementById('manual-tab').appendChild(resultsSection);
+            }
+            
+            resultsSection.innerHTML = `
+                <h3 class="text-2xl font-bold mb-6 text-center">Quote Analysis Results</h3>
+                
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <!-- Price Analysis -->
+                    <div class="border rounded-lg p-6">
+                        <h4 class="text-lg font-semibold mb-4">Price Analysis</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span>Your Quote:</span>
+                                <span class="font-semibold">£${analysis.totalPrice.toLocaleString()}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Fair Price Range:</span>
+                                <span class="font-semibold">${analysis.fairPriceRange}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Assessment:</span>
+                                <span class="font-semibold ${analysis.priceColor}">${analysis.priceAssessment}</span>
+                            </div>
+                            ${analysis.overpricePercentage > 0 ? `
+                            <div class="flex justify-between">
+                                <span>Overprice:</span>
+                                <span class="font-semibold text-red-600">${analysis.overpricePercentage}%</span>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                    
+                    <!-- System Quality -->
+                    <div class="border rounded-lg p-6">
+                        <h4 class="text-lg font-semibold mb-4">System Quality</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span>Panel Quality:</span>
+                                <span class="font-semibold ${analysis.panelQuality.color}">${analysis.panelQuality.rating}</span>
+                            </div>
+                            ${analysis.batteryQuality ? `
+                            <div class="flex justify-between">
+                                <span>Battery Quality:</span>
+                                <span class="font-semibold ${analysis.batteryQuality.color}">${analysis.batteryQuality.rating}</span>
+                            </div>
+                            ` : ''}
+                            <div class="flex justify-between">
+                                <span>System Size:</span>
+                                <span class="font-semibold">${analysis.systemSize}kW</span>
+                            </div>
+                            ${analysis.batteryCapacity > 0 ? `
+                            <div class="flex justify-between">
+                                <span>Battery Size:</span>
+                                <span class="font-semibold">${analysis.batteryCapacity}kWh</span>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recommendations -->
+                <div class="border-l-4 border-blue-500 bg-blue-50 p-6 mb-6">
+                    <h4 class="text-lg font-semibold mb-3">Recommendations</h4>
+                    <div class="space-y-2 text-gray-700">
+                        <p><strong>Panel Quality:</strong> ${analysis.panelQuality.description}</p>
+                        ${analysis.batteryQuality ? `<p><strong>Battery Quality:</strong> ${analysis.batteryQuality.description}</p>` : ''}
+                        ${analysis.overpricePercentage > 20 ? 
+                            '<p><strong>Price Concern:</strong> This quote is significantly overpriced. Consider getting additional quotes or negotiating.</p>' :
+                            analysis.overpricePercentage > 10 ?
+                            '<p><strong>Price Note:</strong> This quote is slightly high. You might be able to negotiate a better price.</p>' :
+                            '<p><strong>Price Assessment:</strong> This quote appears to be fairly priced for the system specified.</p>'
+                        }
+                    </div>
+                </div>
+                
+                <!-- Next Steps -->
+                <div class="text-center">
+                    <button onclick="getAnotherQuote()" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition mr-4">
+                        Analyze Another Quote
+                    </button>
+                    <button onclick="scrollToConsultation()" class="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition">
+                        Get System Recommendation
+                    </button>
+                </div>
+            `;
+        }
+
+        function getAnotherQuote() {
+            // Reset form
+            document.getElementById('quote-form').reset();
+            
+            // Clear selections
+            document.querySelectorAll('.size-button').forEach(btn => btn.classList.remove('selected'));
+            document.querySelectorAll('.custom-input').forEach(input => input.classList.remove('active'));
+            
+            // Reset global variables
+            selectedSystemSize = null;
+            selectedPanelOutput = null;
+            selectedBattery = null;
+            selectedBatteryCapacity = null;
+            
+            // Hide results
+            const results = document.getElementById('quote-results');
+            if (results) results.style.display = 'none';
+            
+            // Scroll to form
+            document.getElementById('analyzer').scrollIntoView({ behavior: 'smooth' });
+        }
+
         // Global variables
         let currentStep = 1;
         let consultationData = {};
@@ -1667,7 +1901,7 @@
             });
         });
 
-        // Quote analyzer functionality (existing code)
+        // Quote analyzer functionality
         function switchTab(tabName) {
             // Hide all tab contents
             document.querySelectorAll('.tab-content').forEach(content => {
