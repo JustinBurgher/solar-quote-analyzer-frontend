@@ -793,7 +793,8 @@
                                 <button type="button" class="size-button py-3 px-4 rounded-lg font-semibold" data-size="custom">Custom</button>
                             </div>
                             <div id="custom-size-input" class="custom-input mt-4">
-                                <input type="number" step="0.1" placeholder="Enter custom size (kW)" class="w-full p-3 border border-gray-300 rounded-lg">
+                                <input type="number" step="0.1" placeholder="Enter system size (e.g., 8.24 for 8.24kW or 8240 for 8240W)" class="w-full p-3 border border-gray-300 rounded-lg">
+                                <p class="text-sm text-gray-600 mt-1">You can enter in kW (e.g., 8.24) or W (e.g., 8240) - we'll convert automatically</p>
                             </div>
                         </div>
 
@@ -1443,8 +1444,14 @@
             const customOutput = document.querySelector('#custom-output-input input').value;
             const customBattery = document.querySelector('#custom-battery-input input').value;
 
+            // Get raw system size
+            let rawSystemSize = selectedSystemSize === 'custom' ? customSize : selectedSystemSize;
+            
+            // Validate and convert system size
+            let systemSize = validateAndConvertSystemSize(rawSystemSize);
+
             return {
-                systemSize: selectedSystemSize === 'custom' ? customSize : selectedSystemSize,
+                systemSize: systemSize,
                 panelOutput: selectedPanelOutput === 'custom-output' ? customOutput : selectedPanelOutput,
                 panelBrand: document.getElementById('panel-brand-select').value,
                 hasBattery: selectedBattery === 'yes',
@@ -1456,6 +1463,30 @@
             };
         }
 
+        function validateAndConvertSystemSize(input) {
+            if (!input) return null;
+            
+            let size = parseFloat(input);
+            if (isNaN(size)) return null;
+            
+            // If the number is very large (>100), assume it's in watts and convert to kW
+            if (size > 100) {
+                size = size / 1000;
+            }
+            
+            // Apply residential limits (0.5kW minimum, 20kW maximum)
+            if (size < 0.5) {
+                alert('System size too small. Minimum residential system size is 0.5kW.');
+                return null;
+            }
+            if (size > 20) {
+                alert('System size too large. Maximum residential system size is 20kW. For larger systems, please contact us directly.');
+                return null;
+            }
+            
+            return size;
+        }
+
         function validateQuoteData(data) {
             return data.systemSize && data.panelOutput && data.totalPrice;
         }
@@ -1463,6 +1494,14 @@
         function analyzeQuote(data) {
             const systemSize = parseFloat(data.systemSize);
             const totalPrice = parseFloat(data.totalPrice);
+            
+            // Validate system size
+            if (isNaN(systemSize) || systemSize <= 0) {
+                return {
+                    error: true,
+                    message: "Invalid system size. Please check your input."
+                };
+            }
             
             let batteryCapacity = 0;
             if (data.hasBattery) {
@@ -1472,8 +1511,8 @@
                         batteryCapacity = parseFloat(match[1]) * parseInt(data.batteryQuantity);
                     }
                 } else {
-                    const brandCapacity = parseFloat(data.batteryBrand.split('-').pop());
-                    batteryCapacity = brandCapacity * parseInt(data.batteryQuantity);
+                    // Extract battery capacity from comprehensive battery database
+                    batteryCapacity = extractBatteryCapacity(data.batteryBrand) * parseInt(data.batteryQuantity);
                 }
             }
             
@@ -1514,6 +1553,69 @@
             };
         }
 
+        function extractBatteryCapacity(batteryBrand) {
+            // Comprehensive battery capacity mapping for all UK models
+            const batteryCapacities = {
+                // Fox ESS
+                'fox-ess-ep11': 10.36,
+                'fox-ess-ep5': 5.18,
+                'fox-ess-eq4800': 4.66,
+                'fox-ess-hv2600': 2.6,
+                'fox-ess-ecs2900': 2.88,
+                'fox-ess-ecs4300': 4.14,
+                'fox-ess-ec4100': 4.03,
+                
+                // GivEnergy
+                'givenergy-2.6': 2.6,
+                'givenergy-5.2': 5.2,
+                'givenergy-9.5': 9.5,
+                'givenergy-stack3': 10.2,
+                'givenergy-stack4': 13.6,
+                'givenergy-stack5': 17.0,
+                'givenergy-stack6': 20.4,
+                'givenergy-aio-6': 13.5,
+                'givenergy-aio-3.6': 13.5,
+                
+                // Tesla
+                'tesla-powerwall-2': 13.5,
+                'tesla-powerwall-3': 13.5,
+                
+                // SolarEdge
+                'solaredge-10': 10.0,
+                'solaredge-9.7': 9.7,
+                'solaredge-23': 23.0,
+                
+                // Pylontech
+                'pylontech-us3000c': 3.55,
+                'pylontech-us5000': 4.8,
+                'pylontech-h48074': 3.55,
+                'pylontech-force-h2': 14.21,
+                
+                // Alpha ESS
+                'alpha-ess-5.7': 5.7,
+                'alpha-ess-5.04': 5.04,
+                'alpha-ess-12': 12.0,
+                'alpha-ess-2.9': 2.9,
+                'alpha-ess-10.1': 10.1,
+                
+                // Sonnen
+                'sonnen-10': 10.0,
+                'sonnen-eco': 8.0,
+                'sonnen-hybrid': 8.0,
+                
+                // Enphase
+                'enphase-iq-5p': 5.0,
+                'enphase-iq-3t': 3.36,
+                'enphase-iq-10t': 10.08,
+                
+                // Other Brands
+                'duracell-5.12': 5.12,
+                'solax-5.8': 5.8
+            };
+            
+            return batteryCapacities[batteryBrand] || 0;
+        }
+
         function assessPanelBrand(brand) {
             const premiumBrands = ['sunpower', 'panasonic', 'lg', 'rec'];
             const tier1Brands = ['dmegc', 'perlight', 'longi', 'jinko', 'trina', 'canadian', 'ja-solar', 'risen', 'aiko', 'eurener'];
@@ -1531,12 +1633,26 @@
         }
 
         function assessBatteryBrand(brand) {
-            const premiumBrands = ['tesla-powerwall-2', 'sonnen-eco-10', 'enphase-iq-10t'];
-            const popularBrands = ['givenergy-5.12', 'givenergy-9.5', 'fox-ess-2.6', 'fox-ess-5.2', 'fox-ess-7.8', 'solaredge-10', 'pylontech-us3000c', 'alpha-ess-5.7', 'solax-5.8', 'duracell-5.12'];
+            // Premium brands with excellent warranty and performance
+            const premiumBrands = [
+                'tesla-powerwall-2', 'tesla-powerwall-3', 
+                'sonnen-10', 'sonnen-eco', 'sonnen-hybrid',
+                'enphase-iq-5p', 'enphase-iq-3t', 'enphase-iq-10t'
+            ];
             
-            if (premiumBrands.some(b => brand.startsWith(b))) {
+            // Popular UK brands with very good reliability
+            const popularBrands = [
+                'givenergy-2.6', 'givenergy-5.2', 'givenergy-9.5', 'givenergy-stack3', 'givenergy-stack4', 'givenergy-stack5', 'givenergy-stack6', 'givenergy-aio-6', 'givenergy-aio-3.6',
+                'fox-ess-ep11', 'fox-ess-ep5', 'fox-ess-eq4800', 'fox-ess-hv2600', 'fox-ess-ecs2900', 'fox-ess-ecs4300', 'fox-ess-ec4100',
+                'solaredge-10', 'solaredge-9.7', 'solaredge-23',
+                'pylontech-us3000c', 'pylontech-us5000', 'pylontech-h48074', 'pylontech-force-h2',
+                'alpha-ess-5.7', 'alpha-ess-5.04', 'alpha-ess-12', 'alpha-ess-2.9', 'alpha-ess-10.1',
+                'duracell-5.12', 'solax-5.8'
+            ];
+            
+            if (premiumBrands.includes(brand)) {
                 return { rating: 'Excellent', color: 'text-green-600', description: 'Premium battery with excellent warranty and performance' };
-            } else if (popularBrands.some(b => brand.startsWith(b))) {
+            } else if (popularBrands.includes(brand)) {
                 return { rating: 'Very Good', color: 'text-green-600', description: 'Popular UK brand with good reliability' };
             } else {
                 return { rating: 'Good', color: 'text-blue-600', description: 'Decent battery option' };
