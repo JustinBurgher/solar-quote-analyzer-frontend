@@ -1055,8 +1055,8 @@
                 this.constants = {
                     solarGenerationPerKW: 900,
                     // Updated 2025 UK pricing
-                    systemCostPerKW: 1200, // £1200 per kW for panels + inverter + installation
-                    batteryCostPerKWh: 650,  // £650 per kWh for battery + installation
+                    systemCostPerKW: 1400, // £1400 per kW for panels + inverter + installation (2025 UK market rate)
+                    batteryCostPerKWh: 800,  // £800 per kWh for battery + installation (2025 UK market rate)
                     panelCostPerWatt: 0.80, // £0.80 per Watt for panels only
                     electricityPrice: 0.30,
                     exportPrice: 0.05,
@@ -1516,8 +1516,8 @@
                 }
             }
             
-            const systemCost = systemSize * 1200;
-            const batteryCost = batteryCapacity * 650;
+            const systemCost = systemSize * 1400; // Updated 2025 UK market rate
+            const batteryCost = batteryCapacity * 800; // Updated 2025 UK market rate
             const fairPrice = systemCost + batteryCost;
             const fairPriceMin = fairPrice * 0.9;
             const fairPriceMax = fairPrice * 1.2;
