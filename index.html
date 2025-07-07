@@ -1,54 +1,72 @@
-// Inputs: recommendedSystemSize from earlier consultation steps
-let recommendedSystemSizeKW = 5.0;
-
-// 1) Gather usable roof size from customer
-let roofLengthM = parseFloat(prompt("Enter usable roof length in meters:"));
-let roofWidthM = parseFloat(prompt("Enter usable roof width in meters:"));
-
-// 2) Usable area calculation with 20% deduction for obstacles/shading
-let usableRoofAreaM2 = roofLengthM * roofWidthM * 0.8;
-
-// 3) Panel sizes (m² per panel)
-const standardPanelAreaM2 = 1.75 * 1.13; // 1.98m²
-const largePanelAreaM2 = 1.96 * 1.13;   // 2.21m²
-
-// 4) Panel wattages (customizable, average market value)
-const standardPanelWattage = 400; // W
-const largePanelWattage = 450;    // W
-
-// 5) Max panels & system sizes calculation
-let maxStandardPanels = Math.floor(usableRoofAreaM2 / standardPanelAreaM2);
-let maxLargePanels = Math.floor(usableRoofAreaM2 / largePanelAreaM2);
-
-let maxStandardSystemKW = (maxStandardPanels * standardPanelWattage) / 1000;
-let maxLargeSystemKW = (maxLargePanels * largePanelWattage) / 1000;
-
-// 6) Determine if recommended size fits either option
-console.log(`🏠 Usable Roof Area: ${usableRoofAreaM2.toFixed(1)}m²`);
-console.log(`✅ Max with Standard Panels: ${maxStandardPanels} panels → ${maxStandardSystemKW.toFixed(1)}kW`);
-console.log(`✅ Max with Large Panels: ${maxLargePanels} panels → ${maxLargeSystemKW.toFixed(1)}kW`);
-
-if (recommendedSystemSizeKW <= maxStandardSystemKW) {
-    console.log(`👍 Your roof can fit the recommended ${recommendedSystemSizeKW.toFixed(1)}kW system with standard panels.`);
-} else if (recommendedSystemSizeKW <= maxLargeSystemKW) {
-    console.log(`👍 Your roof can fit the recommended ${recommendedSystemSizeKW.toFixed(1)}kW system using larger panels.`);
-} else {
-    console.log(`⚠️ Your roof can only support up to ${Math.max(maxStandardSystemKW, maxLargeSystemKW).toFixed(1)}kW.`);
-    recommendedSystemSizeKW = Math.max(maxStandardSystemKW, maxLargeSystemKW);
-    console.log(`🔄 Adjusted recommended system size: ${recommendedSystemSizeKW.toFixed(1)}kW`);
-}
-
-// 7) Offer 3D analysis (with quality check placeholder)
-let satelliteImageryAvailable = confirm("We’ll check your address: do you want to proceed with a professional 3D Roof Scan for £29?");
-
-if (satelliteImageryAvailable) {
-    console.log(`
-📐 Great choice! We’ll perform a 3D Roof Analysis & Solar Report for £29.
-Includes precise panel layout, shading study & a detailed plan you can use with any installer.
-`);
-} else {
-    console.log(`
-⚠️ Sorry, satellite imagery may not support a 3D analysis for your location.
-Please consider a manual measurement or professional site survey.
-`);
-}
+2:44:42 PM: Netlify Build                                                 
+2:44:42 PM: ────────────────────────────────────────────────────────────────
+2:44:42 PM: ​
+2:44:42 PM: ❯ Version
+2:44:42 PM:   @netlify/build 33.5.1
+2:44:42 PM: ​
+2:44:42 PM: ❯ Flags
+2:44:42 PM:   accountId: 679514ce7bdbe27d886c7b9e
+2:44:42 PM:   baseRelDir: true
+2:44:42 PM:   buildId: 686bcf3bf7848a0009c3c84e
+2:44:42 PM:   deployId: 686bcf3bf7848a0009c3c850
+2:44:42 PM: ​
+2:44:42 PM: ❯ Current directory
+2:44:42 PM:   /opt/build/repo
+2:44:42 PM: ​
+2:44:42 PM: ❯ Config file
+2:44:42 PM:   No config file was defined: using default values.
+2:44:42 PM: ​
+2:44:42 PM: ❯ Context
+2:44:42 PM:   production
+2:44:42 PM: ​
+2:44:42 PM: Build command from Netlify app                                
+2:44:42 PM: ────────────────────────────────────────────────────────────────
+2:44:42 PM: ​
+2:44:42 PM: $ pnpm run build
+2:44:42 PM: > solar-quote-analyzer@0.0.0 build /opt/build/repo
+2:44:42 PM: > vite build
+2:44:42 PM: vite v5.4.19 building for production...
+2:44:43 PM: Failed during stage 'building site': Build script returned non-zero exit code: 2 (https://ntl.fyi/exit-code-2)
+2:44:43 PM: ✓ 0 modules transformed.
+2:44:43 PM: x Build failed in 201ms
+2:44:43 PM: error during build:
+2:44:43 PM: [vite:build-html] Unable to parse HTML; parse5 error code invalid-first-character-of-tag-name
+2:44:43 PM:  at /opt/build/repo/index.html:31:30
+2:44:43 PM: 29 |  console.log(`✅ Max with Large Panels: ${maxLargePanels} panels → ${maxLargeSystemKW.toFixed(1)}kW`);
+2:44:43 PM: 30 |
+2:44:43 PM: 31 |  if (recommendedSystemSizeKW <= maxStandardSystemKW) {
+2:44:43 PM:    |                               ^
+2:44:43 PM: 32 |      console.log(`👍 Your roof can fit the recommended ${recommendedSystemSizeKW.toFixed(1)}kW system with standard panels.`);
+2:44:43 PM: 33 |  } else if (recommendedSystemSizeKW <= maxLargeSystemKW) {
+2:44:43 PM: file: /opt/build/repo/index.html
+2:44:43 PM:     at handleParseError (file:///opt/build/repo/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:35172:9)
+2:44:43 PM:     at Parser.onParseError (file:///opt/build/repo/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:35097:7)
+2:44:43 PM:     at Tokenizer._err (file:///opt/build/repo/node_modules/vite/dist/node/chunks/dep-D-7KCb9p.js:1155:89)
+2:44:43 PM:     at Tokenizer._stateTagOpen (file:///opt/build/repo/node_modules/vite/dist/node/chunks/dep-D-7KCb9p.js:1983:26)
+2:44:43 PM:     at Tokenizer._callState (file:///opt/build/repo/node_modules/vite/dist/node/chunks/dep-D-7KCb9p.js:1534:22)
+2:44:43 PM:     at Tokenizer._runParsingLoop (file:///opt/build/repo/node_modules/vite/dist/node/chunks/dep-D-7KCb9p.js:1179:22)
+2:44:43 PM:     at Tokenizer.write (file:///opt/build/repo/node_modules/vite/dist/node/chunks/dep-D-7KCb9p.js:1204:14)
+2:44:43 PM:     at Parser.parse (file:///opt/build/repo/node_modules/vite/dist/node/chunks/dep-D-7KCb9p.js:4886:26)
+2:44:43 PM:     at parse (file:///opt/build/repo/node_modules/vite/dist/node/chunks/dep-D-7KCb9p.js:7957:19)
+2:44:43 PM:     at traverseHtml (file:///opt/build/repo/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:35092:15)
+2:44:43 PM:  ELIFECYCLE  Command failed with exit code 1. (https://ntl.fyi/exit-code-1)
+2:44:43 PM: ​
+2:44:43 PM: "build.command" failed                                        
+2:44:43 PM: ────────────────────────────────────────────────────────────────
+2:44:43 PM: ​
+2:44:43 PM:   Error message
+2:44:43 PM:   Command failed with exit code 1: pnpm run build (https://ntl.fyi/exit-code-1)
+2:44:43 PM: ​
+2:44:43 PM:   Error location
+2:44:43 PM:   In Build command from Netlify app:
+2:44:43 PM:   pnpm run build
+2:44:43 PM: ​
+2:44:43 PM:   Resolved config
+2:44:43 PM:   build:
+2:44:43 PM:     command: pnpm run build
+2:44:43 PM:     commandOrigin: ui
+2:44:43 PM:     publish: /opt/build/repo/dist
+2:44:43 PM:     publishOrigin: ui
+2:44:43 PM: Build failed due to a user error: Build script returned non-zero exit code: 2
+2:44:43 PM: Failing build: Failed to build site
+2:44:43 PM: Finished processing build request in 15.117s
