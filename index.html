@@ -1495,7 +1495,16 @@
                 let adjustedSize = baseSize * householdMult * presenceMult * roofMult;
                 
                 // EV & heat pump adjustments (additive)
-                const evAddKW = (data.evPlans === 'have-one' || data.evPlans === 'planning-2-years') ? 2.0 : 0.0;
+                // Smart EV logic: only add if bill is unknown (prevents double-counting)
+                let evAddKW = 0;
+                if (data.evPlans === 'have-one' || data.evPlans === 'planning-2-years') {
+                    if (data.monthlyBill === 'not-sure') {
+                        // Bill unknown, add EV sizing
+                        evAddKW = data.evPlans === 'have-one' ? 2.0 : 1.7;
+                    }
+                    // If bill is known, assume EV usage already included
+                }
+                
                 const heatpumpAddKW = (data.heatingSystem === 'heat-pump' || data.heatPumpPlans === 'within-2-years') ? 3.0 : 0.0;
                 
                 adjustedSize += evAddKW + heatpumpAddKW;
@@ -1613,9 +1622,15 @@
                 };
                 let annualUsage = billToUsage[data.monthlyBill] || 4500;
                 
-                // Adjust for future plans
-                if (data.evPlans === 'have-one') annualUsage += 3000;
-                if (data.evPlans === 'planning-2-years') annualUsage += 2500;
+                // Smart EV usage adjustment: only add if bill is unknown
+                if (data.evPlans === 'have-one' || data.evPlans === 'planning-2-years') {
+                    if (data.monthlyBill === 'not-sure') {
+                        // Bill unknown, add EV usage manually
+                        annualUsage += data.evPlans === 'have-one' ? 3000 : 2500;
+                    }
+                    // If bill is known, assume EV usage already included
+                }
+                
                 if (data.heatingSystem === 'heat-pump') annualUsage += 4000;
                 if (data.heatPumpPlans === 'within-2-years') annualUsage += 3500;
                 
@@ -1695,8 +1710,21 @@
                 // Hide current step
                 document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
                 
+                // Heat pump skip logic: Skip question 10 if they already have a heat pump
+                if (currentStep === 9) {
+                    const heatingSystemData = consultationData[9]; // Question 9: heating system
+                    if (heatingSystemData === 'heat-pump') {
+                        // Skip question 10 (heat pump plans) since they already have one
+                        currentStep += 2; // Skip to question 11
+                    } else {
+                        currentStep++; // Normal progression to question 10
+                    }
+                } else {
+                    // Normal progression
+                    currentStep++;
+                }
+                
                 // Show next step
-                currentStep++;
                 document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
                 
                 // Update progress
@@ -1715,8 +1743,21 @@
                 // Hide current step
                 document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
                 
+                // Heat pump skip logic for going backwards: Skip question 10 if they have heat pump
+                if (currentStep === 11) {
+                    const heatingSystemData = consultationData[9]; // Question 9: heating system
+                    if (heatingSystemData === 'heat-pump') {
+                        // Skip back over question 10 since they have heat pump
+                        currentStep -= 2; // Go back to question 9
+                    } else {
+                        currentStep--; // Normal progression to question 10
+                    }
+                } else {
+                    // Normal progression
+                    currentStep--;
+                }
+                
                 // Show previous step
-                currentStep--;
                 document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
                 
                 // Update progress
