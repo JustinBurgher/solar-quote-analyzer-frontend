@@ -7,11 +7,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .hero-gradient {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+            background: linear-gradient(135deg, #0d9488 0%, #14b8a6 50%, #5eead4 100%);
         }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .tab-button.active { background-color: #3b82f6; color: white; }
+        .tab-button.active { background-color: #14b8a6; color: white; }
         .tab-button { background-color: #f8fafc; color: #475569; }
         .size-button { 
             transition: all 0.2s; 
@@ -19,13 +19,13 @@
             background-color: #ffffff;
         }
         .size-button:hover { 
-            border-color: #3b82f6; 
+            border-color: #14b8a6; 
             background-color: #eff6ff;
         }
         .size-button.selected { 
-            background-color: #3b82f6; 
+            background-color: #14b8a6; 
             color: white; 
-            border-color: #3b82f6;
+            border-color: #14b8a6;
         }
         .custom-input { display: none; }
         .custom-input.active { display: block; }
@@ -41,11 +41,11 @@
             cursor: pointer;
         }
         .consultation-option:hover {
-            border-color: #3b82f6 !important;
+            border-color: #14b8a6 !important;
             background-color: #eff6ff !important;
         }
         .consultation-option.selected {
-            border-color: #3b82f6 !important;
+            border-color: #14b8a6 !important;
             background-color: #eff6ff !important;
         }
         .recommendation-card {
@@ -113,7 +113,7 @@
         
         /* Installer Type Selection Styling */
         .installer-type-option input[type="radio"]:checked + div {
-            border-color: #3b82f6;
+            border-color: #14b8a6;
             background-color: #dbeafe;
         }
         .installer-type-option input[type="radio"]:checked + div .font-semibold {
@@ -279,38 +279,45 @@
 </head>
 <body class="bg-gray-50">
     <!-- Header -->
-    <header class="bg-white shadow-sm">
+    <header class="bg-white shadow-sm border-b-2 border-teal-600">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-4">
+            <div class="flex justify-between items-center py-3">
                 <div class="flex items-center">
-                    <div class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mr-3">
-                        <span class="text-white font-bold text-lg">☀</span>
+                    <div class="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center mr-3">
+                        <div class="w-4 h-4 grid grid-cols-2 gap-0.5">
+                            <div class="bg-white rounded-sm"></div>
+                            <div class="bg-white rounded-sm"></div>
+                            <div class="bg-white rounded-sm"></div>
+                            <div class="bg-green-400 rounded-sm flex items-center justify-center">
+                                <span class="text-xs text-white">✓</span>
+                            </div>
+                        </div>
                     </div>
-                    <h1 class="text-2xl header-title font-bold">
+                    <h1 class="text-xl header-title font-bold">
                         <span style="color: #0d9488;">solar</span><span style="color: #10b981;">✓</span><span style="color: #374151;">erify</span>
                     </h1>
                 </div>
-                <nav class="hidden md:flex mobile-nav space-x-8">
-                    <a href="#problem" class="text-gray-600 hover:text-gray-900">The Problem</a>
-                    <a href="#solution" class="text-gray-600 hover:text-gray-900">Our Solution</a>
-                    <a href="#consultation" class="text-gray-600 hover:text-gray-900">Free Analysis</a>
-                    <a href="#pricing" class="text-blue-600 hover:text-blue-700 font-semibold">Pricing</a>
-                    <a href="#contact" class="text-gray-600 hover:text-gray-900">Contact</a>
+                <nav class="hidden md:flex mobile-nav space-x-6">
+                    <a href="#problem" class="text-gray-600 hover:text-teal-600 transition">The Problem</a>
+                    <a href="#solution" class="text-gray-600 hover:text-teal-600 transition">Our Solution</a>
+                    <a href="#consultation" class="text-gray-600 hover:text-teal-600 transition">Free Analysis</a>
+                    <a href="#pricing" class="text-teal-600 hover:text-teal-700 font-semibold">Pricing</a>
+                    <a href="#contact" class="text-gray-600 hover:text-teal-600 transition">Contact</a>
                 </nav>
             </div>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero-gradient text-white py-20 mobile-section-padding">
+    <section class="bg-gradient-to-r from-teal-600 to-teal-700 text-white py-12 md:py-20 mobile-section-padding">
         <div class="max-w-4xl mx-auto text-center px-4">
-            <h2 class="text-5xl font-bold mb-6">Don't Get Ripped Off on Solar</h2>
-            <p class="text-xl mb-8 opacity-90">UK homeowners lose thousands on overpriced, undersized solar systems. Get independent, unbiased analysis before you buy.</p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button onclick="scrollToConsultation()" class="bg-white text-blue-600 px-8 py-4 mobile-button rounded-lg font-semibold text-lg hover:bg-gray-100 transition">
+            <h2 class="text-3xl md:text-5xl font-bold mb-4 md:mb-6">Don't Get Ripped Off on Solar</h2>
+            <p class="text-lg md:text-xl mb-6 md:mb-8 opacity-90">UK homeowners lose thousands on overpriced, undersized solar systems. Get independent, unbiased analysis before you buy.</p>
+            <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
+                <button onclick="scrollToConsultation()" class="bg-white text-teal-600 px-6 md:px-8 py-3 md:py-4 mobile-button rounded-lg font-semibold text-base md:text-lg hover:bg-gray-100 transition">
                     Find Out What You Need FREE
                 </button>
-                <button onclick="scrollToAnalyzer()" class="border-2 border-white text-white px-8 py-4 mobile-button rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition">
+                <button onclick="scrollToAnalyzer()" class="border-2 border-white text-white px-6 md:px-8 py-3 md:py-4 mobile-button rounded-lg font-semibold text-base md:text-lg hover:bg-white hover:text-teal-600 transition">
                     Analyze My Quote FREE
                 </button>
             </div>
@@ -422,7 +429,7 @@
                     <span id="progress-text">Question 1 of 14</span>
                 </div>
                 <div class="w-full bg-gray-200 rounded-full h-2">
-                    <div id="progress-bar" class="progress-bar bg-blue-600 h-2 rounded-full" style="width: 7.14%"></div>
+                    <div id="progress-bar" class="progress-bar bg-teal-600 h-2 rounded-full" style="width: 7.14%"></div>
                 </div>
             </div>
 
@@ -810,7 +817,7 @@
                     Previous
                 </button>
                 <div class="flex-1"></div>
-                <button id="next-btn" onclick="nextQuestion()" class="bg-blue-600 text-white px-6 py-3 mobile-button rounded-lg font-semibold hover:bg-blue-700 transition opacity-50 cursor-not-allowed" disabled>
+                <button id="next-btn" onclick="nextQuestion()" class="bg-teal-600 text-white px-6 py-3 mobile-button rounded-lg font-semibold hover:bg-teal-700 transition opacity-50 cursor-not-allowed" disabled>
                     Next Question
                 </button>
             </div>
@@ -834,7 +841,7 @@
                         <div class="space-y-3">
                             <div class="flex items-center">
                                 <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                                    <span class="text-blue-600">☀️</span>
+                                    <span class="text-teal-600">☀️</span>
                                 </div>
                                 <div>
                                     <span id="system-size" class="font-semibold text-lg">6.5kW</span>
@@ -843,7 +850,7 @@
                             </div>
                             <div class="flex items-center">
                                 <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                                    <span class="text-blue-600">🔋</span>
+                                    <span class="text-teal-600">🔋</span>
                                 </div>
                                 <div>
                                     <span id="battery-size" class="font-semibold text-lg">13.5kWh</span>
@@ -923,13 +930,13 @@
                 </div>
 
                 <!-- Premium Teaser Section -->
-                <div class="premium-teaser bg-gradient-to-br from-blue-50 to-indigo-100 border-2 border-blue-200 rounded-lg p-6 mb-8">
+                <div class="premium-teaser bg-gradient-to-br from-teal-50 to-indigo-100 border-2 border-blue-200 rounded-lg p-6 mb-8">
                     <div class="text-center mb-6">
-                        <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full mb-4">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal-500 to-indigo-600 rounded-full mb-4">
                             <span class="text-2xl">🚀</span>
                         </div>
                         <h4 class="text-2xl font-bold text-blue-900 mb-2">Unlock Advanced Tariff Optimization</h4>
-                        <p class="text-blue-700 mobile-text-base">Get personalized analysis showing how to save an additional £2,400-4,800 over 10 years</p>
+                        <p class="text-teal-700 mobile-text-base">Get personalized analysis showing how to save an additional £2,400-4,800 over 10 years</p>
                     </div>
                     
                     <div class="grid md:grid-cols-3 mobile-grid gap-4 mb-6">
@@ -969,16 +976,16 @@
                     </div>
                     
                     <div class="text-center">
-                        <button onclick="showPremiumModal()" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 mobile-button rounded-lg font-bold text-lg hover:from-blue-700 hover:to-indigo-700 transition shadow-lg">
+                        <button onclick="showPremiumModal()" class="bg-gradient-to-r from-teal-600 to-indigo-600 text-white px-8 py-4 mobile-button rounded-lg font-bold text-lg hover:from-teal-700 hover:to-indigo-700 transition shadow-lg">
                             Unlock Advanced Analysis - £14.99
                         </button>
-                        <p class="text-xs mobile-text-sm text-blue-600 mt-2">One-time payment • Instant access • 30-day money-back guarantee</p>
+                        <p class="text-xs mobile-text-sm text-teal-600 mt-2">One-time payment • Instant access • 30-day money-back guarantee</p>
                     </div>
                 </div>
 
                 <!-- CTA Buttons -->
                 <div class="text-center space-y-4">
-                    <button onclick="scrollToAnalyzer()" class="bg-blue-600 text-white px-8 py-4 mobile-button rounded-lg font-semibold text-lg hover:bg-blue-700 transition">
+                    <button onclick="scrollToAnalyzer()" class="bg-teal-600 text-white px-8 py-4 mobile-button rounded-lg font-semibold text-lg hover:bg-teal-700 transition">
                         Now Analyze Your Quotes
                     </button>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -1016,15 +1023,15 @@
                 <div class="bg-white rounded-lg shadow-lg p-8 quote-analyzer-mobile">
                     <form id="quote-form" onsubmit="handleQuoteAnalysis(event)">
                         <!-- Installer Type Selection -->
-                        <div class="mb-8 p-4 bg-blue-50 rounded-lg border border-blue-200 form-group">
+                        <div class="mb-8 p-4 bg-teal-50 rounded-lg border border-blue-200 form-group">
                             <label class="block text-lg font-semibold mb-4 text-blue-800">Who gave you this quote?</label>
-                            <p class="text-sm mobile-text-sm text-blue-600 mb-4">This helps us provide more accurate pricing analysis based on different installer types.</p>
+                            <p class="text-sm mobile-text-sm text-teal-600 mb-4">This helps us provide more accurate pricing analysis based on different installer types.</p>
                             <div class="grid grid-cols-1 md:grid-cols-2 mobile-grid gap-4">
                                 <label class="installer-type-option cursor-pointer" onclick="selectInstallerType('volume')">
                                     <input type="radio" name="installer-type" value="volume" class="sr-only" checked>
-                                    <div id="volume-option" class="p-4 border-2 border-blue-300 rounded-lg bg-blue-100 transition hover:bg-blue-200 mobile-card">
+                                    <div id="volume-option" class="p-4 border-2 border-teal-300 rounded-lg bg-blue-100 transition hover:bg-blue-200 mobile-card">
                                         <div class="font-semibold text-blue-800">Volume Installer</div>
-                                        <div class="text-sm mobile-text-sm text-blue-600 mt-1">Octopus Energy, EON, EDF, GlowGreen, Heatable, BOXT, Wickes, etc.</div>
+                                        <div class="text-sm mobile-text-sm text-teal-600 mt-1">Octopus Energy, EON, EDF, GlowGreen, Heatable, BOXT, Wickes, etc.</div>
                                     </div>
                                 </label>
                                 <label class="installer-type-option cursor-pointer" onclick="selectInstallerType('traditional')">
@@ -1217,7 +1224,7 @@
                         </div>
 
                         <!-- Analyze Button -->
-                        <button type="submit" class="w-full bg-blue-600 text-white py-4 mobile-button rounded-lg font-semibold text-lg hover:bg-blue-700 transition">
+                        <button type="submit" class="w-full bg-teal-600 text-white py-4 mobile-button rounded-lg font-semibold text-lg hover:bg-teal-700 transition">
                             Analyze This Quote FREE
                         </button>
                     </form>
@@ -1229,13 +1236,13 @@
                 <div class="bg-white rounded-lg shadow-lg p-8 mobile-card text-center">
                     <div class="mb-6">
                         <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <span class="text-blue-600 text-2xl">📄</span>
+                            <span class="text-teal-600 text-2xl">📄</span>
                         </div>
                         <h4 class="text-xl font-semibold mb-2">Upload Your Solar Quote</h4>
                         <p class="text-gray-600 mobile-text-base">Drag and drop your PDF quote or click to browse</p>
                     </div>
                     
-                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 mb-6 hover:border-blue-400 transition">
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 mb-6 hover:border-teal-400 transition">
                         <input type="file" accept=".pdf" class="hidden" id="pdf-upload">
                         <label for="pdf-upload" class="cursor-pointer">
                             <div class="text-gray-400 mb-2">
@@ -1246,7 +1253,7 @@
                         </label>
                     </div>
                     
-                    <button class="bg-blue-600 text-white py-3 px-8 mobile-button rounded-lg font-semibold hover:bg-blue-700 transition">
+                    <button class="bg-teal-600 text-white py-3 px-8 mobile-button rounded-lg font-semibold hover:bg-teal-700 transition">
                         Analyze PDF Quote
                     </button>
                 </div>
@@ -1268,10 +1275,10 @@
                 
                 <div class="grid md:grid-cols-3 mobile-grid gap-6 max-w-5xl mx-auto">
                     <!-- Basic Analysis -->
-                    <div class="bg-gray-800 rounded-lg p-6 mobile-card border border-gray-700 hover:border-blue-500 transition">
+                    <div class="bg-gray-800 rounded-lg p-6 mobile-card border border-gray-700 hover:border-teal-500 transition">
                         <div class="text-center mb-4">
                             <div class="text-2xl mb-2">⚡</div>
-                            <h4 class="text-xl font-bold text-blue-400">Basic Analysis</h4>
+                            <h4 class="text-xl font-bold text-teal-400">Basic Analysis</h4>
                             <div class="text-3xl font-bold mt-2">£14.99</div>
                             <div class="text-gray-400 text-sm mobile-text-sm">One-time payment</div>
                         </div>
@@ -1281,19 +1288,19 @@
                             <li>✓ Personalized recommendations</li>
                             <li>✓ EV & heat pump strategies</li>
                         </ul>
-                        <button onclick="showPremiumModal('basic')" class="w-full bg-blue-600 text-white py-2 px-4 mobile-button rounded-lg font-semibold hover:bg-blue-700 transition">
+                        <button onclick="showPremiumModal('basic')" class="w-full bg-teal-600 text-white py-2 px-4 mobile-button rounded-lg font-semibold hover:bg-teal-700 transition">
                             Get Basic Analysis
                         </button>
                     </div>
                     
                     <!-- Pro Analysis -->
-                    <div class="bg-gray-800 rounded-lg p-6 mobile-card border-2 border-blue-500 relative">
+                    <div class="bg-gray-800 rounded-lg p-6 mobile-card border-2 border-teal-500 relative">
                         <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                            <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold">POPULAR</span>
+                            <span class="bg-teal-500 text-white px-3 py-1 rounded-full text-xs font-bold">POPULAR</span>
                         </div>
                         <div class="text-center mb-4">
                             <div class="text-2xl mb-2">🛡️</div>
-                            <h4 class="text-xl font-bold text-blue-400">Pro Analysis</h4>
+                            <h4 class="text-xl font-bold text-teal-400">Pro Analysis</h4>
                             <div class="text-3xl font-bold mt-2">£29.99</div>
                             <div class="text-gray-400 text-sm mobile-text-sm">One-time payment</div>
                         </div>
@@ -1304,16 +1311,16 @@
                             <li>✓ Detailed savings report</li>
                             <li>✓ Installation timeline planning</li>
                         </ul>
-                        <button onclick="showPremiumModal('pro')" class="w-full bg-blue-600 text-white py-2 px-4 mobile-button rounded-lg font-semibold hover:bg-blue-700 transition">
+                        <button onclick="showPremiumModal('pro')" class="w-full bg-teal-600 text-white py-2 px-4 mobile-button rounded-lg font-semibold hover:bg-teal-700 transition">
                             Get Pro Analysis
                         </button>
                     </div>
                     
                     <!-- Complete Package -->
-                    <div class="bg-gray-800 rounded-lg p-6 mobile-card border border-gray-700 hover:border-blue-500 transition">
+                    <div class="bg-gray-800 rounded-lg p-6 mobile-card border border-gray-700 hover:border-teal-500 transition">
                         <div class="text-center mb-4">
                             <div class="text-2xl mb-2">🏆</div>
-                            <h4 class="text-xl font-bold text-blue-400">Complete Package</h4>
+                            <h4 class="text-xl font-bold text-teal-400">Complete Package</h4>
                             <div class="text-3xl font-bold mt-2">£49.99</div>
                             <div class="text-gray-400 text-sm mobile-text-sm">One-time payment</div>
                         </div>
@@ -1324,14 +1331,14 @@
                             <li>✓ 6-month follow-up support</li>
                             <li>✓ Performance monitoring setup</li>
                         </ul>
-                        <button onclick="showPremiumModal('complete')" class="w-full bg-blue-600 text-white py-2 px-4 mobile-button rounded-lg font-semibold hover:bg-blue-700 transition">
+                        <button onclick="showPremiumModal('complete')" class="w-full bg-teal-600 text-white py-2 px-4 mobile-button rounded-lg font-semibold hover:bg-teal-700 transition">
                             Get Complete Package
                         </button>
                     </div>
                 </div>
                 
                 <div class="mt-6 text-center">
-                    <a href="#pricing" class="text-blue-400 hover:text-blue-300 text-sm mobile-text-sm">View detailed pricing comparison →</a>
+                    <a href="#pricing" class="text-teal-400 hover:text-teal-300 text-sm mobile-text-sm">View detailed pricing comparison →</a>
                 </div>
             </div>
             
@@ -1996,7 +2003,7 @@
             } else if (tier1Brands.includes(brand)) {
                 return { rating: 'Very Good', color: 'text-green-600', description: 'Reliable Tier 1 brand with good performance and warranty' };
             } else if (goodBrands.includes(brand)) {
-                return { rating: 'Good', color: 'text-blue-600', description: 'Solid brand with decent performance and warranty' };
+                return { rating: 'Good', color: 'text-teal-600', description: 'Solid brand with decent performance and warranty' };
             } else {
                 return { rating: 'Unknown/Budget', color: 'text-gray-600', description: 'Research this brand carefully for warranty and performance' };
             }
@@ -2025,7 +2032,7 @@
             } else if (popularBrands.includes(brand)) {
                 return { rating: 'Very Good', color: 'text-green-600', description: 'Popular UK brand with good reliability' };
             } else {
-                return { rating: 'Good', color: 'text-blue-600', description: 'Decent battery option' };
+                return { rating: 'Good', color: 'text-teal-600', description: 'Decent battery option' };
             }
         }
 
@@ -2053,7 +2060,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="border-l-4 border-blue-500 bg-blue-50 p-6 mb-6 mobile-card">
+                <div class="border-l-4 border-teal-500 bg-teal-50 p-6 mb-6 mobile-card">
                     <h4 class="text-lg font-semibold mb-3">Recommendations</h4>
                     <div class="space-y-2 text-gray-700 mobile-text-base">
                         <p><strong>Panel Quality:</strong> ${analysis.panelQuality.description}</p>
@@ -2067,7 +2074,7 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <button onclick="getAnotherQuote()" class="bg-blue-600 text-white px-6 py-3 mobile-button rounded-lg font-semibold hover:bg-blue-700 transition mr-4">Analyze Another Quote</button>
+                    <button onclick="getAnotherQuote()" class="bg-teal-600 text-white px-6 py-3 mobile-button rounded-lg font-semibold hover:bg-teal-700 transition mr-4">Analyze Another Quote</button>
                     <button onclick="scrollToConsultation()" class="bg-green-600 text-white px-6 py-3 mobile-button rounded-lg font-semibold hover:bg-green-700 transition">Get System Recommendation</button>
                 </div>
             `;
@@ -2403,9 +2410,9 @@
             
             if (type === 'volume') {
                 // Style volume as selected
-                volumeOption.className = "p-4 border-2 border-blue-300 rounded-lg bg-blue-100 transition hover:bg-blue-200";
+                volumeOption.className = "p-4 border-2 border-teal-300 rounded-lg bg-blue-100 transition hover:bg-blue-200";
                 volumeOption.querySelector('.font-semibold').className = "font-semibold text-blue-800";
-                volumeOption.querySelector('.text-sm').className = "text-sm text-blue-600 mt-1";
+                volumeOption.querySelector('.text-sm').className = "text-sm text-teal-600 mt-1";
                 
                 // Style traditional as unselected
                 traditionalOption.className = "p-4 border-2 border-gray-300 rounded-lg bg-gray-50 transition hover:bg-gray-100";
@@ -2413,9 +2420,9 @@
                 traditionalOption.querySelector('.text-sm').className = "text-sm text-gray-600 mt-1";
             } else {
                 // Style traditional as selected
-                traditionalOption.className = "p-4 border-2 border-blue-300 rounded-lg bg-blue-100 transition hover:bg-blue-200";
+                traditionalOption.className = "p-4 border-2 border-teal-300 rounded-lg bg-blue-100 transition hover:bg-blue-200";
                 traditionalOption.querySelector('.font-semibold').className = "font-semibold text-blue-800";
-                traditionalOption.querySelector('.text-sm').className = "text-sm text-blue-600 mt-1";
+                traditionalOption.querySelector('.text-sm').className = "text-sm text-teal-600 mt-1";
                 
                 // Style volume as unselected
                 volumeOption.className = "p-4 border-2 border-gray-300 rounded-lg bg-gray-50 transition hover:bg-gray-100";
@@ -2486,7 +2493,7 @@
             
             // Update modal title and description based on profile
             const modalTitle = document.querySelector('#premium-modal h3');
-            const modalDescription = document.querySelector('#premium-modal .text-blue-700');
+            const modalDescription = document.querySelector('#premium-modal .text-teal-700');
             
             modalTitle.textContent = profile.title;
             modalDescription.textContent = profile.description;
@@ -2644,9 +2651,9 @@
                 <div class="bg-white rounded-lg p-6 mb-6">
                     <h5 class="text-xl font-bold text-gray-800 mb-4">🎯 Personalized Strategy for You</h5>
                     <div class="space-y-4">
-                        <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                        <div class="p-4 bg-teal-50 rounded-lg border border-blue-200">
                             <h6 class="font-semibold text-blue-800 mb-2">${getPersonalizedRecommendation()}</h6>
-                            <ul class="text-sm mobile-text-sm text-blue-700 space-y-1">
+                            <ul class="text-sm mobile-text-sm text-teal-700 space-y-1">
                                 ${getPersonalizedBulletPoints().map(point => `<li>• ${point}</li>`).join('')}
                             </ul>
                         </div>
@@ -2660,8 +2667,8 @@
                                 <div class="text-lg font-bold text-green-600">${getOptimizedPayback()} years</div>
                                 <div class="text-sm mobile-text-sm text-gray-600">Payback Period</div>
                             </div>
-                            <div class="text-center p-3 bg-blue-50 rounded-lg">
-                                <div class="text-lg font-bold text-blue-600">£${getAdditionalSavings()}</div>
+                            <div class="text-center p-3 bg-teal-50 rounded-lg">
+                                <div class="text-lg font-bold text-teal-600">£${getAdditionalSavings()}</div>
                                 <div class="text-sm mobile-text-sm text-gray-600">Additional Savings</div>
                             </div>
                         </div>
@@ -2672,7 +2679,7 @@
                     <button onclick="downloadPremiumReport()" class="bg-green-600 text-white px-6 py-3 mobile-button rounded-lg font-semibold hover:bg-green-700 transition mr-4">
                         📄 Download Full Report
                     </button>
-                    <button onclick="bookConsultation()" class="bg-blue-600 text-white px-6 py-3 mobile-button rounded-lg font-semibold hover:bg-blue-700 transition">
+                    <button onclick="bookConsultation()" class="bg-teal-600 text-white px-6 py-3 mobile-button rounded-lg font-semibold hover:bg-teal-700 transition">
                         📞 Book Expert Consultation
                     </button>
                 </div>
@@ -2856,15 +2863,15 @@
                     </div>
                 </div>
                 
-                <div class="bg-blue-50 rounded-lg p-4 mb-6">
+                <div class="bg-teal-50 rounded-lg p-4 mb-6">
                     <h5 class="font-semibold text-blue-800 mb-3">Your Potential Savings:</h5>
                     <div class="space-y-2 text-sm mobile-text-sm">
                         <div class="flex justify-between">
-                            <span class="text-blue-700">Current Recommendation:</span>
+                            <span class="text-teal-700">Current Recommendation:</span>
                             <span class="font-semibold" id="modal-current-cost">£19,250</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-blue-700">Optimized Strategy:</span>
+                            <span class="text-teal-700">Optimized Strategy:</span>
                             <span class="font-semibold text-green-600" id="modal-optimized-cost">£12,800-15,200</span>
                         </div>
                         <div class="flex justify-between border-t border-blue-200 pt-2">
@@ -2878,7 +2885,7 @@
                     <div class="text-3xl font-bold text-gray-800 mb-2">£14.99</div>
                     <div class="text-gray-600 mb-6">One-time payment • Instant access • 30-day money-back guarantee</div>
                     
-                    <button onclick="proceedToPayment()" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 mobile-button rounded-lg font-bold text-lg hover:from-blue-700 hover:to-indigo-700 transition shadow-lg w-full mb-4">
+                    <button onclick="proceedToPayment()" class="bg-gradient-to-r from-teal-600 to-indigo-600 text-white px-8 py-4 mobile-button rounded-lg font-bold text-lg hover:from-teal-700 hover:to-indigo-700 transition shadow-lg w-full mb-4">
                         Unlock Advanced Analysis Now
                     </button>
                     
