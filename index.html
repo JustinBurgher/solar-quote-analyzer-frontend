@@ -2172,6 +2172,64 @@
                 `;
             }
             
+            // Add scoring system summary box
+            const scoringDiv = document.createElement('div');
+            scoringDiv.className = 'mb-6 p-4 rounded-lg bg-gradient-to-r from-teal-50 to-blue-50 border-2 border-teal-200';
+            
+            let gradeEmoji = '✅';
+            let gradeDescription = '';
+            
+            if (overallGrade === 'A+') {
+                gradeEmoji = '🏆';
+                gradeDescription = 'Outstanding system with premium components, excellent value, and optimal sizing.';
+            } else if (overallGrade === 'A') {
+                gradeEmoji = '✅';
+                gradeDescription = 'Excellent value system with high-quality components and competitive pricing.';
+            } else if (overallGrade.startsWith('B')) {
+                gradeEmoji = '👍';
+                gradeDescription = 'Good system with solid components, though some areas could be improved.';
+            } else {
+                gradeEmoji = '⚠️';
+                gradeDescription = 'System has concerns - consider alternative quotes or component upgrades.';
+            }
+            
+            scoringDiv.innerHTML = `
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center">
+                        <span class="text-2xl mr-3">${gradeEmoji}</span>
+                        <div>
+                            <h5 class="font-bold text-teal-800 text-lg">System Grade: ${overallGrade}</h5>
+                            <p class="text-teal-700 text-sm">${gradeDescription}</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-2xl font-bold text-teal-800">${gradeScore}/100</div>
+                        <div class="text-xs text-teal-600">Total Score</div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                    <div class="text-center">
+                        <div class="font-semibold text-gray-700">Price</div>
+                        <div class="text-teal-600">${Math.round((priceAssessment === 'Excellent Value' ? 30 : priceAssessment === 'Good Value' ? 25 : priceAssessment === 'Fair Price' ? 15 : priceAssessment === 'Suspiciously Low' ? 10 : 5))}/30</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="font-semibold text-gray-700">Panels</div>
+                        <div class="text-teal-600">${Math.round((panelWattage >= 500 ? 25 : panelWattage >= 450 ? 22 : panelWattage >= 400 ? 20 : panelWattage >= 350 ? 15 : 10) + (panelWattage > 515 ? 3 : 0))}/25</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="font-semibold text-gray-700">Battery</div>
+                        <div class="text-teal-600">${batterySize > 0 ? Math.round((brandQuality === 'premium' ? 25 : brandQuality === 'excellent' ? 22 : brandQuality === 'good' ? 20 : 15) + (batterySize >= 20 ? 5 : batterySize >= 15 ? 2 : batterySize >= 10 ? 1 : 0)) : 12}/25</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="font-semibold text-gray-700">Sizing</div>
+                        <div class="text-teal-600">${systemSize >= 6 && systemSize <= 12 ? 20 : systemSize >= 4 && systemSize <= 15 ? 18 : systemSize >= 3 ? 15 : 10}/20</div>
+                    </div>
+                </div>
+            `;
+            
+            // Insert the scoring div after the assessment div
+            assessmentDiv.parentNode.insertBefore(scoringDiv, assessmentDiv.nextSibling);
+            
             // Generate recommendations
             const recommendations = [];
             if (totalPrice > highFairPrice) {
@@ -2229,4 +2287,3 @@
     </script>
 </body>
 </html>
-
