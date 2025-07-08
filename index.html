@@ -101,206 +101,301 @@
             animation: shimmer 3s ease-in-out infinite;
         }
         @keyframes shimmer {
-            0%, 100% { background-position: 200% 0; }
-            50% { background-position: -200% 0; }
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
         }
-        .toggle-button {
-            background: #f1f5f9;
-            color: #475569;
-            border: 1px solid #cbd5e1;
-            padding: 0.25rem 0.75rem;
-            border-radius: 0.375rem;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: all 0.2s;
+        .mobile-py-12 {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
         }
-        .toggle-button:hover {
-            background: #e2e8f0;
-        }
-        .inflation-toggle {
-            margin-top: 0.5rem;
-        }
-        
-        /* Mobile Responsive Styles */
         @media (max-width: 768px) {
-            .mobile-text-sm { font-size: 0.875rem; }
-            .mobile-text-base { font-size: 1rem; }
-            .mobile-button { 
-                padding: 0.75rem 1.5rem; 
-                font-size: 1rem;
+            .mobile-py-12 {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
             }
-            .mobile-card { 
-                padding: 1rem; 
-                margin-bottom: 1rem;
+            .mobile-card {
+                margin: 0 1rem;
+                padding: 1.5rem;
             }
             .mobile-grid {
                 grid-template-columns: 1fr;
-                gap: 1rem;
             }
-            .mobile-grid > div {
-                margin-bottom: 0.5rem;
+            .mobile-text-sm {
+                font-size: 0.875rem;
             }
-            .hero-gradient {
-                padding: 3rem 1rem;
-            }
-            .hero-gradient h1 {
-                font-size: 2rem;
-                line-height: 2.5rem;
-            }
-            .hero-gradient p {
-                font-size: 1.125rem;
-                margin-bottom: 2rem;
-            }
-            .consultation-container {
-                padding: 1rem;
-            }
-            .consultation-step h4 {
-                font-size: 1.5rem;
-                margin-bottom: 1.5rem;
-            }
-            .consultation-option {
-                padding: 1rem;
-                margin-bottom: 0.75rem;
-            }
-            .consultation-option h5 {
+            .mobile-text-lg {
                 font-size: 1rem;
-                margin-bottom: 0.5rem;
             }
-            .consultation-option p {
+            .mobile-button {
+                padding: 0.625rem 1.25rem;
                 font-size: 0.875rem;
-            }
-            .recommendation-card h4 {
-                font-size: 1.25rem;
-                margin-bottom: 1rem;
-            }
-            .system-icon {
-                width: 2.5rem;
-                height: 2.5rem;
-                font-size: 1.25rem;
-            }
-            .confidence-badge {
-                font-size: 0.75rem;
-                padding: 0.375rem 0.75rem;
-            }
-            .premium-teaser h4 {
-                font-size: 1.5rem;
-                margin-bottom: 1rem;
-            }
-            .premium-teaser .grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-            .quote-analyzer {
-                padding: 1rem;
-            }
-            .quote-analyzer h3 {
-                font-size: 1.75rem;
-                margin-bottom: 1.5rem;
-            }
-            .tab-button {
-                padding: 0.75rem 1rem;
-                font-size: 0.875rem;
-            }
-            .size-button {
-                padding: 0.75rem;
-                font-size: 0.875rem;
-            }
-            .analysis-result {
-                padding: 1rem;
-                margin-top: 1rem;
-            }
-            .analysis-result h4 {
-                font-size: 1.25rem;
-                margin-bottom: 1rem;
             }
         }
         
-        /* Header Styles */
-        .header-title {
-            color: #0d9488;
-        }
-        .header-title .checkmark {
-            color: #10b981;
-        }
-        .header-title .suffix {
-            color: #374151;
+        /* Email gate styles */
+        .email-gate {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border: 2px solid #3b82f6;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
         }
         
-        /* Section Headings */
-        .section-heading {
-            color: #1f2937;
+        /* Results styles */
+        .results-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: #f9fafb;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
         }
-        .subsection-heading {
-            color: #374151;
+        
+        .grade-badge {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .grade-a { background-color: #10b981; color: white; }
+        .grade-b { background-color: #f59e0b; color: white; }
+        .grade-c { background-color: #ef4444; color: white; }
+        .grade-d { background-color: #dc2626; color: white; }
+        .grade-f { background-color: #7f1d1d; color: white; }
+        
+        .upgrade-prompt {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        .hidden { display: none; }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #14b8a6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Header -->
-    <header class="bg-gray-50 border-b border-teal-200 py-3">
-        <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
-                    <div class="w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center mr-3">
-                        <span class="text-white text-sm">🏠</span>
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center mr-3">
+                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold text-gray-900">Solar Verify</span>
                     </div>
-                    <h1 class="text-2xl header-title font-bold text-gray-900">
-                        <span style="color: #0d9488;">solar</span><span style="color: #10b981;">✓</span><span style="color: #374151;">erify</span>
-                    </h1>
                 </div>
-                <nav class="hidden md:flex space-x-6">
-                    <a href="#consultation" class="text-gray-600 hover:text-teal-600 transition">Consultation</a>
-                    <a href="#analyzer" class="text-gray-600 hover:text-teal-600 transition">Quote Analyzer</a>
-                    <a href="#about" class="text-gray-600 hover:text-teal-600 transition">About</a>
-                </nav>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#home" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</a>
+                        <a href="#about" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">About</a>
+                        <a href="#analyzer" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Quote Analyzer</a>
+                        <a href="#consultation" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Consultation</a>
+                        <a href="#contact" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Contact</a>
+                    </div>
+                </div>
             </div>
         </div>
-    </header>
+    </nav>
 
     <!-- Hero Section -->
-    <section class="hero-gradient text-white py-16 mobile-py-12">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-5xl mobile-text-3xl font-bold mb-6">Don't Get Ripped Off on Solar</h1>
-            <p class="text-xl mobile-text-lg mb-8 max-w-3xl mx-auto">
-                UK homeowners lose thousands on overpriced, undersized solar systems. Get independent, 
-                unbiased analysis before you buy.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="#consultation" class="bg-white text-teal-600 px-8 py-4 mobile-button rounded-lg font-semibold text-lg hover:bg-gray-100 transition">
-                    Find Out What You Need FREE
-                </a>
-                <a href="#analyzer" class="border-2 border-white text-white px-8 py-4 mobile-button rounded-lg font-semibold text-lg hover:bg-white hover:text-teal-600 transition">
-                    Analyze My Quote FREE
-                </a>
+    <section id="home" class="hero-gradient">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 mobile-py-12">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">
+                    Don't Get <span class="text-yellow-300">Ripped Off</span><br>
+                    By Solar Companies
+                </h1>
+                <p class="text-xl md:text-2xl text-teal-100 mb-8 max-w-3xl mx-auto">
+                    Get instant professional analysis of your solar quotes. Spot overpriced systems, low-quality components, and misleading claims before you sign.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#analyzer" class="bg-white text-teal-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition duration-300 mobile-button">
+                        Analyze My Quote Free
+                    </a>
+                    <a href="#consultation" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-teal-600 transition duration-300 mobile-button">
+                        Book Consultation
+                    </a>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Introduction Section -->
-    <section class="py-16 mobile-py-12 bg-white">
-        <div class="container mx-auto px-4">
-            <h3 class="text-3xl section-heading font-bold text-center mb-12">Introducing Solar Verify</h3>
-            <div class="grid md:grid-cols-3 mobile-grid gap-8">
-                <div class="text-center">
+    <!-- About Section -->
+    <section id="about" class="py-16 mobile-py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Solar Verify?</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    The solar industry is full of overpriced quotes and misleading claims. We help you identify fair pricing, quality components, and trustworthy installers.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center p-6">
                     <div class="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-2xl">🔍</span>
+                        <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
                     </div>
-                    <h4 class="text-xl font-semibold mb-3">Independent Analysis</h4>
-                    <p class="text-gray-600 mobile-text-base">No installer bias. Just honest, data-driven recommendations based on your actual needs.</p>
+                    <h3 class="text-xl font-semibold mb-3">Instant Analysis</h3>
+                    <p class="text-gray-600">Upload your quote and get immediate feedback on pricing, components, and overall value within seconds.</p>
                 </div>
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-2xl">💰</span>
+                
+                <div class="text-center p-6">
+                    <div class="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
                     </div>
-                    <h4 class="text-xl font-semibold mb-3">Save Thousands</h4>
-                    <p class="text-gray-600 mobile-text-base">Avoid overpriced systems and undersized installations. Get exactly what you need.</p>
+                    <h3 class="text-xl font-semibold mb-3">Fair Pricing</h3>
+                    <p class="text-gray-600">Compare your quote against current market rates and identify if you're being overcharged for your solar system.</p>
                 </div>
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-2xl">⚡</span>
+                
+                <div class="text-center p-6">
+                    <div class="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
                     </div>
-                    <h4 class="text-xl font-semibold mb-3">Personalized Recommendations</h4>
-                    <p class="text-gray-600 mobile-text-base">Tailored to your lifestyle, usage patterns, and future plans like EVs and heat pumps.</p>
+                    <h3 class="text-xl font-semibold mb-3">Quality Check</h3>
+                    <p class="text-gray-600">Verify component quality, warranty terms, and installer credentials to ensure you're getting a reliable system.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote Analyzer Section -->
+    <section id="analyzer" class="py-16 mobile-py-12 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl section-heading font-bold mb-4">Free Quote Analyzer</h3>
+                <p class="text-xl mobile-text-lg text-gray-600">Upload your solar quotes and get instant analysis of pricing, quality, and value</p>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-lg p-8 mobile-card">
+                <!-- Email Gate (hidden initially) -->
+                <div id="email-gate" class="email-gate hidden">
+                    <h4 class="text-xl font-bold text-blue-800 mb-3">🔓 Unlock 2 More Free Checks</h4>
+                    <p class="text-blue-700 mb-4">Enter your email to get 2 additional free quote checks plus solar tips and guides.</p>
+                    <form id="email-form" class="flex flex-col sm:flex-row gap-3">
+                        <input type="email" id="email-input" placeholder="Enter your email address" class="flex-1 px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                        <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
+                            Get Free Checks
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Tab Navigation -->
+                <div class="flex flex-wrap mb-6 border-b">
+                    <button class="tab-button active px-6 py-3 mobile-button font-semibold rounded-t-lg" onclick="switchTab('manual')">
+                        Manual Entry
+                    </button>
+                    <button class="tab-button px-6 py-3 mobile-button font-semibold rounded-t-lg" onclick="switchTab('upload')">
+                        Upload PDF
+                    </button>
+                </div>
+                
+                <!-- Manual Entry Tab -->
+                <div id="manual-tab" class="tab-content active">
+                    <form id="quote-form" class="space-y-6">
+                        <div class="grid md:grid-cols-2 mobile-grid gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">System Size</label>
+                                <div class="flex">
+                                    <input type="number" id="system-size" step="0.1" placeholder="6.5" class="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" required>
+                                    <span class="bg-gray-100 px-3 py-2 border border-l-0 border-gray-300 rounded-r-lg text-gray-600">kW</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Battery Size (Optional)</label>
+                                <div class="flex">
+                                    <input type="number" id="battery-size" step="0.1" placeholder="13.5" class="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                                    <span class="bg-gray-100 px-3 py-2 border border-l-0 border-gray-300 rounded-r-lg text-gray-600">kWh</span>
+                                </div>
+                                <small class="text-gray-500 text-sm">Leave blank if no battery</small>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Total Quote Price</label>
+                            <div class="flex">
+                                <span class="bg-gray-100 px-3 py-2 border border-r-0 border-gray-300 rounded-l-lg text-gray-600">£</span>
+                                <input type="number" id="total-price" placeholder="15000" class="flex-1 px-3 py-2 border border-gray-300 rounded-r-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" required>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-teal-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-teal-700 transition duration-300">
+                            <span id="analyze-text">Check My Quote</span>
+                            <span id="analyze-loading" class="hidden">
+                                <span class="loading"></span> Analyzing...
+                            </span>
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Upload PDF Tab -->
+                <div id="upload-tab" class="tab-content">
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                        <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Upload your solar quote</h3>
+                        <p class="text-gray-500 mb-4">Get detailed analysis with component quality, ROI calculations, and professional PDF report</p>
+                        <button type="button" onclick="window.open('portal.html', '_blank')" class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition duration-300">
+                            Upload PDF - £29
+                        </button>
+                        <p class="text-sm text-gray-400 mt-2">Includes detailed component analysis, multi-roof calculator, and downloadable report</p>
+                    </div>
+                </div>
+                
+                <!-- Results Section -->
+                <div id="results" class="results-section hidden">
+                    <div class="text-center mb-6">
+                        <div id="grade-badge" class="grade-badge"></div>
+                        <div id="price-per-kw" class="text-2xl font-bold text-gray-800 mb-2"></div>
+                        <div id="verdict" class="text-lg text-gray-600"></div>
+                    </div>
+                    
+                    <!-- Upgrade Prompt -->
+                    <div class="upgrade-prompt">
+                        <h4 class="text-xl font-bold text-amber-800 mb-3">📊 Want a Detailed Analysis?</h4>
+                        <p class="text-amber-700 mb-4">Upload your actual quote PDF for comprehensive analysis including:</p>
+                        <ul class="text-left text-amber-700 mb-4 space-y-1">
+                            <li>• Component quality assessment (panels, inverter, battery)</li>
+                            <li>• Multi-roof area calculator</li>
+                            <li>• Red flag detection</li>
+                            <li>• Performance projections & ROI analysis</li>
+                            <li>• Professional PDF report</li>
+                        </ul>
+                        <button onclick="window.open('portal.html', '_blank')" class="bg-amber-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-amber-700 transition duration-300">
+                            Get Detailed Report - £29
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -308,1924 +403,336 @@
 
     <!-- Consultation Section -->
     <section id="consultation" class="py-16 mobile-py-12 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto">
-                <div class="text-center mb-12">
-                    <h3 class="text-3xl section-heading font-bold mb-4">Free Solar Consultation</h3>
-                    <p class="text-xl mobile-text-lg text-gray-600">Answer 14 quick questions to get your personalized solar recommendation</p>
-                </div>
-
-                <!-- Progress Bar -->
-                <div class="mb-8">
-                    <div class="flex justify-between text-sm mobile-text-sm text-gray-600 mb-2">
-                        <span>Progress</span>
-                        <span id="progress-text">1 of 14</span>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2">
-                        <div id="progress-bar" class="progress-bar bg-teal-600 h-2 rounded-full" style="width: 7.14%"></div>
-                    </div>
-                </div>
-
-                <!-- Consultation Container -->
-                <div id="consultation-container" class="consultation-container bg-white rounded-lg shadow-lg p-8 mobile-card">
-                    
-                    <!-- Question 1: Property Type -->
-                    <div class="consultation-step active" data-step="1">
-                        <h4 class="text-2xl subsection-heading font-semibold mb-6">What type of property do you live in?</h4>
-                        <div class="grid grid-cols-2 mobile-grid gap-4">
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="detached">
-                                <div class="text-3xl mb-2">🏠</div>
-                                <h5 class="font-semibold">Detached House</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Best solar potential</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="semi-detached">
-                                <div class="text-3xl mb-2">🏘️</div>
-                                <h5 class="font-semibold">Semi-Detached</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Good solar potential</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="terraced">
-                                <div class="text-3xl mb-2">🏘️</div>
-                                <h5 class="font-semibold">Terraced House</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Limited but viable</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="bungalow">
-                                <div class="text-3xl mb-2">🏡</div>
-                                <h5 class="font-semibold">Bungalow</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Excellent roof space</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Question 2: Bedrooms -->
-                    <div class="consultation-step" data-step="2">
-                        <h4 class="text-2xl subsection-heading font-semibold mb-6">How many bedrooms does your property have?</h4>
-                        <div class="grid grid-cols-3 mobile-grid gap-4">
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="1">
-                                <h5 class="font-semibold text-2xl">1</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Bedroom</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="2">
-                                <h5 class="font-semibold text-2xl">2</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Bedrooms</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="3">
-                                <h5 class="font-semibold text-2xl">3</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Bedrooms</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="4">
-                                <h5 class="font-semibold text-2xl">4</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Bedrooms</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="5">
-                                <h5 class="font-semibold text-2xl">5+</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Bedrooms</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Question 3: Monthly Bill -->
-                    <div class="consultation-step" data-step="3">
-                        <h4 class="text-2xl subsection-heading font-semibold mb-6">What's your average monthly electricity bill?</h4>
-                        <div class="grid grid-cols-2 mobile-grid gap-4">
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="40-70">
-                                <h5 class="font-semibold">£40-70</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Low usage</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="70-100">
-                                <h5 class="font-semibold">£70-100</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Average usage</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="100-140">
-                                <h5 class="font-semibold">£100-140</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">High usage</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="140-200">
-                                <h5 class="font-semibold">£140-200</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Very high usage</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="200+">
-                                <h5 class="font-semibold">£200+</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Extremely high usage</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Question 4: Household Type -->
-                    <div class="consultation-step" data-step="4">
-                        <h4 class="text-2xl subsection-heading font-semibold mb-6">What best describes your household?</h4>
-                        <div class="grid grid-cols-2 mobile-grid gap-4">
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="single">
-                                <div class="text-3xl mb-2">👤</div>
-                                <h5 class="font-semibold">Single Person</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Living alone</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="couple">
-                                <div class="text-3xl mb-2">👫</div>
-                                <h5 class="font-semibold">Couple</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Two adults</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="young-family">
-                                <div class="text-3xl mb-2">👨‍👩‍👧‍👦</div>
-                                <h5 class="font-semibold">Young Family</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Children under 12</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="teenagers">
-                                <div class="text-3xl mb-2">👨‍👩‍👧‍👦</div>
-                                <h5 class="font-semibold">Family with Teenagers</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">High energy usage</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Question 5: Home Presence -->
-                    <div class="consultation-step" data-step="5">
-                        <h4 class="text-2xl subsection-heading font-semibold mb-6">How often is someone home during the day?</h4>
-                        <div class="grid grid-cols-2 mobile-grid gap-4">
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="rarely">
-                                <h5 class="font-semibold">Rarely</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Everyone out 9-5</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="sometimes">
-                                <h5 class="font-semibold">Sometimes</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Occasional home working</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="often">
-                                <h5 class="font-semibold">Often</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Regular home working</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="always">
-                                <h5 class="font-semibold">Always</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Retired or full-time home</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Question 6: Occupation -->
-                    <div class="consultation-step" data-step="6">
-                        <h4 class="text-2xl subsection-heading font-semibold mb-6">What's your primary occupation?</h4>
-                        <div class="grid grid-cols-2 mobile-grid gap-4">
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="healthcare">
-                                <div class="text-3xl mb-2">🏥</div>
-                                <h5 class="font-semibold">Healthcare Worker</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Nurse, doctor, care worker</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="teacher">
-                                <div class="text-3xl mb-2">📚</div>
-                                <h5 class="font-semibold">Teacher/Education</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">School holidays at home</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="office">
-                                <div class="text-3xl mb-2">💼</div>
-                                <h5 class="font-semibold">Office Worker</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">9-5 schedule</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="shift">
-                                <div class="text-3xl mb-2">🔄</div>
-                                <h5 class="font-semibold">Shift Worker</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Irregular hours</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="remote">
-                                <div class="text-3xl mb-2">🏠</div>
-                                <h5 class="font-semibold">Work from Home</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">High daytime usage</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="retired">
-                                <div class="text-3xl mb-2">🌅</div>
-                                <h5 class="font-semibold">Retired</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Home most of the time</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Question 7: Work Schedule -->
-                    <div class="consultation-step" data-step="7">
-                        <h4 class="text-2xl subsection-heading font-semibold mb-6">What's your typical work schedule?</h4>
-                        <div class="grid grid-cols-2 mobile-grid gap-4">
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="standard">
-                                <h5 class="font-semibold">Standard Hours</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">9am-5pm weekdays</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="shift-rotating">
-                                <h5 class="font-semibold">Rotating Shifts</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Days, evenings, nights</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="work-from-home">
-                                <h5 class="font-semibold">Work from Home</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Flexible schedule</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="retired">
-                                <h5 class="font-semibold">Retired</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">No fixed schedule</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Question 8: EV Plans -->
-                    <div class="consultation-step" data-step="8">
-                        <h4 class="text-2xl subsection-heading font-semibold mb-6">Do you have or plan to get an electric vehicle?</h4>
-                        <div class="grid grid-cols-2 mobile-grid gap-4">
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="have-one">
-                                <div class="text-3xl mb-2">🔌</div>
-                                <h5 class="font-semibold">Already have one</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Need charging capacity</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="planning-2-years">
-                                <div class="text-3xl mb-2">📅</div>
-                                <h5 class="font-semibold">Planning within 2 years</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Future-proof system</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="maybe-future">
-                                <div class="text-3xl mb-2">🤔</div>
-                                <h5 class="font-semibold">Maybe in the future</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Keep options open</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="no-plans">
-                                <div class="text-3xl mb-2">🚗</div>
-                                <h5 class="font-semibold">No plans</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Sticking with petrol/diesel</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Question 9: Heating System -->
-                    <div class="consultation-step" data-step="9">
-                        <h4 class="text-2xl subsection-heading font-semibold mb-6">What's your current heating system?</h4>
-                        <div class="grid grid-cols-2 mobile-grid gap-4">
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="gas-boiler">
-                                <div class="text-3xl mb-2">🔥</div>
-                                <h5 class="font-semibold">Gas Boiler</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Most common in UK</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="oil-boiler">
-                                <div class="text-3xl mb-2">🛢️</div>
-                                <h5 class="font-semibold">Oil Boiler</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Rural properties</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="electric-heating">
-                                <div class="text-3xl mb-2">⚡</div>
-                                <h5 class="font-semibold">Electric Heating</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Storage heaters, etc.</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="heat-pump">
-                                <div class="text-3xl mb-2">🌡️</div>
-                                <h5 class="font-semibold">Heat Pump</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Air source or ground source</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Question 10: Heat Pump Plans -->
-                    <div class="consultation-step" data-step="10">
-                        <h4 class="text-2xl subsection-heading font-semibold mb-6">Are you considering a heat pump upgrade?</h4>
-                        <div class="grid grid-cols-2 mobile-grid gap-4">
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="within-2-years">
-                                <h5 class="font-semibold">Within 2 years</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Size system accordingly</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="within-5-years">
-                                <h5 class="font-semibold">Within 5 years</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Future consideration</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="maybe-eventually">
-                                <h5 class="font-semibold">Maybe eventually</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">When current system fails</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="no-plans">
-                                <h5 class="font-semibold">No plans</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Happy with current system</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Question 11: Installer Type -->
-                    <div class="consultation-step" data-step="11">
-                        <h4 class="text-2xl subsection-heading font-semibold mb-6">What type of installer are you considering?</h4>
-                        <div class="grid grid-cols-2 mobile-grid gap-4">
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="volume">
-                                <div class="text-3xl mb-2">🏭</div>
-                                <h5 class="font-semibold">Volume Player</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Octopus, British Gas, etc.</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="local">
-                                <div class="text-3xl mb-2">🔧</div>
-                                <h5 class="font-semibold">Local Installer</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Independent, regional company</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="not-sure">
-                                <div class="text-3xl mb-2">🤷</div>
-                                <h5 class="font-semibold">Not sure yet</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Still researching options</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="multiple">
-                                <div class="text-3xl mb-2">📋</div>
-                                <h5 class="font-semibold">Getting multiple quotes</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Comparing different types</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Question 12: Battery Interest -->
-                    <div class="consultation-step" data-step="12">
-                        <h4 class="text-2xl subsection-heading font-semibold mb-6">How interested are you in battery storage?</h4>
-                        <div class="grid grid-cols-2 mobile-grid gap-4">
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="essential">
-                                <h5 class="font-semibold">Essential</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Must have backup power</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="very-interested">
-                                <h5 class="font-semibold">Very interested</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Want energy independence</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="somewhat-interested">
-                                <h5 class="font-semibold">Somewhat interested</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Depends on cost/benefit</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="not-interested">
-                                <h5 class="font-semibold">Not interested</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Just want solar panels</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Question 13: Roof Orientation -->
-                    <div class="consultation-step" data-step="13">
-                        <h4 class="text-2xl subsection-heading font-semibold mb-6">Which direction does your main roof face?</h4>
-                        <div class="grid grid-cols-2 mobile-grid gap-4">
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="south">
-                                <div class="text-3xl mb-2">☀️</div>
-                                <h5 class="font-semibold">South</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Best for solar generation</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="east">
-                                <div class="text-3xl mb-2">🌅</div>
-                                <h5 class="font-semibold">East</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Good morning generation</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="west">
-                                <div class="text-3xl mb-2">🌇</div>
-                                <h5 class="font-semibold">West</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Good afternoon generation</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="east-west">
-                                <div class="text-3xl mb-2">🔄</div>
-                                <h5 class="font-semibold">East/West</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Multiple roof sections</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Question 14: Timeline -->
-                    <div class="consultation-step" data-step="14">
-                        <h4 class="text-2xl subsection-heading font-semibold mb-6">When are you looking to install solar?</h4>
-                        <div class="grid grid-cols-2 mobile-grid gap-4">
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="asap">
-                                <h5 class="font-semibold">ASAP</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Ready to proceed immediately</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="next-3-months">
-                                <h5 class="font-semibold">Next 3 months</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Soon but need time to plan</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="next-6-months">
-                                <h5 class="font-semibold">Next 6 months</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">This year definitely</p>
-                            </div>
-                            <div class="consultation-option border-2 border-gray-200 rounded-lg p-4 mobile-card text-center" data-value="just-researching">
-                                <h5 class="font-semibold">Just researching</h5>
-                                <p class="text-sm mobile-text-sm text-gray-600">Early planning stage</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Navigation Buttons -->
-                <div class="flex justify-between mt-8">
-                    <button id="prev-btn" class="bg-gray-300 text-gray-700 px-6 py-3 mobile-button rounded-lg font-semibold opacity-50 cursor-not-allowed" disabled>
-                        Previous Question
-                    </button>
-                    <button id="next-btn" class="bg-teal-600 text-white px-6 py-3 mobile-button rounded-lg font-semibold opacity-50 cursor-not-allowed" disabled>
-                        Next Question
-                    </button>
-                </div>
-
-            <!-- Results Section -->
-            <div id="consultation-results" class="hidden mt-12">
-                <div class="text-center mb-8">
-                    <h3 class="text-3xl section-heading font-bold mb-4">Your Personalized Solar Recommendation</h3>
-                    <div class="confidence-badge">
-                        <span id="confidence-score">92% Confidence</span>
-                    </div>
-                </div>
-
-                <div class="grid md:grid-cols-2 mobile-grid gap-6 mb-8">
-                    <!-- System Overview -->
-                    <div class="recommendation-card mobile-card p-6">
-                        <div class="flex items-center mb-4">
-                            <div class="system-icon mr-4">⚡</div>
-                            <h4 class="text-xl font-semibold">System Overview</h4>
-                        </div>
-                        <div class="space-y-3">
-                            <div class="flex items-center">
-                                <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                                    <span class="text-teal-600">☀️</span>
-                                </div>
-                                <div>
-                                    <span id="system-size" class="font-semibold text-lg">6.5kW</span>
-                                    <span class="text-gray-600 mobile-text-base"> Solar System</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                                    <span class="text-teal-600">🔋</span>
-                                </div>
-                                <div>
-                                    <span id="battery-size" class="font-semibold text-lg">13.5kWh</span>
-                                    <span class="text-gray-600 mobile-text-base"> Battery Storage</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Financial Summary -->
-                    <div class="recommendation-card mobile-card p-6">
-                        <h4 class="text-xl font-semibold mb-4">Financial Summary</h4>
-                        <div class="space-y-3">
-                            <div class="flex justify-between">
-                                <span class="text-gray-600 mobile-text-base">Total Cost:</span>
-                                <span id="total-cost" class="font-semibold">£19,250</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600 mobile-text-base">Annual Savings:</span>
-                                <span id="annual-savings" class="font-semibold text-green-600">£1,850</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600 mobile-text-base">Payback Period:</span>
-                                <span id="payback-period" class="font-semibold">10.4 years</span>
-                            </div>
-                            <div class="inflation-toggle">
-                                <div class="flex justify-between items-center mb-2">
-                                    <span class="text-sm mobile-text-sm text-gray-600">Inflation Rate:</span>
-                                    <button id="inflation-toggle-btn" class="toggle-button" onclick="toggleInflationRate()">
-                                        Show 7% inflation
-                                    </button>
-                                </div>
-                                <div id="inflation-explanation" class="text-xs mobile-text-sm text-gray-500">
-                                    Based on 3.5% annual energy price increases (standard UK assumption)
-                                </div>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600 mobile-text-base">25-Year ROI:</span>
-                                <span id="roi" class="font-semibold text-green-600">285%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Lifestyle Insights -->
-                <div class="recommendation-card insight-card mobile-card p-6 mb-6">
-                    <h4 class="text-xl font-semibold mb-4">Personalized for Your Lifestyle</h4>
-                    <p id="lifestyle-insight" class="text-gray-700 mobile-text-base mb-4">
-                        As a healthcare worker with irregular shifts, your energy usage doesn't align well with solar generation. Your shift work means you need large battery storage for energy flexibility when working nights.
-                    </p>
-                    <p id="battery-insight" class="text-gray-700 mobile-text-base">
-                        A 13.5kWh battery gives you excellent energy independence. This size handles most of your evening and night usage, with backup for cloudy days.
-                    </p>
-                </div>
-
-                <!-- Optimization Tips -->
-                <div class="recommendation-card tips-card mobile-card p-6 mb-6">
-                    <h4 class="text-xl font-semibold mb-4">Optimization Tips</h4>
-                    <ul id="optimization-tips" class="space-y-2 text-gray-700 mobile-text-base">
-                        <li>• Run appliances during the day when solar production is highest</li>
-                        <li>• Delay EV charging to off-peak hours when possible</li>
-                        <li>• Keep battery charge above 20% for longevity</li>
-                        <li>• Monitor your battery levels and adjust usage patterns</li>
-                    </ul>
-                </div>
-
-                <!-- Roof Analysis Section -->
-                <div class="recommendation-card roof-analysis-card mobile-card p-6 mb-6">
-                    <div class="flex items-center mb-4">
-                        <div class="system-icon mr-4">🏠</div>
-                        <h4 class="text-xl font-semibold">Roof Capacity Analysis</h4>
-                    </div>
-                    <p class="text-gray-700 mobile-text-base mb-4">
-                        Let's verify your roof can accommodate the recommended <span id="roof-recommended-size" class="font-semibold">6.5kW</span> system.
-                    </p>
-                    
-                    <div class="grid md:grid-cols-2 mobile-grid gap-4 mb-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Usable Roof Length (meters)</label>
-                            <input type="number" id="roof-length" placeholder="e.g. 8" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-                            <p class="text-xs text-gray-500 mt-1">Measure the longest usable section</p>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Usable Roof Width (meters)</label>
-                            <input type="number" id="roof-width" placeholder="e.g. 6" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-                            <p class="text-xs text-gray-500 mt-1">Avoid chimneys, dormers, shading</p>
-                        </div>
-                    </div>
-                    
-                    <button onclick="analyzeRoofCapacity()" class="bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition mb-4">
-                        Check Roof Capacity
-                    </button>
-                    
-                    <div id="roof-analysis-results" class="hidden">
-                        <div class="bg-gray-50 rounded-lg p-4 mb-4">
-                            <h5 class="font-semibold text-gray-800 mb-3">📐 Roof Analysis Results</h5>
-                            <div class="space-y-2 text-sm">
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">Usable Roof Area:</span>
-                                    <span id="usable-area" class="font-semibold">38.4m²</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">Max with Standard Panels:</span>
-                                    <span id="max-standard-system" class="font-semibold">7.8kW</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">Max with Large Panels:</span>
-                                    <span id="max-large-system" class="font-semibold">7.2kW</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div id="roof-capacity-status" class="p-4 rounded-lg mb-4">
-                            <!-- Status will be populated by JavaScript -->
-                        </div>
-                        
-                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 border-2 border-teal-200 rounded-lg p-4">
-                            <div class="flex items-center mb-3">
-                                <div class="w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center mr-3">
-                                    <span class="text-white text-sm">📐</span>
-                                </div>
-                                <h5 class="font-semibold text-teal-800">Professional 3D Roof Analysis</h5>
-                            </div>
-                            <p class="text-teal-700 text-sm mb-3">
-                                Get a precise panel layout, shading analysis, and professional report you can use with any installer.
-                            </p>
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <span class="text-lg font-bold text-teal-800">£29</span>
-                                    <span class="text-sm text-teal-600"> one-time</span>
-                                </div>
-                                <button onclick="order3DAnalysis()" class="bg-teal-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-teal-700 transition text-sm">
-                                    Order 3D Analysis
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Next Steps -->
-                <div class="recommendation-card steps-card mobile-card p-6 mb-8">
-                    <h4 class="text-xl font-semibold mb-4">Next Steps</h4>
-                    <ol id="next-steps" class="space-y-2 text-gray-700 mobile-text-base">
-                        <li>1. Get quotes for a 6.5kW solar system with 13.5kWh battery storage</li>
-                        <li>2. Use our quote analyzer below to evaluate each installer's proposal</li>
-                        <li>3. Check your roof condition and any planning requirements</li>
-                        <li>4. Consider financing options if needed</li>
-                        <li>5. Plan your installation timing for best prices</li>
-                    </ol>
-                </div>
-
-                <!-- Premium Teaser Section -->
-                <div class="premium-teaser bg-gradient-to-br from-teal-50 to-indigo-100 border-2 border-blue-200 rounded-lg p-6 mb-8">
-                    <div class="text-center mb-6">
-                        <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal-500 to-indigo-600 rounded-full mb-4">
-                            <span class="text-2xl">🚀</span>
-                        </div>
-                        <h4 class="text-2xl font-bold text-blue-900 mb-2">Unlock Advanced Tariff Optimization</h4>
-                        <p class="text-teal-700 mobile-text-base">Get personalized analysis showing how to save an additional £2,400-4,800 over 10 years</p>
-                    </div>
-                    
-                    <div class="grid md:grid-cols-3 mobile-grid gap-4 mb-6">
-                        <div class="bg-white rounded-lg p-4 text-center shadow-sm">
-                            <div class="text-3xl mb-2">⚡</div>
-                            <h5 class="font-semibold text-gray-800 mb-1">EV Charging Strategy</h5>
-                            <p class="text-sm mobile-text-sm text-gray-600">Octopus Go vs Solar sizing analysis</p>
-                        </div>
-                        <div class="bg-white rounded-lg p-4 text-center shadow-sm">
-                            <div class="text-3xl mb-2">🌡️</div>
-                            <h5 class="font-semibold text-gray-800 mb-1">Heat Pump Optimization</h5>
-                            <p class="text-sm mobile-text-sm text-gray-600">Tariff vs solar heating cost comparison</p>
-                        </div>
-                        <div class="bg-white rounded-lg p-4 text-center shadow-sm">
-                            <div class="text-3xl mb-2">📊</div>
-                            <h5 class="font-semibold text-gray-800 mb-1">3-Scenario Analysis</h5>
-                            <p class="text-sm mobile-text-sm text-gray-600">Solar-only vs Tariff vs Hybrid strategies</p>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-white rounded-lg p-4 mb-6">
-                        <h5 class="font-semibold text-gray-800 mb-3">Preview: Your Potential Savings</h5>
-                        <div class="space-y-2 text-sm mobile-text-sm">
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">🔋 Current Recommendation (Solar-focused):</span>
-                                <span class="font-semibold" id="preview-current-cost">£19,250</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">⚡ Optimized Strategy (Tariff + Solar):</span>
-                                <span class="font-semibold text-green-600" id="preview-optimized-cost">£12,800-15,200</span>
-                            </div>
-                            <div class="flex justify-between border-t pt-2">
-                                <span class="text-gray-800 font-semibold">💰 Potential Additional Savings:</span>
-                                <span class="font-bold text-green-600" id="preview-savings">£4,050-6,450</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="text-center">
-                        <button onclick="showPremiumModal()" class="bg-gradient-to-r from-teal-600 to-indigo-600 text-white px-8 py-4 mobile-button rounded-lg font-bold text-lg hover:from-teal-700 hover:to-indigo-700 transition shadow-lg">
-                            Unlock Advanced Analysis - £14.99
-                        </button>
-                        <p class="text-xs mobile-text-sm text-teal-600 mt-2">One-time payment • Instant access • 30-day money-back guarantee</p>
-                    </div>
-                </div>
-
-                <!-- CTA Buttons -->
-                <div class="text-center space-y-4">
-                    <button onclick="scrollToAnalyzer()" class="bg-teal-600 text-white px-8 py-4 mobile-button rounded-lg font-semibold text-lg hover:bg-teal-700 transition">
-                        Now Analyze Your Quotes
-                    </button>
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                        <button onclick="restartConsultation()" class="bg-gray-600 text-white px-6 py-3 mobile-button rounded-lg font-semibold hover:bg-gray-700 transition">
-                            🔄 Take Consultation Again
-                        </button>
-                        <span class="text-gray-500 mobile-text-sm">Want to try different answers or run it for someone else?</span>
-                    </div>
-                </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Need Expert Consultation?</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Get personalized advice from our solar experts. We'll review your specific situation and provide tailored recommendations.
+                </p>
             </div>
-        </div>
-    </section>
-
-
-    <!-- Quote Analyzer Section -->
-    <section id="analyzer" class="py-16 mobile-py-12 bg-white">
-        <div class="container mx-auto px-4">
+            
             <div class="max-w-4xl mx-auto">
-                <div class="text-center mb-12">
-                    <h3 class="text-3xl section-heading font-bold mb-4">Free Quote Analyzer</h3>
-                    <p class="text-xl mobile-text-lg text-gray-600">Upload your solar quotes and get instant analysis of pricing, quality, and value</p>
-                </div>
-
-                <div class="quote-analyzer bg-white rounded-lg shadow-lg p-8 mobile-card">
-                    <!-- Tab Navigation -->
-                    <div class="flex flex-wrap mb-6 border-b">
-                        <button class="tab-button active px-6 py-3 mobile-button font-semibold rounded-t-lg" onclick="switchTab('manual')">
-                            Manual Entry
-                        </button>
-                        <button class="tab-button px-6 py-3 mobile-button font-semibold rounded-t-lg" onclick="switchTab('upload')">
-                            Upload PDF
-                        </button>
-                    </div>
-
-                    <!-- Manual Entry Tab -->
-                    <div id="manual-tab" class="tab-content active">
-                        <form id="quote-form" class="space-y-6">
-                            <div class="grid md:grid-cols-2 mobile-grid gap-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">System Size</label>
-                                    <div class="flex">
-                                        <input type="number" id="system-size-input" step="0.1" placeholder="6.5" class="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-                                        <span class="bg-gray-100 px-3 py-2 border border-l-0 border-gray-300 rounded-r-lg text-gray-600">kW</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Panel Wattage</label>
-                                    <div class="flex flex-wrap gap-2 mb-2">
-                                        <button type="button" class="size-button px-3 py-2 rounded-lg text-sm" data-value="300">300W</button>
-                                        <button type="button" class="size-button px-3 py-2 rounded-lg text-sm" data-value="350">350W</button>
-                                        <button type="button" class="size-button px-3 py-2 rounded-lg text-sm" data-value="400">400W</button>
-                                        <button type="button" class="size-button px-3 py-2 rounded-lg text-sm" data-value="450">450W</button>
-                                        <button type="button" class="size-button px-3 py-2 rounded-lg text-sm" data-value="500">500W</button>
-                                        <button type="button" class="size-button px-3 py-2 rounded-lg text-sm" data-value="550">550W</button>
-                                        <button type="button" class="size-button px-3 py-2 rounded-lg text-sm" data-value="other">Other</button>
-                                    </div>
-                                    <input type="number" id="custom-panel-wattage" placeholder="Enter custom wattage" class="custom-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-                                </div>
-                            </div>
-
-                            <div class="grid md:grid-cols-2 mobile-grid gap-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Battery Storage</label>
-                                    <div class="flex">
-                                        <input type="number" id="battery-size-input" step="0.1" placeholder="13.5" class="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-                                        <span class="bg-gray-100 px-3 py-2 border border-l-0 border-gray-300 rounded-r-lg text-gray-600">kWh</span>
-                                    </div>
-                                    <p class="text-xs text-gray-500 mt-1">Enter 0 if no battery included</p>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Battery Brand</label>
-                                    <select id="battery-brand" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-                                        <option value="">Select battery brand</option>
-                                        <option value="tesla-powerwall">Tesla Powerwall</option>
-                                        <option value="enphase-encharge">Enphase Encharge</option>
-                                        <option value="solaredge-energy-bank">SolarEdge Energy Bank</option>
-                                        <option value="lg-resu">LG RESU</option>
-                                        <option value="byd-battery-box">BYD Battery-Box</option>
-                                        <option value="pylontech-force">Pylontech Force</option>
-                                        <option value="alpha-ess-smile">Alpha ESS SMILE</option>
-                                        <option value="solax-triple-power">Solax Triple Power</option>
-                                        <option value="duracell-energy-bank">Duracell Energy Bank</option>
-                                        <option value="fox-ess-ep11">Fox ESS EP11</option>
-                                        <option value="other">Other (specify)</option>
-                                    </select>
-                                    <input type="text" id="custom-battery-brand" placeholder="Enter battery brand and model" class="custom-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent mt-2">
-                                </div>
-                            </div>
-
-                            <div class="grid md:grid-cols-2 mobile-grid gap-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Total Quote Price</label>
-                                    <div class="flex">
-                                        <span class="bg-gray-100 px-3 py-2 border border-r-0 border-gray-300 rounded-l-lg text-gray-600">£</span>
-                                        <input type="number" id="total-price" placeholder="19250" class="flex-1 px-3 py-2 border border-gray-300 rounded-r-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Installer Type</label>
-                                    <select id="installer-type" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-                                        <option value="">Select installer type</option>
-                                        <option value="volume">Volume Player (Octopus, British Gas, etc.)</option>
-                                        <option value="local">Local/Regional Installer</option>
-                                        <option value="national">National Chain</option>
-                                        <option value="unknown">Not sure</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Installer Name (Optional)</label>
-                                <input type="text" id="installer-name" placeholder="e.g. Octopus Energy, British Gas, local company name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-                            </div>
-
-                            <button type="submit" class="w-full bg-teal-600 text-white py-4 mobile-button rounded-lg font-semibold text-lg hover:bg-teal-700 transition">
-                                Analyze Quote
-                            </button>
-                        </form>
-                    </div>
-
-                    <!-- PDF Upload Tab -->
-                    <div id="upload-tab" class="tab-content">
-                        <div class="text-center py-12">
-                            <div class="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span class="text-2xl">📄</span>
-                            </div>
-                            <h4 class="text-xl font-semibold mb-4">PDF Quote Analysis</h4>
-                            <p class="text-gray-600 mobile-text-base mb-6">Upload your PDF quote for automatic extraction and analysis</p>
-                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 mb-6">
-                                <input type="file" id="pdf-upload" accept=".pdf" class="hidden">
-                                <button onclick="document.getElementById('pdf-upload').click()" class="bg-teal-600 text-white px-6 py-3 mobile-button rounded-lg font-semibold hover:bg-teal-700 transition">
-                                    Choose PDF File
-                                </button>
-                                <p class="text-sm mobile-text-sm text-gray-500 mt-2">Maximum file size: 10MB</p>
-                            </div>
-                            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                                <h5 class="font-semibold text-blue-800 mb-2">🚀 Coming Soon: AI-Powered PDF Analysis</h5>
-                                <p class="text-blue-700 text-sm mobile-text-sm">
-                                    Automatic extraction of system specs, pricing, and contract terms from any solar quote PDF. 
-                                    For now, please use manual entry above.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Analysis Results -->
-                    <div id="analysis-results" class="hidden mt-8">
-                        <div class="analysis-result bg-gray-50 rounded-lg p-6 mobile-card">
-                            <h4 class="text-xl font-semibold mb-4">Quote Analysis Results</h4>
-                            
-                            <!-- Overall Assessment -->
-                            <div id="overall-assessment" class="mb-6 p-4 rounded-lg">
-                                <!-- Will be populated by JavaScript -->
-                            </div>
-
-                            <!-- Detailed Breakdown -->
-                            <div class="grid md:grid-cols-2 mobile-grid gap-6">
-                                <div>
-                                    <h5 class="font-semibold text-gray-800 mb-3">💰 Pricing Analysis</h5>
-                                    <div class="space-y-2 text-sm mobile-text-sm">
-                                        <div class="flex justify-between">
-                                            <span class="text-gray-600">Your Quote:</span>
-                                            <span id="quote-price" class="font-semibold">£19,250</span>
-                                        </div>
-                                        <div class="flex justify-between">
-                                            <span class="text-gray-600">Fair Price Range:</span>
-                                            <span id="fair-price-range" class="font-semibold">£16,400 - £28,900</span>
-                                        </div>
-                                        <div class="flex justify-between">
-                                            <span class="text-gray-600">Price per kW:</span>
-                                            <span id="price-per-kw" class="font-semibold">£2,962</span>
-                                        </div>
-                                        <div class="flex justify-between">
-                                            <span class="text-gray-600">Market Position:</span>
-                                            <span id="market-position" class="font-semibold text-green-600">Good Value</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h5 class="font-semibold text-gray-800 mb-3">⚡ System Quality</h5>
-                                    <div class="space-y-2 text-sm mobile-text-sm">
-                                        <div class="flex justify-between">
-                                            <span class="text-gray-600">Panel Efficiency:</span>
-                                            <span id="panel-efficiency" class="font-semibold">Good (400W)</span>
-                                        </div>
-                                        <div class="flex justify-between">
-                                            <span class="text-gray-600">Battery Quality:</span>
-                                            <span id="battery-quality" class="font-semibold">Excellent</span>
-                                        </div>
-                                        <div class="flex justify-between">
-                                            <span class="text-gray-600">System Sizing:</span>
-                                            <span id="system-sizing" class="font-semibold text-green-600">Well Matched</span>
-                                        </div>
-                                        <div class="flex justify-between">
-                                            <span class="text-gray-600">Overall Grade:</span>
-                                            <span id="overall-grade" class="font-semibold text-green-600">A-</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Red Flags -->
-                            <div id="red-flags" class="mt-6">
-                                <!-- Will be populated by JavaScript if any issues found -->
-                            </div>
-
-                            <!-- Recommendations -->
-                            <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                                <h5 class="font-semibold text-blue-800 mb-3">💡 Our Recommendations</h5>
-                                <ul id="recommendations" class="space-y-1 text-blue-700 text-sm mobile-text-sm">
-                                    <!-- Will be populated by JavaScript -->
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-16 mobile-py-12">
-        <div class="container mx-auto px-4">
-            <!-- Choose Your Analysis Level Section -->
-            <div class="max-w-6xl mx-auto mb-16">
-                <div class="text-center mb-12">
-                    <h3 class="text-3xl font-bold mb-4">Choose Your Analysis Level</h3>
-                    <p class="text-gray-400 mobile-text-base">From basic recommendations to complete contract protection</p>
-                </div>
-                
-                <div class="grid md:grid-cols-3 mobile-grid gap-8">
-                    <!-- Basic Analysis -->
-                    <div class="bg-gray-800 rounded-lg p-6 mobile-card border border-gray-700">
-                        <div class="text-center mb-6">
-                            <div class="w-12 h-12 bg-teal-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span class="text-xl">⚡</span>
-                            </div>
-                            <h4 class="text-xl font-bold mb-2">Basic Analysis</h4>
-                            <div class="text-3xl font-bold text-teal-400 mb-2">£14.99</div>
-                            <div class="text-gray-400 text-sm mobile-text-sm">One-time payment</div>
-                        </div>
-                        
-                        <ul class="space-y-3 text-gray-300 text-sm mobile-text-sm mb-6">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4 text-teal-600">Free 15-Minute Call</h3>
+                        <ul class="space-y-3 mb-6">
                             <li class="flex items-center">
-                                <span class="text-green-400 mr-2">✓</span>
-                                Tariff optimization analysis
+                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                Quick quote review
                             </li>
                             <li class="flex items-center">
-                                <span class="text-green-400 mr-2">✓</span>
-                                3-scenario comparison
+                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                Basic recommendations
                             </li>
                             <li class="flex items-center">
-                                <span class="text-green-400 mr-2">✓</span>
-                                Personalized recommendations
-                            </li>
-                            <li class="flex items-center">
-                                <span class="text-green-400 mr-2">✓</span>
-                                EV & heat pump strategies
+                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                Red flag identification
                             </li>
                         </ul>
-                        
-                        <button onclick="proceedToPayment('basic')" class="w-full bg-teal-600 text-white py-3 mobile-button rounded-lg font-semibold hover:bg-teal-700 transition">
-                            Get Basic Analysis
+                        <div class="text-3xl font-bold text-teal-600 mb-4">Free</div>
+                        <button class="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition duration-300">
+                            Book Free Call
                         </button>
                     </div>
                     
-                    <!-- Pro Analysis -->
-                    <div class="bg-gray-800 rounded-lg p-6 mobile-card border-2 border-teal-500 relative">
-                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                            <span class="bg-teal-500 text-white px-4 py-1 rounded-full text-xs font-semibold">POPULAR</span>
+                    <div class="bg-white p-8 rounded-lg shadow-lg border-2 border-teal-500">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-2xl font-bold text-teal-600">Detailed Analysis</h3>
+                            <span class="bg-teal-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Popular</span>
                         </div>
-                        
-                        <div class="text-center mb-6">
-                            <div class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span class="text-xl">🛡️</span>
-                            </div>
-                            <h4 class="text-xl font-bold mb-2">Pro Analysis</h4>
-                            <div class="text-3xl font-bold text-teal-400 mb-2">£29.99</div>
-                            <div class="text-gray-400 text-sm mobile-text-sm">One-time payment</div>
-                        </div>
-                        
-                        <ul class="space-y-3 text-gray-300 text-sm mobile-text-sm mb-6">
+                        <ul class="space-y-3 mb-6">
                             <li class="flex items-center">
-                                <span class="text-green-400 mr-2">✓</span>
-                                Everything in Basic
+                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                Complete quote breakdown
                             </li>
                             <li class="flex items-center">
-                                <span class="text-blue-400 mr-2">⭐</span>
-                                Contract red flag analysis
+                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                Component quality assessment
                             </li>
                             <li class="flex items-center">
-                                <span class="text-blue-400 mr-2">⭐</span>
-                                Expert consultation call
+                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                Written report with recommendations
                             </li>
                             <li class="flex items-center">
-                                <span class="text-blue-400 mr-2">⭐</span>
-                                Detailed savings report
-                            </li>
-                            <li class="flex items-center">
-                                <span class="text-green-400 mr-2">✓</span>
-                                Installation timeline planning
+                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                Alternative installer suggestions
                             </li>
                         </ul>
-                        
-                        <button onclick="proceedToPayment('pro')" class="w-full bg-teal-600 text-white py-3 mobile-button rounded-lg font-semibold hover:bg-teal-700 transition">
-                            Get Pro Analysis
-                        </button>
-                    </div>
-                    
-                    <!-- Complete Package -->
-                    <div class="bg-gray-800 rounded-lg p-6 mobile-card border border-gray-700">
-                        <div class="text-center mb-6">
-                            <div class="w-12 h-12 bg-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span class="text-xl">🏆</span>
-                            </div>
-                            <h4 class="text-xl font-bold mb-2">Complete Package</h4>
-                            <div class="text-3xl font-bold text-teal-400 mb-2">£49.99</div>
-                            <div class="text-gray-400 text-sm mobile-text-sm">One-time payment</div>
-                        </div>
-                        
-                        <ul class="space-y-3 text-gray-300 text-sm mobile-text-sm mb-6">
-                            <li class="flex items-center">
-                                <span class="text-green-400 mr-2">✓</span>
-                                Everything in Pro
-                            </li>
-                            <li class="flex items-center">
-                                <span class="text-purple-400 mr-2">⭐</span>
-                                Multiple contract comparison
-                            </li>
-                            <li class="flex items-center">
-                                <span class="text-purple-400 mr-2">⭐</span>
-                                Priority expert support
-                            </li>
-                            <li class="flex items-center">
-                                <span class="text-purple-400 mr-2">⭐</span>
-                                6-month follow-up support
-                            </li>
-                            <li class="flex items-center">
-                                <span class="text-green-400 mr-2">✓</span>
-                                Performance monitoring setup
-                            </li>
-                        </ul>
-                        
-                        <button onclick="proceedToPayment('complete')" class="w-full bg-teal-600 text-white py-3 mobile-button rounded-lg font-semibold hover:bg-teal-700 transition">
-                            Get Complete Package
+                        <div class="text-3xl font-bold text-teal-600 mb-4">£29</div>
+                        <button class="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition duration-300">
+                            Get Detailed Analysis
                         </button>
                     </div>
                 </div>
                 
                 <div class="text-center mt-8">
-                    <a href="#" class="text-teal-400 hover:text-teal-300 transition text-sm mobile-text-sm">
-                        View detailed pricing comparison →
-                    </a>
+                    <p class="text-gray-600 mobile-text-sm">Want to try different answers or run it for someone else?</p>
+                    <button class="text-teal-600 hover:text-teal-700 font-semibold mobile-text-sm">Want to try different answers or run it for someone else?</button>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div class="grid md:grid-cols-4 mobile-grid gap-8 border-t border-gray-800 pt-12">
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 mobile-py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Get In Touch</h2>
+            <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+                Have questions about your solar quote? Need help understanding the analysis? We're here to help.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="mailto:hello@solarverify.co.uk" class="bg-teal-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-teal-700 transition duration-300 mobile-button">
+                    Email Us
+                </a>
+                <a href="tel:+441234567890" class="border-2 border-teal-600 text-teal-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-teal-600 hover:text-white transition duration-300 mobile-button">
+                    Call Us
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
                 <div>
                     <div class="flex items-center mb-4">
-                        <div class="w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center mr-3">
-                            <span class="text-white text-sm">🏠</span>
+                        <div class="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center mr-3">
+                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+                            </svg>
                         </div>
-                        <h3 class="text-xl font-bold">
-                            <span style="color: #0d9488;">solar</span><span style="color: #10b981;">✓</span><span style="color: #9ca3af;">erify</span>
-                        </h3>
+                        <span class="text-xl font-bold">Solar Verify</span>
                     </div>
-                    <p class="text-gray-400 mobile-text-base">Independent solar verification you can trust. No installer bias, just honest advice.</p>
+                    <p class="text-gray-400">
+                        Professional solar quote analysis to help you make informed decisions and avoid overpriced systems.
+                    </p>
                 </div>
+                
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Services</h4>
-                    <ul class="space-y-2 text-gray-400 mobile-text-base">
-                        <li><a href="#consultation" class="hover:text-white transition">System Sizing</a></li>
-                        <li><a href="#analyzer" class="hover:text-white transition">Quote Analysis</a></li>
-                        <li><a href="#" class="hover:text-white transition">Pricing</a></li>
-                        <li><a href="#" class="hover:text-white transition">Performance Monitoring</a></li>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#analyzer" class="hover:text-white transition duration-300">Quote Analysis</a></li>
+                        <li><a href="#consultation" class="hover:text-white transition duration-300">Expert Consultation</a></li>
+                        <li><a href="#" class="hover:text-white transition duration-300">Installer Verification</a></li>
+                        <li><a href="#" class="hover:text-white transition duration-300">Component Review</a></li>
                     </ul>
                 </div>
+                
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Resources</h4>
-                    <ul class="space-y-2 text-gray-400 mobile-text-base">
-                        <li><a href="#" class="hover:text-white transition">Solar Guide</a></li>
-                        <li><a href="#" class="hover:text-white transition">Battery Guide</a></li>
-                        <li><a href="#" class="hover:text-white transition">ROI Calculator</a></li>
-                        <li><a href="#" class="hover:text-white transition">FAQ</a></li>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition duration-300">Solar Guide</a></li>
+                        <li><a href="#" class="hover:text-white transition duration-300">Common Scams</a></li>
+                        <li><a href="#" class="hover:text-white transition duration-300">FAQ</a></li>
+                        <li><a href="#" class="hover:text-white transition duration-300">Blog</a></li>
                     </ul>
                 </div>
+                
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Contact</h4>
-                    <ul class="space-y-2 text-gray-400 mobile-text-base">
-                        <li>Email: hello@solarverify.co.uk</li>
-                        <li>Phone: 0800 123 4567</li>
-                        <li>Mon-Fri: 9am-6pm</li>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>hello@solarverify.co.uk</li>
+                        <li>+44 123 456 7890</li>
+                        <li>Monday - Friday: 9AM - 6PM</li>
                     </ul>
                 </div>
             </div>
             
-            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
-                <p class="text-gray-400 mobile-text-base">© 2025 Solar Verify. All rights reserved. Independent solar analysis you can trust.</p>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Solar Verify. All rights reserved. | Privacy Policy | Terms of Service</p>
             </div>
         </div>
     </footer>
 
-    <!-- Premium Modal -->
-    <div id="premium-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto">
-                <div class="p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-2xl font-bold text-gray-800">Advanced Tariff Optimization</h3>
-                        <button onclick="closePremiumModal()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
-                    </div>
-                    
-                    <div class="mb-6">
-                        <div class="bg-gradient-to-r from-teal-50 to-blue-50 border border-teal-200 rounded-lg p-4 mb-4">
-                            <h4 class="font-semibold text-teal-800 mb-2">🎯 Personalized for Your Situation</h4>
-                            <p class="text-teal-700 text-sm mobile-text-sm">Based on your consultation answers, we've identified significant optimization opportunities for your specific lifestyle and energy needs.</p>
-                        </div>
-                        
-                        <div class="grid md:grid-cols-2 mobile-grid gap-4 mb-6">
-                            <div class="bg-gray-50 rounded-lg p-4">
-                                <h5 class="font-semibold text-gray-800 mb-2">📊 What You'll Get</h5>
-                                <ul class="text-sm mobile-text-sm text-gray-700 space-y-1">
-                                    <li>• Detailed 3-scenario analysis</li>
-                                    <li>• EV charging optimization strategy</li>
-                                    <li>• Heat pump integration planning</li>
-                                    <li>• Tariff vs solar cost comparison</li>
-                                    <li>• 10-year financial projections</li>
-                                </ul>
-                            </div>
-                            <div class="bg-gray-50 rounded-lg p-4">
-                                <h5 class="font-semibold text-gray-800 mb-2">💰 Potential Savings</h5>
-                                <ul class="text-sm mobile-text-sm text-gray-700 space-y-1">
-                                    <li>• £2,400-4,800 additional savings</li>
-                                    <li>• Optimized system sizing</li>
-                                    <li>• Smart tariff recommendations</li>
-                                    <li>• Reduced payback period</li>
-                                    <li>• Maximized ROI strategy</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-gray-800 mb-2">£14.99</div>
-                        <div class="text-gray-600 mb-6">One-time payment • Instant access • 30-day money-back guarantee</div>
-                        
-                        <button onclick="proceedToPayment()" class="bg-gradient-to-r from-teal-600 to-indigo-600 text-white px-8 py-4 mobile-button rounded-lg font-bold text-lg hover:from-teal-700 hover:to-indigo-700 transition shadow-lg w-full mb-4">
-                            Unlock Advanced Analysis Now
-                        </button>
-                        
-                        <div class="flex items-center justify-center space-x-4 text-sm mobile-text-sm text-gray-500">
-                            <span>🔒 Secure Payment</span>
-                            <span>💳 All Cards Accepted</span>
-                            <span>📱 Mobile Optimized</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
     <script>
-        // Global variables
-        let currentStep = 1;
-        const totalSteps = 14;
-        let consultationData = {};
-        let isInflationToggled = false;
+        // Check count and email tracking
+        let checkCount = parseInt(localStorage.getItem('solarVerifyChecks') || '0');
+        let hasEmail = localStorage.getItem('solarVerifyEmail') !== null;
 
-        // Solar recommendation engine
-        const engine = {
-            calculateSolarRecommendation(data) {
-                const baseSystemSize = this.calculateBaseSystemSize(data);
-                const adjustedSystemSize = this.applyLifestyleModifiers(baseSystemSize, data);
-                const batterySize = this.calculateBatterySize(adjustedSystemSize, data);
-                const financials = this.calculateFinancials(adjustedSystemSize, batterySize, data);
-                const insights = this.generateInsights(data, adjustedSystemSize, batterySize);
-                const confidence = this.calculateConfidence(data);
-
-                return {
-                    system: {
-                        systemSize: Math.round(adjustedSystemSize * 10) / 10,
-                        batterySize: Math.round(batterySize * 10) / 10,
-                        panelCount: Math.ceil(adjustedSystemSize * 1000 / 400),
-                        estimatedGeneration: Math.round(adjustedSystemSize * 900)
-                    },
-                    financials,
-                    insights,
-                    confidence
-                };
-            },
-
-            calculateBaseSystemSize(data) {
-                // Base values
-                const baseSystemKW = 4.0;
-                
-                // Bedroom multiplier
-                const bedroomMultipliers = {1: 0.75, 2: 1.0, 3: 1.25, 4: 1.5, 5: 1.75};
-                const bedroomMult = bedroomMultipliers[parseInt(data.bedrooms)] || 1.25;
-                
-                // Estimate usage from bill
-                const billToUsage = {
-                    "40-70": 2500,
-                    "70-100": 3500,
-                    "100-140": 4500,
-                    "140-200": 5500,
-                    "200+": 7000,
-                };
-                const annualKWh = billToUsage[data.monthlyBill] || 4500;
-                const billSystemSize = annualKWh / 900;
-                
-                // Calculate bedroom-based and bill-based sizes
-                const bedroomSize = baseSystemKW * bedroomMult;
-                const averageSize = (bedroomSize + billSystemSize) / 2;
-                
-                return averageSize;
-            },
-
-            applyLifestyleModifiers(baseSize, data) {
-                // Household multiplier
-                const householdMultipliers = {
-                    "single": 0.8,
-                    "couple": 0.9,
-                    "young-family": 1.2,
-                    "teenagers": 1.4,
-                };
-                const householdMult = householdMultipliers[data.householdType] || 1.0;
-                
-                // Lifestyle multiplier
-                const presenceMultipliers = {
-                    "rarely": 0.9,
-                    "sometimes": 1.0,
-                    "often": 1.1,
-                    "always": 1.2,
-                };
-                const presenceMult = presenceMultipliers[data.homePresence] || 1.0;
-                
-                // Roof orientation
-                const roofMultipliers = {
-                    "south": 1.0,
-                    "east": 0.85,
-                    "west": 0.85,
-                    "east-west": 0.9,
-                };
-                const roofMult = roofMultipliers[data.roofOrientation] || 0.9;
-                
-                // Apply multipliers to base system
-                let adjustedSize = baseSize * householdMult * presenceMult * roofMult;
-                
-                // EV & heat pump adjustments (additive)
-                // Smart EV logic: only add if bill is unknown (prevents double-counting)
-                let evAddKW = 0;
-                if (data.evPlans === 'have-one' || data.evPlans === 'planning-2-years') {
-                    if (data.monthlyBill === 'not-sure') {
-                        // Bill unknown, add EV sizing
-                        evAddKW = data.evPlans === 'have-one' ? 2.0 : 1.7;
-                    }
-                    // If bill is known, assume EV usage already included
-                }
-                
-                const heatpumpAddKW = (data.heatingSystem === 'heat-pump' || data.heatPumpPlans === 'within-2-years') ? 3.0 : 0.0;
-                
-                adjustedSize += evAddKW + heatpumpAddKW;
-                
-                return Math.max(3.0, Math.min(adjustedSize, 15.0));
-            },
-
-            calculateBatterySize(systemSize, data) {
-                if (data.batteryInterest === 'not-interested') return 0;
-                
-                // Base battery size
-                const baseBatterySize = systemSize * 1.2;
-                
-                // Occupation multipliers
-                const occupationMultipliers = {
-                    "healthcare": 1.5, "teacher": 1.1, "office": 1.1, 
-                    "shift": 1.5, "remote": 0.7, "retired": 0.7,
-                };
-                const occupationMult = occupationMultipliers[data.occupation] || 1.1;
-                
-                // Schedule multipliers
-                const scheduleMultipliers = {
-                    "standard": 1.1, "shift-rotating": 1.4, 
-                    "work-from-home": 0.8, "retired": 0.6,
-                };
-                const scheduleMult = scheduleMultipliers[data.workSchedule] || 1.1;
-                
-                // Interest multipliers
-                const interestMultipliers = {
-                    "essential": 1.0, "very-interested": 0.9, 
-                    "somewhat-interested": 0.8, "not-interested": 0,
-                };
-                const interestMult = interestMultipliers[data.batteryInterest] || 0.9;
-                
-                let batterySize = baseBatterySize * occupationMult * scheduleMult * interestMult;
-                return Math.max(5, Math.min(batterySize, 15));
-            },
-
-            calculateFinancials(systemSize, batterySize, data) {
-                // System & battery cost
-                const installerType = data.installerType || 'local';
-                let systemCost, batteryCost;
-                
-                if (installerType === 'volume') {
-                    systemCost = systemSize * 1100;
-                    batteryCost = batterySize * 700;
-                } else {
-                    systemCost = systemSize * 1400;
-                    batteryCost = batterySize * 800;
-                }
-                
-                const totalCost = systemCost + batteryCost;
-                
-                // Calculate savings
-                const annualUsage = this.estimateAnnualUsage(data);
-                const selfConsumptionRate = this.calculateSelfConsumption(data, batterySize);
-                const annualGeneration = systemSize * 900;
-                const selfConsumed = Math.min(annualGeneration * selfConsumptionRate, annualUsage);
-                const exported = annualGeneration - selfConsumed;
-                
-                const electricityRate = 0.28; // £0.28/kWh
-                const exportRate = 0.15; // £0.15/kWh
-                const annualSavings = (selfConsumed * electricityRate) + (exported * exportRate);
-                
-                // Calculate payback
-                const paybackYears = totalCost / annualSavings;
-                
-                // Calculate 25-year ROI
-                const inflationRate = isInflationToggled ? 0.07 : 0.035;
-                let cumulativeSavings = 0;
-                for (let year = 1; year <= 25; year++) {
-                    const yearlyRate = electricityRate * Math.pow(1 + inflationRate, year - 1);
-                    const yearlySavings = (selfConsumed * yearlyRate) + (exported * exportRate);
-                    cumulativeSavings += yearlySavings;
-                }
-                
-                const roi = ((cumulativeSavings - totalCost) / totalCost) * 100;
-                
-                return {
-                    totalCost: Math.round(totalCost),
-                    annualSavings: Math.round(annualSavings),
-                    paybackYears: Math.round(paybackYears * 10) / 10,
-                    roi: Math.round(roi),
-                    selfConsumptionRate: Math.round(selfConsumptionRate * 100)
-                };
-            },
-
-            calculateSelfConsumption(data, batterySize) {
-                let baseRate = 0.3; // Default self-consumption without battery
-                
-                // Adjust based on home presence
-                if (data.homePresence === 'always' || data.workSchedule === 'retired') {
-                    baseRate = 0.7;
-                } else if (data.homePresence === 'often' || data.workSchedule === 'work-from-home') {
-                    baseRate = 0.85;
-                } else if (data.homePresence === 'sometimes') {
-                    baseRate = 0.45;
-                } else {
-                    baseRate = 0.35;
-                }
-                
-                // Battery increases self-consumption
-                if (batterySize > 0) {
-                    const batteryBoost = Math.min(0.4, batterySize * 0.03);
-                    baseRate = Math.min(0.95, baseRate + batteryBoost);
-                }
-                
-                return baseRate;
-            },
-
-            estimateAnnualUsage(data) {
-                const billToUsage = {
-                    "40-70": 2500, "70-100": 3500, "100-140": 4500,
-                    "140-200": 5500, "200+": 8500,
-                };
-                let annualUsage = billToUsage[data.monthlyBill] || 4500;
-                
-                // Smart EV usage adjustment: only add if bill is unknown
-                if (data.evPlans === 'have-one' || data.evPlans === 'planning-2-years') {
-                    if (data.monthlyBill === 'not-sure') {
-                        // Bill unknown, add EV usage manually
-                        annualUsage += data.evPlans === 'have-one' ? 3000 : 2500;
-                    }
-                    // If bill is known, assume EV usage already included
-                }
-                
-                if (data.heatingSystem === 'heat-pump') annualUsage += 4000;
-                if (data.heatPumpPlans === 'within-2-years') annualUsage += 3500;
-                
-                return annualUsage;
-            },
-
-            generateInsights(data, systemSize, batterySize) {
-                const insights = [];
-                
-                // Lifestyle insight
-                if (data.occupation === 'healthcare' || data.workSchedule === 'shift-rotating') {
-                    insights.push("As a healthcare worker with irregular shifts, your energy usage doesn't align well with solar generation. Your shift work means you need large battery storage for energy flexibility when working nights.");
-                } else if (data.workSchedule === 'work-from-home' || data.homePresence === 'always') {
-                    insights.push("Working from home gives you excellent solar utilization. Your high daytime presence means you can use solar energy as it's generated, reducing your need for large battery storage.");
-                } else if (data.workSchedule === 'retired') {
-                    insights.push("Being retired gives you the best solar utilization possible. You're home during peak generation hours, so you can use solar energy directly and need minimal battery storage.");
-                } else {
-                    insights.push("Your standard work schedule means moderate solar utilization. Battery storage will help you use more of your solar generation during evening hours when you're home.");
-                }
-                
-                // Battery insight
-                if (batterySize >= 12) {
-                    insights.push(`A ${batterySize.toFixed(1)}kWh battery gives you excellent energy independence. This size handles most of your evening and night usage, with backup for cloudy days.`);
-                } else if (batterySize >= 8) {
-                    insights.push(`A ${batterySize.toFixed(1)}kWh battery provides good energy storage for your needs. This covers your essential evening usage and provides some backup capacity.`);
-                } else if (batterySize > 0) {
-                    insights.push(`A ${batterySize.toFixed(1)}kWh battery offers basic energy storage. This covers some evening usage but you'll still rely on the grid during peak times.`);
-                } else {
-                    insights.push("Without battery storage, you'll export excess solar during the day and buy electricity in the evening. Consider adding a battery later to increase your energy independence.");
-                }
-                
-                return insights;
-            },
-
-            calculateConfidence(data) {
-                let confidence = 85; // Base confidence
-                
-                // Increase confidence for complete data
-                if (data.monthlyBill && data.bedrooms && data.householdType) confidence += 5;
-                if (data.homePresence && data.occupation && data.workSchedule) confidence += 5;
-                if (data.roofOrientation) confidence += 3;
-                if (data.installerType) confidence += 2;
-                
-                return Math.min(confidence, 98);
-            }
+        // Pricing benchmarks (price per kW in GBP)
+        const pricingBenchmarks = {
+            excellent: { max: 1500 },
+            fair: { max: 2000 },
+            overpriced: { min: 2000 }
         };
 
-        // Consultation functions
-        function selectOption(element, value) {
-            // Remove selected class from siblings
-            const siblings = element.parentElement.querySelectorAll('.consultation-option');
-            siblings.forEach(sibling => sibling.classList.remove('selected'));
-            
-            // Add selected class to clicked element
-            element.classList.add('selected');
-            
-            // Store the answer
-            const stepElement = document.querySelector('.consultation-step.active');
-            const stepNumber = stepElement.getAttribute('data-step');
-            const questionMap = {
-                1: 'propertyType', 2: 'bedrooms', 3: 'monthlyBill', 4: 'householdType',
-                5: 'homePresence', 6: 'occupation', 7: 'workSchedule', 8: 'evPlans',
-                9: 'heatingSystem', 10: 'heatPumpPlans', 11: 'installerType', 
-                12: 'batteryInterest', 13: 'roofOrientation', 14: 'timeline'
-            };
-            
-            consultationData[questionMap[stepNumber]] = value;
-            
-            // Enable next button
-            const nextBtn = document.getElementById('next-btn');
-            nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            nextBtn.disabled = false;
-        }
-
-        function nextQuestion() {
-            if (currentStep < totalSteps) {
-                // Hide current step
-                document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
-                
-                // Heat pump skip logic: Skip question 10 if they already have a heat pump
-                if (currentStep === 9) {
-                    const heatingSystemData = consultationData[9]; // Question 9: heating system
-                    if (heatingSystemData === 'heat-pump') {
-                        // Skip question 10 (heat pump plans) since they already have one
-                        currentStep += 2; // Skip to question 11
-                    } else {
-                        currentStep++; // Normal progression to question 10
-                    }
-                } else {
-                    // Normal progression
-                    currentStep++;
-                }
-                
-                // Show next step
-                document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
-                
-                // Update progress
-                updateProgress();
-                
-                // Update navigation buttons
-                updateNavigationButtons();
-            } else {
-                // Show results
-                showResults();
-            }
-        }
-
-        function previousQuestion() {
-            if (currentStep > 1) {
-                // Hide current step
-                document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
-                
-                // Heat pump skip logic for going backwards: Skip question 10 if they have heat pump
-                if (currentStep === 11) {
-                    const heatingSystemData = consultationData[9]; // Question 9: heating system
-                    if (heatingSystemData === 'heat-pump') {
-                        // Skip back over question 10 since they have heat pump
-                        currentStep -= 2; // Go back to question 9
-                    } else {
-                        currentStep--; // Normal progression to question 10
-                    }
-                } else {
-                    // Normal progression
-                    currentStep--;
-                }
-                
-                // Show previous step
-                document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
-                
-                // Update progress
-                updateProgress();
-                
-                // Update navigation buttons
-                updateNavigationButtons();
-            }
-        }
-
-        function updateProgress() {
-            const progressBar = document.getElementById('progress-bar');
-            const progressText = document.getElementById('progress-text');
-            const percentage = (currentStep / totalSteps) * 100;
-            
-            progressBar.style.width = percentage + '%';
-            progressText.textContent = `${currentStep} of ${totalSteps}`;
-        }
-
-        function updateNavigationButtons() {
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            
-            // Previous button
-            if (currentStep === 1) {
-                prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                prevBtn.disabled = true;
-            } else {
-                prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                prevBtn.disabled = false;
-            }
-            
-            // Next button
-            const currentStepElement = document.querySelector(`[data-step="${currentStep}"]`);
-            const hasSelection = currentStepElement.querySelector('.consultation-option.selected');
-            
-            if (hasSelection) {
-                nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                nextBtn.disabled = false;
-            } else {
-                nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                nextBtn.disabled = true;
-            }
-            
-            // Update button text for last step
-            if (currentStep === totalSteps) {
-                nextBtn.textContent = 'Get My Recommendation';
-            } else {
-                nextBtn.textContent = 'Next Question';
-            }
-        }
-
-        function showResults() {
-            document.getElementById('consultation-container').style.display = 'none';
-            document.querySelector('.flex.justify-between.mt-8').style.display = 'none';
-            const recommendation = engine.calculateSolarRecommendation(consultationData);
-            displayRecommendation(recommendation);
-            document.getElementById('consultation-results').classList.remove('hidden');
-            
-            // Update roof analysis section with recommended system size
-            updateRoofRecommendedSize();
-        }
-
-        function displayRecommendation(recommendation) {
-            const { system, financials, insights, confidence } = recommendation;
-            
-            // Store recommendation globally for roof analysis
-            window.solarRecommendation = recommendation;
-            
-            // Update system overview
-            document.getElementById('system-size').textContent = system.systemSize + 'kW';
-            document.getElementById('battery-size').textContent = system.batterySize + 'kWh';
-            
-            // Update financial summary
-            document.getElementById('total-cost').textContent = '£' + financials.totalCost.toLocaleString();
-            document.getElementById('annual-savings').textContent = '£' + financials.annualSavings.toLocaleString();
-            document.getElementById('payback-period').textContent = financials.paybackYears + ' years';
-            document.getElementById('roi').textContent = financials.roi + '%';
-            
-            // Update confidence score
-            document.getElementById('confidence-score').textContent = confidence + '% Confidence';
-            
-            // Update insights
-            document.getElementById('lifestyle-insight').textContent = insights[0] || '';
-            document.getElementById('battery-insight').textContent = insights[1] || '';
-            
-            // Update optimization tips
-            const tips = generateOptimizationTips(consultationData, system);
-            const tipsList = document.getElementById('optimization-tips');
-            tipsList.innerHTML = tips.map(tip => `<li>• ${tip}</li>`).join('');
-            
-            // Update next steps
-            const steps = generateNextSteps(system);
-            const stepsList = document.getElementById('next-steps');
-            stepsList.innerHTML = steps.map((step, index) => `<li>${index + 1}. ${step}</li>`).join('');
-            
-            // Update premium teaser with actual values
-            updatePremiumTeaser(financials);
-        }
-
-        function generateOptimizationTips(data, system) {
-            const tips = [];
-            
-            if (data.workSchedule === 'work-from-home' || data.homePresence === 'always') {
-                tips.push('Run appliances during the day when solar production is highest');
-                tips.push('Use your dishwasher and washing machine between 10am-3pm for maximum solar usage');
-            } else {
-                tips.push('Set timers on appliances to run during peak solar hours (10am-3pm)');
-                tips.push('Consider smart plugs to automatically run devices when solar is generating');
-            }
-            
-            if (data.evPlans === 'have-one' || data.evPlans === 'planning-2-years') {
-                tips.push('Charge your EV during the day when possible to use free solar energy');
-                tips.push('Consider a smart EV charger that prioritizes solar charging');
-            }
-            
-            if (system.batterySize > 0) {
-                tips.push('Keep battery charge above 20% for longevity');
-                tips.push('Monitor your battery levels and adjust usage patterns accordingly');
-            }
-            
-            if (data.heatingSystem === 'heat-pump' || data.heatPumpPlans === 'within-2-years') {
-                tips.push('Pre-heat your home during solar generation hours');
-                tips.push('Use thermal mass to store heat generated by solar-powered heat pump');
-            }
-            
-            return tips.slice(0, 4); // Limit to 4 tips
-        }
-
-        function generateNextSteps(system) {
-            return [
-                `Get quotes for a ${system.systemSize}kW solar system with ${system.batterySize}kWh battery storage`,
-                'Use our quote analyzer below to evaluate each installer\'s proposal',
-                'Check your roof condition and any planning requirements',
-                'Consider financing options if needed',
-                'Plan your installation timing for best prices'
-            ];
-        }
-
-        function updatePremiumTeaser(financials) {
-            const currentCost = financials.totalCost;
-            const optimizedLow = Math.round(currentCost * 0.65);
-            const optimizedHigh = Math.round(currentCost * 0.8);
-            const savingsLow = currentCost - optimizedHigh;
-            const savingsHigh = currentCost - optimizedLow;
-            
-            document.getElementById('preview-current-cost').textContent = '£' + currentCost.toLocaleString();
-            document.getElementById('preview-optimized-cost').textContent = '£' + optimizedLow.toLocaleString() + '-' + optimizedHigh.toLocaleString();
-            document.getElementById('preview-savings').textContent = '£' + savingsLow.toLocaleString() + '-' + savingsHigh.toLocaleString();
-        }
-
-        function toggleInflationRate() {
-            isInflationToggled = !isInflationToggled;
-            const button = document.getElementById('inflation-toggle-btn');
-            const explanation = document.getElementById('inflation-explanation');
-            
-            if (isInflationToggled) {
-                button.textContent = 'Show 3.5% inflation';
-                explanation.textContent = 'Based on 7% annual energy price increases (high inflation scenario)';
-            } else {
-                button.textContent = 'Show 7% inflation';
-                explanation.textContent = 'Based on 3.5% annual energy price increases (standard UK assumption)';
-            }
-            
-            // Recalculate and update financials
-            const recommendation = engine.calculateSolarRecommendation(consultationData);
-            document.getElementById('annual-savings').textContent = '£' + recommendation.financials.annualSavings.toLocaleString();
-            document.getElementById('payback-period').textContent = recommendation.financials.paybackYears + ' years';
-            document.getElementById('roi').textContent = recommendation.financials.roi + '%';
-        }
-
-        function restartConsultation() {
-            currentStep = 1;
-            consultationData = {};
-            
-            // Hide results and show consultation
-            document.getElementById('consultation-results').classList.add('hidden');
-            document.getElementById('consultation-container').style.display = 'block';
-            document.querySelector('.flex.justify-between.mt-8').style.display = 'flex';
-            
-            // Reset all steps
-            document.querySelectorAll('.consultation-step').forEach(step => step.classList.remove('active'));
-            document.querySelector('[data-step="1"]').classList.add('active');
-            
-            // Reset all selections
-            document.querySelectorAll('.consultation-option').forEach(option => option.classList.remove('selected'));
-            
-            // Reset progress and navigation
-            updateProgress();
-            updateNavigationButtons();
-        }
-
-        function scrollToAnalyzer() {
-            document.getElementById('analyzer').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function showPremiumModal() {
-            document.getElementById('premium-modal').classList.remove('hidden');
-        }
-
-        function closePremiumModal() {
-            document.getElementById('premium-modal').classList.add('hidden');
-        }
-
-        function proceedToPayment(package = 'basic') {
-            alert(`Payment integration coming soon! You selected: ${package} package`);
-        }
-
-        // Roof Analysis Functions
-        function updateRoofRecommendedSize() {
-            const recommendedSize = window.solarRecommendation?.system.systemSize || 6.5;
-            document.getElementById('roof-recommended-size').textContent = recommendedSize.toFixed(1) + 'kW';
-        }
-
-        function analyzeRoofCapacity() {
-            const roofLength = parseFloat(document.getElementById('roof-length').value);
-            const roofWidth = parseFloat(document.getElementById('roof-width').value);
-            
-            if (!roofLength || !roofWidth) {
-                alert('Please enter both roof length and width');
-                return;
-            }
-            
-            // Calculate usable area with 20% deduction for obstacles
-            const usableArea = roofLength * roofWidth * 0.8;
-            
-            // Panel specifications
-            const standardPanelArea = 1.75 * 1.13; // 1.98m²
-            const largePanelArea = 1.96 * 1.13;    // 2.21m²
-            const standardPanelWattage = 400;
-            const largePanelWattage = 450;
-            
-            // Calculate maximum systems
-            const maxStandardPanels = Math.floor(usableArea / standardPanelArea);
-            const maxLargePanels = Math.floor(usableArea / largePanelArea);
-            const maxStandardSystemKW = (maxStandardPanels * standardPanelWattage) / 1000;
-            const maxLargeSystemKW = (maxLargePanels * largePanelWattage) / 1000;
-            
-            // Get recommended system size
-            const recommendedSystemSizeKW = window.solarRecommendation?.system.systemSize || 6.5;
-            
-            // Update results
-            document.getElementById('usable-area').textContent = usableArea.toFixed(1) + 'm²';
-            document.getElementById('max-standard-system').textContent = maxStandardSystemKW.toFixed(1) + 'kW';
-            document.getElementById('max-large-system').textContent = maxLargeSystemKW.toFixed(1) + 'kW';
-            
-            // Determine status and show appropriate message
-            const statusDiv = document.getElementById('roof-capacity-status');
-            
-            if (recommendedSystemSizeKW <= maxStandardSystemKW) {
-                statusDiv.className = 'p-4 rounded-lg mb-4 bg-green-50 border border-green-200';
-                statusDiv.innerHTML = `
-                    <div class="flex items-center mb-2">
-                        <span class="text-green-600 text-xl mr-2">✅</span>
-                        <h5 class="font-semibold text-green-800">Perfect Fit with Standard Panels</h5>
-                    </div>
-                    <p class="text-sm">Your roof can easily accommodate the recommended ${recommendedSystemSizeKW.toFixed(1)}kW system with standard panels. You have room for up to ${maxStandardSystemKW.toFixed(1)}kW if you want to expand in the future.</p>
-                `;
-            } else if (recommendedSystemSizeKW <= maxLargeSystemKW) {
-                statusDiv.className = 'p-4 rounded-lg mb-4 bg-yellow-50 border border-yellow-200';
-                statusDiv.innerHTML = `
-                    <div class="flex items-center mb-2">
-                        <span class="text-yellow-600 text-xl mr-2">⚠️</span>
-                        <h5 class="font-semibold text-yellow-800">Achievable with Large Panels</h5>
-                    </div>
-                    <p class="text-sm">Your roof can fit the recommended ${recommendedSystemSizeKW.toFixed(1)}kW system, but you'll need larger panels (450W instead of 400W). This may increase costs slightly but is definitely achievable.</p>
-                `;
-            } else {
-                const maxCapacity = Math.max(maxStandardSystemKW, maxLargeSystemKW);
-                statusDiv.className = 'p-4 rounded-lg mb-4 bg-red-50 border border-red-200';
-                statusDiv.innerHTML = `
-                    <div class="flex items-center mb-2">
-                        <span class="text-red-600 text-xl mr-2">❌</span>
-                        <h5 class="font-semibold text-red-800">Roof Capacity Exceeded</h5>
-                    </div>
-                    <p class="text-sm">Your roof can only support up to ${maxCapacity.toFixed(1)}kW. Consider reducing the system size or exploring ground-mounted options if you have garden space.</p>
-                `;
-            }
-            
-            // Show results section
-            document.getElementById('roof-analysis-results').classList.remove('hidden');
-        }
-
-        function order3DAnalysis() {
-            alert('3D Analysis ordering coming soon! This will include precise panel layout, shading analysis, and professional report for £29.');
-        }
-
-        // Quote Analyzer Functions
+        // Tab switching functionality
         function switchTab(tabName) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
             
             // Show selected tab
             document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked button
             event.target.classList.add('active');
         }
 
-        function selectPanelWattage(button, value) {
-            // Remove selected class from all buttons
-            document.querySelectorAll('.size-button').forEach(btn => btn.classList.remove('selected'));
+        // Form submission
+        document.getElementById('quote-form').addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            // Add selected class to clicked button
-            button.classList.add('selected');
-            
-            // Show/hide custom input
-            const customInput = document.getElementById('custom-panel-wattage');
-            if (value === 'other') {
-                customInput.classList.add('active');
-                customInput.focus();
-            } else {
-                customInput.classList.remove('active');
-                customInput.value = '';
-            }
-        }
-
-        function selectBatteryBrand() {
-            const select = document.getElementById('battery-brand');
-            const customInput = document.getElementById('custom-battery-brand');
-            
-            if (select.value === 'other') {
-                customInput.classList.add('active');
-                customInput.focus();
-            } else {
-                customInput.classList.remove('active');
-                customInput.value = '';
-            }
-        }
-
-        function analyzeQuote() {
-            // Get form values
-            const systemSize = parseFloat(document.getElementById('system-size-input').value);
-            const batterySize = parseFloat(document.getElementById('battery-size-input').value) || 0;
-            const totalPrice = parseFloat(document.getElementById('total-price').value);
-            const installerType = document.getElementById('installer-type').value;
-            
-            if (!systemSize || !totalPrice) {
-                alert('Please enter at least system size and total price');
+            // Check if user needs to provide email
+            if (checkCount >= 1 && !hasEmail) {
+                showEmailGate();
                 return;
             }
             
-            // Calculate fair price range
-            let systemCostPerKW, batteryCostPerKWh;
-            if (installerType === 'volume') {
-                systemCostPerKW = 1100;
-                batteryCostPerKWh = 700;
-            } else {
-                systemCostPerKW = 1400;
-                batteryCostPerKWh = 800;
+            // Check if user has exceeded free limit
+            if (checkCount >= 3 && !hasEmail) {
+                showUpgradePrompt();
+                return;
             }
             
-            const fairPrice = (systemSize * systemCostPerKW) + (batterySize * batteryCostPerKWh);
-            const lowFairPrice = fairPrice * 0.85;
-            const highFairPrice = fairPrice * 1.5;
+            analyzeQuote();
+        });
+
+        // Email form submission
+        document.getElementById('email-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email-input').value;
             
-            // Analyze pricing
-            let priceAssessment, priceColor;
-            if (totalPrice < lowFairPrice) {
-                priceAssessment = 'Suspiciously Low';
-                priceColor = 'text-red-600';
-            } else if (totalPrice <= fairPrice * 1.1) {
-                priceAssessment = 'Excellent Value';
-                priceColor = 'text-green-600';
-            } else if (totalPrice <= fairPrice * 1.3) {
-                priceAssessment = 'Good Value';
-                priceColor = 'text-green-600';
-            } else if (totalPrice <= highFairPrice) {
-                priceAssessment = 'Fair Price';
-                priceColor = 'text-yellow-600';
-            } else {
-                priceAssessment = 'Overpriced';
-                priceColor = 'text-red-600';
-            }
+            // Store email and hide gate
+            localStorage.setItem('solarVerifyEmail', email);
+            hasEmail = true;
+            hideEmailGate();
             
-            // Update results
-            document.getElementById('quote-price').textContent = '£' + totalPrice.toLocaleString();
-            document.getElementById('fair-price-range').textContent = '£' + Math.round(lowFairPrice).toLocaleString() + ' - £' + Math.round(highFairPrice).toLocaleString();
-            document.getElementById('price-per-kw').textContent = '£' + Math.round(totalPrice / systemSize).toLocaleString();
-            
-            const marketPositionElement = document.getElementById('market-position');
-            marketPositionElement.textContent = priceAssessment;
-            marketPositionElement.className = `font-semibold ${priceColor}`;
-            
-            // Update overall assessment
-            const assessmentDiv = document.getElementById('overall-assessment');
-            if (priceAssessment === 'Excellent Value' || priceAssessment === 'Good Value') {
-                assessmentDiv.className = 'mb-6 p-4 rounded-lg bg-green-50 border border-green-200';
-                assessmentDiv.innerHTML = `
-                    <div class="flex items-center mb-2">
-                        <span class="text-green-600 text-xl mr-2">✅</span>
-                        <h5 class="font-semibold text-green-800">Great Quote!</h5>
-                    </div>
-                    <p class="text-green-700 text-sm">This quote offers ${priceAssessment.toLowerCase()} and appears to be from a reputable installer. The pricing is competitive and the system sizing looks appropriate.</p>
-                `;
-            } else if (priceAssessment === 'Fair Price') {
-                assessmentDiv.className = 'mb-6 p-4 rounded-lg bg-yellow-50 border border-yellow-200';
-                assessmentDiv.innerHTML = `
-                    <div class="flex items-center mb-2">
-                        <span class="text-yellow-600 text-xl mr-2">⚠️</span>
-                        <h5 class="font-semibold text-yellow-800">Acceptable Quote</h5>
-                    </div>
-                    <p class="text-yellow-700 text-sm">This quote is within acceptable range but on the higher side. Consider getting additional quotes for comparison before proceeding.</p>
-                `;
-            } else {
-                assessmentDiv.className = 'mb-6 p-4 rounded-lg bg-red-50 border border-red-200';
-                assessmentDiv.innerHTML = `
-                    <div class="flex items-center mb-2">
-                        <span class="text-red-600 text-xl mr-2">❌</span>
-                        <h5 class="font-semibold text-red-800">Concerning Quote</h5>
-                    </div>
-                    <p class="text-red-700 text-sm">This quote raises concerns. ${priceAssessment === 'Suspiciously Low' ? 'Extremely low prices may indicate poor quality components or hidden costs.' : 'The price is significantly above market rates.'} We recommend getting additional quotes.</p>
-                `;
-            }
-            
-            // Generate recommendations
-            const recommendations = [];
-            if (totalPrice > highFairPrice) {
-                recommendations.push('Get at least 2-3 additional quotes for comparison');
-                recommendations.push('Ask for detailed breakdown of costs');
-            }
-            if (batterySize === 0) {
-                recommendations.push('Consider adding battery storage for energy independence');
-            }
-            if (systemSize < 4) {
-                recommendations.push('Verify this system size meets your energy needs');
-            }
-            recommendations.push('Check installer credentials and reviews');
-            recommendations.push('Ensure warranty terms are clearly specified');
-            
-            const recommendationsList = document.getElementById('recommendations');
-            recommendationsList.innerHTML = recommendations.map(rec => `<li>• ${rec}</li>`).join('');
-            
-            // Show results
-            document.getElementById('analysis-results').classList.remove('hidden');
+            // Proceed with analysis
+            analyzeQuote();
+        });
+
+        function showEmailGate() {
+            document.getElementById('email-gate').classList.remove('hidden');
+            document.getElementById('quote-form').style.opacity = '0.5';
+            document.getElementById('quote-form').style.pointerEvents = 'none';
         }
 
-        // Event Listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            // Consultation option clicks
-            document.querySelectorAll('.consultation-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    selectOption(this, this.getAttribute('data-value'));
-                });
-            });
+        function hideEmailGate() {
+            document.getElementById('email-gate').classList.add('hidden');
+            document.getElementById('quote-form').style.opacity = '1';
+            document.getElementById('quote-form').style.pointerEvents = 'auto';
+        }
+
+        function showUpgradePrompt() {
+            alert('You\'ve used all 3 free checks! Upgrade to get unlimited checks plus detailed PDF analysis.');
+            window.open('portal.html', '_blank');
+        }
+
+        function analyzeQuote() {
+            // Show loading state
+            document.getElementById('analyze-text').classList.add('hidden');
+            document.getElementById('analyze-loading').classList.remove('hidden');
             
-            // Navigation buttons
-            document.getElementById('next-btn').addEventListener('click', nextQuestion);
-            document.getElementById('prev-btn').addEventListener('click', previousQuestion);
+            // Get form values
+            const systemSize = parseFloat(document.getElementById('system-size').value);
+            const batterySize = parseFloat(document.getElementById('battery-size').value) || 0;
+            const totalPrice = parseFloat(document.getElementById('total-price').value);
             
-            // Panel wattage buttons
-            document.querySelectorAll('.size-button').forEach(button => {
-                button.addEventListener('click', function() {
-                    selectPanelWattage(this, this.getAttribute('data-value'));
-                });
-            });
+            // Calculate price per kW
+            const pricePerKw = totalPrice / systemSize;
             
-            // Battery brand select
-            document.getElementById('battery-brand').addEventListener('change', selectBatteryBrand);
+            // Determine verdict and grade
+            const analysis = calculateAnalysis(pricePerKw, systemSize, batterySize);
             
-            // Quote form submission
-            document.getElementById('quote-form').addEventListener('submit', function(e) {
+            // Increment check count
+            checkCount++;
+            localStorage.setItem('solarVerifyChecks', checkCount.toString());
+            
+            // Display results after delay
+            setTimeout(() => {
+                displayResults(analysis, pricePerKw);
+                
+                // Hide loading state
+                document.getElementById('analyze-text').classList.remove('hidden');
+                document.getElementById('analyze-loading').classList.add('hidden');
+            }, 1500);
+        }
+
+        function calculateAnalysis(pricePerKw, systemSize, batterySize) {
+            let grade, verdict;
+            
+            // Basic pricing analysis
+            if (pricePerKw <= pricingBenchmarks.excellent.max) {
+                grade = 'A';
+                verdict = 'Excellent value - this is a competitive quote';
+            } else if (pricePerKw <= pricingBenchmarks.fair.max) {
+                grade = 'B';
+                verdict = 'Fair pricing - within acceptable market range';
+            } else if (pricePerKw <= 2500) {
+                grade = 'C';
+                verdict = 'Above average pricing - consider getting more quotes';
+            } else if (pricePerKw <= 3000) {
+                grade = 'D';
+                verdict = 'Overpriced - definitely get alternative quotes';
+            } else {
+                grade = 'F';
+                verdict = 'Very overpriced - avoid this installer';
+            }
+            
+            // Adjust for battery (batteries add value)
+            if (batterySize > 0 && grade === 'B') {
+                grade = 'A';
+                verdict = 'Good value with battery storage included';
+            }
+            
+            return { grade, verdict };
+        }
+
+        function displayResults(analysis, pricePerKw) {
+            // Show results section
+            document.getElementById('results').classList.remove('hidden');
+            
+            // Display grade badge
+            const gradeBadge = document.getElementById('grade-badge');
+            gradeBadge.textContent = `Grade ${analysis.grade}`;
+            gradeBadge.className = `grade-badge grade-${analysis.grade.toLowerCase()}`;
+            
+            // Display price per kW
+            document.getElementById('price-per-kw').textContent = `£${pricePerKw.toFixed(0)} per kW`;
+            
+            // Display verdict
+            document.getElementById('verdict').textContent = analysis.verdict;
+            
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                analyzeQuote();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
             });
-            
-            // Initialize navigation buttons
-            updateNavigationButtons();
         });
     </script>
 </body>
 </html>
+
