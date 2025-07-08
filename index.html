@@ -2172,6 +2172,163 @@
                 `;
             }
             
+            // Battery quality assessment
+            let batteryQualityText, batteryQualityColor, brandQuality = 'standard';
+            if (batterySize === 0) {
+                batteryQualityText = 'No Battery';
+                batteryQualityColor = 'text-gray-600';
+            } else {
+                // Comprehensive battery brand assessment
+                const premiumBrands = ['tesla-powerwall', 'enphase-encharge', 'lg-resu', 'victron-multiplus'];
+                const excellentBrands = ['solaredge-energy-bank', 'byd-battery-box', 'givenergy-giv-bat', 'puredrive-purestorage'];
+                const goodBrands = ['fox-ess-ep11', 'fox-ess-ep10', 'fox-ess-ep20', 'alpha-ess-smile', 'pylontech-force'];
+                const standardBrands = ['solax-triple-power', 'duracell-energy-bank'];
+                
+                let brandName = actualBatteryBrand.toLowerCase();
+                
+                // Check against known brands
+                if (premiumBrands.includes(batteryBrand) || 
+                    brandName.includes('tesla') || brandName.includes('enphase') || 
+                    brandName.includes('lg') || brandName.includes('victron')) {
+                    brandQuality = 'premium';
+                } else if (excellentBrands.includes(batteryBrand) || 
+                          brandName.includes('solaredge') || brandName.includes('byd') || 
+                          brandName.includes('givenergy') || brandName.includes('puredrive')) {
+                    brandQuality = 'excellent';
+                } else if (goodBrands.includes(batteryBrand) || 
+                          brandName.includes('fox') || brandName.includes('alpha') || 
+                          brandName.includes('pylontech')) {
+                    brandQuality = 'good';
+                }
+                
+                // Assess quality based on brand and size
+                if (brandQuality === 'premium') {
+                    batteryQualityText = `Premium (${batterySize}kWh)`;
+                    batteryQualityColor = 'text-green-600';
+                } else if (brandQuality === 'excellent') {
+                    batteryQualityText = `Excellent (${batterySize}kWh)`;
+                    batteryQualityColor = 'text-green-600';
+                } else if (brandQuality === 'good') {
+                    batteryQualityText = `Good (${batterySize}kWh)`;
+                    batteryQualityColor = 'text-green-600';
+                } else {
+                    batteryQualityText = `Standard (${batterySize}kWh)`;
+                    batteryQualityColor = 'text-yellow-600';
+                }
+                
+                // Size bonus for large batteries
+                if (batterySize >= 20) {
+                    batteryQualityText = batteryQualityText.replace('(', 'Large (');
+                }
+            }
+            
+            // Panel efficiency assessment
+            let panelEfficiencyText, panelEfficiencyColor;
+            if (panelWattage >= 500) {
+                panelEfficiencyText = `Excellent (${panelWattage}W)`;
+                panelEfficiencyColor = 'text-green-600';
+            } else if (panelWattage >= 450) {
+                panelEfficiencyText = `Very Good (${panelWattage}W)`;
+                panelEfficiencyColor = 'text-green-600';
+            } else if (panelWattage >= 400) {
+                panelEfficiencyText = `Good (${panelWattage}W)`;
+                panelEfficiencyColor = 'text-green-600';
+            } else if (panelWattage >= 350) {
+                panelEfficiencyText = `Average (${panelWattage}W)`;
+                panelEfficiencyColor = 'text-yellow-600';
+            } else {
+                panelEfficiencyText = `Below Average (${panelWattage}W)`;
+                panelEfficiencyColor = 'text-red-600';
+            }
+            
+            // System sizing assessment
+            let systemSizingText, systemSizingColor;
+            if (systemSize >= 6 && systemSize <= 12) {
+                systemSizingText = 'Well Matched';
+                systemSizingColor = 'text-green-600';
+            } else if (systemSize >= 4 && systemSize <= 15) {
+                systemSizingText = 'Well Matched';
+                systemSizingColor = 'text-green-600';
+            } else if (systemSize < 4) {
+                systemSizingText = 'Possibly Undersized';
+                systemSizingColor = 'text-yellow-600';
+            } else {
+                systemSizingText = 'Large System';
+                systemSizingColor = 'text-blue-600';
+            }
+            
+            // Overall grade calculation
+            let gradeScore = 0;
+            
+            // Price assessment (30 points max)
+            if (priceAssessment === 'Excellent Value') gradeScore += 30;
+            else if (priceAssessment === 'Good Value') gradeScore += 25;
+            else if (priceAssessment === 'Fair Price') gradeScore += 15;
+            else if (priceAssessment === 'Suspiciously Low') gradeScore += 10;
+            else gradeScore += 5;
+            
+            // Panel quality (25 points max)
+            if (panelWattage >= 500) gradeScore += 25;
+            else if (panelWattage >= 450) gradeScore += 22;
+            else if (panelWattage >= 400) gradeScore += 20;
+            else if (panelWattage >= 350) gradeScore += 15;
+            else gradeScore += 10;
+            
+            // Panel bonus
+            if (panelWattage > 515) gradeScore += 3;
+            
+            // Battery quality (25 points max)
+            if (batterySize > 0) {
+                if (brandQuality === 'premium') gradeScore += 25;
+                else if (brandQuality === 'excellent') gradeScore += 22;
+                else if (brandQuality === 'good') gradeScore += 20;
+                else gradeScore += 15;
+                
+                // Large battery bonus
+                if (batterySize >= 20) gradeScore += 5;
+                else if (batterySize >= 15) gradeScore += 2;
+                else if (batterySize >= 10) gradeScore += 1;
+            } else {
+                gradeScore += 12;
+            }
+            
+            // System sizing (20 points max)
+            if (systemSize >= 6 && systemSize <= 12) gradeScore += 20;
+            else if (systemSize >= 4 && systemSize <= 15) gradeScore += 18;
+            else if (systemSize >= 3) gradeScore += 15;
+            else gradeScore += 10;
+            
+            let overallGrade, gradeColor;
+            if (gradeScore >= 90) {
+                overallGrade = 'A+';
+                gradeColor = 'text-green-600';
+            } else if (gradeScore >= 80) {
+                overallGrade = 'A';
+                gradeColor = 'text-green-600';
+            } else if (gradeScore >= 70) {
+                overallGrade = 'B+';
+                gradeColor = 'text-green-600';
+            } else if (gradeScore >= 60) {
+                overallGrade = 'B';
+                gradeColor = 'text-yellow-600';
+            } else if (gradeScore >= 50) {
+                overallGrade = 'C';
+                gradeColor = 'text-yellow-600';
+            } else {
+                overallGrade = 'D';
+                gradeColor = 'text-red-600';
+            }
+            
+            // Update system quality display elements
+            document.getElementById('panel-efficiency').textContent = panelEfficiencyText;
+            document.getElementById('panel-efficiency').className = `font-semibold ${panelEfficiencyColor}`;
+            document.getElementById('battery-quality').textContent = batteryQualityText;
+            document.getElementById('battery-quality').className = `font-semibold ${batteryQualityColor}`;
+            document.getElementById('system-sizing').textContent = systemSizingText;
+            document.getElementById('system-sizing').className = `font-semibold ${systemSizingColor}`;
+            document.getElementById('overall-grade').textContent = overallGrade;
+            document.getElementById('overall-grade').className = `font-semibold ${gradeColor}`;
+            
             // Add scoring system summary box
             const scoringDiv = document.createElement('div');
             scoringDiv.className = 'mb-6 p-4 rounded-lg bg-gradient-to-r from-teal-50 to-blue-50 border-2 border-teal-200';
