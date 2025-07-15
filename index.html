@@ -477,6 +477,22 @@
                         <div id="verdict" class="text-lg text-gray-600"></div>
                     </div>
                     
+                    <!-- Additional Results -->
+                    <div id="detailed-results" class="grid md:grid-cols-3 gap-4 mb-6 hidden">
+                        <div class="text-center p-4 bg-gray-50 rounded-lg">
+                            <div id="panel-efficiency" class="text-lg font-semibold text-teal-600 mb-1">-</div>
+                            <div class="text-sm text-gray-600">Panel Efficiency</div>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 rounded-lg">
+                            <div id="battery-quality" class="text-lg font-semibold text-teal-600 mb-1">-</div>
+                            <div class="text-sm text-gray-600">Battery Quality</div>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 rounded-lg">
+                            <div id="system-sizing" class="text-lg font-semibold text-teal-600 mb-1">-</div>
+                            <div class="text-sm text-gray-600">System Sizing</div>
+                        </div>
+                    </div>
+                    
                     <!-- Upgrade Prompt -->
                     <div class="upgrade-prompt">
                         <h4 class="text-xl font-bold text-amber-800 mb-3">📊 Want a Detailed Analysis?</h4>
@@ -730,12 +746,8 @@
         let checkCount = parseInt(localStorage.getItem('solarVerifyChecks') || '0');
         let hasEmail = localStorage.getItem('solarVerifyEmail') !== null;
 
-        // Pricing benchmarks (price per kW in GBP)
-        const pricingBenchmarks = {
-            excellent: { max: 1500 },
-            fair: { max: 2000 },
-            overpriced: { min: 2000 }
-        };
+        // API Configuration
+        const API_BASE_URL = 'https://solar-verify-backend-production.up.railway.app';
 
         // Tab switching functionality
         function switchTab(tabName) {
@@ -780,14 +792,50 @@
             e.preventDefault();
             const email = document.getElementById('email-input').value;
             
-            // Store email and hide gate
-            localStorage.setItem('solarVerifyEmail', email);
-            hasEmail = true;
-            hideEmailGate();
-            
-            // Proceed with analysis
-            analyzeQuote();
+            // Register email with backend
+            registerEmail(email).then(() => {
+                // Store email and hide gate
+                localStorage.setItem('solarVerifyEmail', email);
+                hasEmail = true;
+                hideEmailGate();
+                
+                // Reset check count
+                checkCount = 0;
+                localStorage.setItem('solarVerifyChecks', '0');
+                
+                // Proceed with analysis
+                analyzeQuote();
+            }).catch(error => {
+                console.error('Email registration failed:', error);
+                // Still proceed with analysis
+                localStorage.setItem('solarVerifyEmail', email);
+                hasEmail = true;
+                hideEmailGate();
+                analyzeQuote();
+            });
         });
+
+        // Register email with backend
+        async function registerEmail(email) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/register-email`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: email })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Email registration failed');
+                }
+                
+                return await response.json();
+            } catch (error) {
+                console.error('Email registration error:', error);
+                throw error;
+            }
+        }
 
         function showEmailGate() {
             document.getElementById('email-gate').classList.remove('hidden');
@@ -806,7 +854,8 @@
             document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function analyzeQuote() {
+        // Main quote analysis function - now uses live API
+        async function analyzeQuote() {
             // Show loading state
             document.getElementById('analyze-text').classList.add('hidden');
             document.getElementById('analyze-loading').classList.remove('hidden');
@@ -816,34 +865,67 @@
             const batterySize = parseFloat(document.getElementById('battery-size').value) || 0;
             const totalPrice = parseFloat(document.getElementById('total-price').value);
             
-            // Calculate price per kW
-            const pricePerKw = totalPrice / systemSize;
+            // Validate inputs
+            if (!systemSize || !totalPrice) {
+                alert('Please fill in System Size and Total Price');
+                resetAnalyzeButton();
+                return;
+            }
             
-            // Determine verdict and grade
-            const analysis = calculateAnalysis(pricePerKw, systemSize, batterySize);
-            
-            // Increment check count
-            checkCount++;
-            localStorage.setItem('solarVerifyChecks', checkCount.toString());
-            
-            // Display results after delay
-            setTimeout(() => {
-                displayResults(analysis, pricePerKw);
+            try {
+                // Call live API
+                const response = await fetch(`${API_BASE_URL}/api/analyze-quote`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        system_size: systemSize,
+                        battery_size: batterySize,
+                        total_price: totalPrice,
+                        installer_type: 'national'
+                    })
+                });
                 
-                // Hide loading state
-                document.getElementById('analyze-text').classList.remove('hidden');
-                document.getElementById('analyze-loading').classList.add('hidden');
-            }, 1500);
+                if (!response.ok) {
+                    throw new Error('API request failed');
+                }
+                
+                const result = await response.json();
+                
+                // Display results from API
+                displayResults(result, systemSize, batterySize, totalPrice);
+                
+                // Track usage
+                trackUsage();
+                
+            } catch (error) {
+                console.error('API Error:', error);
+                
+                // Fallback to local analysis if API fails
+                const pricePerKw = totalPrice / systemSize;
+                const fallbackResult = calculateFallbackAnalysis(pricePerKw, systemSize, batterySize);
+                displayResults(fallbackResult, systemSize, batterySize, totalPrice);
+                trackUsage();
+            } finally {
+                resetAnalyzeButton();
+            }
         }
 
-        function calculateAnalysis(pricePerKw, systemSize, batterySize) {
+        function resetAnalyzeButton() {
+            document.getElementById('analyze-text').classList.remove('hidden');
+            document.getElementById('analyze-loading').classList.add('hidden');
+        }
+
+        // Fallback analysis for when API is unavailable
+        function calculateFallbackAnalysis(pricePerKw, systemSize, batterySize) {
             let grade, verdict;
             
             // Basic pricing analysis
-            if (pricePerKw <= pricingBenchmarks.excellent.max) {
+            if (pricePerKw <= 1500) {
                 grade = 'A';
                 verdict = 'Excellent value - this is a competitive quote';
-            } else if (pricePerKw <= pricingBenchmarks.fair.max) {
+            } else if (pricePerKw <= 2000) {
                 grade = 'B';
                 verdict = 'Fair pricing - within acceptable market range';
             } else if (pricePerKw <= 2500) {
@@ -863,26 +945,73 @@
                 verdict = 'Good value with battery storage included';
             }
             
-            return { grade, verdict };
+            return {
+                grade: grade,
+                verdict: verdict,
+                price_per_kw: Math.round(pricePerKw),
+                score: grade === 'A' ? 90 : grade === 'B' ? 75 : grade === 'C' ? 60 : grade === 'D' ? 45 : 30,
+                panel_efficiency: 'Good',
+                battery_quality: batterySize > 0 ? 'Standard' : 'N/A',
+                system_sizing: 'Appropriate'
+            };
         }
 
-        function displayResults(analysis, pricePerKw) {
+        function displayResults(data, systemSize, batterySize, totalPrice) {
+            // Calculate price per kW
+            const pricePerKw = data.price_per_kw || Math.round(totalPrice / systemSize);
+            
             // Show results section
             document.getElementById('results').classList.remove('hidden');
             
             // Display grade badge
             const gradeBadge = document.getElementById('grade-badge');
-            gradeBadge.textContent = `Grade ${analysis.grade}`;
-            gradeBadge.className = `grade-badge grade-${analysis.grade.toLowerCase()}`;
+            gradeBadge.textContent = `Grade ${data.grade}`;
+            gradeBadge.className = `grade-badge grade-${data.grade.toLowerCase()}`;
             
             // Display price per kW
-            document.getElementById('price-per-kw').textContent = `£${pricePerKw.toFixed(0)} per kW`;
+            document.getElementById('price-per-kw').textContent = `£${pricePerKw} per kW`;
             
             // Display verdict
-            document.getElementById('verdict').textContent = analysis.verdict;
+            document.getElementById('verdict').textContent = data.verdict;
+            
+            // Show detailed results if available
+            if (data.panel_efficiency || data.battery_quality || data.system_sizing) {
+                document.getElementById('detailed-results').classList.remove('hidden');
+                document.getElementById('panel-efficiency').textContent = data.panel_efficiency || 'Good';
+                document.getElementById('battery-quality').textContent = data.battery_quality || (batterySize > 0 ? 'Standard' : 'N/A');
+                document.getElementById('system-sizing').textContent = data.system_sizing || 'Appropriate';
+            }
             
             // Scroll to results
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function trackUsage() {
+            // Increment check count
+            checkCount++;
+            localStorage.setItem('solarVerifyChecks', checkCount.toString());
+            
+            // Track usage with backend if possible
+            if (hasEmail) {
+                trackUsageWithBackend();
+            }
+        }
+
+        async function trackUsageWithBackend() {
+            try {
+                const email = localStorage.getItem('solarVerifyEmail');
+                if (!email) return;
+                
+                await fetch(`${API_BASE_URL}/api/track-usage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: email })
+                });
+            } catch (error) {
+                console.error('Usage tracking error:', error);
+            }
         }
 
         // Smooth scrolling for navigation links
