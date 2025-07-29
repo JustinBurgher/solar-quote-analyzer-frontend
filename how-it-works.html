@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works - Solar Verify</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        /* Header Navigation */
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4ECDC4;
+            text-decoration: none;
+        }
+
+        .logo::before {
+            content: "🏠";
+            margin-right: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: #4ECDC4;
+            color: white;
+        }
+
+        .nav-links a.active {
+            background: #4ECDC4;
+            color: white;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+            margin-bottom: 3rem;
+            border-radius: 15px;
+        }
+
+        .hero-section h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero-section p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .process-overview {
+            background: white;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .process-overview h2 {
+            color: #2C3E50;
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .process-overview p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .step-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .step-number {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #4ECDC4;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .step-icon {
+            font-size: 3rem;
+            margin: 1rem 0;
+        }
+
+        .step-card h3 {
+            color: #2C3E50;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .detailed-analysis {
+            background: white;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .detailed-analysis h2 {
+            color: #2C3E50;
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            border-bottom: 3px solid #4ECDC4;
+            padding-bottom: 1rem;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .analysis-item {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 5px solid #4ECDC4;
+        }
+
+        .analysis-item h3 {
+            color: #2C3E50;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .analysis-item ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .analysis-item li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .analysis-item li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4ECDC4;
+            font-weight: bold;
+        }
+
+        .grading-system {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 3rem;
+            border-radius: 15px;
+            margin: 3rem 0;
+        }
+
+        .grading-system h2 {
+            color: #2C3E50;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .grades-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .grade-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .grade-letter {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .grade-a { color: #28a745; }
+        .grade-b { color: #17a2b8; }
+        .grade-c { color: #ffc107; }
+        .grade-d { color: #fd7e14; }
+        .grade-f { color: #dc3545; }
+
+        .grade-description {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .faq-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
+
+        .faq-section h2 {
+            color: #2C3E50;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 3px solid #4ECDC4;
+            padding-bottom: 1rem;
+        }
+
+        .faq-item {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1.5rem;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .faq-question {
+            font-weight: bold;
+            color: #2C3E50;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .faq-answer {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+            color: white;
+            text-align: center;
+            padding: 3rem;
+            border-radius: 15px;
+        }
+
+        .cta-section h2 {
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #4ECDC4;
+        }
+
+        .btn-primary:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #4ECDC4;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+
+            .hero-section p {
+                font-size: 1.1rem;
+            }
+
+            .process-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .grades-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="/" class="logo">solar✓erify</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/how-it-works" class="active">How It Works</a></li>
+                <li><a href="/#quote-analyzer">Quote Analyzer</a></li>
+                <li><a href="/#pricing">Pricing</a></li>
+                <li><a href="/#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h1>How Solar Verify Works</h1>
+            <p>Understanding our analysis process and how we protect you from solar scams</p>
+        </section>
+
+        <!-- Process Overview -->
+        <section class="process-overview">
+            <h2>Simple, Fast, Accurate</h2>
+            <p>Our advanced analysis engine evaluates your solar quote in seconds, comparing it against thousands of data points to give you a comprehensive assessment of value, quality, and potential red flags.</p>
+        </section>
+
+        <!-- Process Steps -->
+        <section class="process-steps">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <div class="step-icon">📝</div>
+                <h3>Enter Your Quote Details</h3>
+                <p>Simply input your system size (kW), battery capacity (if included), and total quote price. You can also upload a PDF quote for more detailed analysis.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <div class="step-icon">🔍</div>
+                <h3>Instant Analysis</h3>
+                <p>Our system immediately compares your quote against current UK market rates, component quality standards, and pricing benchmarks from thousands of installations.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <div class="step-icon">📊</div>
+                <h3>Get Your Results</h3>
+                <p>Receive a clear grade (A-F) and detailed breakdown showing if you're getting good value, fair pricing, or being overcharged for your solar system.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <div class="step-icon">🛡️</div>
+                <h3>Make Informed Decisions</h3>
+                <p>Use our analysis to negotiate better terms, avoid bad deals, or confidently proceed with quotes that offer genuine value for money.</p>
+            </div>
+        </section>
+
+        <!-- Detailed Analysis -->
+        <section class="detailed-analysis">
+            <h2>What We Analyze</h2>
+            
+            <div class="analysis-grid">
+                <div class="analysis-item">
+                    <h3>💰 Pricing Analysis</h3>
+                    <ul>
+                        <li>Price per kW comparison</li>
+                        <li>Current UK market rates</li>
+                        <li>Regional pricing variations</li>
+                        <li>System size optimization</li>
+                        <li>Value for money assessment</li>
+                    </ul>
+                </div>
+
+                <div class="analysis-item">
+                    <h3>🔋 Component Quality</h3>
+                    <ul>
+                        <li>Solar panel efficiency ratings</li>
+                        <li>Inverter reliability scores</li>
+                        <li>Battery technology assessment</li>
+                        <li>Warranty term evaluation</li>
+                        <li>Manufacturer reputation check</li>
+                    </ul>
+                </div>
+
+                <div class="analysis-item">
+                    <h3>🏢 Installer Credentials</h3>
+                    <ul>
+                        <li>MCS certification verification</li>
+                        <li>RECC/HIES membership</li>
+                        <li>Insurance coverage check</li>
+                        <li>Customer review analysis</li>
+                        <li>Installation experience</li>
+                    </ul>
+                </div>
+
+                <div class="analysis-item">
+                    <h3>🚨 Red Flag Detection</h3>
+                    <ul>
+                        <li>Overpricing indicators</li>
+                        <li>Misleading claims</li>
+                        <li>Pressure sales tactics</li>
+                        <li>Unrealistic promises</li>
+                        <li>Contract warning signs</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Grading System -->
+        <section class="grading-system">
+            <h2>Our Grading System</h2>
+            <p style="text-align: center; margin-bottom: 2rem;">We use a simple A-F grading system to help you quickly understand the quality of your solar quote:</p>
+            
+            <div class="grades-grid">
+                <div class="grade-card">
+                    <div class="grade-letter grade-a">A</div>
+                    <div class="grade-description">Excellent value, high quality components, competitive pricing</div>
+                </div>
+                <div class="grade-card">
+                    <div class="grade-letter grade-b">B</div>
+                    <div class="grade-description">Good value, quality components, fair pricing</div>
+                </div>
+                <div class="grade-card">
+                    <div class="grade-letter grade-c">C</div>
+                    <div class="grade-description">Average value, acceptable quality, market-rate pricing</div>
+                </div>
+                <div class="grade-card">
+                    <div class="grade-letter grade-d">D</div>
+                    <div class="grade-description">Below average, overpriced or quality concerns</div>
+                </div>
+                <div class="grade-card">
+                    <div class="grade-letter grade-f">F</div>
+                    <div class="grade-description">Poor value, significant overpricing or quality issues</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">How accurate is your analysis?</div>
+                <div class="faq-answer">Our analysis is based on real-time UK market data, updated daily. We track pricing from hundreds of installers and maintain a comprehensive database of component specifications and performance ratings.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Do you work with solar installers?</div>
+                <div class="faq-answer">No, we are completely independent. We don't receive commissions or payments from installers, which allows us to provide unbiased analysis focused solely on your interests.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What if my quote gets a poor grade?</div>
+                <div class="faq-answer">A poor grade doesn't necessarily mean you should reject the quote entirely. We provide detailed explanations of issues and suggestions for improvement, which you can use to negotiate better terms.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Can you analyze quotes from any installer?</div>
+                <div class="faq-answer">Yes, our analysis works for quotes from any UK solar installer. We evaluate the fundamentals: pricing, components, and value proposition, regardless of who provided the quote.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How long does the analysis take?</div>
+                <div class="faq-answer">Basic analysis is instant - you'll see results within seconds of submitting your quote details. Premium analysis with detailed reports typically takes 24-48 hours.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What's included in premium analysis?</div>
+                <div class="faq-answer">Premium analysis includes detailed component breakdowns, contract review, installer background checks, negotiation strategies, and personalized recommendations based on your specific situation.</div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="cta-section">
+            <h2>Ready to Analyze Your Solar Quote?</h2>
+            <p>Get instant analysis and protect yourself from overpriced solar quotes</p>
+            
+            <div class="cta-buttons">
+                <a href="/#quote-analyzer" class="btn btn-primary">Start Free Analysis</a>
+                <a href="/#pricing" class="btn btn-secondary">View Premium Options</a>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
+
