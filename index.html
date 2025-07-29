@@ -307,7 +307,8 @@
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
                         <a href="#home" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</a>
-                        <a href="#about" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">About</a>
+                        <a href="/about.html" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">About</a>
+                        <a href="/how-it-works.html" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">How It Works</a>
                         <a href="#analyzer" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Quote Analyzer</a>
                         <a href="#pricing" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Pricing</a>
                         <a href="#contact" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Contact</a>
@@ -406,96 +407,108 @@
                 </div>
 
                 <!-- Tab Navigation -->
-                <div class="flex flex-wrap mb-6 border-b">
-                    <button class="tab-button active px-6 py-3 mobile-button font-semibold rounded-t-lg" onclick="switchTab('manual')">
+                <div class="flex mb-6 bg-gray-100 rounded-lg p-1">
+                    <button id="manual-tab" class="tab-button flex-1 py-3 px-4 rounded-md font-medium transition-colors active">
                         Manual Entry
                     </button>
-                    <button class="tab-button px-6 py-3 mobile-button font-semibold rounded-t-lg" onclick="switchTab('upload')">
+                    <button id="upload-tab" class="tab-button flex-1 py-3 px-4 rounded-md font-medium transition-colors">
                         Upload PDF
                     </button>
                 </div>
-                
+
                 <!-- Manual Entry Tab -->
-                <div id="manual-tab" class="tab-content active">
-                    <form id="quote-form" class="space-y-6">
-                        <div class="grid md:grid-cols-2 mobile-grid gap-6">
+                <div id="manual-content" class="tab-content active">
+                    <form id="manual-form">
+                        <div class="grid md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">System Size</label>
-                                <div class="flex">
-                                    <input type="number" id="system-size" step="0.1" placeholder="6.5" class="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" required>
-                                    <span class="bg-gray-100 px-3 py-2 border border-l-0 border-gray-300 rounded-r-lg text-gray-600">kW</span>
+                                <div class="grid grid-cols-3 gap-2 mb-3">
+                                    <button type="button" class="size-button py-2 px-3 rounded-md text-sm font-medium" data-size="4">4 kW</button>
+                                    <button type="button" class="size-button py-2 px-3 rounded-md text-sm font-medium" data-size="6">6 kW</button>
+                                    <button type="button" class="size-button py-2 px-3 rounded-md text-sm font-medium" data-size="8">8 kW</button>
+                                    <button type="button" class="size-button py-2 px-3 rounded-md text-sm font-medium" data-size="10">10 kW</button>
+                                    <button type="button" class="size-button py-2 px-3 rounded-md text-sm font-medium" data-size="12">12 kW</button>
+                                    <button type="button" class="size-button py-2 px-3 rounded-md text-sm font-medium" data-size="custom">Custom</button>
+                                </div>
+                                <div id="custom-size-input" class="custom-input">
+                                    <input type="number" id="system-size" placeholder="Enter system size" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" step="0.1" min="1" max="50">
+                                    <span class="text-sm text-gray-500 mt-1 block">kW</span>
                                 </div>
                             </div>
                             
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Battery Size (Optional)</label>
-                                <div class="flex">
-                                    <input type="number" id="battery-size" step="0.1" placeholder="13.5" class="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-                                    <span class="bg-gray-100 px-3 py-2 border border-l-0 border-gray-300 rounded-r-lg text-gray-600">kWh</span>
+                                <div class="grid grid-cols-3 gap-2 mb-3">
+                                    <button type="button" class="size-button py-2 px-3 rounded-md text-sm font-medium" data-battery="none">No Battery</button>
+                                    <button type="button" class="size-button py-2 px-3 rounded-md text-sm font-medium" data-battery="10">10 kWh</button>
+                                    <button type="button" class="size-button py-2 px-3 rounded-md text-sm font-medium" data-battery="13.5">13.5 kWh</button>
+                                    <button type="button" class="size-button py-2 px-3 rounded-md text-sm font-medium" data-battery="20">20 kWh</button>
+                                    <button type="button" class="size-button py-2 px-3 rounded-md text-sm font-medium" data-battery="custom-battery">Custom</button>
                                 </div>
-                                <small class="text-gray-500 text-sm">Leave blank if no battery</small>
+                                <div id="custom-battery-input" class="custom-input">
+                                    <input type="number" id="battery-size" placeholder="Enter battery size" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" step="0.1" min="0" max="100">
+                                    <span class="text-sm text-gray-500 mt-1 block">kWh</span>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-2">Leave blank if no battery</p>
                             </div>
                         </div>
                         
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Total Quote Price</label>
-                            <div class="flex">
-                                <span class="bg-gray-100 px-3 py-2 border border-r-0 border-gray-300 rounded-l-lg text-gray-600">£</span>
-                                <input type="number" id="total-price" placeholder="15000" class="flex-1 px-3 py-2 border border-gray-300 rounded-r-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" required>
+                        <div class="mt-6">
+                            <label for="quote-price" class="block text-sm font-medium text-gray-700 mb-2">Total Quote Price</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">£</span>
+                                <input type="number" id="quote-price" placeholder="15000" class="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" required min="1000" max="100000">
                             </div>
                         </div>
                         
-                        <button type="submit" class="w-full bg-teal-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-teal-700 transition duration-300">
-                            <span id="analyze-text">Check My Quote</span>
-                            <span id="analyze-loading" class="hidden">
-                                <span class="loading"></span> Analyzing...
-                            </span>
+                        <button type="submit" id="analyze-btn" class="w-full mt-6 bg-teal-600 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-teal-700 transition duration-300">
+                            Check My Quote
                         </button>
                     </form>
                 </div>
-                
+
                 <!-- Upload PDF Tab -->
-                <div id="upload-tab" class="tab-content">
+                <div id="upload-content" class="tab-content">
                     <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
                         <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" stroke="currentColor" fill="none" viewBox="0 0 48 48">
                             <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                        <h3 class="text-lg font-medium text-gray-900 mb-2">Upload your solar quote</h3>
-                        <p class="text-gray-500 mb-4">Get detailed analysis with component quality, red flag detection, and professional PDF report</p>
-                        <a href="#pricing" class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition duration-300 inline-block">
-                            Choose Analysis Level
-                        </a>
-                        <p class="text-sm text-gray-400 mt-2">Starting from £14.99 - includes detailed component analysis and downloadable report</p>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Upload Your Solar Quote</h3>
+                        <p class="text-gray-600 mb-4">Drag and drop your PDF quote here, or click to browse</p>
+                        <input type="file" id="pdf-upload" accept=".pdf" class="hidden">
+                        <button type="button" onclick="document.getElementById('pdf-upload').click()" class="bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition duration-300">
+                            Choose File
+                        </button>
+                        <p class="text-sm text-gray-500 mt-2">PDF files only, max 10MB</p>
                     </div>
                 </div>
-                
-                <!-- Results Section -->
+
+                <!-- Results Section (hidden initially) -->
                 <div id="results" class="results-section hidden">
-                    <div class="text-center mb-6">
-                        <div id="grade-badge" class="grade-badge"></div>
-                        <div id="price-per-kw" class="text-2xl font-bold text-gray-800 mb-2"></div>
-                        <div id="verdict" class="text-lg text-gray-600"></div>
+                    <div class="text-center">
+                        <div id="grade-display" class="grade-badge grade-a">Grade A</div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2" id="price-per-kw">£1,372 per kW</h3>
+                        <p class="text-lg text-gray-600 mb-4" id="verdict">Excellent value - this is a competitive quote</p>
+                        
+                        <div class="grid md:grid-cols-3 gap-4 mt-6">
+                            <div class="text-center p-4 bg-teal-50 rounded-lg">
+                                <h4 class="font-semibold text-teal-800">Competitive</h4>
+                                <p class="text-sm text-teal-600">Pricing Analysis</p>
+                            </div>
+                            <div class="text-center p-4 bg-blue-50 rounded-lg">
+                                <h4 class="font-semibold text-blue-800">Below Average</h4>
+                                <p class="text-sm text-blue-600">Market Comparison</p>
+                            </div>
+                            <div class="text-center p-4 bg-green-50 rounded-lg">
+                                <h4 class="font-semibold text-green-800">Good Deal</h4>
+                                <p class="text-sm text-green-600">Value Assessment</p>
+                            </div>
+                        </div>
                     </div>
                     
-                    <!-- Additional Results - Only show what we actually know -->
-                    <div id="detailed-results" class="grid md:grid-cols-3 gap-4 mb-6 hidden">
-                        <div class="text-center p-4 bg-gray-50 rounded-lg">
-                            <div id="pricing-analysis" class="text-lg font-semibold text-teal-600 mb-1">-</div>
-                            <div class="text-sm text-gray-600">Pricing Analysis</div>
-                        </div>
-                        <div class="text-center p-4 bg-gray-50 rounded-lg">
-                            <div id="market-comparison" class="text-lg font-semibold text-teal-600 mb-1">-</div>
-                            <div class="text-sm text-gray-600">Market Comparison</div>
-                        </div>
-                        <div class="text-center p-4 bg-gray-50 rounded-lg">
-                            <div id="value-assessment" class="text-lg font-semibold text-teal-600 mb-1">-</div>
-                            <div class="text-sm text-gray-600">Value Assessment</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Upgrade Prompt - Updated messaging -->
+                    <!-- Upgrade Prompt -->
                     <div class="upgrade-prompt">
-                        <h4 class="text-xl font-bold text-amber-800 mb-3">🚨 Want Full Rip-Off Protection?</h4>
+                        <h4 class="text-xl font-bold text-amber-800 mb-2">🔒 Want Full Rip-Off Protection?</h4>
                         <p class="text-amber-700 mb-4">Upload your actual quote PDF for comprehensive rip-off detection including:</p>
                         <ul class="text-left text-amber-700 mb-4 space-y-1">
                             <li>• Component quality red flags (cheap panels, poor inverters)</li>
@@ -504,7 +517,7 @@
                             <li>• Price negotiation strategies & talking points</li>
                             <li>• Professional PDF report with evidence</li>
                         </ul>
-                        <a href="#pricing" class="bg-amber-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-amber-700 transition duration-300 inline-block">
+                        <a href="#pricing" class="bg-amber-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-700 transition duration-300 inline-block">
                             Get Full Protection
                         </a>
                     </div>
@@ -518,500 +531,348 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Choose Your Protection Level</h2>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-                    From basic rip-off detection to complete contract protection
-                </p>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">From basic rip-off detection to complete contract protection</p>
             </div>
             
-            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                <!-- Basic Analysis -->
+            <div class="grid md:grid-cols-3 gap-8 mobile-grid">
+                <!-- Basic Protection -->
                 <div class="pricing-card">
-                    <div class="pricing-icon icon-basic">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white text-center mb-2">Basic Protection</h3>
-                    <div class="text-center mb-6">
-                        <div class="text-4xl font-bold text-teal-400 mb-1">£14.99</div>
-                        <div class="text-gray-400">One-time payment</div>
-                    </div>
+                    <div class="pricing-icon icon-basic text-white">🛡️</div>
+                    <h3 class="text-2xl font-bold text-white mb-2">Basic Protection</h3>
+                    <div class="text-4xl font-bold text-white mb-4">£14.99</div>
+                    <p class="text-gray-300 mb-6">One-time payment</p>
+                    
                     <ul class="feature-list">
                         <li>
-                            <svg class="feature-icon text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="feature-icon text-teal-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                             Pricing rip-off detection
                         </li>
                         <li>
-                            <svg class="feature-icon text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="feature-icon text-teal-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                             Market comparison analysis
                         </li>
                         <li>
-                            <svg class="feature-icon text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="feature-icon text-teal-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                             Basic component quality check
                         </li>
                         <li>
-                            <svg class="feature-icon text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="feature-icon text-teal-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                             Simple PDF report
                         </li>
                     </ul>
-                    <button class="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition duration-300">
+                    
+                    <button class="w-full bg-teal-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-teal-700 transition duration-300">
                         Get Basic Protection
                     </button>
                 </div>
 
-                <!-- Pro Analysis -->
+                <!-- Pro Protection -->
                 <div class="pricing-card popular">
                     <div class="popular-badge">POPULAR</div>
-                    <div class="pricing-icon icon-pro">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white text-center mb-2">Pro Protection</h3>
-                    <div class="text-center mb-6">
-                        <div class="text-4xl font-bold text-teal-400 mb-1">£29.99</div>
-                        <div class="text-gray-400">One-time payment</div>
-                    </div>
+                    <div class="pricing-icon icon-pro text-white">🚀</div>
+                    <h3 class="text-2xl font-bold text-white mb-2">Pro Protection</h3>
+                    <div class="text-4xl font-bold text-white mb-4">£29.99</div>
+                    <p class="text-gray-300 mb-6">One-time payment</p>
+                    
                     <ul class="feature-list">
                         <li>
-                            <svg class="feature-icon text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="feature-icon text-teal-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                             Everything in Basic
                         </li>
                         <li class="premium">
-                            <svg class="feature-icon text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                             Contract red flag analysis
                         </li>
                         <li class="premium">
-                            <svg class="feature-icon text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                             Expert consultation call
                         </li>
                         <li class="premium">
-                            <svg class="feature-icon text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                             Negotiation strategies
                         </li>
-                        <li>
-                            <svg class="feature-icon text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                        <li class="premium">
+                            <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                             Detailed protection report
                         </li>
                     </ul>
-                    <button class="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition duration-300">
+                    
+                    <button class="w-full bg-red-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-700 transition duration-300">
                         Get Pro Protection
                     </button>
                 </div>
 
-                <!-- Complete Package -->
+                <!-- Complete Protection -->
                 <div class="pricing-card">
-                    <div class="pricing-icon icon-complete">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white text-center mb-2">Complete Protection</h3>
-                    <div class="text-center mb-6">
-                        <div class="text-4xl font-bold text-teal-400 mb-1">£49.99</div>
-                        <div class="text-gray-400">One-time payment</div>
-                    </div>
+                    <div class="pricing-icon icon-complete text-white">👑</div>
+                    <h3 class="text-2xl font-bold text-white mb-2">Complete Protection</h3>
+                    <div class="text-4xl font-bold text-white mb-4">£49.99</div>
+                    <p class="text-gray-300 mb-6">One-time payment</p>
+                    
                     <ul class="feature-list">
                         <li>
-                            <svg class="feature-icon text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="feature-icon text-teal-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                             Everything in Pro
                         </li>
                         <li class="premium">
-                            <svg class="feature-icon text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                             Multiple quote comparison
                         </li>
                         <li class="premium">
-                            <svg class="feature-icon text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                             Priority expert support
                         </li>
                         <li class="premium">
-                            <svg class="feature-icon text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                             6-month follow-up support
                         </li>
-                        <li>
-                            <svg class="feature-icon text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                        <li class="premium">
+                            <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                             Complete rip-off protection
                         </li>
                     </ul>
-                    <button class="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition duration-300">
+                    
+                    <button class="w-full bg-yellow-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-yellow-700 transition duration-300">
                         Get Complete Protection
                     </button>
                 </div>
-            </div>
-            
-            <div class="text-center mt-8">
-                <a href="#" class="text-teal-400 hover:text-teal-300 font-medium">
-                    View detailed pricing comparison →
-                </a>
             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
     <section id="contact" class="py-16 mobile-py-12 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Get In Touch</h2>
-            <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-                Have questions about your solar quote? Need help understanding the analysis? We're here to help.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="mailto:hello@solarverify.co.uk" class="bg-teal-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-teal-700 transition duration-300 mobile-button">
-                    Email Us
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Get In Touch</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+                    Have questions about your solar quote? Need help understanding the analysis? We're here to help.
+                </p>
+                <a href="mailto:hello@solarverify.co.uk" class="bg-teal-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-teal-700 transition duration-300 inline-block">
+                    Contact Us
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center mb-4">
-                        <div class="logo-icon">
-                            <span class="text-white text-sm">🏠</span>
-                        </div>
-                        <span class="logo-text text-white">solar<span class="logo-verify">✓</span>erify</span>
-                    </div>
-                    <p class="text-gray-400">
-                        Professional solar quote analysis to help you make informed decisions and avoid overpriced systems.
-                    </p>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Services</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#analyzer" class="hover:text-white transition duration-300">Quote Analysis</a></li>
-                        <li><a href="#pricing" class="hover:text-white transition duration-300">Pricing Plans</a></li>
-                        <li><a href="#" class="hover:text-white transition duration-300">Component Review</a></li>
-                        <li><a href="#" class="hover:text-white transition duration-300">ROI Calculator</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Resources</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white transition duration-300">Solar Guide</a></li>
-                        <li><a href="#" class="hover:text-white transition duration-300">Common Scams</a></li>
-                        <li><a href="#" class="hover:text-white transition duration-300">FAQ</a></li>
-                        <li><a href="#" class="hover:text-white transition duration-300">Blog</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Contact</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li>hello@solarverify.co.uk</li>
-                        <li>Monday - Friday: 9AM - 6PM</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2024 Solar Verify. All rights reserved. | Privacy Policy | Terms of Service</p>
-            </div>
-        </div>
-    </footer>
-
     <script>
-        // Check count and email tracking - FIXED LOGIC
-        let checkCount = parseInt(localStorage.getItem('solarVerifyChecks') || '0');
-        let hasEmail = localStorage.getItem('solarVerifyEmail') !== null;
-
-        // API Configuration
-        const API_BASE_URL = 'https://solar-verify-backend-production.up.railway.app';
-
-        // Tab switching functionality
-        function switchTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
+        // Tab functionality
+        document.getElementById('manual-tab').addEventListener('click', function() {
+            switchTab('manual');
+        });
+        
+        document.getElementById('upload-tab').addEventListener('click', function() {
+            switchTab('upload');
+        });
+        
+        function switchTab(tab) {
+            // Remove active classes
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             
-            // Remove active class from all buttons
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // Show selected tab
-            document.getElementById(tabName + '-tab').classList.add('active');
-            
-            // Add active class to clicked button
-            event.target.classList.add('active');
+            // Add active classes
+            document.getElementById(tab + '-tab').classList.add('active');
+            document.getElementById(tab + '-content').classList.add('active');
         }
-
-        // Form submission - FIXED EMAIL GATE LOGIC
-        document.getElementById('quote-form').addEventListener('submit', function(e) {
+        
+        // Size button functionality
+        document.querySelectorAll('.size-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove selected class from siblings
+                this.parentNode.querySelectorAll('.size-button').forEach(btn => btn.classList.remove('selected'));
+                
+                // Add selected class to clicked button
+                this.classList.add('selected');
+                
+                // Handle custom input
+                const customInput = this.closest('.grid').nextElementSibling;
+                if (this.dataset.size === 'custom' || this.dataset.battery === 'custom-battery') {
+                    customInput.classList.add('active');
+                    customInput.querySelector('input').focus();
+                } else {
+                    customInput.classList.remove('active');
+                    
+                    // Set the value for non-custom selections
+                    if (this.dataset.size && this.dataset.size !== 'custom') {
+                        document.getElementById('system-size').value = this.dataset.size;
+                    }
+                    if (this.dataset.battery && this.dataset.battery !== 'custom-battery') {
+                        if (this.dataset.battery === 'none') {
+                            document.getElementById('battery-size').value = '';
+                        } else {
+                            document.getElementById('battery-size').value = this.dataset.battery;
+                        }
+                    }
+                }
+            });
+        });
+        
+        // Usage tracking
+        let usageCount = parseInt(localStorage.getItem('solarVerifyUsage') || '0');
+        let emailProvided = localStorage.getItem('solarVerifyEmail') !== null;
+        
+        // Form submission
+        document.getElementById('manual-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // FIXED: Check if user needs to provide email AFTER first quote
-            if (checkCount >= 1 && !hasEmail) {
+            // Check usage limits
+            if (usageCount >= 1 && !emailProvided) {
                 showEmailGate();
                 return;
             }
             
-            // Check if user has exceeded free limit (after email provided)
-            if (checkCount >= 3) {
-                showUpgradePrompt();
+            // Get form values
+            const systemSize = document.getElementById('system-size').value || getSelectedSize();
+            const batterySize = document.getElementById('battery-size').value || getSelectedBattery();
+            const quotePrice = document.getElementById('quote-price').value;
+            
+            if (!systemSize || !quotePrice) {
+                alert('Please fill in all required fields');
                 return;
             }
             
-            analyzeQuote();
+            // Show loading state
+            const button = document.getElementById('analyze-btn');
+            const originalText = button.textContent;
+            button.innerHTML = '<span class="loading"></span> Analyzing...';
+            button.disabled = true;
+            
+            // Simulate analysis
+            setTimeout(() => {
+                analyzeQuote(parseFloat(systemSize), parseFloat(batterySize) || 0, parseFloat(quotePrice));
+                
+                // Increment usage
+                usageCount++;
+                localStorage.setItem('solarVerifyUsage', usageCount.toString());
+                
+                // Reset button
+                button.textContent = originalText;
+                button.disabled = false;
+            }, 2000);
         });
-
+        
         // Email form submission
         document.getElementById('email-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            const email = document.getElementById('email-input').value;
             
-            // Register email with backend
-            registerEmail(email).then(() => {
-                // Store email and hide gate
+            const email = document.getElementById('email-input').value;
+            if (email) {
                 localStorage.setItem('solarVerifyEmail', email);
-                hasEmail = true;
+                emailProvided = true;
                 hideEmailGate();
                 
-                // Reset check count to give them more free checks
-                checkCount = 0;
-                localStorage.setItem('solarVerifyChecks', '0');
-                
-                // Proceed with analysis
-                analyzeQuote();
-            }).catch(error => {
-                console.error('Email registration failed:', error);
-                // Still proceed with analysis
-                localStorage.setItem('solarVerifyEmail', email);
-                hasEmail = true;
-                hideEmailGate();
-                analyzeQuote();
-            });
-        });
-
-        // Register email with backend
-        async function registerEmail(email) {
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/register-email`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email: email })
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Email registration failed');
-                }
-                
-                return await response.json();
-            } catch (error) {
-                console.error('Email registration error:', error);
-                throw error;
+                // Show success message
+                alert('Thank you! You now have 2 additional free quote checks.');
             }
+        });
+        
+        function getSelectedSize() {
+            const selected = document.querySelector('.size-button.selected[data-size]');
+            return selected ? selected.dataset.size : null;
         }
-
+        
+        function getSelectedBattery() {
+            const selected = document.querySelector('.size-button.selected[data-battery]');
+            if (!selected) return null;
+            return selected.dataset.battery === 'none' ? 0 : selected.dataset.battery;
+        }
+        
         function showEmailGate() {
             document.getElementById('email-gate').classList.remove('hidden');
-            document.getElementById('quote-form').style.opacity = '0.5';
-            document.getElementById('quote-form').style.pointerEvents = 'none';
+            document.getElementById('email-gate').scrollIntoView({ behavior: 'smooth' });
         }
-
+        
         function hideEmailGate() {
             document.getElementById('email-gate').classList.add('hidden');
-            document.getElementById('quote-form').style.opacity = '1';
-            document.getElementById('quote-form').style.pointerEvents = 'auto';
         }
-
-        function showUpgradePrompt() {
-            alert('You\'ve used all your free checks! Choose a protection level to get unlimited checks plus detailed analysis.');
-            document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Main quote analysis function - uses live API
-        async function analyzeQuote() {
-            // Show loading state
-            document.getElementById('analyze-text').classList.add('hidden');
-            document.getElementById('analyze-loading').classList.remove('hidden');
+        
+        function analyzeQuote(systemSize, batterySize, quotePrice) {
+            // Simple analysis logic
+            const pricePerKw = quotePrice / systemSize;
+            let grade, verdict, gradeClass;
             
-            // Get form values
-            const systemSize = parseFloat(document.getElementById('system-size').value);
-            const batterySize = parseFloat(document.getElementById('battery-size').value) || 0;
-            const totalPrice = parseFloat(document.getElementById('total-price').value);
-            
-            // Validate inputs
-            if (!systemSize || !totalPrice) {
-                alert('Please fill in System Size and Total Price');
-                resetAnalyzeButton();
-                return;
-            }
-            
-            try {
-                // Call live API
-                const response = await fetch(`${API_BASE_URL}/api/analyze-quote`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        system_size: systemSize,
-                        battery_size: batterySize,
-                        total_price: totalPrice,
-                        installer_type: 'national'
-                    })
-                });
-                
-                if (!response.ok) {
-                    throw new Error('API request failed');
-                }
-                
-                const result = await response.json();
-                
-                // Display results from API
-                displayResults(result, systemSize, batterySize, totalPrice);
-                
-                // Track usage
-                trackUsage();
-                
-            } catch (error) {
-                console.error('API Error:', error);
-                
-                // Fallback to local analysis if API fails
-                const pricePerKw = totalPrice / systemSize;
-                const fallbackResult = calculateFallbackAnalysis(pricePerKw, systemSize, batterySize);
-                displayResults(fallbackResult, systemSize, batterySize, totalPrice);
-                trackUsage();
-            } finally {
-                resetAnalyzeButton();
-            }
-        }
-
-        function resetAnalyzeButton() {
-            document.getElementById('analyze-text').classList.remove('hidden');
-            document.getElementById('analyze-loading').classList.add('hidden');
-        }
-
-        // Fallback analysis for when API is unavailable
-        function calculateFallbackAnalysis(pricePerKw, systemSize, batterySize) {
-            let grade, verdict;
-            
-            // Basic pricing analysis
-            if (pricePerKw <= 1500) {
+            if (pricePerKw < 1200) {
                 grade = 'A';
                 verdict = 'Excellent value - this is a competitive quote';
-            } else if (pricePerKw <= 2000) {
+                gradeClass = 'grade-a';
+            } else if (pricePerKw < 1400) {
                 grade = 'B';
-                verdict = 'Fair pricing - within acceptable market range';
-            } else if (pricePerKw <= 2500) {
+                verdict = 'Good value - fair pricing for the system';
+                gradeClass = 'grade-b';
+            } else if (pricePerKw < 1600) {
                 grade = 'C';
-                verdict = 'Above average pricing - consider getting more quotes';
-            } else if (pricePerKw <= 3000) {
+                verdict = 'Average pricing - room for negotiation';
+                gradeClass = 'grade-c';
+            } else if (pricePerKw < 1800) {
                 grade = 'D';
-                verdict = 'Overpriced - definitely get alternative quotes';
+                verdict = 'Above average - consider getting more quotes';
+                gradeClass = 'grade-d';
             } else {
                 grade = 'F';
-                verdict = 'Very overpriced - avoid this installer';
+                verdict = 'Overpriced - definitely get more quotes';
+                gradeClass = 'grade-f';
             }
             
-            // Adjust for battery (batteries add value)
-            if (batterySize > 0 && grade === 'B') {
-                grade = 'A';
-                verdict = 'Good value with battery storage included';
-            }
+            // Update results
+            document.getElementById('grade-display').textContent = `Grade ${grade}`;
+            document.getElementById('grade-display').className = `grade-badge ${gradeClass}`;
+            document.getElementById('price-per-kw').textContent = `£${Math.round(pricePerKw).toLocaleString()} per kW`;
+            document.getElementById('verdict').textContent = verdict;
             
-            return {
-                grade: grade,
-                verdict: verdict,
-                price_per_kw: Math.round(pricePerKw),
-                score: grade === 'A' ? 90 : grade === 'B' ? 75 : grade === 'C' ? 60 : grade === 'D' ? 45 : 30
-            };
-        }
-
-        function displayResults(data, systemSize, batterySize, totalPrice) {
-            // Calculate price per kW
-            const pricePerKw = data.price_per_kw || Math.round(totalPrice / systemSize);
-            
-            // Show results section
+            // Show results
             document.getElementById('results').classList.remove('hidden');
-            
-            // Display grade badge
-            const gradeBadge = document.getElementById('grade-badge');
-            gradeBadge.textContent = `Grade ${data.grade}`;
-            gradeBadge.className = `grade-badge grade-${data.grade.toLowerCase()}`;
-            
-            // Display price per kW
-            document.getElementById('price-per-kw').textContent = `£${pricePerKw} per kW`;
-            
-            // Display verdict
-            document.getElementById('verdict').textContent = data.verdict;
-            
-            // Show simplified analysis - only what we actually know
-            document.getElementById('detailed-results').classList.remove('hidden');
-            
-            // Only show pricing analysis (what we actually calculated)
-            document.getElementById('pricing-analysis').textContent = pricePerKw <= 1500 ? 'Competitive' : pricePerKw <= 2000 ? 'Fair' : pricePerKw <= 2500 ? 'High' : 'Overpriced';
-            document.getElementById('market-comparison').textContent = pricePerKw <= 1600 ? 'Below Average' : pricePerKw <= 2200 ? 'Market Rate' : 'Above Market';
-            document.getElementById('value-assessment').textContent = data.grade === 'A' || data.grade === 'B' ? 'Good Deal' : data.grade === 'C' ? 'Questionable' : 'Poor Value';
-            
-            // Scroll to results
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
         }
-
-        function trackUsage() {
-            // Increment check count
-            checkCount++;
-            localStorage.setItem('solarVerifyChecks', checkCount.toString());
-            
-            // Track usage with backend if possible
-            if (hasEmail) {
-                trackUsageWithBackend();
-            }
-        }
-
-        async function trackUsageWithBackend() {
-            try {
-                const email = localStorage.getItem('solarVerifyEmail');
-                if (!email) return;
+        
+        // PDF upload handling
+        document.getElementById('pdf-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.type !== 'application/pdf') {
+                    alert('Please upload a PDF file');
+                    return;
+                }
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('File size must be less than 10MB');
+                    return;
+                }
                 
-                await fetch(`${API_BASE_URL}/api/track-usage`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email: email })
-                });
-            } catch (error) {
-                console.error('Usage tracking error:', error);
+                // Show upload success (in real implementation, this would process the PDF)
+                alert('PDF uploaded successfully! This feature is coming soon.');
             }
-        }
-
-        // Smooth scrolling for navigation links
+        });
+        
+        // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -1027,4 +888,3 @@
     </script>
 </body>
 </html>
-
