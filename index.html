@@ -310,8 +310,8 @@
                         <a href="/about.html" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">About</a>
                         <a href="/how-it-works.html" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">How It Works</a>
                         <a href="#analyzer" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Quote Analyzer</a>
-                        <a href="#pricing" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Pricing</a>
                         <a href="#contact" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Contact</a>
+                        <a href="/login.html" class="bg-teal-600 text-white hover:bg-teal-700 px-4 py-2 rounded-md text-sm font-medium transition-colors">Login</a>
                     </div>
                 </div>
             </div>
@@ -333,8 +333,8 @@
                     <a href="#analyzer" class="bg-white text-teal-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition duration-300 mobile-button">
                         Analyze My Quote Free
                     </a>
-                    <a href="#pricing" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-teal-600 transition duration-300 mobile-button">
-                        View Pricing
+                    <a href="#contact" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-teal-600 transition duration-300 mobile-button">
+                        Get In Touch
                     </a>
                 </div>
             </div>
@@ -396,12 +396,35 @@
             <div class="bg-white rounded-lg shadow-lg p-8 mobile-card">
                 <!-- Email Gate (hidden initially) -->
                 <div id="email-gate" class="email-gate hidden">
-                    <h4 class="text-xl font-bold text-blue-800 mb-3">🔓 Unlock 2 More Free Checks</h4>
-                    <p class="text-blue-700 mb-4">Enter your email to get 2 additional free quote checks plus solar tips and guides.</p>
-                    <form id="email-form" class="flex flex-col sm:flex-row gap-3">
-                        <input type="email" id="email-input" placeholder="Enter your email address" class="flex-1 px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
-                        <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
-                            Get Free Checks
+                    <h4 class="text-xl font-bold text-blue-800 mb-3">🔓 Continue Analyzing + Get FREE Solar Guide</h4>
+                    <p class="text-blue-700 mb-4">To continue analyzing quotes, we'll send you our professional PDF guide: <strong>"10 Solar Red Flags to Avoid"</strong> plus negotiation tips and market insights.</p>
+                    
+                    <div class="text-left text-sm text-blue-600 mb-4 bg-blue-50 p-3 rounded">
+                        <p class="font-semibold mb-2">📧 What we'll use your email for:</p>
+                        <ul class="space-y-1">
+                            <li>• Send your free PDF guide immediately</li>
+                            <li>• Provide solar buying tips and market updates</li>
+                            <li>• Give you 2 additional free quote analyses</li>
+                        </ul>
+                        <p class="mt-2 text-xs">🛡️ We never sell or share your email. Unsubscribe anytime. GDPR compliant.</p>
+                    </div>
+                    
+                    <form id="email-form" class="space-y-3">
+                        <input type="email" id="email-input" placeholder="Enter your email address" class="w-full px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                        
+                        <div class="text-left text-xs text-blue-600 space-y-2">
+                            <label class="flex items-start space-x-2">
+                                <input type="checkbox" id="consent-guide" class="mt-1" required>
+                                <span>I consent to receive the free PDF guide and solar buying tips</span>
+                            </label>
+                            <label class="flex items-start space-x-2">
+                                <input type="checkbox" id="consent-privacy" class="mt-1" required>
+                                <span>I agree to the <a href="/privacy-policy.html" class="underline">Privacy Policy</a> and <a href="/terms.html" class="underline">Terms of Service</a></span>
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
+                            Get Free Guide & Continue Analyzing
                         </button>
                     </form>
                 </div>
@@ -508,161 +531,26 @@
                     
                     <!-- Upgrade Prompt -->
                     <div class="upgrade-prompt">
-                        <h4 class="text-xl font-bold text-amber-800 mb-2">🔒 Want Full Rip-Off Protection?</h4>
-                        <p class="text-amber-700 mb-4">Upload your actual quote PDF for comprehensive rip-off detection including:</p>
+                        <h4 class="text-xl font-bold text-amber-800 mb-2">🔒 Want Complete Rip-Off Protection?</h4>
+                        <p class="text-amber-700 mb-4">Upgrade to our premium analysis for comprehensive protection including:</p>
                         <ul class="text-left text-amber-700 mb-4 space-y-1">
-                            <li>• Component quality red flags (cheap panels, poor inverters)</li>
-                            <li>• Installer reputation & credential check</li>
+                            <li>• PDF quote upload & detailed analysis</li>
+                            <li>• Component quality deep-dive & red flags</li>
+                            <li>• Installer credential & reputation check</li>
                             <li>• Contract terms analysis & hidden fees detection</li>
                             <li>• Price negotiation strategies & talking points</li>
                             <li>• Professional PDF report with evidence</li>
+                            <li>• Unlimited quote analyses</li>
+                            <li>• Email support from solar experts</li>
                         </ul>
-                        <a href="#pricing" class="bg-amber-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-700 transition duration-300 inline-block">
-                            Get Full Protection
-                        </a>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-amber-800 mb-2">£29.99</div>
+                            <p class="text-sm text-amber-600 mb-4">One-time payment • Lifetime access</p>
+                            <button class="bg-amber-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-amber-700 transition duration-300 text-lg">
+                                Get Complete Protection
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section id="pricing" class="py-16 mobile-py-12 pricing-dark">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Choose Your Protection Level</h2>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">From basic rip-off detection to complete contract protection</p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-8 mobile-grid">
-                <!-- Basic Protection -->
-                <div class="pricing-card">
-                    <div class="pricing-icon icon-basic text-white">🛡️</div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Basic Protection</h3>
-                    <div class="text-4xl font-bold text-white mb-4">£14.99</div>
-                    <p class="text-gray-300 mb-6">One-time payment</p>
-                    
-                    <ul class="feature-list">
-                        <li>
-                            <svg class="feature-icon text-teal-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            Pricing rip-off detection
-                        </li>
-                        <li>
-                            <svg class="feature-icon text-teal-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            Market comparison analysis
-                        </li>
-                        <li>
-                            <svg class="feature-icon text-teal-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            Basic component quality check
-                        </li>
-                        <li>
-                            <svg class="feature-icon text-teal-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            Simple PDF report
-                        </li>
-                    </ul>
-                    
-                    <button class="w-full bg-teal-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-teal-700 transition duration-300">
-                        Get Basic Protection
-                    </button>
-                </div>
-
-                <!-- Pro Protection -->
-                <div class="pricing-card popular">
-                    <div class="popular-badge">POPULAR</div>
-                    <div class="pricing-icon icon-pro text-white">🚀</div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Pro Protection</h3>
-                    <div class="text-4xl font-bold text-white mb-4">£29.99</div>
-                    <p class="text-gray-300 mb-6">One-time payment</p>
-                    
-                    <ul class="feature-list">
-                        <li>
-                            <svg class="feature-icon text-teal-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            Everything in Basic
-                        </li>
-                        <li class="premium">
-                            <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            Contract red flag analysis
-                        </li>
-                        <li class="premium">
-                            <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            Expert consultation call
-                        </li>
-                        <li class="premium">
-                            <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            Negotiation strategies
-                        </li>
-                        <li class="premium">
-                            <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            Detailed protection report
-                        </li>
-                    </ul>
-                    
-                    <button class="w-full bg-red-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-700 transition duration-300">
-                        Get Pro Protection
-                    </button>
-                </div>
-
-                <!-- Complete Protection -->
-                <div class="pricing-card">
-                    <div class="pricing-icon icon-complete text-white">👑</div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Complete Protection</h3>
-                    <div class="text-4xl font-bold text-white mb-4">£49.99</div>
-                    <p class="text-gray-300 mb-6">One-time payment</p>
-                    
-                    <ul class="feature-list">
-                        <li>
-                            <svg class="feature-icon text-teal-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            Everything in Pro
-                        </li>
-                        <li class="premium">
-                            <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            Multiple quote comparison
-                        </li>
-                        <li class="premium">
-                            <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            Priority expert support
-                        </li>
-                        <li class="premium">
-                            <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            6-month follow-up support
-                        </li>
-                        <li class="premium">
-                            <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            Complete rip-off protection
-                        </li>
-                    </ul>
-                    
-                    <button class="w-full bg-yellow-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-yellow-700 transition duration-300">
-                        Get Complete Protection
-                    </button>
                 </div>
             </div>
         </div>
@@ -737,17 +625,23 @@
             });
         });
         
-        // Usage tracking
+        // Usage tracking - updated for new flow
         let usageCount = parseInt(localStorage.getItem('solarVerifyUsage') || '0');
         let emailProvided = localStorage.getItem('solarVerifyEmail') !== null;
         
-        // Form submission
+        // Form submission - updated logic
         document.getElementById('manual-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Check usage limits
+            // Check if this is the second use attempt (show email gate)
             if (usageCount >= 1 && !emailProvided) {
                 showEmailGate();
+                return;
+            }
+            
+            // Check if user has exceeded free limit after email
+            if (usageCount >= 3 && emailProvided) {
+                showUpgradePrompt();
                 return;
             }
             
@@ -781,20 +675,54 @@
             }, 2000);
         });
         
-        // Email form submission
+        // Email form submission - updated with validation
         document.getElementById('email-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const email = document.getElementById('email-input').value;
+            const consentGuide = document.getElementById('consent-guide').checked;
+            const consentPrivacy = document.getElementById('consent-privacy').checked;
+            
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address');
+                return;
+            }
+            
+            if (!consentGuide || !consentPrivacy) {
+                alert('Please check both consent boxes to continue');
+                return;
+            }
+            
             if (email) {
                 localStorage.setItem('solarVerifyEmail', email);
+                localStorage.setItem('solarVerifyConsent', JSON.stringify({
+                    guide: consentGuide,
+                    privacy: consentPrivacy,
+                    timestamp: new Date().toISOString()
+                }));
                 emailProvided = true;
                 hideEmailGate();
                 
                 // Show success message
-                alert('Thank you! You now have 2 additional free quote checks.');
+                alert('Thank you! Check your email for the free PDF guide. You now have 2 additional free quote analyses.');
+                
+                // TODO: Send email with PDF guide (integrate with backend)
+                console.log('Email collected:', email, 'Send PDF guide');
             }
         });
+        
+        function showUpgradePrompt() {
+            // Scroll to upgrade prompt in results section
+            const upgradePrompt = document.querySelector('.upgrade-prompt');
+            if (upgradePrompt) {
+                upgradePrompt.scrollIntoView({ behavior: 'smooth' });
+                // Add highlight effect
+                upgradePrompt.style.border = '3px solid #f59e0b';
+                upgradePrompt.style.animation = 'pulse 2s infinite';
+            }
+        }
         
         function getSelectedSize() {
             const selected = document.querySelector('.size-button.selected[data-size]');
@@ -888,3 +816,4 @@
     </script>
 </body>
 </html>
+
