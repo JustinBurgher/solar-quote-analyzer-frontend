@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import Navigation from './components/Navigation';
+import Navigation from './components/ui/Navigation';
 import About from './pages/About';
 import HowItWorks from './pages/HowItWorks';
 import Login from './pages/Login';
