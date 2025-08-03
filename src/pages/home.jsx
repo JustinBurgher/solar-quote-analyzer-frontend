@@ -1,10 +1,181 @@
+import { useState } from 'react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+
 function Home() {
+  const [formData, setFormData] = useState({
+    systemSize: '',
+    solarPanelOutput: '',
+    solarPanelName: '',
+    solarPanelNameCustom: '',
+    batteryBrandName: '',
+    batteryBrandNameCustom: '',
+    batterySize: '',
+    totalPrice: '',
+    hasBattery: 'no'
+  })
+  const [analysis, setAnalysis] = useState(null)
+  const [loading, setLoading] = useState(false)
+
+  // Enhanced UK market panel brands
+  const panelBrands = [
+    'Aiko', 'Trina Solar', 'Longi', 'Jinko Solar', 'Eurener', 'Perlight',
+    'SolFiT BIPV', 'InstaGen', 'Canadian Solar', 'SunPower', 'REC',
+    'JA Solar', 'Risen Energy', 'Astronergy', 'Hanwha Q Cells',
+    'Sharp', 'Panasonic', 'Other (specify)'
+  ]
+
+  // Enhanced UK market battery brands
+  const batteryBrands = [
+    'Tesla Powerwall', 'GivEnergy', 'Fox ESS', 'SolarEdge', 'SolaX',
+    'Growatt', 'Huawei', 'EcoFlow', 'Myenergi (Libbi)', 'Enphase',
+    'Sungrow', 'Atmoce', 'Eleven Energy', 'LG Chem', 'Pylontech',
+    'BYD', 'Other (specify)'
+  ]
+
+  const handleChange = (e) => {
+    const { id, value } = e.target
+    setFormData(prevData => ({
+      ...prevData,
+      [id]: value
+    }))
+  }
+
+  const handleSelectChange = (value, id) => {
+    setFormData(prevData => ({
+      ...prevData,
+      [id]: value
+    }))
+  }
+
+  const getActualPanelName = () => {
+    if (formData.solarPanelName === 'Other (specify)') {
+      return formData.solarPanelNameCustom
+    }
+    return formData.solarPanelName
+  }
+
+  const getActualBatteryName = () => {
+    if (formData.batteryBrandName === 'Other (specify)') {
+      return formData.batteryBrandNameCustom
+    }
+    return formData.batteryBrandName
+  }
+
+  const analyzeQuote = async () => {
+    setLoading(true)
+    
+    try {
+      const response = await fetch("/api/analyze/quote", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          solarPanelName: getActualPanelName(),
+          batteryBrandName: getActualBatteryName()
+        }),
+      })
+
+      const result = await response.json()
+
+      if (response.ok) {
+        setAnalysis(result)
+      } else {
+        console.error('Analysis failed:', result.error)
+        // Fallback to mock data if API fails
+        const mockResult = {
+          overall: 'good',
+          score: 75,
+          breakdown: {
+            price: 'good',
+            panelOutput: 'good',
+            panelBrand: 'okay',
+            batteryBrand: 'good',
+            systemSize: 'good'
+          },
+          recommendations: [
+            'Analysis completed with mock data',
+            'Please check API connection for live analysis'
+          ]
+        }
+        setAnalysis(mockResult)
+      }
+    } catch (err) {
+      console.error('Network error:', err)
+      // Fallback to mock data if network fails
+      const mockResult = {
+        overall: 'good',
+        score: 75,
+        breakdown: {
+          price: 'good',
+          panelOutput: 'good',
+          panelBrand: 'okay',
+          batteryBrand: 'good',
+          systemSize: 'good'
+        },
+        recommendations: [
+          'Analysis completed with mock data',
+          'Please check network connection for live analysis'
+        ]
+      }
+      setAnalysis(mockResult)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const resetForm = () => {
+    setFormData({
+      systemSize: '',
+      solarPanelOutput: '',
+      solarPanelName: '',
+      solarPanelNameCustom: '',
+      batteryBrandName: '',
+      batteryBrandNameCustom: '',
+      batterySize: '',
+      totalPrice: '',
+      hasBattery: 'no'
+    })
+    setAnalysis(null)
+  }
+
+  const getOverallColor = (overall) => {
+    switch (overall) {
+      case 'excellent':
+        return 'text-green-600'
+      case 'good':
+        return 'text-emerald-600'
+      case 'poor':
+        return 'text-red-600'
+      default:
+        return 'text-gray-600'
+    }
+  }
+
+  const getBreakdownColor = (status) => {
+    switch (status) {
+      case 'good':
+        return 'text-green-600'
+      case 'okay':
+        return 'text-yellow-600'
+      case 'poor':
+        return 'text-red-600'
+      default:
+        return 'text-gray-500'
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="hero-gradient text-white py-20 mobile-py-16">
+      <section className="bg-gradient-to-br from-teal-600 to-emerald-700 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 mobile-text-4xl">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6">
             Stop Solar Rip-Offs Before You Sign
           </h1>
           <p className="text-xl md:text-2xl text-teal-100 mb-8 max-w-3xl mx-auto">
@@ -22,88 +193,182 @@ function Home() {
       </section>
 
       {/* Quote Analyzer Section */}
-      <section id="analyzer" className="py-16 mobile-py-12 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="analyzer" className="py-16 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Solar Quote Analyzer
+              Enhanced Solar Quote Analysis
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Enter your quote details below for instant professional analysis. Takes less than 30 seconds.
+              Get detailed analysis with real panel specifications. Takes less than 30 seconds.
             </p>
           </div>
 
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <form id="quote-form" className="space-y-6">
-              {/* System Size */}
-              <div>
-                <label htmlFor="system-size" className="block text-sm font-medium text-gray-700 mb-2">
-                  System Size (kW) *
-                </label>
-                <input
-                  type="number"
-                  id="system-size"
-                  name="system-size"
-                  step="0.1"
-                  min="1"
-                  max="50"
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-lg"
-                  placeholder="e.g., 8.2"
-                />
-                <p className="text-sm text-gray-500 mt-1">The total kW capacity of your solar panel system</p>
+          <Card className="shadow-2xl border-0 overflow-hidden">
+            <CardHeader className="bg-teal-600 text-white">
+              <CardTitle className="text-2xl font-bold">Solar Quote Details</CardTitle>
+              <CardDescription className="text-teal-100">Enter your solar installation quote details to get an instant analysis</CardDescription>
+            </CardHeader>
+            <CardContent className="p-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="systemSize">System Size (kW) *</Label>
+                    <Input id="systemSize" type="number" placeholder="e.g., 4.0" value={formData.systemSize} onChange={handleChange} />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="solarPanelOutput">Solar Panel Output (W per panel)</Label>
+                    <Input id="solarPanelOutput" type="number" placeholder="e.g., 400" value={formData.solarPanelOutput} onChange={handleChange} />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="solarPanelName">Solar Panel Brand/Name</Label>
+                    <Select value={formData.solarPanelName} onValueChange={(value) => handleSelectChange(value, 'solarPanelName')}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select panel brand" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {panelBrands.map((brand) => (
+                          <SelectItem key={brand} value={brand}>{brand}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {formData.solarPanelName === 'Other (specify)' && (
+                      <Input
+                        id="solarPanelNameCustom"
+                        placeholder="Enter panel brand name"
+                        value={formData.solarPanelNameCustom}
+                        onChange={handleChange}
+                        className="mt-2"
+                      />
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="hasBattery">Battery Included?</Label>
+                    <Select value={formData.hasBattery} onValueChange={(value) => handleSelectChange(value, 'hasBattery')}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="yes">Yes, Battery Included</SelectItem>
+                        <SelectItem value="no">No Battery</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {formData.hasBattery === 'yes' && (
+                    <>
+                      <div className="space-y-2">
+                        <Label htmlFor="batteryBrandName">Battery Brand Name</Label>
+                        <Select value={formData.batteryBrandName} onValueChange={(value) => handleSelectChange(value, 'batteryBrandName')}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select battery brand" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {batteryBrands.map((brand) => (
+                              <SelectItem key={brand} value={brand}>{brand}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {formData.batteryBrandName === 'Other (specify)' && (
+                          <Input
+                            id="batteryBrandNameCustom"
+                            placeholder="Enter battery brand name"
+                            value={formData.batteryBrandNameCustom}
+                            onChange={handleChange}
+                            className="mt-2"
+                          />
+                        )}
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="batterySize">Battery Size (kWh)</Label>
+                        <Input id="batterySize" type="number" placeholder="e.g., 10" value={formData.batterySize} onChange={handleChange} />
+                      </div>
+                    </>
+                  )}
+
+                  <div className="space-y-2">
+                    <Label htmlFor="totalPrice">Total Price (£) *</Label>
+                    <Input id="totalPrice" type="number" placeholder="e.g., 6000" value={formData.totalPrice} onChange={handleChange} />
+                  </div>
+
+                  <div className="flex gap-4 mt-6">
+                    <Button onClick={analyzeQuote} disabled={loading} className="flex-1 py-3 text-lg bg-teal-600 hover:bg-teal-700">
+                      {loading ? 'Analyzing...' : 'Analyze Quote'}
+                    </Button>
+                    <Button onClick={resetForm} variant="outline" className="flex-1 py-3 text-lg">
+                      Reset
+                    </Button>
+                  </div>
+                </div>
+
+                {analysis && (
+                  <div className="space-y-6 bg-gray-50 p-6 rounded-lg shadow-inner">
+                    <h3 className="text-xl font-semibold text-gray-700">Analysis Results</h3>
+                    <div className="text-center">
+                      <p className="text-lg font-medium">Overall Assessment:</p>
+                      <p className={`text-5xl font-bold ${getOverallColor(analysis.overall)}`}>
+                        {analysis.overall.charAt(0).toUpperCase() + analysis.overall.slice(1)}
+                      </p>
+                      <p className="text-sm text-gray-500">Score: {analysis.score}%</p>
+                      {analysis.price_per_kw && (
+                        <p className="text-sm text-gray-500">Price: £{analysis.price_per_kw}/kW</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <h4 className="text-md font-semibold text-gray-700">Breakdown:</h4>
+                      <ul className="list-disc list-inside text-gray-700">
+                        <li>Price: <span className={getBreakdownColor(analysis.breakdown.price)}>{analysis.breakdown.price}</span></li>
+                        <li>Panel Output: <span className={getBreakdownColor(analysis.breakdown.panelOutput)}>{analysis.breakdown.panelOutput}</span></li>
+                        <li>Panel Brand: <span className={getBreakdownColor(analysis.breakdown.panelBrand)}>{analysis.breakdown.panelBrand}</span></li>
+                        {formData.hasBattery === 'yes' && analysis.breakdown.batteryBrand && (
+                          <li>Battery Brand: <span className={getBreakdownColor(analysis.breakdown.batteryBrand)}>{analysis.breakdown.batteryBrand}</span></li>
+                        )}
+                        <li>System Size: <span className={getBreakdownColor(analysis.breakdown.systemSize)}>{analysis.breakdown.systemSize}</span></li>
+                      </ul>
+                    </div>
+
+                    {/* Enhanced Analysis Display */}
+                    {analysis.enhanced_analysis && (
+                      <div className="bg-blue-50 p-4 rounded-lg">
+                        <h4 className="text-lg font-semibold text-blue-800 mb-3">Enhanced Analysis</h4>
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                          <div>
+                            <span className="font-medium">Panel Model:</span>
+                            <p className="text-blue-700">{analysis.enhanced_analysis.panel_model}</p>
+                          </div>
+                          <div>
+                            <span className="font-medium">Efficiency:</span>
+                            <p className="text-blue-700">{analysis.enhanced_analysis.efficiency}%</p>
+                          </div>
+                          <div>
+                            <span className="font-medium">Technology:</span>
+                            <p className="text-blue-700">{analysis.enhanced_analysis.technology}</p>
+                          </div>
+                          <div>
+                            <span className="font-medium">Degradation:</span>
+                            <p className="text-blue-700">{analysis.enhanced_analysis.degradation_annual}%/year</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="space-y-2">
+                      <h4 className="text-md font-semibold text-gray-700">Recommendations:</h4>
+                      <ul className="list-disc list-inside text-gray-700">
+                        {analysis.recommendations.map((rec, index) => (
+                          <li key={index}>{rec}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
               </div>
-
-              {/* Battery Size */}
-              <div>
-                <label htmlFor="battery-size" className="block text-sm font-medium text-gray-700 mb-2">
-                  Battery Size (kWh)
-                </label>
-                <input
-                  type="number"
-                  id="battery-size"
-                  name="battery-size"
-                  step="0.1"
-                  min="0"
-                  max="100"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-lg"
-                  placeholder="e.g., 20.7 (or leave blank if no battery)"
-                />
-                <p className="text-sm text-gray-500 mt-1">Leave blank if your quote doesn't include a battery</p>
-              </div>
-
-              {/* Quote Price */}
-              <div>
-                <label htmlFor="quote-price" className="block text-sm font-medium text-gray-700 mb-2">
-                  Total Quote Price (£) *
-                </label>
-                <input
-                  type="number"
-                  id="quote-price"
-                  name="quote-price"
-                  min="1000"
-                  max="100000"
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-lg"
-                  placeholder="e.g., 11250"
-                />
-                <p className="text-sm text-gray-500 mt-1">The total price including installation and VAT</p>
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                className="w-full bg-teal-600 text-white py-4 px-6 rounded-md text-lg font-medium hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors"
-              >
-                Check My Quote
-              </button>
-            </form>
-
-            {/* Results will be displayed here */}
-            <div id="results" className="mt-8 hidden">
-              {/* Results content will be populated by JavaScript */}
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
