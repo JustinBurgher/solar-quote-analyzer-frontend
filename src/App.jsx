@@ -1,11 +1,17 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import Navigation from './components/Navigation';
+import About from './pages/About';
+import HowItWorks from './pages/HowItWorks';
+import Login from './pages/Login';
 
-function App() {
+// Your existing Home component (quote analyzer)
+function Home() {
   const [formData, setFormData] = useState({
     systemSize: '',
     solarPanelOutput: '',
@@ -373,4 +379,23 @@ function App() {
   )
 }
 
-export default App
+function App() {
+  return (
+    <Router>
+      <div className="App">
+        <Navigation />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
+
