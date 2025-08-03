@@ -1,6 +1,28 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Navigation() {
+  const navigate = useNavigate();
+
+  const handleQuoteAnalyzer = () => {
+    navigate('/');
+    setTimeout(() => {
+      const element = document.getElementById('analyzer');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  };
+
+  const handleContact = () => {
+    navigate('/');
+    setTimeout(() => {
+      const element = document.getElementById('contact');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  };
+
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -38,18 +60,18 @@ function Navigation() {
               >
                 How It Works
               </Link>
-              <a 
-                href="#analyzer" 
+              <button 
+                onClick={handleQuoteAnalyzer}
                 className="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
                 Quote Analyzer
-              </a>
-              <a 
-                href="#contact" 
+              </button>
+              <button 
+                onClick={handleContact}
                 className="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
                 Contact
-              </a>
+              </button>
               <Link 
                 to="/login" 
                 className="bg-teal-600 text-white hover:bg-teal-700 px-4 py-2 rounded-md text-sm font-medium transition-colors"
@@ -97,18 +119,18 @@ function Navigation() {
           >
             How It Works
           </Link>
-          <a 
-            href="#analyzer" 
-            className="text-gray-600 hover:text-teal-600 block px-3 py-2 rounded-md text-base font-medium"
+          <button 
+            onClick={handleQuoteAnalyzer}
+            className="text-gray-600 hover:text-teal-600 block px-3 py-2 rounded-md text-base font-medium w-full text-left"
           >
             Quote Analyzer
-          </a>
-          <a 
-            href="#contact" 
-            className="text-gray-600 hover:text-teal-600 block px-3 py-2 rounded-md text-base font-medium"
+          </button>
+          <button 
+            onClick={handleContact}
+            className="text-gray-600 hover:text-teal-600 block px-3 py-2 rounded-md text-base font-medium w-full text-left"
           >
             Contact
-          </a>
+          </button>
           <Link 
             to="/login" 
             className="bg-teal-600 text-white hover:bg-teal-700 block px-3 py-2 rounded-md text-base font-medium"
