@@ -10,10 +10,38 @@ function App() {
   const [formData, setFormData] = useState({
     systemSize: '',
     hasBattery: 'no',
+    batterySize: '',
+    batteryBrand: '',
     totalPrice: ''
   })
   const [analysis, setAnalysis] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [showEmailModal, setShowEmailModal] = useState(false)
+  const [email, setEmail] = useState('')
+  const [emailSubmitted, setEmailSubmitted] = useState(false)
+  const [quotesUsed, setQuotesUsed] = useState(0)
+
+  // UK market battery brands with sizes
+  const batteryOptions = [
+    { brand: 'Tesla Powerwall 2', size: '13.5' },
+    { brand: 'Tesla Powerwall 3', size: '13.5' },
+    { brand: 'GivEnergy All in One', size: '9.5' },
+    { brand: 'GivEnergy Battery', size: '5.2' },
+    { brand: 'Fox ESS ECS2900', size: '2.9' },
+    { brand: 'Fox ESS ECS4100', size: '4.1' },
+    { brand: 'SolarEdge Home Battery', size: '9.7' },
+    { brand: 'SolaX Triple Power', size: '5.8' },
+    { brand: 'Growatt ARK XH', size: '6.5' },
+    { brand: 'Huawei LUNA2000', size: '5' },
+    { brand: 'EcoFlow PowerOcean', size: '5' },
+    { brand: 'Myenergi Libbi', size: '5' },
+    { brand: 'Enphase IQ Battery 5P', size: '5' },
+    { brand: 'Sungrow SBR', size: '9.6' },
+    { brand: 'LG Chem RESU', size: '9.8' },
+    { brand: 'Pylontech US3000C', size: '3.5' },
+    { brand: 'BYD Battery-Box Premium', size: '10.24' },
+    { brand: 'Other (specify)', size: 'custom' }
+  ]
 
   const handleChange = (e) => {
     const { id, value } = e.target
@@ -28,13 +56,35 @@ function App() {
       ...prevData,
       [id]: value
     }))
+    
+    // Auto-fill battery size when brand is selected
+    if (id === 'batteryBrand') {
+      const selectedBattery = batteryOptions.find(b => b.brand === value)
+      if (selectedBattery && selectedBattery.size !== 'custom') {
+        setFormData(prevData => ({
+          ...prevData,
+          batterySize: selectedBattery.size
+        }))
+      } else if (selectedBattery && selectedBattery.size === 'custom') {
+        setFormData(prevData => ({
+          ...prevData,
+          batterySize: ''
+        }))
+      }
+    }
   }
 
   const analyzeQuote = async () => {
     setLoading(true)
     
     try {
-      // Make sure we're calling the correct API endpoint
+      // Check if this is the second quote and email not provided
+      if (quotesUsed >= 1 && !emailSubmitted) {
+        setShowEmailModal(true)
+        setLoading(false)
+        return
+      }
+
       const response = await fetch("https://solar-verify-backend-production.up.railway.app/api/analyze/quote", {
         method: 'POST',
         headers: {
@@ -43,10 +93,12 @@ function App() {
         body: JSON.stringify({
           systemSize: parseFloat(formData.systemSize),
           hasBattery: formData.hasBattery === 'yes',
-          batterySize: formData.hasBattery === 'yes' ? 10 : 0, // Default battery size if included
+          batterySize: formData.hasBattery === 'yes' ? parseFloat(formData.batterySize) : 0,
+          batteryBrand: formData.hasBattery === 'yes' ? formData.batteryBrand : '',
           totalPrice: parseFloat(formData.totalPrice),
-          solarPanelName: 'Standard Panel', // Default values for simplified form
-          solarPanelOutput: 400 // Default panel output
+          solarPanelName: 'Standard Panel', // Default for simplified form
+          solarPanelOutput: 400, // Default panel output
+          email: emailSubmitted ? email : null
         }),
       })
 
@@ -54,9 +106,9 @@ function App() {
 
       if (response.ok) {
         setAnalysis(result)
+        setQuotesUsed(prev => prev + 1)
       } else {
         console.error('Analysis failed:', result.error)
-        // Show error message to user
         setAnalysis({
           error: true,
           message: 'Unable to analyze quote. Please check your internet connection and try again.'
@@ -64,7 +116,6 @@ function App() {
       }
     } catch (err) {
       console.error('Network error:', err)
-      // Show error message to user
       setAnalysis({
         error: true,
         message: 'Unable to connect to analysis service. Please check your internet connection and try again.'
@@ -74,10 +125,41 @@ function App() {
     }
   }
 
+  const submitEmail = async () => {
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email address')
+      return
+    }
+
+    try {
+      const response = await fetch("https://solar-verify-backend-production.up.railway.app/api/register-email", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      })
+
+      if (response.ok) {
+        setEmailSubmitted(true)
+        setShowEmailModal(false)
+        // Now proceed with the analysis
+        analyzeQuote()
+      } else {
+        alert('Failed to register email. Please try again.')
+      }
+    } catch (err) {
+      console.error('Email registration error:', err)
+      alert('Failed to register email. Please try again.')
+    }
+  }
+
   const resetForm = () => {
     setFormData({
       systemSize: '',
       hasBattery: 'no',
+      batterySize: '',
+      batteryBrand: '',
       totalPrice: ''
     })
     setAnalysis(null)
@@ -122,6 +204,62 @@ function App() {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' })
     }
+  }
+
+  const renderEmailModal = () => {
+    if (!showEmailModal) return null
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+          <div className="text-center mb-6">
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">Get 2 More Free Quotes!</h3>
+            <p className="text-gray-600">
+              You've used your first free analysis. Enter your email to get 2 more free quote analyses.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="email">Email Address</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="mt-1"
+              />
+            </div>
+
+            <div className="bg-gray-50 p-4 rounded-lg text-sm text-gray-600">
+              <p className="font-medium mb-2">🔒 GDPR Compliance Notice:</p>
+              <p>
+                By providing your email, you consent to us storing it securely to provide your free quote analyses. 
+                We will never share your email with third parties or send spam. You can request deletion of your 
+                data at any time by contacting hello@solarverify.co.uk.
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <Button
+                onClick={submitEmail}
+                className="flex-1 bg-teal-600 hover:bg-teal-700"
+              >
+                Get 2 More Free Quotes
+              </Button>
+              <Button
+                onClick={() => setShowEmailModal(false)}
+                variant="outline"
+                className="flex-1"
+              >
+                Maybe Later
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   const renderNavigation = () => (
@@ -194,6 +332,8 @@ function App() {
 
   const renderHomePage = () => (
     <div className="min-h-screen bg-gray-50">
+      {renderEmailModal()}
+      
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-teal-600 to-emerald-700 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -272,14 +412,14 @@ function App() {
               Free Solar Quote Analysis
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Get your grade in 30 seconds. Just 3 simple questions.
+              Get your grade in 30 seconds. {emailSubmitted ? 'Unlimited analyses' : `${3 - quotesUsed} free analyses remaining`}
             </p>
           </div>
 
           <Card className="shadow-2xl border-0 overflow-hidden">
             <CardHeader className="bg-teal-600 text-white">
               <CardTitle className="text-2xl font-bold">Solar Quote Details</CardTitle>
-              <CardDescription className="text-teal-100">Enter your basic quote information for instant analysis</CardDescription>
+              <CardDescription className="text-teal-100">Enter your quote information for instant analysis</CardDescription>
             </CardHeader>
             <CardContent className="p-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -310,6 +450,44 @@ function App() {
                     </Select>
                   </div>
 
+                  {formData.hasBattery === 'yes' && (
+                    <>
+                      <div className="space-y-2">
+                        <Label htmlFor="batteryBrand">Battery Brand & Model *</Label>
+                        <Select value={formData.batteryBrand} onValueChange={(value) => handleSelectChange(value, 'batteryBrand')}>
+                          <SelectTrigger className="text-lg p-3">
+                            <SelectValue placeholder="Select battery brand" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {batteryOptions.map((battery) => (
+                              <SelectItem key={battery.brand} value={battery.brand}>
+                                {battery.brand} {battery.size !== 'custom' ? `(${battery.size}kWh)` : ''}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="batterySize">Battery Size (kWh) *</Label>
+                        <Input 
+                          id="batterySize" 
+                          type="number" 
+                          placeholder="e.g., 10" 
+                          value={formData.batterySize} 
+                          onChange={handleChange}
+                          className="text-lg p-3"
+                          disabled={formData.batteryBrand && formData.batteryBrand !== 'Other (specify)'}
+                        />
+                        <p className="text-sm text-gray-500">
+                          {formData.batteryBrand && formData.batteryBrand !== 'Other (specify)' 
+                            ? 'Auto-filled based on selected battery' 
+                            : 'Enter the battery capacity in kWh'}
+                        </p>
+                      </div>
+                    </>
+                  )}
+
                   <div className="space-y-2">
                     <Label htmlFor="totalPrice">Total Price (£) *</Label>
                     <Input 
@@ -326,7 +504,7 @@ function App() {
                   <div className="flex gap-4 mt-8">
                     <Button 
                       onClick={analyzeQuote} 
-                      disabled={loading || !formData.systemSize || !formData.totalPrice} 
+                      disabled={loading || !formData.systemSize || !formData.totalPrice || (formData.hasBattery === 'yes' && (!formData.batteryBrand || !formData.batterySize))} 
                       className="flex-1 py-4 text-lg bg-teal-600 hover:bg-teal-700"
                     >
                       {loading ? 'Analyzing...' : 'Get My Grade Free'}
@@ -471,7 +649,7 @@ function App() {
               <div className="space-y-3">
                 <div>
                   <h4 className="font-medium text-gray-900">Is the basic analysis really free?</h4>
-                  <p className="text-gray-600 text-sm">Yes, you get your A-F grade completely free with no hidden costs.</p>
+                  <p className="text-gray-600 text-sm">Yes, you get your A-F grade completely free. Email required after first analysis for 2 more free quotes.</p>
                 </div>
                 <div>
                   <h4 className="font-medium text-gray-900">How accurate is your analysis?</h4>
@@ -536,8 +714,8 @@ function App() {
             <div className="bg-teal-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-xl font-bold text-teal-600">1</span>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">Enter 3 Simple Details</h3>
-            <p className="text-gray-700 text-center">System size, battery inclusion, and total price. Takes 30 seconds.</p>
+            <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">Enter Quote Details</h3>
+            <p className="text-gray-700 text-center">System size, battery details, and total price. Takes 30 seconds.</p>
           </div>
 
           <div className="bg-white rounded-lg shadow-sm p-6">
@@ -552,16 +730,16 @@ function App() {
             <div className="bg-teal-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-xl font-bold text-teal-600">3</span>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">Upgrade for Details</h3>
-            <p className="text-gray-700 text-center">Get comprehensive analysis, negotiation tips, and installer background checks.</p>
+            <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">Email for More</h3>
+            <p className="text-gray-700 text-center">After your first analysis, provide email for 2 more free quotes.</p>
           </div>
 
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="bg-teal-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-xl font-bold text-teal-600">4</span>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">Make Informed Decisions</h3>
-            <p className="text-gray-700 text-center">Use our analysis to negotiate better prices or find better alternatives.</p>
+            <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">Upgrade for Details</h3>
+            <p className="text-gray-700 text-center">Get comprehensive analysis, negotiation tips, and installer background checks.</p>
           </div>
         </div>
 
