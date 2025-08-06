@@ -9,33 +9,11 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home')
   const [formData, setFormData] = useState({
     systemSize: '',
-    solarPanelOutput: '',
-    solarPanelName: '',
-    solarPanelNameCustom: '',
-    batteryBrandName: '',
-    batteryBrandNameCustom: '',
-    batterySize: '',
-    totalPrice: '',
-    hasBattery: 'no'
+    hasBattery: 'no',
+    totalPrice: ''
   })
   const [analysis, setAnalysis] = useState(null)
   const [loading, setLoading] = useState(false)
-
-  // Enhanced UK market panel brands
-  const panelBrands = [
-    'Aiko', 'Trina Solar', 'Longi', 'Jinko Solar', 'Eurener', 'Perlight',
-    'SolFiT BIPV', 'InstaGen', 'Canadian Solar', 'SunPower', 'REC',
-    'JA Solar', 'Risen Energy', 'Astronergy', 'Hanwha Q Cells',
-    'Sharp', 'Panasonic', 'Other (specify)'
-  ]
-
-  // Enhanced UK market battery brands
-  const batteryBrands = [
-    'Tesla Powerwall', 'GivEnergy', 'Fox ESS', 'SolarEdge', 'SolaX',
-    'Growatt', 'Huawei', 'EcoFlow', 'Myenergi (Libbi)', 'Enphase',
-    'Sungrow', 'Atmoce', 'Eleven Energy', 'LG Chem', 'Pylontech',
-    'BYD', 'Other (specify)'
-  ]
 
   const handleChange = (e) => {
     const { id, value } = e.target
@@ -52,33 +30,23 @@ function App() {
     }))
   }
 
-  const getActualPanelName = () => {
-    if (formData.solarPanelName === 'Other (specify)') {
-      return formData.solarPanelNameCustom
-    }
-    return formData.solarPanelName
-  }
-
-  const getActualBatteryName = () => {
-    if (formData.batteryBrandName === 'Other (specify)') {
-      return formData.batteryBrandNameCustom
-    }
-    return formData.batteryBrandName
-  }
-
   const analyzeQuote = async () => {
     setLoading(true)
     
     try {
-      const response = await fetch("/api/analyze/quote", {
+      // Make sure we're calling the correct API endpoint
+      const response = await fetch("https://solar-verify-backend-production.up.railway.app/api/analyze/quote", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ...formData,
-          solarPanelName: getActualPanelName(),
-          batteryBrandName: getActualBatteryName()
+          systemSize: parseFloat(formData.systemSize),
+          hasBattery: formData.hasBattery === 'yes',
+          batterySize: formData.hasBattery === 'yes' ? 10 : 0, // Default battery size if included
+          totalPrice: parseFloat(formData.totalPrice),
+          solarPanelName: 'Standard Panel', // Default values for simplified form
+          solarPanelOutput: 400 // Default panel output
         }),
       })
 
@@ -88,43 +56,19 @@ function App() {
         setAnalysis(result)
       } else {
         console.error('Analysis failed:', result.error)
-        // Fallback to mock data if API fails
-        const mockResult = {
-          overall: 'good',
-          score: 75,
-          breakdown: {
-            price: 'good',
-            panelOutput: 'good',
-            panelBrand: 'okay',
-            batteryBrand: 'good',
-            systemSize: 'good'
-          },
-          recommendations: [
-            'Analysis completed with mock data',
-            'Please check API connection for live analysis'
-          ]
-        }
-        setAnalysis(mockResult)
+        // Show error message to user
+        setAnalysis({
+          error: true,
+          message: 'Unable to analyze quote. Please check your internet connection and try again.'
+        })
       }
     } catch (err) {
       console.error('Network error:', err)
-      // Fallback to mock data if network fails
-      const mockResult = {
-        overall: 'good',
-        score: 75,
-        breakdown: {
-          price: 'good',
-          panelOutput: 'good',
-          panelBrand: 'okay',
-          batteryBrand: 'good',
-          systemSize: 'good'
-        },
-        recommendations: [
-          'Analysis completed with mock data',
-          'Please check network connection for live analysis'
-        ]
-      }
-      setAnalysis(mockResult)
+      // Show error message to user
+      setAnalysis({
+        error: true,
+        message: 'Unable to connect to analysis service. Please check your internet connection and try again.'
+      })
     } finally {
       setLoading(false)
     }
@@ -133,41 +77,43 @@ function App() {
   const resetForm = () => {
     setFormData({
       systemSize: '',
-      solarPanelOutput: '',
-      solarPanelName: '',
-      solarPanelNameCustom: '',
-      batteryBrandName: '',
-      batteryBrandNameCustom: '',
-      batterySize: '',
-      totalPrice: '',
-      hasBattery: 'no'
+      hasBattery: 'no',
+      totalPrice: ''
     })
     setAnalysis(null)
   }
 
-  const getOverallColor = (overall) => {
-    switch (overall) {
-      case 'excellent':
-        return 'text-green-600'
-      case 'good':
-        return 'text-emerald-600'
-      case 'poor':
-        return 'text-red-600'
+  const getGradeColor = (grade) => {
+    switch (grade?.toUpperCase()) {
+      case 'A':
+        return 'text-green-600 bg-green-50 border-green-200'
+      case 'B':
+        return 'text-blue-600 bg-blue-50 border-blue-200'
+      case 'C':
+        return 'text-yellow-600 bg-yellow-50 border-yellow-200'
+      case 'D':
+        return 'text-orange-600 bg-orange-50 border-orange-200'
+      case 'F':
+        return 'text-red-600 bg-red-50 border-red-200'
       default:
-        return 'text-gray-600'
+        return 'text-gray-600 bg-gray-50 border-gray-200'
     }
   }
 
-  const getBreakdownColor = (status) => {
-    switch (status) {
-      case 'good':
-        return 'text-green-600'
-      case 'okay':
-        return 'text-yellow-600'
-      case 'poor':
-        return 'text-red-600'
+  const getGradeDescription = (grade) => {
+    switch (grade?.toUpperCase()) {
+      case 'A':
+        return 'Excellent value - this is a competitive quote'
+      case 'B':
+        return 'Good value with minor areas for improvement'
+      case 'C':
+        return 'Average market pricing'
+      case 'D':
+        return 'Overpriced - you can likely find better deals'
+      case 'F':
+        return 'Avoid - significant red flags detected'
       default:
-        return 'text-gray-500'
+        return 'Unable to determine grade'
     }
   }
 
@@ -274,63 +220,87 @@ function App() {
         </div>
       </section>
 
+      {/* Grading System Preview */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Our A-F Grading System</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Get a clear, easy-to-understand grade for your solar quote based on real UK market data
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-5 gap-4 mb-8">
+            <div className="bg-green-50 border-2 border-green-200 p-6 rounded-lg text-center">
+              <div className="text-3xl font-bold text-green-600 mb-2">A</div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Excellent</h3>
+              <p className="text-sm text-gray-600">Outstanding value, quality components</p>
+            </div>
+
+            <div className="bg-blue-50 border-2 border-blue-200 p-6 rounded-lg text-center">
+              <div className="text-3xl font-bold text-blue-600 mb-2">B</div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Good</h3>
+              <p className="text-sm text-gray-600">Good value with minor improvements possible</p>
+            </div>
+
+            <div className="bg-yellow-50 border-2 border-yellow-200 p-6 rounded-lg text-center">
+              <div className="text-3xl font-bold text-yellow-600 mb-2">C</div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Average</h3>
+              <p className="text-sm text-gray-600">Market rate pricing</p>
+            </div>
+
+            <div className="bg-orange-50 border-2 border-orange-200 p-6 rounded-lg text-center">
+              <div className="text-3xl font-bold text-orange-600 mb-2">D</div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Poor</h3>
+              <p className="text-sm text-gray-600">Overpriced - negotiate or look elsewhere</p>
+            </div>
+
+            <div className="bg-red-50 border-2 border-red-200 p-6 rounded-lg text-center">
+              <div className="text-3xl font-bold text-red-600 mb-2">F</div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Avoid</h3>
+              <p className="text-sm text-gray-600">Significant red flags detected</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Quote Analyzer Section */}
       <section id="analyzer" className="py-16 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Enhanced Solar Quote Analysis
+              Free Solar Quote Analysis
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Get detailed analysis with real panel specifications. Takes less than 30 seconds.
+              Get your grade in 30 seconds. Just 3 simple questions.
             </p>
           </div>
 
           <Card className="shadow-2xl border-0 overflow-hidden">
             <CardHeader className="bg-teal-600 text-white">
               <CardTitle className="text-2xl font-bold">Solar Quote Details</CardTitle>
-              <CardDescription className="text-teal-100">Enter your solar installation quote details to get an instant analysis</CardDescription>
+              <CardDescription className="text-teal-100">Enter your basic quote information for instant analysis</CardDescription>
             </CardHeader>
             <CardContent className="p-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="space-y-6">
                   <div className="space-y-2">
                     <Label htmlFor="systemSize">System Size (kW) *</Label>
-                    <Input id="systemSize" type="number" placeholder="e.g., 4.0" value={formData.systemSize} onChange={handleChange} />
+                    <Input 
+                      id="systemSize" 
+                      type="number" 
+                      placeholder="e.g., 4.0" 
+                      value={formData.systemSize} 
+                      onChange={handleChange}
+                      className="text-lg p-3"
+                    />
+                    <p className="text-sm text-gray-500">This should be on your quote (e.g., 4kW, 6kW, 8kW)</p>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="solarPanelOutput">Solar Panel Output (W per panel)</Label>
-                    <Input id="solarPanelOutput" type="number" placeholder="e.g., 400" value={formData.solarPanelOutput} onChange={handleChange} />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="solarPanelName">Solar Panel Brand/Name</Label>
-                    <Select value={formData.solarPanelName} onValueChange={(value) => handleSelectChange(value, 'solarPanelName')}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select panel brand" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {panelBrands.map((brand) => (
-                          <SelectItem key={brand} value={brand}>{brand}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {formData.solarPanelName === 'Other (specify)' && (
-                      <Input
-                        id="solarPanelNameCustom"
-                        placeholder="Enter panel brand name"
-                        value={formData.solarPanelNameCustom}
-                        onChange={handleChange}
-                        className="mt-2"
-                      />
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="hasBattery">Battery Included?</Label>
+                    <Label htmlFor="hasBattery">Battery Included? *</Label>
                     <Select value={formData.hasBattery} onValueChange={(value) => handleSelectChange(value, 'hasBattery')}>
-                      <SelectTrigger>
+                      <SelectTrigger className="text-lg p-3">
                         <SelectValue placeholder="Select" />
                       </SelectTrigger>
                       <SelectContent>
@@ -340,86 +310,86 @@ function App() {
                     </Select>
                   </div>
 
-                  {formData.hasBattery === 'yes' && (
-                    <>
-                      <div className="space-y-2">
-                        <Label htmlFor="batteryBrandName">Battery Brand Name</Label>
-                        <Select value={formData.batteryBrandName} onValueChange={(value) => handleSelectChange(value, 'batteryBrandName')}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select battery brand" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {batteryBrands.map((brand) => (
-                              <SelectItem key={brand} value={brand}>{brand}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        {formData.batteryBrandName === 'Other (specify)' && (
-                          <Input
-                            id="batteryBrandNameCustom"
-                            placeholder="Enter battery brand name"
-                            value={formData.batteryBrandNameCustom}
-                            onChange={handleChange}
-                            className="mt-2"
-                          />
-                        )}
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="batterySize">Battery Size (kWh)</Label>
-                        <Input id="batterySize" type="number" placeholder="e.g., 10" value={formData.batterySize} onChange={handleChange} />
-                      </div>
-                    </>
-                  )}
-
                   <div className="space-y-2">
                     <Label htmlFor="totalPrice">Total Price (£) *</Label>
-                    <Input id="totalPrice" type="number" placeholder="e.g., 6000" value={formData.totalPrice} onChange={handleChange} />
+                    <Input 
+                      id="totalPrice" 
+                      type="number" 
+                      placeholder="e.g., 8000" 
+                      value={formData.totalPrice} 
+                      onChange={handleChange}
+                      className="text-lg p-3"
+                    />
+                    <p className="text-sm text-gray-500">The total amount you'll pay (including VAT)</p>
                   </div>
 
-                  <div className="flex gap-4 mt-6">
-                    <Button onClick={analyzeQuote} disabled={loading} className="flex-1 py-3 text-lg bg-teal-600 hover:bg-teal-700">
-                      {loading ? 'Analyzing...' : 'Analyze Quote'}
+                  <div className="flex gap-4 mt-8">
+                    <Button 
+                      onClick={analyzeQuote} 
+                      disabled={loading || !formData.systemSize || !formData.totalPrice} 
+                      className="flex-1 py-4 text-lg bg-teal-600 hover:bg-teal-700"
+                    >
+                      {loading ? 'Analyzing...' : 'Get My Grade Free'}
                     </Button>
-                    <Button onClick={resetForm} variant="outline" className="flex-1 py-3 text-lg">
+                    <Button onClick={resetForm} variant="outline" className="flex-1 py-4 text-lg">
                       Reset
                     </Button>
                   </div>
                 </div>
 
-                {analysis && (
-                  <div className="space-y-6 bg-gray-50 p-6 rounded-lg shadow-inner">
-                    <h3 className="text-xl font-semibold text-gray-700">Analysis Results</h3>
+                {analysis && !analysis.error && (
+                  <div className="space-y-6">
                     <div className="text-center">
-                      <p className="text-lg font-medium">Overall Assessment:</p>
-                      <p className={`text-5xl font-bold ${getOverallColor(analysis.overall)}`}>
-                        {analysis.overall.charAt(0).toUpperCase() + analysis.overall.slice(1)}
-                      </p>
-                      <p className="text-sm text-gray-500">Score: {analysis.score}%</p>
+                      <h3 className="text-2xl font-semibold text-gray-700 mb-4">Your Quote Grade</h3>
+                      <div className={`inline-block p-6 rounded-lg border-2 ${getGradeColor(analysis.grade)}`}>
+                        <div className="text-6xl font-bold mb-2">{analysis.grade || 'N/A'}</div>
+                        <p className="text-lg font-medium">{getGradeDescription(analysis.grade)}</p>
+                      </div>
+                      
                       {analysis.price_per_kw && (
-                        <p className="text-sm text-gray-500">Price: £{analysis.price_per_kw}/kW</p>
+                        <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+                          <p className="text-lg font-semibold text-gray-700">
+                            £{analysis.price_per_kw}/kW
+                          </p>
+                          <p className="text-sm text-gray-600">Price per kilowatt</p>
+                        </div>
                       )}
                     </div>
 
-                    <div className="space-y-2">
-                      <h4 className="text-md font-semibold text-gray-700">Breakdown:</h4>
-                      <ul className="list-disc list-inside text-gray-700">
-                        <li>Price: <span className={getBreakdownColor(analysis.breakdown.price)}>{analysis.breakdown.price}</span></li>
-                        <li>Panel Output: <span className={getBreakdownColor(analysis.breakdown.panelOutput)}>{analysis.breakdown.panelOutput}</span></li>
-                        <li>Panel Brand: <span className={getBreakdownColor(analysis.breakdown.panelBrand)}>{analysis.breakdown.panelBrand}</span></li>
-                        {formData.hasBattery === 'yes' && analysis.breakdown.batteryBrand && (
-                          <li>Battery Brand: <span className={getBreakdownColor(analysis.breakdown.batteryBrand)}>{analysis.breakdown.batteryBrand}</span></li>
-                        )}
-                        <li>System Size: <span className={getBreakdownColor(analysis.breakdown.systemSize)}>{analysis.breakdown.systemSize}</span></li>
+                    {/* Upgrade Teaser */}
+                    <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg border border-blue-200">
+                      <h4 className="text-lg font-semibold text-gray-900 mb-3">🔓 Want More Details?</h4>
+                      <p className="text-gray-700 mb-4">
+                        Get detailed breakdown including:
+                      </p>
+                      <ul className="text-sm text-gray-600 space-y-1 mb-4">
+                        <li>• Component quality analysis</li>
+                        <li>• Installer background check</li>
+                        <li>• Negotiation strategies</li>
+                        <li>• Alternative recommendations</li>
+                        <li>• Contract red flag detection</li>
                       </ul>
+                      <Button 
+                        onClick={() => setCurrentPage('login')}
+                        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                      >
+                        Upgrade for Full Analysis - £9.99
+                      </Button>
                     </div>
+                  </div>
+                )}
 
-                    <div className="space-y-2">
-                      <h4 className="text-md font-semibold text-gray-700">Recommendations:</h4>
-                      <ul className="list-disc list-inside text-gray-700">
-                        {analysis.recommendations.map((rec, index) => (
-                          <li key={index}>{rec}</li>
-                        ))}
-                      </ul>
+                {analysis && analysis.error && (
+                  <div className="space-y-6">
+                    <div className="bg-red-50 border border-red-200 p-6 rounded-lg">
+                      <h3 className="text-lg font-semibold text-red-800 mb-2">Analysis Error</h3>
+                      <p className="text-red-700">{analysis.message}</p>
+                      <Button 
+                        onClick={analyzeQuote} 
+                        className="mt-4 bg-red-600 hover:bg-red-700"
+                      >
+                        Try Again
+                      </Button>
                     </div>
                   </div>
                 )}
@@ -429,8 +399,46 @@ function App() {
         </div>
       </section>
 
+      {/* Features Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Choose Solar✓erify?</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Independent analysis you can trust, with no hidden agendas or installer partnerships.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="bg-teal-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl">⚡</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Instant Analysis</h3>
+              <p className="text-gray-600">Get professional-grade analysis in seconds, not days. No waiting for callbacks or appointments.</p>
+            </div>
+
+            <div className="text-center">
+              <div className="bg-teal-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl">🔍</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Independent & Unbiased</h3>
+              <p className="text-gray-600">We don't sell solar or take commissions. Our only goal is helping you make the right decision.</p>
+            </div>
+
+            <div className="text-center">
+              <div className="bg-teal-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl">📊</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Real UK Data</h3>
+              <p className="text-gray-600">Analysis based on thousands of real UK installations and current market pricing data.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Contact Section */}
-      <section id="contact" className="py-16 bg-white">
+      <section id="contact" className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Get In Touch</h2>
@@ -462,16 +470,16 @@ function App() {
               <h3 className="text-xl font-semibold text-gray-900 mb-4">Common Questions</h3>
               <div className="space-y-3">
                 <div>
-                  <h4 className="font-medium text-gray-900">Is the analysis really free?</h4>
-                  <p className="text-gray-600 text-sm">Yes, basic analysis is completely free with no hidden costs.</p>
+                  <h4 className="font-medium text-gray-900">Is the basic analysis really free?</h4>
+                  <p className="text-gray-600 text-sm">Yes, you get your A-F grade completely free with no hidden costs.</p>
                 </div>
                 <div>
                   <h4 className="font-medium text-gray-900">How accurate is your analysis?</h4>
                   <p className="text-gray-600 text-sm">95%+ accuracy based on real UK market data and thousands of installations.</p>
                 </div>
                 <div>
-                  <h4 className="font-medium text-gray-900">Do you work with installers?</h4>
-                  <p className="text-gray-600 text-sm">No, we're completely independent with no installer partnerships.</p>
+                  <h4 className="font-medium text-gray-900">What's included in the premium analysis?</h4>
+                  <p className="text-gray-600 text-sm">Detailed component analysis, installer checks, negotiation tips, and alternative recommendations.</p>
                 </div>
               </div>
             </div>
@@ -528,24 +536,24 @@ function App() {
             <div className="bg-teal-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-xl font-bold text-teal-600">1</span>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">Enter Quote Details</h3>
-            <p className="text-gray-700 text-center">Simply enter your system size, battery capacity, and total quote price. Takes less than 30 seconds.</p>
+            <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">Enter 3 Simple Details</h3>
+            <p className="text-gray-700 text-center">System size, battery inclusion, and total price. Takes 30 seconds.</p>
           </div>
 
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="bg-teal-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-xl font-bold text-teal-600">2</span>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">Instant Analysis</h3>
-            <p className="text-gray-700 text-center">Our algorithm compares your quote against thousands of real UK installations and current market data.</p>
+            <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">Get Your A-F Grade</h3>
+            <p className="text-gray-700 text-center">Instant analysis comparing your quote to thousands of UK installations.</p>
           </div>
 
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="bg-teal-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-xl font-bold text-teal-600">3</span>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">Get Your Grade</h3>
-            <p className="text-gray-700 text-center">Receive a clear A-F grade with detailed explanation of your quote's value and any red flags.</p>
+            <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">Upgrade for Details</h3>
+            <p className="text-gray-700 text-center">Get comprehensive analysis, negotiation tips, and installer background checks.</p>
           </div>
 
           <div className="bg-white rounded-lg shadow-sm p-6">
@@ -553,7 +561,7 @@ function App() {
               <span className="text-xl font-bold text-teal-600">4</span>
             </div>
             <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">Make Informed Decisions</h3>
-            <p className="text-gray-700 text-center">Use our analysis to negotiate better prices, avoid poor installers, or find better alternatives.</p>
+            <p className="text-gray-700 text-center">Use our analysis to negotiate better prices or find better alternatives.</p>
           </div>
         </div>
 
@@ -574,8 +582,22 @@ function App() {
       <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-lg shadow-sm p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Login</h1>
-            <p className="text-gray-600">Access your Solar✓erify account</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Premium Analysis</h1>
+            <p className="text-gray-600">Get detailed insights for £9.99</p>
+          </div>
+          
+          <div className="space-y-4 mb-6">
+            <div className="bg-green-50 p-4 rounded-lg">
+              <h3 className="font-semibold text-green-800 mb-2">What's Included:</h3>
+              <ul className="text-sm text-green-700 space-y-1">
+                <li>• Detailed component quality analysis</li>
+                <li>• Installer background & credential check</li>
+                <li>• Personalized negotiation strategies</li>
+                <li>• Alternative installer recommendations</li>
+                <li>• Contract red flag detection</li>
+                <li>• 30-day money-back guarantee</li>
+              </ul>
+            </div>
           </div>
           
           <div className="space-y-4">
@@ -588,7 +610,7 @@ function App() {
               <Input id="password" type="password" placeholder="••••••••" />
             </div>
             <Button className="w-full bg-teal-600 hover:bg-teal-700">
-              Sign In
+              Sign In & Upgrade - £9.99
             </Button>
           </div>
           
