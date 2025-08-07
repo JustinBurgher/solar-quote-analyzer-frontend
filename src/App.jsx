@@ -85,7 +85,8 @@ function App() {
         return
       }
 
-      const response = await fetch("https://solar-verify-backend-production.up.railway.app/api/analyze/quote", {
+      // FIXED: Correct API endpoint with hyphen
+      const response = await fetch("https://solar-verify-backend-production.up.railway.app/api/analyze-quote", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
