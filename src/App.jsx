@@ -137,35 +137,66 @@ function App() {
         email: emailSubmitted ? email : null
       }
 
-      console.log('Sending request payload:', requestPayload)
+      console.log('=== DETAILED DEBUG INFO ===')
+      console.log('Request URL:', 'https://solar-verify-backend-production.up.railway.app/api/analyze-quote')
+      console.log('Request payload:', JSON.stringify(requestPayload, null, 2))
+      console.log('Form data before conversion:', formData)
 
-      // Correct API endpoint
-      const response = await fetch("https://solar-verify-backend-production.up.railway.app/api/analyze-quote", {
+      // API endpoint with enhanced error handling
+      const apiUrl = 'https://solar-verify-backend-production.up.railway.app/api/analyze-quote'
+      
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          // Add CORS headers
+          'Access-Control-Allow-Origin': '*',
         },
+        mode: 'cors', // Explicitly set CORS mode
         body: JSON.stringify(requestPayload),
       })
 
-      const result = await response.json()
-      console.log('API response:', result)
+      console.log('Response status:', response.status)
+      console.log('Response headers:', response.headers)
+      console.log('Response ok:', response.ok)
+
+      let result
+      try {
+        const responseText = await response.text()
+        console.log('Raw response text:', responseText)
+        result = JSON.parse(responseText)
+      } catch (parseError) {
+        console.error('Failed to parse JSON response:', parseError)
+        setAnalysis({
+          error: true,
+          message: 'Server returned invalid response. Please try again.'
+        })
+        setLoading(false)
+        return
+      }
+
+      console.log('Parsed API response:', result)
 
       if (response.ok) {
         setAnalysis(result)
         setQuotesUsed(prev => prev + 1)
+        console.log('✅ Analysis successful!')
       } else {
-        console.error('Analysis failed:', result)
+        console.error('❌ Analysis failed with status:', response.status)
+        console.error('Error details:', result)
         setAnalysis({
           error: true,
-          message: result.error || 'Unable to analyze quote. Please check your data and try again.'
+          message: result.error || result.message || `Server error (${response.status}). Please try again.`
         })
       }
     } catch (err) {
-      console.error('Network error:', err)
+      console.error('❌ Network/Fetch error:', err)
+      console.error('Error name:', err.name)
+      console.error('Error message:', err.message)
       setAnalysis({
         error: true,
-        message: 'Unable to connect to analysis service. Please check your internet connection and try again.'
+        message: `Connection failed: ${err.message}. Please check your internet connection and try again.`
       })
     } finally {
       setLoading(false)
@@ -183,7 +214,9 @@ function App() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
+        mode: 'cors',
         body: JSON.stringify({ email }),
       })
 
@@ -434,7 +467,7 @@ function App() {
 
             <div className="bg-yellow-50 border-2 border-yellow-200 p-6 rounded-lg text-center">
               <div className="text-3xl font-bold text-yellow-600 mb-2">C</div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Average</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Average</h3>
               <p className="text-sm text-gray-600">Market rate pricing</p>
             </div>
 
