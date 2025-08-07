@@ -81,34 +81,84 @@ function App() {
         return
       }
 
+      // ENHANCED: Validate and convert data properly
+      const systemSizeNum = parseFloat(formData.systemSize)
+      const totalPriceNum = parseFloat(formData.totalPrice)
+      const batterySizeNum = formData.hasBattery === 'yes' ? parseFloat(formData.batterySize) : 0
+
+      // Validate required fields
+      if (!systemSizeNum || systemSizeNum <= 0) {
+        setAnalysis({
+          error: true,
+          message: 'Please enter a valid system size (greater than 0)'
+        })
+        setLoading(false)
+        return
+      }
+
+      if (!totalPriceNum || totalPriceNum <= 0) {
+        setAnalysis({
+          error: true,
+          message: 'Please enter a valid total price (greater than 0)'
+        })
+        setLoading(false)
+        return
+      }
+
+      if (formData.hasBattery === 'yes') {
+        if (!formData.batteryBrand) {
+          setAnalysis({
+            error: true,
+            message: 'Please select a battery brand'
+          })
+          setLoading(false)
+          return
+        }
+
+        if (!batterySizeNum || batterySizeNum <= 0) {
+          setAnalysis({
+            error: true,
+            message: 'Please enter a valid battery size (greater than 0)'
+          })
+          setLoading(false)
+          return
+        }
+      }
+
+      // Prepare the request payload with proper data types
+      const requestPayload = {
+        systemSize: systemSizeNum,
+        hasBattery: formData.hasBattery === 'yes',
+        batterySize: batterySizeNum,
+        batteryBrand: formData.hasBattery === 'yes' ? formData.batteryBrand : '',
+        totalPrice: totalPriceNum,
+        solarPanelName: 'Standard Panel',
+        solarPanelOutput: 400,
+        email: emailSubmitted ? email : null
+      }
+
+      console.log('Sending request payload:', requestPayload)
+
       // Correct API endpoint
       const response = await fetch("https://solar-verify-backend-production.up.railway.app/api/analyze-quote", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          systemSize: parseFloat(formData.systemSize),
-          hasBattery: formData.hasBattery === 'yes',
-          batterySize: formData.hasBattery === 'yes' ? parseFloat(formData.batterySize) : 0,
-          batteryBrand: formData.hasBattery === 'yes' ? formData.batteryBrand : '',
-          totalPrice: parseFloat(formData.totalPrice),
-          solarPanelName: 'Standard Panel',
-          solarPanelOutput: 400,
-          email: emailSubmitted ? email : null
-        }),
+        body: JSON.stringify(requestPayload),
       })
 
       const result = await response.json()
+      console.log('API response:', result)
 
       if (response.ok) {
         setAnalysis(result)
         setQuotesUsed(prev => prev + 1)
       } else {
-        console.error('Analysis failed:', result.error)
+        console.error('Analysis failed:', result)
         setAnalysis({
           error: true,
-          message: 'Unable to analyze quote. Please check your internet connection and try again.'
+          message: result.error || 'Unable to analyze quote. Please check your data and try again.'
         })
       }
     } catch (err) {
@@ -384,7 +434,7 @@ function App() {
 
             <div className="bg-yellow-50 border-2 border-yellow-200 p-6 rounded-lg text-center">
               <div className="text-3xl font-bold text-yellow-600 mb-2">C</div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Average</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Average</h3>
               <p className="text-sm text-gray-600">Market rate pricing</p>
             </div>
 
@@ -431,6 +481,8 @@ function App() {
                       id="systemSize" 
                       name="systemSize"
                       type="number" 
+                      step="0.1"
+                      min="0.1"
                       placeholder="e.g., 4.0" 
                       value={formData.systemSize} 
                       onChange={handleChange}
@@ -485,6 +537,8 @@ function App() {
                           id="batterySize" 
                           name="batterySize"
                           type="number" 
+                          step="0.1"
+                          min="0.1"
                           placeholder="e.g., 10" 
                           value={formData.batterySize} 
                           onChange={handleChange}
@@ -508,6 +562,8 @@ function App() {
                       id="totalPrice" 
                       name="totalPrice"
                       type="number" 
+                      step="1"
+                      min="1"
                       placeholder="e.g., 8000" 
                       value={formData.totalPrice} 
                       onChange={handleChange}
