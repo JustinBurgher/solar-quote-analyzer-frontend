@@ -1,9 +1,4 @@
 import { useState } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home')
@@ -85,7 +80,7 @@ function App() {
         return
       }
 
-      // FIXED: Correct API endpoint with hyphen
+      // Correct API endpoint
       const response = await fetch("https://solar-verify-backend-production.up.railway.app/api/analyze-quote", {
         method: 'POST',
         headers: {
@@ -97,8 +92,8 @@ function App() {
           batterySize: formData.hasBattery === 'yes' ? parseFloat(formData.batterySize) : 0,
           batteryBrand: formData.hasBattery === 'yes' ? formData.batteryBrand : '',
           totalPrice: parseFloat(formData.totalPrice),
-          solarPanelName: 'Standard Panel', // Default for simplified form
-          solarPanelOutput: 400, // Default panel output
+          solarPanelName: 'Standard Panel',
+          solarPanelOutput: 400,
           email: emailSubmitted ? email : null
         }),
       })
@@ -222,14 +217,16 @@ function App() {
 
           <div className="space-y-4">
             <div>
-              <Label htmlFor="email">Email Address</Label>
-              <Input
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                Email Address
+              </label>
+              <input
                 id="email"
                 type="email"
                 placeholder="your@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
               />
             </div>
 
@@ -243,19 +240,18 @@ function App() {
             </div>
 
             <div className="flex gap-3">
-              <Button
+              <button
                 onClick={submitEmail}
-                className="flex-1 bg-teal-600 hover:bg-teal-700"
+                className="flex-1 bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
               >
                 Get 2 More Free Quotes
-              </Button>
-              <Button
+              </button>
+              <button
                 onClick={() => setShowEmailModal(false)}
-                variant="outline"
-                className="flex-1"
+                className="flex-1 border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 rounded-md transition-colors"
               >
                 Maybe Later
-              </Button>
+              </button>
             </div>
           </div>
         </div>
@@ -417,68 +413,75 @@ function App() {
             </p>
           </div>
 
-          <Card className="shadow-2xl border-0 overflow-hidden">
-            <CardHeader className="bg-teal-600 text-white">
-              <CardTitle className="text-2xl font-bold">Solar Quote Details</CardTitle>
-              <CardDescription className="text-teal-100">Enter your quote information for instant analysis</CardDescription>
-            </CardHeader>
-            <CardContent className="p-8">
+          <div className="bg-white rounded-lg shadow-2xl overflow-hidden">
+            <div className="bg-teal-600 text-white p-6">
+              <h3 className="text-2xl font-bold">Solar Quote Details</h3>
+              <p className="text-teal-100">Enter your quote information for instant analysis</p>
+            </div>
+            <div className="p-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="space-y-6">
                   <div className="space-y-2">
-                    <Label htmlFor="systemSize">System Size (kW) *</Label>
-                    <Input 
+                    <label htmlFor="systemSize" className="block text-sm font-medium text-gray-700">
+                      System Size (kW) *
+                    </label>
+                    <input 
                       id="systemSize" 
                       type="number" 
                       placeholder="e.g., 4.0" 
                       value={formData.systemSize} 
                       onChange={handleChange}
-                      className="text-lg p-3"
+                      className="w-full px-3 py-3 text-lg border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                     />
                     <p className="text-sm text-gray-500">This should be on your quote (e.g., 4kW, 6kW, 8kW)</p>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="hasBattery">Battery Included? *</Label>
-                    <Select value={formData.hasBattery} onValueChange={(value) => handleSelectChange(value, 'hasBattery')}>
-                      <SelectTrigger className="text-lg p-3">
-                        <SelectValue placeholder="Select" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="yes">Yes, Battery Included</SelectItem>
-                        <SelectItem value="no">No Battery</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <label htmlFor="hasBattery" className="block text-sm font-medium text-gray-700">
+                      Battery Included? *
+                    </label>
+                    <select 
+                      value={formData.hasBattery} 
+                      onChange={(e) => handleSelectChange(e.target.value, 'hasBattery')}
+                      className="w-full px-3 py-3 text-lg border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                    >
+                      <option value="yes">Yes, Battery Included</option>
+                      <option value="no">No Battery</option>
+                    </select>
                   </div>
 
                   {formData.hasBattery === 'yes' && (
                     <>
                       <div className="space-y-2">
-                        <Label htmlFor="batteryBrand">Battery Brand & Model *</Label>
-                        <Select value={formData.batteryBrand} onValueChange={(value) => handleSelectChange(value, 'batteryBrand')}>
-                          <SelectTrigger className="text-lg p-3">
-                            <SelectValue placeholder="Select battery brand" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {batteryOptions.map((battery) => (
-                              <SelectItem key={battery.brand} value={battery.brand}>
-                                {battery.brand} {battery.size !== 'custom' ? `(${battery.size}kWh)` : ''}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <label htmlFor="batteryBrand" className="block text-sm font-medium text-gray-700">
+                          Battery Brand & Model *
+                        </label>
+                        <select 
+                          value={formData.batteryBrand} 
+                          onChange={(e) => handleSelectChange(e.target.value, 'batteryBrand')}
+                          className="w-full px-3 py-3 text-lg border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                        >
+                          <option value="">Select battery brand</option>
+                          {batteryOptions.map((battery) => (
+                            <option key={battery.brand} value={battery.brand}>
+                              {battery.brand} {battery.size !== 'custom' ? `(${battery.size}kWh)` : ''}
+                            </option>
+                          ))}
+                        </select>
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="batterySize">Battery Size (kWh) *</Label>
-                        <Input 
+                        <label htmlFor="batterySize" className="block text-sm font-medium text-gray-700">
+                          Battery Size (kWh) *
+                        </label>
+                        <input 
                           id="batterySize" 
                           type="number" 
                           placeholder="e.g., 10" 
                           value={formData.batterySize} 
                           onChange={handleChange}
-                          className="text-lg p-3"
                           disabled={formData.batteryBrand && formData.batteryBrand !== 'Other (specify)'}
+                          className="w-full px-3 py-3 text-lg border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 disabled:bg-gray-100"
                         />
                         <p className="text-sm text-gray-500">
                           {formData.batteryBrand && formData.batteryBrand !== 'Other (specify)' 
@@ -490,29 +493,34 @@ function App() {
                   )}
 
                   <div className="space-y-2">
-                    <Label htmlFor="totalPrice">Total Price (£) *</Label>
-                    <Input 
+                    <label htmlFor="totalPrice" className="block text-sm font-medium text-gray-700">
+                      Total Price (£) *
+                    </label>
+                    <input 
                       id="totalPrice" 
                       type="number" 
                       placeholder="e.g., 8000" 
                       value={formData.totalPrice} 
                       onChange={handleChange}
-                      className="text-lg p-3"
+                      className="w-full px-3 py-3 text-lg border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                     />
                     <p className="text-sm text-gray-500">The total amount you'll pay (including VAT)</p>
                   </div>
 
                   <div className="flex gap-4 mt-8">
-                    <Button 
+                    <button 
                       onClick={analyzeQuote} 
                       disabled={loading || !formData.systemSize || !formData.totalPrice || (formData.hasBattery === 'yes' && (!formData.batteryBrand || !formData.batterySize))} 
-                      className="flex-1 py-4 text-lg bg-teal-600 hover:bg-teal-700"
+                      className="flex-1 py-4 text-lg bg-teal-600 hover:bg-teal-700 disabled:bg-gray-400 text-white font-medium rounded-md transition-colors"
                     >
                       {loading ? 'Analyzing...' : 'Get My Grade Free'}
-                    </Button>
-                    <Button onClick={resetForm} variant="outline" className="flex-1 py-4 text-lg">
+                    </button>
+                    <button 
+                      onClick={resetForm} 
+                      className="flex-1 py-4 text-lg border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-md transition-colors"
+                    >
                       Reset
-                    </Button>
+                    </button>
                   </div>
                 </div>
 
@@ -548,12 +556,12 @@ function App() {
                         <li>• Alternative recommendations</li>
                         <li>• Contract red flag detection</li>
                       </ul>
-                      <Button 
+                      <button 
                         onClick={() => setCurrentPage('login')}
-                        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-3 px-4 rounded-md transition-colors"
                       >
                         Upgrade for Full Analysis - £9.99
-                      </Button>
+                      </button>
                     </div>
                   </div>
                 )}
@@ -563,18 +571,18 @@ function App() {
                     <div className="bg-red-50 border border-red-200 p-6 rounded-lg">
                       <h3 className="text-lg font-semibold text-red-800 mb-2">Analysis Error</h3>
                       <p className="text-red-700">{analysis.message}</p>
-                      <Button 
+                      <button 
                         onClick={analyzeQuote} 
-                        className="mt-4 bg-red-600 hover:bg-red-700"
+                        className="mt-4 bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
                       >
                         Try Again
-                      </Button>
+                      </button>
                     </div>
                   </div>
                 )}
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -781,16 +789,26 @@ function App() {
           
           <div className="space-y-4">
             <div>
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="your@email.com" />
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <input 
+                id="email" 
+                type="email" 
+                placeholder="your@email.com" 
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+              />
             </div>
             <div>
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" placeholder="••••••••" />
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <input 
+                id="password" 
+                type="password" 
+                placeholder="••••••••" 
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+              />
             </div>
-            <Button className="w-full bg-teal-600 hover:bg-teal-700">
+            <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md transition-colors">
               Sign In & Upgrade - £9.99
-            </Button>
+            </button>
           </div>
           
           <div className="text-center mt-6">
