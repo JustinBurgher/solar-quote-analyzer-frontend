@@ -46,14 +46,15 @@ function App() {
     }))
   }
 
-  const handleSelectChange = (value, id) => {
+  const handleSelectChange = (e, fieldName) => {
+    const value = e.target.value
     setFormData(prevData => ({
       ...prevData,
-      [id]: value
+      [fieldName]: value
     }))
     
     // Auto-fill battery size when brand is selected
-    if (id === 'batteryBrand') {
+    if (fieldName === 'batteryBrand') {
       const selectedBattery = batteryOptions.find(b => b.brand === value)
       if (selectedBattery && selectedBattery.size !== 'custom') {
         setFormData(prevData => ({
@@ -217,11 +218,12 @@ function App() {
 
           <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="modal-email" className="block text-sm font-medium text-gray-700 mb-1">
                 Email Address
               </label>
               <input
-                id="email"
+                id="modal-email"
+                name="modal-email"
                 type="email"
                 placeholder="your@email.com"
                 value={email}
@@ -427,6 +429,7 @@ function App() {
                     </label>
                     <input 
                       id="systemSize" 
+                      name="systemSize"
                       type="number" 
                       placeholder="e.g., 4.0" 
                       value={formData.systemSize} 
@@ -441,8 +444,10 @@ function App() {
                       Battery Included? *
                     </label>
                     <select 
+                      id="hasBattery"
+                      name="hasBattery"
                       value={formData.hasBattery} 
-                      onChange={(e) => handleSelectChange(e.target.value, 'hasBattery')}
+                      onChange={(e) => handleSelectChange(e, 'hasBattery')}
                       className="w-full px-3 py-3 text-lg border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                     >
                       <option value="yes">Yes, Battery Included</option>
@@ -457,8 +462,10 @@ function App() {
                           Battery Brand & Model *
                         </label>
                         <select 
+                          id="batteryBrand"
+                          name="batteryBrand"
                           value={formData.batteryBrand} 
-                          onChange={(e) => handleSelectChange(e.target.value, 'batteryBrand')}
+                          onChange={(e) => handleSelectChange(e, 'batteryBrand')}
                           className="w-full px-3 py-3 text-lg border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                         >
                           <option value="">Select battery brand</option>
@@ -476,6 +483,7 @@ function App() {
                         </label>
                         <input 
                           id="batterySize" 
+                          name="batterySize"
                           type="number" 
                           placeholder="e.g., 10" 
                           value={formData.batterySize} 
@@ -498,6 +506,7 @@ function App() {
                     </label>
                     <input 
                       id="totalPrice" 
+                      name="totalPrice"
                       type="number" 
                       placeholder="e.g., 8000" 
                       value={formData.totalPrice} 
@@ -789,18 +798,20 @@ function App() {
           
           <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <label htmlFor="login-email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
               <input 
-                id="email" 
+                id="login-email" 
+                name="login-email"
                 type="email" 
                 placeholder="your@email.com" 
                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <label htmlFor="login-password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
               <input 
-                id="password" 
+                id="login-password" 
+                name="login-password"
                 type="password" 
                 placeholder="••••••••" 
                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
