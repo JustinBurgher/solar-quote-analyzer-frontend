@@ -1,934 +1,1029 @@
-import { useState } from 'react'
-
-function App() {
-  const [currentPage, setCurrentPage] = useState('home')
-  const [formData, setFormData] = useState({
-    systemSize: '',
-    hasBattery: 'no',
-    batterySize: '',
-    batteryBrand: '',
-    totalPrice: ''
-  })
-  const [analysis, setAnalysis] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [showEmailModal, setShowEmailModal] = useState(false)
-  const [email, setEmail] = useState('')
-  const [emailSubmitted, setEmailSubmitted] = useState(false)
-  const [quotesUsed, setQuotesUsed] = useState(0)
-
-  // UK market battery brands with sizes
-  const batteryOptions = [
-    { brand: 'Tesla Powerwall 2', size: '13.5' },
-    { brand: 'Tesla Powerwall 3', size: '13.5' },
-    { brand: 'GivEnergy All in One', size: '9.5' },
-    { brand: 'GivEnergy Battery', size: '5.2' },
-    { brand: 'Fox ESS ECS2900', size: '2.9' },
-    { brand: 'Fox ESS ECS4100', size: '4.1' },
-    { brand: 'SolarEdge Home Battery', size: '9.7' },
-    { brand: 'SolaX Triple Power', size: '5.8' },
-    { brand: 'Growatt ARK XH', size: '6.5' },
-    { brand: 'Huawei LUNA2000', size: '5' },
-    { brand: 'EcoFlow PowerOcean', size: '5' },
-    { brand: 'Myenergi Libbi', size: '5' },
-    { brand: 'Enphase IQ Battery 5P', size: '5' },
-    { brand: 'Sungrow SBR', size: '9.6' },
-    { brand: 'LG Chem RESU', size: '9.8' },
-    { brand: 'Pylontech US3000C', size: '3.5' },
-    { brand: 'BYD Battery-Box Premium', size: '10.24' },
-    { brand: 'Other (specify)', size: 'custom' }
-  ]
-
-  const handleChange = (e) => {
-    const { id, value } = e.target
-    setFormData(prevData => ({
-      ...prevData,
-      [id]: value
-    }))
-  }
-
-  const handleSelectChange = (e, fieldName) => {
-    const value = e.target.value
-    setFormData(prevData => ({
-      ...prevData,
-      [fieldName]: value
-    }))
-    
-    // Auto-fill battery size when brand is selected
-    if (fieldName === 'batteryBrand') {
-      const selectedBattery = batteryOptions.find(b => b.brand === value)
-      if (selectedBattery && selectedBattery.size !== 'custom') {
-        setFormData(prevData => ({
-          ...prevData,
-          batterySize: selectedBattery.size
-        }))
-      } else if (selectedBattery && selectedBattery.size === 'custom') {
-        setFormData(prevData => ({
-          ...prevData,
-          batterySize: ''
-        }))
-      }
-    }
-  }
-
-  const analyzeQuote = async () => {
-    setLoading(true)
-    
-    try {
-      // Check if this is the second quote and email not provided
-      if (quotesUsed >= 1 && !emailSubmitted) {
-        setShowEmailModal(true)
-        setLoading(false)
-        return
-      }
-
-      // ENHANCED: Validate and convert data properly
-      const systemSizeNum = parseFloat(formData.systemSize)
-      const totalPriceNum = parseFloat(formData.totalPrice)
-      const batterySizeNum = formData.hasBattery === 'yes' ? parseFloat(formData.batterySize) : 0
-
-      // Validate required fields
-      if (!systemSizeNum || systemSizeNum <= 0) {
-        setAnalysis({
-          error: true,
-          message: 'Please enter a valid system size (greater than 0)'
-        })
-        setLoading(false)
-        return
-      }
-
-      if (!totalPriceNum || totalPriceNum <= 0) {
-        setAnalysis({
-          error: true,
-          message: 'Please enter a valid total price (greater than 0)'
-        })
-        setLoading(false)
-        return
-      }
-
-      if (formData.hasBattery === 'yes') {
-        if (!formData.batteryBrand) {
-          setAnalysis({
-            error: true,
-            message: 'Please select a battery brand'
-          })
-          setLoading(false)
-          return
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Verify - Don't Get Ripped Off on Solar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #0d9488 0%, #14b8a6 50%, #5eead4 100%);
         }
-
-        if (!batterySizeNum || batterySizeNum <= 0) {
-          setAnalysis({
-            error: true,
-            message: 'Please enter a valid battery size (greater than 0)'
-          })
-          setLoading(false)
-          return
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .tab-button.active { background-color: #14b8a6; color: white; }
+        .tab-button { background-color: #f8fafc; color: #475569; }
+        .size-button { 
+            transition: all 0.2s; 
+            border: 2px solid #e2e8f0;
+            background-color: #ffffff;
         }
-      }
-
-      // Prepare the request payload with proper data types
-      const requestPayload = {
-        systemSize: systemSizeNum,
-        hasBattery: formData.hasBattery === 'yes',
-        batterySize: batterySizeNum,
-        batteryBrand: formData.hasBattery === 'yes' ? formData.batteryBrand : '',
-        totalPrice: totalPriceNum,
-        solarPanelName: 'Standard Panel',
-        solarPanelOutput: 400,
-        email: emailSubmitted ? email : null
-      }
-
-      console.log('=== DETAILED DEBUG INFO ===')
-      console.log('Request URL:', 'https://solar-verify-backend-production.up.railway.app/api/analyze-quote')
-      console.log('Request payload:', JSON.stringify(requestPayload, null, 2))
-      console.log('Form data before conversion:', formData)
-
-      // API endpoint with enhanced error handling
-      const apiUrl = 'https://solar-verify-backend-production.up.railway.app/api/analyze-quote'
-      
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          // Add CORS headers
-          'Access-Control-Allow-Origin': '*',
-        },
-        mode: 'cors', // Explicitly set CORS mode
-        body: JSON.stringify(requestPayload),
-      })
-
-      console.log('Response status:', response.status)
-      console.log('Response headers:', response.headers)
-      console.log('Response ok:', response.ok)
-
-      let result
-      try {
-        const responseText = await response.text()
-        console.log('Raw response text:', responseText)
-        result = JSON.parse(responseText)
-      } catch (parseError) {
-        console.error('Failed to parse JSON response:', parseError)
-        setAnalysis({
-          error: true,
-          message: 'Server returned invalid response. Please try again.'
-        })
-        setLoading(false)
-        return
-      }
-
-      console.log('Parsed API response:', result)
-
-      if (response.ok) {
-        setAnalysis(result)
-        setQuotesUsed(prev => prev + 1)
-        console.log('✅ Analysis successful!')
-      } else {
-        console.error('❌ Analysis failed with status:', response.status)
-        console.error('Error details:', result)
-        setAnalysis({
-          error: true,
-          message: result.error || result.message || `Server error (${response.status}). Please try again.`
-        })
-      }
-    } catch (err) {
-      console.error('❌ Network/Fetch error:', err)
-      console.error('Error name:', err.name)
-      console.error('Error message:', err.message)
-      setAnalysis({
-        error: true,
-        message: `Connection failed: ${err.message}. Please check your internet connection and try again.`
-      })
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const submitEmail = async () => {
-    if (!email || !email.includes('@')) {
-      alert('Please enter a valid email address')
-      return
-    }
-
-    try {
-      const response = await fetch("https://solar-verify-backend-production.up.railway.app/api/register-email", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        mode: 'cors',
-        body: JSON.stringify({ email }),
-      })
-
-      if (response.ok) {
-        setEmailSubmitted(true)
-        setShowEmailModal(false)
-        // Now proceed with the analysis
-        analyzeQuote()
-      } else {
-        alert('Failed to register email. Please try again.')
-      }
-    } catch (err) {
-      console.error('Email registration error:', err)
-      alert('Failed to register email. Please try again.')
-    }
-  }
-
-  const resetForm = () => {
-    setFormData({
-      systemSize: '',
-      hasBattery: 'no',
-      batterySize: '',
-      batteryBrand: '',
-      totalPrice: ''
-    })
-    setAnalysis(null)
-  }
-
-  const getGradeColor = (grade) => {
-    switch (grade?.toUpperCase()) {
-      case 'A':
-        return 'text-green-600 bg-green-50 border-green-200'
-      case 'B':
-        return 'text-blue-600 bg-blue-50 border-blue-200'
-      case 'C':
-        return 'text-yellow-600 bg-yellow-50 border-yellow-200'
-      case 'D':
-        return 'text-orange-600 bg-orange-50 border-orange-200'
-      case 'F':
-        return 'text-red-600 bg-red-50 border-red-200'
-      default:
-        return 'text-gray-600 bg-gray-50 border-gray-200'
-    }
-  }
-
-  const getGradeDescription = (grade) => {
-    switch (grade?.toUpperCase()) {
-      case 'A':
-        return 'Excellent value - this is a competitive quote'
-      case 'B':
-        return 'Good value with minor areas for improvement'
-      case 'C':
-        return 'Average market pricing'
-      case 'D':
-        return 'Overpriced - you can likely find better deals'
-      case 'F':
-        return 'Avoid - significant red flags detected'
-      default:
-        return 'Unable to determine grade'
-    }
-  }
-
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
-
-  const renderEmailModal = () => {
-    if (!showEmailModal) return null
-
-    return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-          <div className="text-center mb-6">
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">Get 2 More Free Quotes!</h3>
-            <p className="text-gray-600">
-              You've used your first free analysis. Enter your email to get 2 more free quote analyses.
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="modal-email" className="block text-sm font-medium text-gray-700 mb-1">
-                Email Address
-              </label>
-              <input
-                id="modal-email"
-                name="modal-email"
-                type="email"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-              />
-            </div>
-
-            <div className="bg-gray-50 p-4 rounded-lg text-sm text-gray-600">
-              <p className="font-medium mb-2">🔒 GDPR Compliance Notice:</p>
-              <p>
-                By providing your email, you consent to us storing it securely to provide your free quote analyses. 
-                We will never share your email with third parties or send spam. You can request deletion of your 
-                data at any time by contacting hello@solarverify.co.uk.
-              </p>
-            </div>
-
-            <div className="flex gap-3">
-              <button
-                onClick={submitEmail}
-                className="flex-1 bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
-              >
-                Get 2 More Free Quotes
-              </button>
-              <button
-                onClick={() => setShowEmailModal(false)}
-                className="flex-1 border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 rounded-md transition-colors"
-              >
-                Maybe Later
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  const renderNavigation = () => (
-    <nav className="bg-white shadow-sm border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex items-center">
-            <div className="flex-shrink-0 flex items-center">
-              <div className="logo-icon bg-teal-600 w-8 h-8 rounded-lg flex items-center justify-center mr-3">
-                <span className="text-white text-sm">🏠</span>
-              </div>
-              <button onClick={() => setCurrentPage('home')} className="logo-text text-xl font-bold text-gray-900">
-                solar<span className="text-teal-600">✓</span>erify
-              </button>
-            </div>
-          </div>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
-              <button 
-                onClick={() => setCurrentPage('home')}
-                className="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Home
-              </button>
-              <button 
-                onClick={() => setCurrentPage('about')}
-                className="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                About
-              </button>
-              <button 
-                onClick={() => setCurrentPage('how-it-works')}
-                className="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                How It Works
-              </button>
-              <button 
-                onClick={() => {
-                  setCurrentPage('home')
-                  setTimeout(() => scrollToSection('analyzer'), 100)
-                }}
-                className="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Quote Analyzer
-              </button>
-              <button 
-                onClick={() => {
-                  setCurrentPage('home')
-                  setTimeout(() => scrollToSection('contact'), 100)
-                }}
-                className="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Contact
-              </button>
-              <button 
-                onClick={() => setCurrentPage('login')}
-                className="bg-teal-600 text-white hover:bg-teal-700 px-4 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Login
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
-  )
-
-  const renderHomePage = () => (
-    <div className="min-h-screen bg-gray-50">
-      {renderEmailModal()}
-      
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-teal-600 to-emerald-700 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            Stop Solar Rip-Offs Before You Sign
-          </h1>
-          <p className="text-xl md:text-2xl text-teal-100 mb-8 max-w-3xl mx-auto">
-            Get instant professional analysis of your solar quotes. Spot overpriced systems, low-quality components, and misleading claims before you sign.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button 
-              onClick={() => scrollToSection('analyzer')}
-              className="bg-white text-teal-600 hover:bg-gray-100 px-8 py-3 rounded-md text-lg font-medium transition-colors"
-            >
-              Analyze My Quote Free
-            </button>
-            <button 
-              onClick={() => scrollToSection('contact')}
-              className="border-2 border-white text-white hover:bg-white hover:text-teal-600 px-8 py-3 rounded-md text-lg font-medium transition-colors"
-            >
-              Get In Touch
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Grading System Preview */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Our A-F Grading System</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Get a clear, easy-to-understand grade for your solar quote based on real UK market data
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-5 gap-4 mb-8">
-            <div className="bg-green-50 border-2 border-green-200 p-6 rounded-lg text-center">
-              <div className="text-3xl font-bold text-green-600 mb-2">A</div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Excellent</h3>
-              <p className="text-sm text-gray-600">Outstanding value, quality components</p>
-            </div>
-
-            <div className="bg-blue-50 border-2 border-blue-200 p-6 rounded-lg text-center">
-              <div className="text-3xl font-bold text-blue-600 mb-2">B</div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Good</h3>
-              <p className="text-sm text-gray-600">Good value with minor improvements possible</p>
-            </div>
-
-            <div className="bg-yellow-50 border-2 border-yellow-200 p-6 rounded-lg text-center">
-              <div className="text-3xl font-bold text-yellow-600 mb-2">C</div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Average</h3>
-              <p className="text-sm text-gray-600">Market rate pricing</p>
-            </div>
-
-            <div className="bg-orange-50 border-2 border-orange-200 p-6 rounded-lg text-center">
-              <div className="text-3xl font-bold text-orange-600 mb-2">D</div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Poor</h3>
-              <p className="text-sm text-gray-600">Overpriced - negotiate or look elsewhere</p>
-            </div>
-
-            <div className="bg-red-50 border-2 border-red-200 p-6 rounded-lg text-center">
-              <div className="text-3xl font-bold text-red-600 mb-2">F</div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Avoid</h3>
-              <p className="text-sm text-gray-600">Significant red flags detected</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Quote Analyzer Section */}
-      <section id="analyzer" className="py-16 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Free Solar Quote Analysis
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Get your grade in 30 seconds. {emailSubmitted ? 'Unlimited analyses' : `${3 - quotesUsed} free analyses remaining`}
-            </p>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-2xl overflow-hidden">
-            <div className="bg-teal-600 text-white p-6">
-              <h3 className="text-2xl font-bold">Solar Quote Details</h3>
-              <p className="text-teal-100">Enter your quote information for instant analysis</p>
-            </div>
-            <div className="p-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div className="space-y-6">
-                  <div className="space-y-2">
-                    <label htmlFor="systemSize" className="block text-sm font-medium text-gray-700">
-                      System Size (kW) *
-                    </label>
-                    <input 
-                      id="systemSize" 
-                      name="systemSize"
-                      type="number" 
-                      step="0.1"
-                      min="0.1"
-                      placeholder="e.g., 4.0" 
-                      value={formData.systemSize} 
-                      onChange={handleChange}
-                      className="w-full px-3 py-3 text-lg border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-                    />
-                    <p className="text-sm text-gray-500">This should be on your quote (e.g., 4kW, 6kW, 8kW)</p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label htmlFor="hasBattery" className="block text-sm font-medium text-gray-700">
-                      Battery Included? *
-                    </label>
-                    <select 
-                      id="hasBattery"
-                      name="hasBattery"
-                      value={formData.hasBattery} 
-                      onChange={(e) => handleSelectChange(e, 'hasBattery')}
-                      className="w-full px-3 py-3 text-lg border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-                    >
-                      <option value="yes">Yes, Battery Included</option>
-                      <option value="no">No Battery</option>
-                    </select>
-                  </div>
-
-                  {formData.hasBattery === 'yes' && (
-                    <>
-                      <div className="space-y-2">
-                        <label htmlFor="batteryBrand" className="block text-sm font-medium text-gray-700">
-                          Battery Brand & Model *
-                        </label>
-                        <select 
-                          id="batteryBrand"
-                          name="batteryBrand"
-                          value={formData.batteryBrand} 
-                          onChange={(e) => handleSelectChange(e, 'batteryBrand')}
-                          className="w-full px-3 py-3 text-lg border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-                        >
-                          <option value="">Select battery brand</option>
-                          {batteryOptions.map((battery) => (
-                            <option key={battery.brand} value={battery.brand}>
-                              {battery.brand} {battery.size !== 'custom' ? `(${battery.size}kWh)` : ''}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-
-                      <div className="space-y-2">
-                        <label htmlFor="batterySize" className="block text-sm font-medium text-gray-700">
-                          Battery Size (kWh) *
-                        </label>
-                        <input 
-                          id="batterySize" 
-                          name="batterySize"
-                          type="number" 
-                          step="0.1"
-                          min="0.1"
-                          placeholder="e.g., 10" 
-                          value={formData.batterySize} 
-                          onChange={handleChange}
-                          disabled={formData.batteryBrand && formData.batteryBrand !== 'Other (specify)'}
-                          className="w-full px-3 py-3 text-lg border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 disabled:bg-gray-100"
-                        />
-                        <p className="text-sm text-gray-500">
-                          {formData.batteryBrand && formData.batteryBrand !== 'Other (specify)' 
-                            ? 'Auto-filled based on selected battery' 
-                            : 'Enter the battery capacity in kWh'}
-                        </p>
-                      </div>
-                    </>
-                  )}
-
-                  <div className="space-y-2">
-                    <label htmlFor="totalPrice" className="block text-sm font-medium text-gray-700">
-                      Total Price (£) *
-                    </label>
-                    <input 
-                      id="totalPrice" 
-                      name="totalPrice"
-                      type="number" 
-                      step="1"
-                      min="1"
-                      placeholder="e.g., 8000" 
-                      value={formData.totalPrice} 
-                      onChange={handleChange}
-                      className="w-full px-3 py-3 text-lg border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-                    />
-                    <p className="text-sm text-gray-500">The total amount you'll pay (including VAT)</p>
-                  </div>
-
-                  <div className="flex gap-4 mt-8">
-                    <button 
-                      onClick={analyzeQuote} 
-                      disabled={loading || !formData.systemSize || !formData.totalPrice || (formData.hasBattery === 'yes' && (!formData.batteryBrand || !formData.batterySize))} 
-                      className="flex-1 py-4 text-lg bg-teal-600 hover:bg-teal-700 disabled:bg-gray-400 text-white font-medium rounded-md transition-colors"
-                    >
-                      {loading ? 'Analyzing...' : 'Get My Grade Free'}
-                    </button>
-                    <button 
-                      onClick={resetForm} 
-                      className="flex-1 py-4 text-lg border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-md transition-colors"
-                    >
-                      Reset
-                    </button>
-                  </div>
-                </div>
-
-                {analysis && !analysis.error && (
-                  <div className="space-y-6">
-                    <div className="text-center">
-                      <h3 className="text-2xl font-semibold text-gray-700 mb-4">Your Quote Grade</h3>
-                      <div className={`inline-block p-6 rounded-lg border-2 ${getGradeColor(analysis.grade)}`}>
-                        <div className="text-6xl font-bold mb-2">{analysis.grade || 'N/A'}</div>
-                        <p className="text-lg font-medium">{getGradeDescription(analysis.grade)}</p>
-                      </div>
-                      
-                      {analysis.price_per_kw && (
-                        <div className="mt-4 p-4 bg-gray-100 rounded-lg">
-                          <p className="text-lg font-semibold text-gray-700">
-                            £{analysis.price_per_kw}/kW
-                          </p>
-                          <p className="text-sm text-gray-600">Price per kilowatt</p>
+        .size-button:hover { 
+            border-color: #14b8a6; 
+            background-color: #eff6ff;
+        }
+        .size-button.selected { 
+            background-color: #14b8a6; 
+            color: white; 
+            border-color: #14b8a6;
+        }
+        .custom-input { display: none; }
+        .custom-input.active { display: block; }
+        .battery-models { display: none; }
+        .battery-models.active { display: block; }
+        .consultation-step { display: none; }
+        .consultation-step.active { display: block; }
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+        .consultation-option {
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .consultation-option:hover {
+            border-color: #14b8a6 !important;
+            background-color: #eff6ff !important;
+        }
+        .consultation-option.selected {
+            border-color: #14b8a6 !important;
+            background-color: #eff6ff !important;
+        }
+        .recommendation-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+        .insight-card {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 1px solid #0ea5e9;
+        }
+        .tips-card {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 1px solid #22c55e;
+        }
+        .steps-card {
+            background: linear-gradient(135deg, #fefce8 0%, #fef3c7 100%);
+            border: 1px solid #eab308;
+        }
+        .system-icon {
+            width: 3rem;
+            height: 3rem;
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .confidence-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        .premium-teaser {
+            position: relative;
+            overflow: hidden;
+        }
+        .premium-teaser::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #14b8a6, #3b82f6, #8b5cf6, #ec4899);
+            background-size: 200% 100%;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .mobile-py-12 {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+        @media (max-width: 768px) {
+            .mobile-py-12 {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+            .mobile-card {
+                margin: 0 1rem;
+                padding: 1.5rem;
+            }
+            .mobile-grid {
+                grid-template-columns: 1fr;
+            }
+            .mobile-text-sm {
+                font-size: 0.875rem;
+            }
+            .mobile-text-lg {
+                font-size: 1rem;
+            }
+            .mobile-button {
+                padding: 0.625rem 1.25rem;
+                font-size: 0.875rem;
+            }
+        }
+        
+        /* Email gate styles */
+        .email-gate {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border: 2px solid #3b82f6;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        /* Results styles */
+        .results-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: #f9fafb;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .grade-badge {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .grade-a { background-color: #10b981; color: white; }
+        .grade-b { background-color: #f59e0b; color: white; }
+        .grade-c { background-color: #ef4444; color: white; }
+        .grade-d { background-color: #dc2626; color: white; }
+        .grade-f { background-color: #7f1d1d; color: white; }
+        
+        .upgrade-prompt {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        /* Pricing section styles */
+        .pricing-dark {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        }
+        
+        .pricing-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid #334155;
+            border-radius: 1rem;
+            padding: 2rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-4px);
+            border-color: #14b8a6;
+        }
+        
+        .pricing-card.popular {
+            border: 2px solid #14b8a6;
+            transform: scale(1.05);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #14b8a6;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .pricing-icon {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .icon-basic { background: #14b8a6; }
+        .icon-pro { background: #ef4444; }
+        .icon-complete { background: #f59e0b; }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+        }
+        
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            color: #cbd5e1;
+        }
+        
+        .feature-list li.premium {
+            color: #fbbf24;
+        }
+        
+        .feature-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+        }
+        
+        .hidden { display: none; }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #14b8a6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Logo styles */
+        .logo-icon {
+            width: 2rem;
+            height: 2rem;
+            background: #14b8a6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+        }
+        
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        
+        .logo-verify {
+            color: #10b981;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="logo-icon">
+                            <span class="text-white text-sm">🏠</span>
                         </div>
-                      )}
+                        <span class="logo-text">solar<span class="logo-verify">✓</span>erify</span>
                     </div>
-
-                    {/* Upgrade Teaser */}
-                    <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg border border-blue-200">
-                      <h4 className="text-lg font-semibold text-gray-900 mb-3">🔓 Want More Details?</h4>
-                      <p className="text-gray-700 mb-4">
-                        Get detailed breakdown including:
-                      </p>
-                      <ul className="text-sm text-gray-600 space-y-1 mb-4">
-                        <li>• Component quality analysis</li>
-                        <li>• Installer background check</li>
-                        <li>• Negotiation strategies</li>
-                        <li>• Alternative recommendations</li>
-                        <li>• Contract red flag detection</li>
-                      </ul>
-                      <button 
-                        onClick={() => setCurrentPage('login')}
-                        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-3 px-4 rounded-md transition-colors"
-                      >
-                        Upgrade for Full Analysis - £9.99
-                      </button>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#home" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</a>
+                        <a href="#about" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">About</a>
+                        <a href="#analyzer" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Quote Analyzer</a>
+                        <a href="#pricing" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Pricing</a>
+                        <a href="#contact" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Contact</a>
                     </div>
-                  </div>
-                )}
-
-                {analysis && analysis.error && (
-                  <div className="space-y-6">
-                    <div className="bg-red-50 border border-red-200 p-6 rounded-lg">
-                      <h3 className="text-lg font-semibold text-red-800 mb-2">Analysis Error</h3>
-                      <p className="text-red-700">{analysis.message}</p>
-                      <button 
-                        onClick={analyzeQuote} 
-                        className="mt-4 bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
-                      >
-                        Try Again
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
+                </div>
             </div>
-          </div>
         </div>
-      </section>
+    </nav>
 
-      {/* Features Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Choose Solar✓erify?</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Independent analysis you can trust, with no hidden agendas or installer partnerships.
+    <!-- Hero Section -->
+    <section id="home" class="hero-gradient">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 mobile-py-12">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">
+                    Don't Get <span class="text-yellow-300">Ripped Off</span><br>
+                    By Solar Companies
+                </h1>
+                <p class="text-xl md:text-2xl text-teal-100 mb-8 max-w-3xl mx-auto">
+                    Get instant professional analysis of your solar quotes. Spot overpriced systems, low-quality components, and misleading claims before you sign.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#analyzer" class="bg-white text-teal-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition duration-300 mobile-button">
+                        Analyze My Quote Free
+                    </a>
+                    <a href="#pricing" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-teal-600 transition duration-300 mobile-button">
+                        View Pricing
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 mobile-py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Solar Verify?</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    The solar industry is full of overpriced quotes and misleading claims. We help you identify fair pricing, quality components, and trustworthy installers.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center p-6">
+                    <div class="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Instant Analysis</h3>
+                    <p class="text-gray-600">Upload your quote and get immediate feedback on pricing, components, and overall value within seconds.</p>
+                </div>
+                
+                <div class="text-center p-6">
+                    <div class="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Fair Pricing</h3>
+                    <p class="text-gray-600">Compare your quote against current market rates and identify if you're being overcharged for your solar system.</p>
+                </div>
+                
+                <div class="text-center p-6">
+                    <div class="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Quality Check</h3>
+                    <p class="text-gray-600">Verify component quality, warranty terms, and installer credentials to ensure you're getting a reliable system.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote Analyzer Section -->
+    <section id="analyzer" class="py-16 mobile-py-12 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl section-heading font-bold mb-4">Free Quote Analyzer</h3>
+                <p class="text-xl mobile-text-lg text-gray-600">Upload your solar quotes and get instant analysis of pricing, quality, and value</p>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-lg p-8 mobile-card">
+                <!-- Email Gate (hidden initially) -->
+                <div id="email-gate" class="email-gate hidden">
+                    <h4 class="text-xl font-bold text-blue-800 mb-3">🔓 Unlock 2 More Free Checks</h4>
+                    <p class="text-blue-700 mb-4">Enter your email to get 2 additional free quote checks plus solar tips and guides.</p>
+                    <form id="email-form" class="flex flex-col sm:flex-row gap-3">
+                        <input type="email" id="email-input" placeholder="Enter your email address" class="flex-1 px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                        <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
+                            Get Free Checks
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Tab Navigation -->
+                <div class="flex flex-wrap mb-6 border-b">
+                    <button class="tab-button active px-6 py-3 mobile-button font-semibold rounded-t-lg" onclick="switchTab('manual')">
+                        Manual Entry
+                    </button>
+                    <button class="tab-button px-6 py-3 mobile-button font-semibold rounded-t-lg" onclick="switchTab('upload')">
+                        Upload PDF
+                    </button>
+                </div>
+                
+                <!-- Manual Entry Tab -->
+                <div id="manual-tab" class="tab-content active">
+                    <form id="quote-form" class="space-y-6">
+                        <div class="grid md:grid-cols-2 mobile-grid gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">System Size</label>
+                                <div class="flex">
+                                    <input type="number" id="system-size" step="0.1" placeholder="6.5" class="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" required>
+                                    <span class="bg-gray-100 px-3 py-2 border border-l-0 border-gray-300 rounded-r-lg text-gray-600">kW</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Battery Size (Optional)</label>
+                                <div class="flex">
+                                    <input type="number" id="battery-size" step="0.1" placeholder="13.5" class="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                                    <span class="bg-gray-100 px-3 py-2 border border-l-0 border-gray-300 rounded-r-lg text-gray-600">kWh</span>
+                                </div>
+                                <small class="text-gray-500 text-sm">Leave blank if no battery</small>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Total Quote Price</label>
+                            <div class="flex">
+                                <span class="bg-gray-100 px-3 py-2 border border-r-0 border-gray-300 rounded-l-lg text-gray-600">£</span>
+                                <input type="number" id="total-price" placeholder="15000" class="flex-1 px-3 py-2 border border-gray-300 rounded-r-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" required>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-teal-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-teal-700 transition duration-300">
+                            <span id="analyze-text">Check My Quote</span>
+                            <span id="analyze-loading" class="hidden">
+                                <span class="loading"></span> Analyzing...
+                            </span>
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Upload PDF Tab -->
+                <div id="upload-tab" class="tab-content">
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                        <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Upload your solar quote</h3>
+                        <p class="text-gray-500 mb-4">Get detailed analysis with component quality, red flag detection, and professional PDF report</p>
+                        <a href="#pricing" class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition duration-300 inline-block">
+                            Choose Analysis Level
+                        </a>
+                        <p class="text-sm text-gray-400 mt-2">Starting from £14.99 - includes detailed component analysis and downloadable report</p>
+                    </div>
+                </div>
+                
+                <!-- Results Section -->
+                <div id="results" class="results-section hidden">
+                    <div class="text-center mb-6">
+                        <div id="grade-badge" class="grade-badge"></div>
+                        <div id="price-per-kw" class="text-2xl font-bold text-gray-800 mb-2"></div>
+                        <div id="verdict" class="text-lg text-gray-600"></div>
+                    </div>
+                    
+                    <!-- Additional Results - Only show what we actually know -->
+                    <div id="detailed-results" class="grid md:grid-cols-3 gap-4 mb-6 hidden">
+                        <div class="text-center p-4 bg-gray-50 rounded-lg">
+                            <div id="pricing-analysis" class="text-lg font-semibold text-teal-600 mb-1">-</div>
+                            <div class="text-sm text-gray-600">Pricing Analysis</div>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 rounded-lg">
+                            <div id="market-comparison" class="text-lg font-semibold text-teal-600 mb-1">-</div>
+                            <div class="text-sm text-gray-600">Market Comparison</div>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 rounded-lg">
+                            <div id="value-assessment" class="text-lg font-semibold text-teal-600 mb-1">-</div>
+                            <div class="text-sm text-gray-600">Value Assessment</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Upgrade Prompt - Updated messaging -->
+                    <div class="upgrade-prompt">
+                        <h4 class="text-xl font-bold text-amber-800 mb-3">🚨 Want Full Rip-Off Protection?</h4>
+                        <p class="text-amber-700 mb-4">Upload your actual quote PDF for comprehensive rip-off detection including:</p>
+                        <ul class="text-left text-amber-700 mb-4 space-y-1">
+                            <li>• Component quality red flags (cheap panels, poor inverters)</li>
+                            <li>• Installer reputation & credential check</li>
+                            <li>• Contract terms analysis & hidden fees detection</li>
+                            <li>• Price negotiation strategies & talking points</li>
+                            <li>• Professional PDF report with evidence</li>
+                        </ul>
+                        <a href="#pricing" class="bg-amber-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-amber-700 transition duration-300 inline-block">
+                            Get Full Protection
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-16 mobile-py-12 pricing-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Choose Your Protection Level</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    From basic rip-off detection to complete contract protection
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Basic Analysis -->
+                <div class="pricing-card">
+                    <div class="pricing-icon icon-basic">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white text-center mb-2">Basic Protection</h3>
+                    <div class="text-center mb-6">
+                        <div class="text-4xl font-bold text-teal-400 mb-1">£14.99</div>
+                        <div class="text-gray-400">One-time payment</div>
+                    </div>
+                    <ul class="feature-list">
+                        <li>
+                            <svg class="feature-icon text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Pricing rip-off detection
+                        </li>
+                        <li>
+                            <svg class="feature-icon text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Market comparison analysis
+                        </li>
+                        <li>
+                            <svg class="feature-icon text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Basic component quality check
+                        </li>
+                        <li>
+                            <svg class="feature-icon text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Simple PDF report
+                        </li>
+                    </ul>
+                    <button class="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition duration-300">
+                        Get Basic Protection
+                    </button>
+                </div>
+
+                <!-- Pro Analysis -->
+                <div class="pricing-card popular">
+                    <div class="popular-badge">POPULAR</div>
+                    <div class="pricing-icon icon-pro">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white text-center mb-2">Pro Protection</h3>
+                    <div class="text-center mb-6">
+                        <div class="text-4xl font-bold text-teal-400 mb-1">£29.99</div>
+                        <div class="text-gray-400">One-time payment</div>
+                    </div>
+                    <ul class="feature-list">
+                        <li>
+                            <svg class="feature-icon text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Everything in Basic
+                        </li>
+                        <li class="premium">
+                            <svg class="feature-icon text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            Contract red flag analysis
+                        </li>
+                        <li class="premium">
+                            <svg class="feature-icon text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            Expert consultation call
+                        </li>
+                        <li class="premium">
+                            <svg class="feature-icon text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            Negotiation strategies
+                        </li>
+                        <li>
+                            <svg class="feature-icon text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Detailed protection report
+                        </li>
+                    </ul>
+                    <button class="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition duration-300">
+                        Get Pro Protection
+                    </button>
+                </div>
+
+                <!-- Complete Package -->
+                <div class="pricing-card">
+                    <div class="pricing-icon icon-complete">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white text-center mb-2">Complete Protection</h3>
+                    <div class="text-center mb-6">
+                        <div class="text-4xl font-bold text-teal-400 mb-1">£49.99</div>
+                        <div class="text-gray-400">One-time payment</div>
+                    </div>
+                    <ul class="feature-list">
+                        <li>
+                            <svg class="feature-icon text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Everything in Pro
+                        </li>
+                        <li class="premium">
+                            <svg class="feature-icon text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            Multiple quote comparison
+                        </li>
+                        <li class="premium">
+                            <svg class="feature-icon text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            Priority expert support
+                        </li>
+                        <li class="premium">
+                            <svg class="feature-icon text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            6-month follow-up support
+                        </li>
+                        <li>
+                            <svg class="feature-icon text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Complete rip-off protection
+                        </li>
+                    </ul>
+                    <button class="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition duration-300">
+                        Get Complete Protection
+                    </button>
+                </div>
+            </div>
+            
+            <div class="text-center mt-8">
+                <a href="#" class="text-teal-400 hover:text-teal-300 font-medium">
+                    View detailed pricing comparison →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 mobile-py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Get In Touch</h2>
+            <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+                Have questions about your solar quote? Need help understanding the analysis? We're here to help.
             </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="bg-teal-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">⚡</span>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Instant Analysis</h3>
-              <p className="text-gray-600">Get professional-grade analysis in seconds, not days. No waiting for callbacks or appointments.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="mailto:hello@solarverify.co.uk" class="bg-teal-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-teal-700 transition duration-300 mobile-button">
+                    Email Us
+                </a>
             </div>
-
-            <div className="text-center">
-              <div className="bg-teal-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">🔍</span>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Independent & Unbiased</h3>
-              <p className="text-gray-600">We don't sell solar or take commissions. Our only goal is helping you make the right decision.</p>
-            </div>
-
-            <div className="text-center">
-              <div className="bg-teal-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">📊</span>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Real UK Data</h3>
-              <p className="text-gray-600">Analysis based on thousands of real UK installations and current market pricing data.</p>
-            </div>
-          </div>
         </div>
-      </section>
+    </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Get In Touch</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Have questions about your solar quote? Need help understanding your analysis? We're here to help.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-12">
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Contact Information</h3>
-              <div className="space-y-4">
-                <div className="flex items-center">
-                  <span className="text-teal-600 mr-3">📧</span>
-                  <span className="text-gray-600">hello@solarverify.co.uk</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="text-teal-600 mr-3">⏰</span>
-                  <span className="text-gray-600">Response within 24 hours</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="text-teal-600 mr-3">🇬🇧</span>
-                  <span className="text-gray-600">UK-based support team</span>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Common Questions</h3>
-              <div className="space-y-3">
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
                 <div>
-                  <h4 className="font-medium text-gray-900">Is the basic analysis really free?</h4>
-                  <p className="text-gray-600 text-sm">Yes, you get your A-F grade completely free. Email required after first analysis for 2 more free quotes.</p>
+                    <div class="flex items-center mb-4">
+                        <div class="logo-icon">
+                            <span class="text-white text-sm">🏠</span>
+                        </div>
+                        <span class="logo-text text-white">solar<span class="logo-verify">✓</span>erify</span>
+                    </div>
+                    <p class="text-gray-400">
+                        Professional solar quote analysis to help you make informed decisions and avoid overpriced systems.
+                    </p>
                 </div>
+                
                 <div>
-                  <h4 className="font-medium text-gray-900">How accurate is your analysis?</h4>
-                  <p className="text-gray-600 text-sm">95%+ accuracy based on real UK market data and thousands of installations.</p>
+                    <h4 class="text-lg font-semibold mb-4">Services</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#analyzer" class="hover:text-white transition duration-300">Quote Analysis</a></li>
+                        <li><a href="#pricing" class="hover:text-white transition duration-300">Pricing Plans</a></li>
+                        <li><a href="#" class="hover:text-white transition duration-300">Component Review</a></li>
+                        <li><a href="#" class="hover:text-white transition duration-300">ROI Calculator</a></li>
+                    </ul>
                 </div>
+                
                 <div>
-                  <h4 className="font-medium text-gray-900">What's included in the premium analysis?</h4>
-                  <p className="text-gray-600 text-sm">Detailed component analysis, installer checks, negotiation tips, and alternative recommendations.</p>
+                    <h4 class="text-lg font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition duration-300">Solar Guide</a></li>
+                        <li><a href="#" class="hover:text-white transition duration-300">Common Scams</a></li>
+                        <li><a href="#" class="hover:text-white transition duration-300">FAQ</a></li>
+                        <li><a href="#" class="hover:text-white transition duration-300">Blog</a></li>
+                    </ul>
                 </div>
-              </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>hello@solarverify.co.uk</li>
+                        <li>Monday - Friday: 9AM - 6PM</li>
+                    </ul>
+                </div>
             </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  )
-
-  const renderAboutPage = () => (
-    <div className="min-h-screen bg-gray-50 py-16">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">About Solar✓erify</h1>
-          <p className="text-xl text-gray-600">Independent solar quote analysis to help you avoid overpriced systems</p>
-        </div>
-        
-        <div className="bg-white rounded-lg shadow-sm p-8 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h2>
-          <p className="text-gray-700 mb-4">
-            After 7 years running my own business, I've seen how easy it is for homeowners to get taken advantage of in complex markets. 
-            The solar industry is no different - with quotes varying by tens of thousands of pounds for identical systems.
-          </p>
-          <p className="text-gray-700">
-            Solar✓erify was born from a simple mission: give UK homeowners the tools and knowledge they need to make informed 
-            decisions about solar installations, without the pressure from salespeople or hidden agendas.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h3 className="text-xl font-semibold text-gray-900 mb-3">Independent Analysis</h3>
-            <p className="text-gray-700">We don't sell solar panels or take commissions from installers. Just honest, data-driven analysis.</p>
-          </div>
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h3 className="text-xl font-semibold text-gray-900 mb-3">UK Market Data</h3>
-            <p className="text-gray-700">Real pricing and installer data from thousands of UK installations.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-
-  const renderHowItWorksPage = () => (
-    <div className="min-h-screen bg-gray-50 py-16">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">How Solar✓erify Works</h1>
-          <p className="text-xl text-gray-600">Simple, fast, and accurate solar quote analysis in just a few clicks</p>
-        </div>
-        
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <div className="bg-teal-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-xl font-bold text-teal-600">1</span>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Solar Verify. All rights reserved. | Privacy Policy | Terms of Service</p>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">Enter Quote Details</h3>
-            <p className="text-gray-700 text-center">System size, battery details, and total price. Takes 30 seconds.</p>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <div className="bg-teal-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-xl font-bold text-teal-600">2</span>
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">Get Your A-F Grade</h3>
-            <p className="text-gray-700 text-center">Instant analysis comparing your quote to thousands of UK installations.</p>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <div className="bg-teal-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-xl font-bold text-teal-600">3</span>
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">Email for More</h3>
-            <p className="text-gray-700 text-center">After your first analysis, provide email for 2 more free quotes.</p>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <div className="bg-teal-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-xl font-bold text-teal-600">4</span>
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">Upgrade for Details</h3>
-            <p className="text-gray-700 text-center">Get comprehensive analysis, negotiation tips, and installer background checks.</p>
-          </div>
         </div>
+    </footer>
 
-        <div className="text-center">
-          <button 
-            onClick={() => setCurrentPage('home')}
-            className="bg-teal-600 text-white hover:bg-teal-700 px-8 py-3 rounded-md text-lg font-medium transition-colors"
-          >
-            Try It Now
-          </button>
-        </div>
-      </div>
-    </div>
-  )
+    <script>
+        // Check count and email tracking - FIXED LOGIC
+        let checkCount = parseInt(localStorage.getItem('solarVerifyChecks') || '0');
+        let hasEmail = localStorage.getItem('solarVerifyEmail') !== null;
 
-  const renderLoginPage = () => (
-    <div className="min-h-screen bg-gray-50 py-16">
-      <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-lg shadow-sm p-8">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Premium Analysis</h1>
-            <p className="text-gray-600">Get detailed insights for £9.99</p>
-          </div>
-          
-          <div className="space-y-4 mb-6">
-            <div className="bg-green-50 p-4 rounded-lg">
-              <h3 className="font-semibold text-green-800 mb-2">What's Included:</h3>
-              <ul className="text-sm text-green-700 space-y-1">
-                <li>• Detailed component quality analysis</li>
-                <li>• Installer background & credential check</li>
-                <li>• Personalized negotiation strategies</li>
-                <li>• Alternative installer recommendations</li>
-                <li>• Contract red flag detection</li>
-                <li>• 30-day money-back guarantee</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="login-email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-              <input 
-                id="login-email" 
-                name="login-email"
-                type="email" 
-                placeholder="your@email.com" 
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-              />
-            </div>
-            <div>
-              <label htmlFor="login-password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-              <input 
-                id="login-password" 
-                name="login-password"
-                type="password" 
-                placeholder="••••••••" 
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-              />
-            </div>
-            <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md transition-colors">
-              Sign In & Upgrade - £9.99
-            </button>
-          </div>
-          
-          <div className="text-center mt-6">
-            <p className="text-gray-600">Don't have an account? <span className="text-teal-600 cursor-pointer">Sign up</span></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+        // API Configuration
+        const API_BASE_URL = 'https://solar-verify-backend-production.up.railway.app';
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {renderNavigation()}
-      {currentPage === 'home' && renderHomePage()}
-      {currentPage === 'about' && renderAboutPage()}
-      {currentPage === 'how-it-works' && renderHowItWorksPage()}
-      {currentPage === 'login' && renderLoginPage()}
-    </div>
-  )
-}
+        // Tab switching functionality
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
 
-export default App
+        // Form submission - FIXED EMAIL GATE LOGIC
+        document.getElementById('quote-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // FIXED: Check if user needs to provide email AFTER first quote
+            if (checkCount >= 1 && !hasEmail) {
+                showEmailGate();
+                return;
+            }
+            
+            // Check if user has exceeded free limit (after email provided)
+            if (checkCount >= 3) {
+                showUpgradePrompt();
+                return;
+            }
+            
+            analyzeQuote();
+        });
 
+        // Email form submission
+        document.getElementById('email-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email-input').value;
+            
+            // Register email with backend
+            registerEmail(email).then(() => {
+                // Store email and hide gate
+                localStorage.setItem('solarVerifyEmail', email);
+                hasEmail = true;
+                hideEmailGate();
+                
+                // Reset check count to give them more free checks
+                checkCount = 0;
+                localStorage.setItem('solarVerifyChecks', '0');
+                
+                // Proceed with analysis
+                analyzeQuote();
+            }).catch(error => {
+                console.error('Email registration failed:', error);
+                // Still proceed with analysis
+                localStorage.setItem('solarVerifyEmail', email);
+                hasEmail = true;
+                hideEmailGate();
+                analyzeQuote();
+            });
+        });
+
+        // Register email with backend
+        async function registerEmail(email) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/register-email`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: email })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Email registration failed');
+                }
+                
+                return await response.json();
+            } catch (error) {
+                console.error('Email registration error:', error);
+                throw error;
+            }
+        }
+
+        function showEmailGate() {
+            document.getElementById('email-gate').classList.remove('hidden');
+            document.getElementById('quote-form').style.opacity = '0.5';
+            document.getElementById('quote-form').style.pointerEvents = 'none';
+        }
+
+        function hideEmailGate() {
+            document.getElementById('email-gate').classList.add('hidden');
+            document.getElementById('quote-form').style.opacity = '1';
+            document.getElementById('quote-form').style.pointerEvents = 'auto';
+        }
+
+        function showUpgradePrompt() {
+            alert('You\'ve used all your free checks! Choose a protection level to get unlimited checks plus detailed analysis.');
+            document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Main quote analysis function - uses live API
+        async function analyzeQuote() {
+            // Show loading state
+            document.getElementById('analyze-text').classList.add('hidden');
+            document.getElementById('analyze-loading').classList.remove('hidden');
+            
+            // Get form values
+            const systemSize = parseFloat(document.getElementById('system-size').value);
+            const batterySize = parseFloat(document.getElementById('battery-size').value) || 0;
+            const totalPrice = parseFloat(document.getElementById('total-price').value);
+            
+            // Validate inputs
+            if (!systemSize || !totalPrice) {
+                alert('Please fill in System Size and Total Price');
+                resetAnalyzeButton();
+                return;
+            }
+            
+            try {
+                // Call live API
+                const response = await fetch(`${API_BASE_URL}/api/analyze-quote`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        system_size: systemSize,
+                        battery_size: batterySize,
+                        total_price: totalPrice,
+                        installer_type: 'national'
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('API request failed');
+                }
+                
+                const result = await response.json();
+                
+                // Display results from API
+                displayResults(result, systemSize, batterySize, totalPrice);
+                
+                // Track usage
+                trackUsage();
+                
+            } catch (error) {
+                console.error('API Error:', error);
+                
+                // Fallback to local analysis if API fails
+                const pricePerKw = totalPrice / systemSize;
+                const fallbackResult = calculateFallbackAnalysis(pricePerKw, systemSize, batterySize);
+                displayResults(fallbackResult, systemSize, batterySize, totalPrice);
+                trackUsage();
+            } finally {
+                resetAnalyzeButton();
+            }
+        }
+
+        function resetAnalyzeButton() {
+            document.getElementById('analyze-text').classList.remove('hidden');
+            document.getElementById('analyze-loading').classList.add('hidden');
+        }
+
+        // Fallback analysis for when API is unavailable
+        function calculateFallbackAnalysis(pricePerKw, systemSize, batterySize) {
+            let grade, verdict;
+            
+            // Basic pricing analysis
+            if (pricePerKw <= 1500) {
+                grade = 'A';
+                verdict = 'Excellent value - this is a competitive quote';
+            } else if (pricePerKw <= 2000) {
+                grade = 'B';
+                verdict = 'Fair pricing - within acceptable market range';
+            } else if (pricePerKw <= 2500) {
+                grade = 'C';
+                verdict = 'Above average pricing - consider getting more quotes';
+            } else if (pricePerKw <= 3000) {
+                grade = 'D';
+                verdict = 'Overpriced - definitely get alternative quotes';
+            } else {
+                grade = 'F';
+                verdict = 'Very overpriced - avoid this installer';
+            }
+            
+            // Adjust for battery (batteries add value)
+            if (batterySize > 0 && grade === 'B') {
+                grade = 'A';
+                verdict = 'Good value with battery storage included';
+            }
+            
+            return {
+                grade: grade,
+                verdict: verdict,
+                price_per_kw: Math.round(pricePerKw),
+                score: grade === 'A' ? 90 : grade === 'B' ? 75 : grade === 'C' ? 60 : grade === 'D' ? 45 : 30
+            };
+        }
+
+        function displayResults(data, systemSize, batterySize, totalPrice) {
+            // Calculate price per kW
+            const pricePerKw = data.price_per_kw || Math.round(totalPrice / systemSize);
+            
+            // Show results section
+            document.getElementById('results').classList.remove('hidden');
+            
+            // Display grade badge
+            const gradeBadge = document.getElementById('grade-badge');
+            gradeBadge.textContent = `Grade ${data.grade}`;
+            gradeBadge.className = `grade-badge grade-${data.grade.toLowerCase()}`;
+            
+            // Display price per kW
+            document.getElementById('price-per-kw').textContent = `£${pricePerKw} per kW`;
+            
+            // Display verdict
+            document.getElementById('verdict').textContent = data.verdict;
+            
+            // Show simplified analysis - only what we actually know
+            document.getElementById('detailed-results').classList.remove('hidden');
+            
+            // Only show pricing analysis (what we actually calculated)
+            document.getElementById('pricing-analysis').textContent = pricePerKw <= 1500 ? 'Competitive' : pricePerKw <= 2000 ? 'Fair' : pricePerKw <= 2500 ? 'High' : 'Overpriced';
+            document.getElementById('market-comparison').textContent = pricePerKw <= 1600 ? 'Below Average' : pricePerKw <= 2200 ? 'Market Rate' : 'Above Market';
+            document.getElementById('value-assessment').textContent = data.grade === 'A' || data.grade === 'B' ? 'Good Deal' : data.grade === 'C' ? 'Questionable' : 'Poor Value';
+            
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function trackUsage() {
+            // Increment check count
+            checkCount++;
+            localStorage.setItem('solarVerifyChecks', checkCount.toString());
+            
+            // Track usage with backend if possible
+            if (hasEmail) {
+                trackUsageWithBackend();
+            }
+        }
+
+        async function trackUsageWithBackend() {
+            try {
+                const email = localStorage.getItem('solarVerifyEmail');
+                if (!email) return;
+                
+                await fetch(`${API_BASE_URL}/api/track-usage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: email })
+                });
+            } catch (error) {
+                console.error('Usage tracking error:', error);
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
