@@ -163,7 +163,7 @@ const Home = () => {
     }
 
     try {
-      const response = await fetch('https://solar-verify-backend-production.up.railway.app/api/register-email', {
+      const response = await fetch('https://solar-verify-backend.onrender.com/api/register-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
