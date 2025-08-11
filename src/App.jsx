@@ -2,7 +2,7 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { useState } from "react";
 
-// Home Component with full Solar✓erify design
+// Home Component with enhanced debugging
 function Home() {
   const [formData, setFormData] = useState({
     systemSize: '',
@@ -66,41 +66,77 @@ function Home() {
     setError('');
     
     try {
+      // Enhanced data validation and conversion
+      const systemSize = parseFloat(formData.systemSize);
+      const totalPrice = parseFloat(formData.totalPrice);
+      const batterySize = formData.hasBattery === 'yes' ? parseFloat(formData.batterySize) : null;
+
+      // Validate numbers
+      if (isNaN(systemSize) || systemSize <= 0) {
+        throw new Error('Please enter a valid system size greater than 0');
+      }
+      if (isNaN(totalPrice) || totalPrice <= 0) {
+        throw new Error('Please enter a valid total price greater than 0');
+      }
+      if (formData.hasBattery === 'yes' && (isNaN(batterySize) || batterySize <= 0)) {
+        throw new Error('Please enter a valid battery size greater than 0');
+      }
+
       const payload = {
-        systemSize: parseFloat(formData.systemSize),
+        systemSize: systemSize,
         hasBattery: formData.hasBattery === 'yes',
-        batterySize: formData.hasBattery === 'yes' ? parseFloat(formData.batterySize) : null,
+        batterySize: batterySize,
         batteryBrand: formData.hasBattery === 'yes' ? formData.batteryBrand : null,
-        totalPrice: parseFloat(formData.totalPrice),
+        totalPrice: totalPrice,
         solarPanelName: "Standard Panel",
         solarPanelOutput: 400,
         email: formData.email || null
       };
 
-      console.log('Sending request to:', 'https://solar-verify-backend-production.up.railway.app/api/analyze-quote');
-      console.log('Payload:', payload);
+      console.log('=== ENHANCED DEBUG INFO ===');
+      console.log('Form Data:', formData);
+      console.log('Processed Payload:', payload);
+      console.log('API URL:', 'https://solar-verify-backend-production.up.railway.app/api/analyze-quote');
 
       const response = await fetch('https://solar-verify-backend-production.up.railway.app/api/analyze-quote', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify(payload)
       });
 
-      console.log('Response status:', response.status);
-      const data = await response.json();
-      console.log('Response data:', data);
+      console.log('Response Status:', response.status);
+      console.log('Response Headers:', Object.fromEntries(response.headers.entries()));
+
+      // Get response text first to see raw response
+      const responseText = await response.text();
+      console.log('Raw Response Text:', responseText);
+
+      let data;
+      try {
+        data = JSON.parse(responseText);
+        console.log('Parsed Response Data:', data);
+      } catch (parseError) {
+        console.error('JSON Parse Error:', parseError);
+        throw new Error(`Server returned invalid JSON: ${responseText}`);
+      }
 
       if (!response.ok) {
-        throw new Error(data.error || 'Analysis failed');
+        console.error('API Error Response:', data);
+        throw new Error(data.error || data.message || `Server error: ${response.status}`);
       }
 
       setResult(data);
       setAnalysisCount(prev => prev - 1);
+      console.log('Analysis successful!', data);
       
     } catch (err) {
-      console.error('Analysis error:', err);
+      console.error('=== ANALYSIS ERROR ===');
+      console.error('Error Type:', err.constructor.name);
+      console.error('Error Message:', err.message);
+      console.error('Full Error:', err);
       setError(err.message || 'Failed to analyze quote. Please try again.');
     } finally {
       setLoading(false);
@@ -112,14 +148,18 @@ function Home() {
     if (!formData.email) return;
 
     try {
-      // Register email with backend
-      await fetch('https://solar-verify-backend-production.up.railway.app/api/register-email', {
+      console.log('Registering email:', formData.email);
+      
+      const response = await fetch('https://solar-verify-backend-production.up.railway.app/api/register-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email: formData.email })
       });
+
+      const data = await response.json();
+      console.log('Email registration response:', data);
       
       setShowEmailModal(false);
       setAnalysisCount(3); // Reset to 3 free analyses
@@ -354,6 +394,7 @@ function Home() {
                 <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                   <div className="text-red-800 font-medium">Analysis Error</div>
                   <div className="text-red-700">{error}</div>
+                  <div className="text-xs text-red-600 mt-2">Check browser console (F12) for detailed debugging info</div>
                 </div>
               )}
 
