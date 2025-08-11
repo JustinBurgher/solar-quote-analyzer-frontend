@@ -124,7 +124,7 @@ const Home = () => {
 
       console.log('Sending enhanced request payload:', payload);
 
-      const response = await fetch('https://solar-verify-backend-production.up.railway.app/api/analyze-quote', {
+      const response = await fetch('https://solar-verify-backend.onrender.com/api/analyze-quote', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
