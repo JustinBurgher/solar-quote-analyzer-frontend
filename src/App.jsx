@@ -147,11 +147,12 @@ const EmailVerificationModal = ({ isOpen, onClose, onVerified }) => {
       
       if (response.ok) {
         setStep('success');
+        // STEP 1 FIX: Shorter success display, then auto-close and proceed
         setTimeout(() => {
           onVerified(email);
           onClose();
           resetModal();
-        }, 2000);
+        }, 1500); // Reduced from 2000ms to 1500ms for faster flow
       } else {
         setError(data.error || 'Invalid verification code');
       }
@@ -191,6 +192,21 @@ const EmailVerificationModal = ({ isOpen, onClose, onVerified }) => {
       setLoading(false);
     }
   };
+
+  // STEP 1 FIX: Auto-close modal when user clicks outside or presses escape
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+        resetModal();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -398,7 +414,7 @@ const EmailVerificationModal = ({ isOpen, onClose, onVerified }) => {
               </p>
               <div className="bg-green-50 p-4 rounded-lg">
                 <p className="text-sm text-green-700">
-                  Redirecting you back to the analyzer...
+                  Proceeding with your analysis...
                 </p>
               </div>
             </div>
@@ -428,6 +444,8 @@ const Home = () => {
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [userEmail, setUserEmail] = useState('');
   const [isVerified, setIsVerified] = useState(false);
+  // STEP 1 FIX: Add state to track if analysis is pending after email verification
+  const [pendingAnalysis, setPendingAnalysis] = useState(false);
 
   // Fetch battery options on component mount
   useEffect(() => {
@@ -504,6 +522,8 @@ const Home = () => {
     
     // Check if this is the second analysis and user needs to verify email
     if (analysisCount >= 1 && !isVerified) {
+      // STEP 1 FIX: Set pending analysis flag before showing email modal
+      setPendingAnalysis(true);
       setShowEmailModal(true);
       return;
     }
@@ -540,10 +560,14 @@ const Home = () => {
       const data = await response.json();
       setResult(data);
       setAnalysisCount(prev => prev + 1);
+      // STEP 1 FIX: Clear pending analysis flag after successful analysis
+      setPendingAnalysis(false);
       
     } catch (error) {
       console.error('Analysis error:', error);
       setError(error.message || 'Analysis failed. Please try again.');
+      // STEP 1 FIX: Clear pending analysis flag on error
+      setPendingAnalysis(false);
     } finally {
       setLoading(false);
     }
@@ -560,16 +584,21 @@ const Home = () => {
     });
     setResult(null);
     setError('');
+    // STEP 1 FIX: Clear pending analysis when resetting
+    setPendingAnalysis(false);
   };
 
   const handleEmailVerified = (email) => {
     setUserEmail(email);
     setIsVerified(true);
     setShowEmailModal(false);
-    // Automatically trigger analysis after verification
-    setTimeout(() => {
-      analyzeQuote();
-    }, 500);
+    
+    // STEP 1 FIX: Automatically trigger analysis if it was pending
+    if (pendingAnalysis) {
+      setTimeout(() => {
+        analyzeQuote();
+      }, 500);
+    }
   };
 
   const getGradeColor = (grade) => {
@@ -595,7 +624,11 @@ const Home = () => {
       {/* Email Verification Modal */}
       <EmailVerificationModal 
         isOpen={showEmailModal}
-        onClose={() => setShowEmailModal(false)}
+        onClose={() => {
+          setShowEmailModal(false);
+          // STEP 1 FIX: Clear pending analysis if user closes modal
+          setPendingAnalysis(false);
+        }}
         onVerified={handleEmailVerified}
       />
 
