@@ -40,7 +40,9 @@ const Navigation = () => {
               About
             </Link>
             <Link to="/how-it-works" className="text-gray-700 hover:text-teal-600 transition-colors">
-            <Link to="/upgrade" className="text-gray-700 hover:text-teal-600 transition-colors">Upgrade</Link>
+              Upgrade
+            </Link>
+            <Link to="/upgrade" className="text-gray-700 hover:text-teal-600 transition-colors">
               How It Works
             </Link>
             <button 
