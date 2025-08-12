@@ -1,6 +1,8 @@
-import Upgrade from './pages/Upgrade.jsx';
-import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+
+// API Base URL - Updated to use correct Railway URL
+const API_BASE_URL = 'https://solar-verify-backend-production.up.railway.app/api';
 
 // Navigation Component
 const Navigation = () => {
@@ -43,7 +45,7 @@ const Navigation = () => {
               How It Works
             </Link>
             <Link to="/upgrade" className="text-gray-700 hover:text-teal-600 transition-colors">
-             Upgrade 
+              Upgrade
             </Link>
             <button 
               onClick={() => scrollToSection('contact')}
@@ -64,7 +66,7 @@ const Navigation = () => {
   );
 };
 
-// Email Verification Modal
+// Email Verification Modal Component
 const EmailVerificationModal = ({ isOpen, onClose, onVerified }) => {
   const [step, setStep] = useState('email'); // 'email', 'verification', 'success'
   const [email, setEmail] = useState('');
@@ -72,7 +74,6 @@ const EmailVerificationModal = ({ isOpen, onClose, onVerified }) => {
   const [gdprConsent, setGdprConsent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
   const resetModal = () => {
@@ -80,28 +81,45 @@ const EmailVerificationModal = ({ isOpen, onClose, onVerified }) => {
     setEmail('');
     setVerificationCode('');
     setGdprConsent(false);
-    setError('');
     setLoading(false);
+    setError('');
     setIsAdmin(false);
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      resetModal();
+    }
+  }, [isOpen]);
+
+  // Handle escape key and outside clicks
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
 
   const handleEmailSubmit = async () => {
     setError('');
     
-    if (!email || !email.includes('@')) {
-      setError('Please enter a valid email address');
-      return;
-    }
-    
-    if (!gdprConsent) {
-      setError('Please accept our privacy policy to continue');
+    if (!email || !gdprConsent) {
+      setError('Please enter your email and accept the privacy policy');
       return;
     }
     
     setLoading(true);
     
     try {
-      const response = await fetch('https://solar-verify-backend-production.up.railway.app/api/send-verification', {
+      const response = await fetch(`${API_BASE_URL}/send-verification`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -139,7 +157,7 @@ const EmailVerificationModal = ({ isOpen, onClose, onVerified }) => {
     setLoading(true);
     
     try {
-      const response = await fetch('https://solar-verify-backend-production.up.railway.app/api/verify-email', {
+      const response = await fetch(`${API_BASE_URL}/verify-email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -176,7 +194,7 @@ const EmailVerificationModal = ({ isOpen, onClose, onVerified }) => {
     setLoading(true);
     
     try {
-      const response = await fetch('https://solar-verify-backend-production.up.railway.app/api/send-verification', {
+      const response = await fetch(`${API_BASE_URL}/send-verification`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -201,150 +219,55 @@ const EmailVerificationModal = ({ isOpen, onClose, onVerified }) => {
     }
   };
 
-  // Auto-close modal when user clicks outside or presses escape
-  useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === 'Escape') {
-        onClose();
-        resetModal();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-      return () => document.removeEventListener('keydown', handleEscape);
-    }
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
-
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
-        {/* Privacy Policy Modal */}
-        {showPrivacyPolicy && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60 p-4">
-            <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-bold">Privacy Policy</h3>
-                <button 
-                  onClick={() => setShowPrivacyPolicy(false)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  ✕
-                </button>
-              </div>
-              <div className="space-y-4 text-sm text-gray-700">
-                <h4 className="font-semibold">Data Controller</h4>
-                <p>Solar✓erify, hello@solarverify.co.uk</p>
-                
-                <h4 className="font-semibold">Legal Basis</h4>
-                <p>We process your data based on your consent under Article 6(1)(a) GDPR.</p>
-                
-                <h4 className="font-semibold">Purpose</h4>
-                <p>We collect your email to send you the Solar Buyer's Protection Guide and provide additional quote analyses.</p>
-                
-                <h4 className="font-semibold">Data Retention</h4>
-                <p>We retain your data for 3 years or until you request deletion.</p>
-                
-                <h4 className="font-semibold">Your Rights</h4>
-                <ul className="list-disc pl-5">
-                  <li>Access your data</li>
-                  <li>Rectify incorrect data</li>
-                  <li>Delete your data</li>
-                  <li>Port your data</li>
-                  <li>Withdraw consent</li>
-                </ul>
-                
-                <h4 className="font-semibold">Contact</h4>
-                <p>For data requests: hello@solarverify.co.uk</p>
-              </div>
-              <button 
-                onClick={() => setShowPrivacyPolicy(false)}
-                className="mt-4 bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        )}
+      <div className="bg-white rounded-2xl max-w-md w-full p-6 relative">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl"
+        >
+          ×
+        </button>
 
-        <div className="p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">
-              {step === 'email' && 'Unlock Additional Analyses'}
-              {step === 'verification' && 'Verify Your Email'}
-              {step === 'success' && (isAdmin ? 'Admin Access Granted!' : 'Welcome to Solar✓erify!')}
-            </h2>
-            <button 
-              onClick={() => { onClose(); resetModal(); }}
-              className="text-gray-500 hover:text-gray-700 text-xl"
-            >
-              ✕
-            </button>
-          </div>
-
-          {/* Admin Badge */}
-          {isAdmin && (
-            <div className="mb-4 bg-purple-50 border border-purple-200 rounded-lg p-3">
-              <div className="flex items-center space-x-2">
-                <span className="text-purple-600">👑</span>
-                <span className="text-sm font-semibold text-purple-800">Admin Testing Mode</span>
-              </div>
-              <p className="text-xs text-purple-600 mt-1">Unlimited analyses for testing purposes</p>
-            </div>
-          )}
-
+        <div className="space-y-6">
           {step === 'email' && (
             <div className="space-y-4">
-              <div className="bg-teal-50 p-4 rounded-lg">
-                <h3 className="font-semibold text-teal-800 mb-2">What You'll Get:</h3>
-                <ul className="text-sm text-teal-700 space-y-1">
-                  <li>✓ 2 additional free quote analyses</li>
-                  <li>✓ Solar Buyer's Protection Guide (PDF)</li>
-                  <li>✓ 20 essential questions to ask installers</li>
-                  <li>✓ Red flags to avoid</li>
-                  <li>✓ Warranty checklist</li>
-                </ul>
+              <div className="text-center">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Verify Your Email</h2>
+                <p className="text-gray-600">
+                  Get access to 2 additional free analyses and your Solar Buyer's Protection Guide
+                </p>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address *
+                  Email Address
                 </label>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-                  placeholder="your.email@example.com"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                  placeholder="your@email.com"
                 />
               </div>
 
-              <div className="space-y-3">
-                <label className="flex items-start space-x-3">
-                  <input
-                    type="checkbox"
-                    checked={gdprConsent}
-                    onChange={(e) => setGdprConsent(e.target.checked)}
-                    className="mt-1 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
-                  />
-                  <span className="text-sm text-gray-700">
-                    I consent to receive the Solar Buyer's Protection Guide and occasional solar industry insights. 
-                    I understand my data will be processed according to the{' '}
-                    <button 
-                      onClick={() => setShowPrivacyPolicy(true)}
-                      className="text-teal-600 hover:text-teal-700 underline"
-                    >
-                      Privacy Policy
-                    </button>
-                    . I can unsubscribe at any time.
-                  </span>
+              <div className="flex items-start space-x-3">
+                <input
+                  type="checkbox"
+                  id="gdpr"
+                  checked={gdprConsent}
+                  onChange={(e) => setGdprConsent(e.target.checked)}
+                  className="mt-1 h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
+                />
+                <label htmlFor="gdpr" className="text-sm text-gray-700">
+                  I agree to receive email communications and understand my data will be processed 
+                  according to the privacy policy. I can unsubscribe at any time.
                 </label>
               </div>
 
               {error && (
-                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg">
                   {error}
                 </div>
               )}
@@ -354,28 +277,26 @@ const EmailVerificationModal = ({ isOpen, onClose, onVerified }) => {
                 disabled={loading}
                 className="w-full bg-teal-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                {loading ? 'Sending...' : 'Send Verification Email'}
+                {loading ? 'Sending...' : 'Send Verification Code'}
               </button>
-
-              <div className="text-xs text-gray-500 text-center">
-                We respect your privacy and will never share your data with third parties.
-              </div>
             </div>
           )}
 
           {step === 'verification' && (
             <div className="space-y-4">
               <div className="text-center">
-                <div className="bg-teal-50 p-4 rounded-lg mb-4">
-                  <p className="text-sm text-teal-700">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Verify Your Email</h2>
+                <div className="bg-blue-50 p-4 rounded-lg mb-4">
+                  <p className="text-sm text-blue-800">
                     We've sent a 6-digit verification code to:
                   </p>
-                  <p className="font-semibold text-teal-800">{email}</p>
+                  <p className="font-semibold text-blue-900">{email}</p>
                 </div>
                 
-                <div className="bg-yellow-50 border border-yellow-200 p-3 rounded-lg mb-4">
+                <div className="bg-yellow-50 border border-yellow-200 p-3 rounded-lg">
                   <p className="text-sm text-yellow-800">
-                    <strong>Testing Mode:</strong> Check the Railway logs in your dashboard to see the verification code.
+                    <strong>Testing Mode:</strong> Check the Railway logs in your dashboard 
+                    to see the verification code.
                   </p>
                 </div>
               </div>
@@ -388,18 +309,14 @@ const EmailVerificationModal = ({ isOpen, onClose, onVerified }) => {
                   type="text"
                   value={verificationCode}
                   onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-center text-2xl font-mono tracking-widest"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-center text-2xl font-mono tracking-widest"
                   placeholder="123456"
                   maxLength="6"
                 />
               </div>
 
               {error && (
-                <div className={`border px-4 py-3 rounded ${
-                  error.includes('sent') 
-                    ? 'bg-green-50 border-green-200 text-green-700' 
-                    : 'bg-red-50 border-red-200 text-red-700'
-                }`}>
+                <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg">
                   {error}
                 </div>
               )}
@@ -478,7 +395,7 @@ const Home = () => {
 
   const fetchBatteryOptions = async () => {
     try {
-      const response = await fetch('https://solar-verify-backend-production.up.railway.app/api/battery-options');
+      const response = await fetch(`${API_BASE_URL}/battery-options`);
       if (response.ok) {
         const data = await response.json();
         setBatteryOptions(data.battery_options || []);
@@ -561,7 +478,7 @@ const Home = () => {
     setError('');
     
     try {
-      const response = await fetch('https://solar-verify-backend-production.up.railway.app/api/analyze-quote', {
+      const response = await fetch(`${API_BASE_URL}/analyze-quote`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -710,15 +627,15 @@ const Home = () => {
                 />
               </div>
 
-              {/* Battery Included */}
+              {/* Battery Checkbox */}
               <div className="flex items-center space-x-3">
                 <input
                   type="checkbox"
-                  name="has_battery"
                   id="has_battery"
+                  name="has_battery"
                   checked={formData.has_battery}
                   onChange={handleInputChange}
-                  className="w-5 h-5 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
+                  className="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                 />
                 <label htmlFor="has_battery" className="text-sm font-medium text-gray-700">
                   Battery included?
@@ -745,13 +662,13 @@ const Home = () => {
                       <option value="">Select battery brand...</option>
                       {batteryOptions.map((battery, index) => (
                         <option key={index} value={battery.brand}>
-                          {battery.brand} {battery.capacity > 0 && `(${battery.capacity}kWh)`}
+                          {battery.brand}
                         </option>
                       ))}
                     </select>
                   </div>
 
-                  {/* Number of Batteries */}
+                  {/* Battery Quantity */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Number of Batteries
@@ -768,11 +685,11 @@ const Home = () => {
                     </select>
                   </div>
 
-                  {/* Custom Capacity for "Other" */}
+                  {/* Custom Capacity Input for "Other" */}
                   {formData.battery_brand === "Other (specify capacity)" && (
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Battery Capacity per Unit (kWh) *
+                        Battery Capacity (kWh per battery) *
                       </label>
                       <input
                         type="number"
@@ -783,7 +700,7 @@ const Home = () => {
                         min="0.1"
                         required
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                        placeholder="e.g., 10.0"
+                        placeholder="e.g., 13.5"
                       />
                     </div>
                   )}
@@ -791,8 +708,8 @@ const Home = () => {
                   {/* Total Capacity Display */}
                   {calculateTotalCapacity() > 0 && (
                     <div className="bg-teal-50 p-3 rounded-lg">
-                      <p className="text-sm text-teal-800">
-                        <strong>Total Battery Capacity:</strong> {calculateTotalCapacity().toFixed(1)} kWh
+                      <p className="text-sm font-medium text-teal-900">
+                        Total Battery Capacity: {calculateTotalCapacity()} kWh
                       </p>
                     </div>
                   )}
@@ -869,8 +786,8 @@ const Home = () => {
 
                   <div className="bg-teal-50 p-4 rounded-lg">
                     <h4 className="font-semibold text-teal-900 mb-2">System Details</h4>
-                    <p className="text-teal-700">{result.system_details.system_size}kW System</p>
-                    <p className="text-sm text-teal-600">Total: £{result.system_details.total_price}</p>
+                    <p className="text-teal-700">{result.system_details.system_size} System</p>
+                    <p className="text-sm text-teal-600">Total: {result.system_details.total_price}</p>
                   </div>
                 </div>
 
@@ -908,6 +825,29 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Contact Section */}
+      <section id="contact" className="py-16 bg-gray-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-8">Get Expert Help</h2>
+          <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+            Need personalized advice? Our solar experts are here to help you make the right decision.
+          </p>
+          <div className="flex justify-center space-x-8">
+            <div className="text-center">
+              <div className="text-2xl mb-2">📧</div>
+              <a href="mailto:hello@solarverify.co.uk" className="text-teal-400 hover:text-teal-300">
+                hello@solarverify.co.uk
+              </a>
+            </div>
+          </div>
+          <div className="mt-12">
+            <button className="bg-teal-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-teal-700 transition-colors">
+              Learn More
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Email Verification Modal */}
       <EmailVerificationModal
         isOpen={showEmailModal}
@@ -917,106 +857,122 @@ const Home = () => {
         }}
         onVerified={handleEmailVerified}
       />
-
-      {/* Contact Section */}
-      <section id="contact" className="py-16 bg-gray-900 text-white">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-8">Get Expert Help</h2>
-          <p className="text-xl text-gray-300 mb-8">
-            Need personalized advice? Our solar experts are here to help you make the right decision.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-gray-800 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-4">Email Support</h3>
-              <p className="text-gray-300 mb-4">Get detailed analysis and recommendations</p>
-              <a href="mailto:hello@solarverify.co.uk" className="text-teal-400 hover:text-teal-300">
-                hello@solarverify.co.uk
-              </a>
-            </div>
-            <div className="bg-gray-800 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-4">Premium Analysis</h3>
-              <p className="text-gray-300 mb-4">Comprehensive quote review and negotiation tips</p>
-              <button className="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors">
-                Learn More
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
 
 // About Component
-const About = () => (
-  <div className="min-h-screen bg-gray-50 pt-20">
-    <div className="max-w-4xl mx-auto px-4 py-16">
-      <h1 className="text-4xl font-bold text-gray-900 mb-8">About Solar✓erify</h1>
-      <div className="prose prose-lg max-w-none">
-        <p className="text-xl text-gray-600 mb-6">
-          We're on a mission to protect homeowners from overpriced solar installations 
-          and help them make informed decisions about renewable energy.
-        </p>
-        <p className="text-gray-700 mb-6">
-          Our AI-powered analysis tool has reviewed thousands of solar quotes and can 
-          instantly tell you if you're getting a fair deal. We consider factors like 
-          system size, equipment quality, installation complexity, and regional pricing 
-          to give you an accurate assessment.
-        </p>
-        <p className="text-gray-700">
-          Don't let high-pressure sales tactics rush you into a bad deal. Get your 
-          quote verified first and negotiate from a position of knowledge.
-        </p>
+const About = () => {
+  return (
+    <div className="min-h-screen bg-gray-50 py-16">
+      <div className="max-w-4xl mx-auto px-4">
+        <h1 className="text-4xl font-bold text-gray-900 mb-8">About Solar✓erify</h1>
+        
+        <div className="bg-white rounded-lg shadow-lg p-8 space-y-6">
+          <p className="text-lg text-gray-700 leading-relaxed">
+            We're on a mission to protect homeowners from overpriced solar installations and 
+            help them make informed decisions about renewable energy.
+          </p>
+          
+          <p className="text-gray-700 leading-relaxed">
+            Our AI-powered analysis tool has reviewed thousands of solar quotes and can instantly 
+            tell you if you're getting a fair deal. We consider factors like system size, equipment 
+            quality, installation complexity, and regional pricing to give you an accurate assessment.
+          </p>
+          
+          <p className="text-gray-700 leading-relaxed">
+            Don't let high-pressure sales tactics rush you into a bad deal. Get your quote verified 
+            first and negotiate from a position of knowledge.
+          </p>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 // How It Works Component
-const HowItWorks = () => (
-  <div className="min-h-screen bg-gray-50 pt-20">
-    <div className="max-w-4xl mx-auto px-4 py-16">
-      <h1 className="text-4xl font-bold text-gray-900 mb-8">How It Works</h1>
-      <div className="space-y-8">
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <div className="flex items-center mb-4">
-            <div className="bg-teal-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">1</div>
-            <h3 className="text-xl font-semibold">Enter Your Quote Details</h3>
-          </div>
-          <p className="text-gray-700">
-            Input your system size, total price, and battery information (if included). 
-            Our form guides you through all the necessary details.
-          </p>
-        </div>
+const HowItWorks = () => {
+  return (
+    <div className="min-h-screen bg-gray-50 py-16">
+      <div className="max-w-4xl mx-auto px-4">
+        <h1 className="text-4xl font-bold text-gray-900 mb-8">How It Works</h1>
         
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <div className="flex items-center mb-4">
-            <div className="bg-teal-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">2</div>
-            <h3 className="text-xl font-semibold">AI Analysis</h3>
+        <div className="space-y-8">
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="flex items-center space-x-4 mb-4">
+              <div className="bg-teal-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold">1</div>
+              <h2 className="text-xl font-semibold">Enter Your Quote Details</h2>
+            </div>
+            <p className="text-gray-700">
+              Input your system size, total price, and battery information (if included) into our analyzer.
+            </p>
           </div>
-          <p className="text-gray-700">
-            Our algorithm compares your quote against thousands of installations, 
-            considering equipment costs, installation complexity, and regional pricing.
-          </p>
-        </div>
-        
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <div className="flex items-center mb-4">
-            <div className="bg-teal-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">3</div>
-            <h3 className="text-xl font-semibold">Get Your Grade</h3>
+          
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="flex items-center space-x-4 mb-4">
+              <div className="bg-teal-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold">2</div>
+              <h2 className="text-xl font-semibold">AI Analysis</h2>
+            </div>
+            <p className="text-gray-700">
+              Our AI compares your quote against thousands of installations, considering regional pricing, 
+              equipment quality, and market rates.
+            </p>
           </div>
-          <p className="text-gray-700">
-            Receive an instant A-F grade with detailed feedback on whether you're 
-            getting a fair deal, plus tips for negotiation.
-          </p>
+          
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="flex items-center space-x-4 mb-4">
+              <div className="bg-teal-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold">3</div>
+              <h2 className="text-xl font-semibold">Get Your Grade</h2>
+            </div>
+            <p className="text-gray-700">
+              Receive an instant A-F grade with detailed analysis of your quote's value and recommendations.
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
+
+// Upgrade Component
+const Upgrade = () => {
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState("");
+
+  async function handleClick() {
+    setBusy(true);
+    setMsg("");
+    try {
+      alert("Secure checkout coming soon. Launch price £24.99.");
+    } catch (e) {
+      setMsg("Something went wrong. Please try again.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <section className="max-w-3xl mx-auto px-6 py-16">
+      <h1 className="text-3xl font-bold mb-2">Unlock Premium</h1>
+      <p className="opacity-80 mb-6">
+        Get the full Buyer's Protection Guide: component brands, red flags, ROI chart,
+        and a downloadable PDF.
+      </p>
+      {msg && <p className="text-red-600 mb-4">{msg}</p>}
+      <button
+        onClick={handleClick}
+        disabled={busy}
+        className="px-5 py-3 rounded-xl bg-teal-600 text-white disabled:opacity-60"
+      >
+        {busy ? "Preparing…" : "Upgrade (Launch price £24.99)"}
+      </button>
+      <p className="text-sm opacity-70 mt-4">One‑off payment. Instant unlock after checkout.</p>
+    </section>
+  );
+};
 
 // Main App Component
-const App = () => {
+function App() {
   return (
     <Router>
       <div className="App">
@@ -1030,6 +986,7 @@ const App = () => {
       </div>
     </Router>
   );
-};
+}
 
 export default App;
+
