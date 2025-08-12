@@ -475,8 +475,10 @@ const Home = () => {
   const fetchBatteryOptions = async () => {
     try {
       const response = await fetch('https://solar-verify-backend-production.up.railway.app/api/battery-options');
-      const data = await response.json();
-      setBatteryOptions(data.battery_options || []);
+      if (response.ok) {
+        const data = await response.json();
+        setBatteryOptions(data.battery_options || []);
+      }
     } catch (error) {
       console.error('Failed to fetch battery options:', error);
     }
@@ -484,19 +486,35 @@ const Home = () => {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
+    
+    if (type === 'checkbox') {
+      setFormData(prev => ({
+        ...prev,
+        [name]: checked,
+        // Reset battery fields when unchecking
+        ...(name === 'has_battery' && !checked ? {
+          battery_brand: '',
+          battery_quantity: 1,
+          battery_capacity: ''
+        } : {})
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
   const handleBatteryBrandChange = (e) => {
     const selectedBrand = e.target.value;
+    const selectedBattery = batteryOptions.find(b => b.brand === selectedBrand);
+    
     setFormData(prev => ({
       ...prev,
       battery_brand: selectedBrand,
       battery_capacity: selectedBrand === "Other (specify capacity)" ? '' : 
-                      batteryOptions.find(b => b.brand === selectedBrand)?.capacity || ''
+                      selectedBattery ? selectedBattery.capacity : ''
     }));
   };
 
