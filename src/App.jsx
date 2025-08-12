@@ -40,10 +40,10 @@ const Navigation = () => {
               About
             </Link>
             <Link to="/how-it-works" className="text-gray-700 hover:text-teal-600 transition-colors">
-              Upgrade
+              How It Works
             </Link>
             <Link to="/upgrade" className="text-gray-700 hover:text-teal-600 transition-colors">
-              How It Works
+             Upgrade 
             </Link>
             <button 
               onClick={() => scrollToSection('contact')}
