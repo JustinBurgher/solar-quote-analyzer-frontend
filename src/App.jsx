@@ -1022,6 +1022,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
+          <Route path="/upgrade" element={<Upgrade />} />
         </Routes>
       </div>
     </Router>
