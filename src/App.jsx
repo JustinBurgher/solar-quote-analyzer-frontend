@@ -60,6 +60,355 @@ const Navigation = () => {
   );
 };
 
+// Email Verification Modal
+const EmailVerificationModal = ({ isOpen, onClose, onVerified }) => {
+  const [step, setStep] = useState('email'); // 'email', 'verification', 'success'
+  const [email, setEmail] = useState('');
+  const [verificationCode, setVerificationCode] = useState('');
+  const [gdprConsent, setGdprConsent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+
+  const resetModal = () => {
+    setStep('email');
+    setEmail('');
+    setVerificationCode('');
+    setGdprConsent(false);
+    setError('');
+    setLoading(false);
+  };
+
+  const handleEmailSubmit = async () => {
+    setError('');
+    
+    if (!email || !email.includes('@')) {
+      setError('Please enter a valid email address');
+      return;
+    }
+    
+    if (!gdprConsent) {
+      setError('Please accept our privacy policy to continue');
+      return;
+    }
+    
+    setLoading(true);
+    
+    try {
+      const response = await fetch('https://solar-verify-backend-production.up.railway.app/api/send-verification', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          gdpr_consent: gdprConsent,
+          consent_timestamp: new Date().toISOString()
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setStep('verification');
+      } else {
+        setError(data.error || 'Failed to send verification email');
+      }
+    } catch (error) {
+      setError('Network error. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerificationSubmit = async () => {
+    setError('');
+    
+    if (!verificationCode || verificationCode.length !== 6) {
+      setError('Please enter the 6-digit verification code');
+      return;
+    }
+    
+    setLoading(true);
+    
+    try {
+      const response = await fetch('https://solar-verify-backend-production.up.railway.app/api/verify-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          verification_code: verificationCode
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setStep('success');
+        setTimeout(() => {
+          onVerified(email);
+          onClose();
+          resetModal();
+        }, 2000);
+      } else {
+        setError(data.error || 'Invalid verification code');
+      }
+    } catch (error) {
+      setError('Network error. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendCode = async () => {
+    setError('');
+    setLoading(true);
+    
+    try {
+      const response = await fetch('https://solar-verify-backend-production.up.railway.app/api/send-verification', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          gdpr_consent: gdprConsent,
+          consent_timestamp: new Date().toISOString()
+        })
+      });
+      
+      if (response.ok) {
+        setError('New verification code sent!');
+      } else {
+        const data = await response.json();
+        setError(data.error || 'Failed to resend code');
+      }
+    } catch (error) {
+      setError('Network error. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
+        {/* Privacy Policy Modal */}
+        {showPrivacyPolicy && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60 p-4">
+            <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-bold">Privacy Policy</h3>
+                <button 
+                  onClick={() => setShowPrivacyPolicy(false)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  ✕
+                </button>
+              </div>
+              <div className="space-y-4 text-sm text-gray-700">
+                <h4 className="font-semibold">Data Controller</h4>
+                <p>Solar✓erify, hello@solarverify.co.uk</p>
+                
+                <h4 className="font-semibold">Legal Basis</h4>
+                <p>We process your data based on your consent under Article 6(1)(a) GDPR.</p>
+                
+                <h4 className="font-semibold">Purpose</h4>
+                <p>We collect your email to send you the Solar Buyer's Protection Guide and provide additional quote analyses.</p>
+                
+                <h4 className="font-semibold">Data Retention</h4>
+                <p>We retain your data for 3 years or until you request deletion.</p>
+                
+                <h4 className="font-semibold">Your Rights</h4>
+                <ul className="list-disc pl-5">
+                  <li>Access your data</li>
+                  <li>Rectify incorrect data</li>
+                  <li>Delete your data</li>
+                  <li>Port your data</li>
+                  <li>Withdraw consent</li>
+                </ul>
+                
+                <h4 className="font-semibold">Contact</h4>
+                <p>For data requests: hello@solarverify.co.uk</p>
+              </div>
+              <button 
+                onClick={() => setShowPrivacyPolicy(false)}
+                className="mt-4 bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+
+        <div className="p-6">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">
+              {step === 'email' && 'Unlock Additional Analyses'}
+              {step === 'verification' && 'Verify Your Email'}
+              {step === 'success' && 'Welcome to Solar✓erify!'}
+            </h2>
+            <button 
+              onClick={() => { onClose(); resetModal(); }}
+              className="text-gray-500 hover:text-gray-700 text-xl"
+            >
+              ✕
+            </button>
+          </div>
+
+          {step === 'email' && (
+            <div className="space-y-4">
+              <div className="bg-teal-50 p-4 rounded-lg">
+                <h3 className="font-semibold text-teal-800 mb-2">What You'll Get:</h3>
+                <ul className="text-sm text-teal-700 space-y-1">
+                  <li>✓ 2 additional free quote analyses</li>
+                  <li>✓ Solar Buyer's Protection Guide (PDF)</li>
+                  <li>✓ 20 essential questions to ask installers</li>
+                  <li>✓ Red flags to avoid</li>
+                  <li>✓ Warranty checklist</li>
+                </ul>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email Address *
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  placeholder="your.email@example.com"
+                />
+              </div>
+
+              <div className="space-y-3">
+                <label className="flex items-start space-x-3">
+                  <input
+                    type="checkbox"
+                    checked={gdprConsent}
+                    onChange={(e) => setGdprConsent(e.target.checked)}
+                    className="mt-1 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+                  />
+                  <span className="text-sm text-gray-700">
+                    I consent to receive the Solar Buyer's Protection Guide and occasional solar industry insights. 
+                    I understand my data will be processed according to the{' '}
+                    <button 
+                      onClick={() => setShowPrivacyPolicy(true)}
+                      className="text-teal-600 hover:text-teal-700 underline"
+                    >
+                      Privacy Policy
+                    </button>
+                    . I can unsubscribe at any time.
+                  </span>
+                </label>
+              </div>
+
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                  {error}
+                </div>
+              )}
+
+              <button
+                onClick={handleEmailSubmit}
+                disabled={loading}
+                className="w-full bg-teal-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                {loading ? 'Sending...' : 'Send Verification Email'}
+              </button>
+
+              <div className="text-xs text-gray-500 text-center">
+                We respect your privacy and will never share your data with third parties.
+              </div>
+            </div>
+          )}
+
+          {step === 'verification' && (
+            <div className="space-y-4">
+              <div className="text-center">
+                <div className="bg-teal-50 p-4 rounded-lg mb-4">
+                  <p className="text-sm text-teal-700">
+                    We've sent a 6-digit verification code to:
+                  </p>
+                  <p className="font-semibold text-teal-800">{email}</p>
+                </div>
+                
+                <div className="bg-yellow-50 border border-yellow-200 p-3 rounded-lg mb-4">
+                  <p className="text-sm text-yellow-800">
+                    <strong>Testing Mode:</strong> Check the Railway logs in your dashboard to see the verification code.
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Verification Code *
+                </label>
+                <input
+                  type="text"
+                  value={verificationCode}
+                  onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-center text-2xl font-mono tracking-widest"
+                  placeholder="123456"
+                  maxLength="6"
+                />
+              </div>
+
+              {error && (
+                <div className={`border px-4 py-3 rounded ${
+                  error.includes('sent') 
+                    ? 'bg-green-50 border-green-200 text-green-700' 
+                    : 'bg-red-50 border-red-200 text-red-700'
+                }`}>
+                  {error}
+                </div>
+              )}
+
+              <button
+                onClick={handleVerificationSubmit}
+                disabled={loading}
+                className="w-full bg-teal-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                {loading ? 'Verifying...' : 'Verify Email'}
+              </button>
+
+              <div className="text-center">
+                <button
+                  onClick={handleResendCode}
+                  disabled={loading}
+                  className="text-sm text-teal-600 hover:text-teal-700 underline"
+                >
+                  Didn't receive the code? Resend
+                </button>
+              </div>
+            </div>
+          )}
+
+          {step === 'success' && (
+            <div className="text-center space-y-4">
+              <div className="text-6xl">🎉</div>
+              <h3 className="text-xl font-semibold text-green-600">Email Verified!</h3>
+              <p className="text-gray-700">
+                You now have access to 2 additional free quote analyses and your Solar Buyer's Protection Guide.
+              </p>
+              <div className="bg-green-50 p-4 rounded-lg">
+                <p className="text-sm text-green-700">
+                  Redirecting you back to the analyzer...
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Home Component with Quote Analyzer
 const Home = () => {
   const [formData, setFormData] = useState({
@@ -75,6 +424,10 @@ const Home = () => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [analysisCount, setAnalysisCount] = useState(0);
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
+  const [isVerified, setIsVerified] = useState(false);
 
   // Fetch battery options on component mount
   useEffect(() => {
@@ -149,6 +502,12 @@ const Home = () => {
   const analyzeQuote = async () => {
     setError('');
     
+    // Check if this is the second analysis and user needs to verify email
+    if (analysisCount >= 1 && !isVerified) {
+      setShowEmailModal(true);
+      return;
+    }
+    
     if (!validateForm()) {
       return;
     }
@@ -180,6 +539,7 @@ const Home = () => {
       
       const data = await response.json();
       setResult(data);
+      setAnalysisCount(prev => prev + 1);
       
     } catch (error) {
       console.error('Analysis error:', error);
@@ -202,6 +562,16 @@ const Home = () => {
     setError('');
   };
 
+  const handleEmailVerified = (email) => {
+    setUserEmail(email);
+    setIsVerified(true);
+    setShowEmailModal(false);
+    // Automatically trigger analysis after verification
+    setTimeout(() => {
+      analyzeQuote();
+    }, 500);
+  };
+
   const getGradeColor = (grade) => {
     const colors = {
       'A': 'bg-green-100 text-green-800 border-green-200',
@@ -218,8 +588,17 @@ const Home = () => {
     ? selectedBattery.capacity * formData.battery_quantity 
     : formData.battery_capacity * formData.battery_quantity;
 
+  const remainingAnalyses = isVerified ? Math.max(0, 3 - analysisCount) : Math.max(0, 1 - analysisCount);
+
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Email Verification Modal */}
+      <EmailVerificationModal 
+        isOpen={showEmailModal}
+        onClose={() => setShowEmailModal(false)}
+        onVerified={handleEmailVerified}
+      />
+
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-teal-600 to-blue-700 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 text-center">
@@ -266,6 +645,16 @@ const Home = () => {
           <div className="bg-gradient-to-r from-teal-500 to-blue-600 text-white p-6 rounded-t-lg">
             <h2 className="text-2xl font-bold">Solar Quote Analyzer</h2>
             <p className="mt-2">Get your instant A-F grade • Enhanced with battery analysis</p>
+            {isVerified && (
+              <div className="mt-2 bg-white bg-opacity-20 rounded px-3 py-1 inline-block">
+                <span className="text-sm">✓ Verified • {remainingAnalyses} analyses remaining</span>
+              </div>
+            )}
+            {!isVerified && analysisCount > 0 && (
+              <div className="mt-2 bg-yellow-500 bg-opacity-20 rounded px-3 py-1 inline-block">
+                <span className="text-sm">Next analysis requires email verification</span>
+              </div>
+            )}
           </div>
           
           <div className="bg-white p-6 rounded-b-lg shadow-lg">
@@ -406,6 +795,20 @@ const Home = () => {
                 >
                   {loading ? 'Analyzing...' : 'Get My Grade Free'}
                 </button>
+
+                {/* Analysis Counter */}
+                <div className="text-center text-sm text-gray-500">
+                  {!isVerified && (
+                    <span>
+                      {analysisCount === 0 ? 'First analysis is completely free' : 'Email verification required for additional analyses'}
+                    </span>
+                  )}
+                  {isVerified && (
+                    <span>
+                      {remainingAnalyses} free analyses remaining
+                    </span>
+                  )}
+                </div>
               </div>
             ) : (
               /* Results Display */
@@ -546,6 +949,11 @@ const HowItWorks = () => {
             },
             {
               step: "4",
+              title: "Email Verification (Optional)", 
+              description: "For additional analyses and our Solar Buyer's Protection Guide, verify your email. This unlocks 2 more free analyses and valuable resources."
+            },
+            {
+              step: "5",
               title: "Make Informed Decisions", 
               description: "Use your grade to negotiate better prices, compare multiple quotes, or confidently proceed with fairly-priced installations."
             }
