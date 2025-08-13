@@ -1,722 +1,32 @@
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { CheckCircle, Shield, Users, Star, MapPin, Mail, Phone, Award } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { 
+  CheckCircle, 
+  Shield, 
+  BarChart3, 
+  Star, 
+  Mail, 
+  Phone, 
+  MapPin,
+  Lock,
+  TrendingUp,
+  AlertTriangle,
+  Calculator,
+  Target,
+  Crown,
+  ArrowRight,
+  Menu,
+  X
+} from 'lucide-react';
 
-// API Base URL - Updated to use correct Railway URL
 const API_BASE_URL = 'https://solar-verify-backend-production.up.railway.app/api';
 
-// Navigation Component
-const Navigation = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const scrollToSection = (sectionId) => {
-    if (location.pathname !== '/') {
-      navigate('/');
-      setTimeout(() => {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
-    } else {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  };
-
-  return (
-    <nav className="bg-white shadow-lg sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
-          <Link to="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold text-teal-600">Solar✓erify</span>
-            <span className="text-xs bg-teal-100 text-teal-800 px-2 py-1 rounded-full">Trusted</span>
-          </Link>
-          
-          <div className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-gray-700 hover:text-teal-600 transition-colors">
-              Home
-            </Link>
-            <Link to="/about" className="text-gray-700 hover:text-teal-600 transition-colors">
-              About
-            </Link>
-            <Link to="/how-it-works" className="text-gray-700 hover:text-teal-600 transition-colors">
-              How It Works
-            </Link>
-            <Link to="/upgrade" className="text-gray-700 hover:text-teal-600 transition-colors">
-              Upgrade
-            </Link>
-            <button 
-              onClick={() => scrollToSection('contact')}
-              className="text-gray-700 hover:text-teal-600 transition-colors"
-            >
-              Contact
-            </button>
-            <button 
-              onClick={() => scrollToSection('analyzer')}
-              className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors"
-            >
-              Quote Analyzer
-            </button>
-          </div>
-        </div>
-      </div>
-    </nav>
-  );
-};
-
-// Email Verification Modal Component (keeping your existing one)
-const EmailVerificationModal = ({ isOpen, onClose, onVerified }) => {
-  const [step, setStep] = useState('email'); // 'email', 'verification', 'success'
-  const [email, setEmail] = useState('');
-  const [verificationCode, setVerificationCode] = useState('');
-  const [gdprConsent, setGdprConsent] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  const resetModal = () => {
-    setStep('email');
-    setEmail('');
-    setVerificationCode('');
-    setGdprConsent(false);
-    setLoading(false);
-    setError('');
-    setIsAdmin(false);
-  };
-
-  useEffect(() => {
-    if (isOpen) {
-      resetModal();
-    }
-  }, [isOpen]);
-
-  // Handle escape key and outside clicks
-  useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-      return () => document.removeEventListener('keydown', handleEscape);
-    }
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
-
-  const handleEmailSubmit = async () => {
-    setError('');
-    
-    if (!email || !gdprConsent) {
-      setError('Please enter your email and accept the privacy policy');
-      return;
-    }
-    
-    setLoading(true);
-    
-    try {
-      const response = await fetch(`${API_BASE_URL}/send-verification`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          gdpr_consent: gdprConsent,
-          consent_timestamp: new Date().toISOString()
-        })
-      });
-      
-      const data = await response.json();
-      
-      if (response.ok) {
-        setIsAdmin(data.is_admin || false);
-        setStep('verification');
-      } else {
-        setError(data.error || 'Failed to send verification email');
-      }
-    } catch (error) {
-      setError('Network error. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleVerificationSubmit = async () => {
-    setError('');
-    
-    if (!verificationCode || verificationCode.length !== 6) {
-      setError('Please enter the 6-digit verification code');
-      return;
-    }
-    
-    setLoading(true);
-    
-    try {
-      const response = await fetch(`${API_BASE_URL}/verify-email`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          verification_code: verificationCode
-        })
-      });
-      
-      const data = await response.json();
-      
-      if (response.ok) {
-        setStep('success');
-        setIsAdmin(data.is_admin || false);
-        // Auto-close and proceed after shorter delay
-        setTimeout(() => {
-          onVerified(email, data.is_admin || false);
-          onClose();
-          resetModal();
-        }, 1500);
-      } else {
-        setError(data.error || 'Invalid verification code');
-      }
-    } catch (error) {
-      setError('Network error. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleResendCode = async () => {
-    setError('');
-    setLoading(true);
-    
-    try {
-      const response = await fetch(`${API_BASE_URL}/send-verification`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          gdpr_consent: gdprConsent,
-          consent_timestamp: new Date().toISOString()
-        })
-      });
-      
-      if (response.ok) {
-        setError('New verification code sent!');
-      } else {
-        const data = await response.json();
-        setError(data.error || 'Failed to resend code');
-      }
-    } catch (error) {
-      setError('Network error. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl max-w-md w-full p-6 relative">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl"
-        >
-          ×
-        </button>
-
-        <div className="space-y-6">
-          {step === 'email' && (
-            <div className="space-y-4">
-              <div className="text-center">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Verify Your Email</h2>
-                <p className="text-gray-600">
-                  Get access to 2 additional free analyses and your Solar Buyer's Protection Guide
-                </p>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                  placeholder="your@email.com"
-                />
-              </div>
-
-              <div className="flex items-start space-x-3">
-                <input
-                  type="checkbox"
-                  id="gdpr"
-                  checked={gdprConsent}
-                  onChange={(e) => setGdprConsent(e.target.checked)}
-                  className="mt-1 h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
-                />
-                <label htmlFor="gdpr" className="text-sm text-gray-700">
-                  I agree to receive email communications and understand my data will be processed 
-                  according to the privacy policy. I can unsubscribe at any time.
-                </label>
-              </div>
-
-              {error && (
-                <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg">
-                  {error}
-                </div>
-              )}
-
-              <button
-                onClick={handleEmailSubmit}
-                disabled={loading}
-                className="w-full bg-teal-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                {loading ? 'Sending...' : 'Send Verification Code'}
-              </button>
-            </div>
-          )}
-
-          {step === 'verification' && (
-            <div className="space-y-4">
-              <div className="text-center">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Verify Your Email</h2>
-                <div className="bg-blue-50 p-4 rounded-lg mb-4">
-                  <p className="text-sm text-blue-800">
-                    We've sent a 6-digit verification code to:
-                  </p>
-                  <p className="font-semibold text-blue-900">{email}</p>
-                </div>
-                
-                <div className="bg-yellow-50 border border-yellow-200 p-3 rounded-lg">
-                  <p className="text-sm text-yellow-800">
-                    <strong>Testing Mode:</strong> Check the Railway logs in your dashboard 
-                    to see the verification code.
-                  </p>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Verification Code *
-                </label>
-                <input
-                  type="text"
-                  value={verificationCode}
-                  onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-center text-2xl font-mono tracking-widest"
-                  placeholder="123456"
-                  maxLength="6"
-                />
-              </div>
-
-              {error && (
-                <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg">
-                  {error}
-                </div>
-              )}
-
-              <button
-                onClick={handleVerificationSubmit}
-                disabled={loading}
-                className="w-full bg-teal-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                {loading ? 'Verifying...' : 'Verify Email'}
-              </button>
-
-              <div className="text-center">
-                <button
-                  onClick={handleResendCode}
-                  disabled={loading}
-                  className="text-sm text-teal-600 hover:text-teal-700 underline"
-                >
-                  Didn't receive the code? Resend
-                </button>
-              </div>
-            </div>
-          )}
-
-          {step === 'success' && (
-            <div className="text-center space-y-4">
-              <div className="text-6xl">{isAdmin ? '👑' : '🎉'}</div>
-              <h3 className="text-xl font-semibold text-green-600">
-                {isAdmin ? 'Admin Access Granted!' : 'Email Verified!'}
-              </h3>
-              <p className="text-gray-700">
-                {isAdmin 
-                  ? 'You have unlimited access for testing purposes.'
-                  : 'You now have access to 2 additional free quote analyses and your Solar Buyer\'s Protection Guide.'
-                }
-              </p>
-              <div className="bg-green-50 p-4 rounded-lg">
-                <p className="text-sm text-green-700">
-                  Proceeding with your analysis...
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Professional Hero Section
-const HeroSection = () => {
-  const scrollToAnalyzer = () => {
-    const element = document.getElementById('analyzer');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  return (
-    <section className="bg-gradient-to-br from-teal-50 to-blue-50 py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">
-            Get Your Solar Quote <span className="text-teal-600">Verified</span>
-          </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Don't get ripped off! Our AI-powered analyzer instantly grades your solar quote and tells 
-            you if you're getting a fair deal. Trusted by thousands of UK homeowners.
-          </p>
-          
-          {/* Trust Indicators */}
-          <div className="flex justify-center items-center space-x-8 mb-12 flex-wrap gap-4">
-            <div className="flex items-center text-green-600">
-              <CheckCircle className="w-5 h-5 mr-2" />
-              <span className="font-medium">Instant Analysis</span>
-            </div>
-            <div className="flex items-center text-green-600">
-              <Shield className="w-5 h-5 mr-2" />
-              <span className="font-medium">GDPR Compliant</span>
-            </div>
-            <div className="flex items-center text-green-600">
-              <Users className="w-5 h-5 mr-2" />
-              <span className="font-medium">5,000+ Quotes Analyzed</span>
-            </div>
-          </div>
-
-          <button 
-            onClick={scrollToAnalyzer}
-            className="bg-teal-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-teal-700 shadow-lg transition-colors"
-          >
-            Analyze My Quote - Free
-          </button>
-          <p className="text-sm text-gray-500 mt-3">No registration required • Results in 30 seconds</p>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// Trust Section with Stats and Testimonials
-const TrustSection = () => {
-  return (
-    <section className="py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Trusted by UK Homeowners</h2>
-          <p className="text-gray-600">Join thousands who've saved money with our solar quote analysis</p>
-        </div>
-        
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
-          <div className="text-center">
-            <div className="text-3xl font-bold text-teal-600 mb-2">5,247</div>
-            <div className="text-gray-600">Quotes Analyzed</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-teal-600 mb-2">£2.3M</div>
-            <div className="text-gray-600">Savings Identified</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-teal-600 mb-2">4.9/5</div>
-            <div className="text-gray-600">Customer Rating</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-teal-600 mb-2">24/7</div>
-            <div className="text-gray-600">Available</div>
-          </div>
-        </div>
-
-        {/* Testimonials */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-gray-50 p-6 rounded-xl">
-            <div className="flex items-center mb-4">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-              ))}
-            </div>
-            <p className="text-gray-700 mb-4">
-              "Saved me £3,000! The quote I had was way overpriced. SolarVerify helped me find a much better deal."
-            </p>
-            <div className="font-medium text-gray-900">Sarah M., Manchester</div>
-          </div>
-          
-          <div className="bg-gray-50 p-6 rounded-xl">
-            <div className="flex items-center mb-4">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-              ))}
-            </div>
-            <p className="text-gray-700 mb-4">
-              "Quick and accurate analysis. Gave me confidence that my quote was fair before signing."
-            </p>
-            <div className="font-medium text-gray-900">James T., Birmingham</div>
-          </div>
-          
-          <div className="bg-gray-50 p-6 rounded-xl">
-            <div className="flex items-center mb-4">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-              ))}
-            </div>
-            <p className="text-gray-700 mb-4">
-              "Professional service. The battery analysis feature is brilliant - very detailed."
-            </p>
-            <div className="font-medium text-gray-900">Emma L., London</div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// Professional Footer
-const Footer = () => {
-  return (
-    <footer className="bg-gray-900 text-white py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Company Info */}
-          <div>
-            <h3 className="text-xl font-bold mb-4">Solar✓erify</h3>
-            <p className="text-gray-400 mb-4">
-              Helping UK homeowners make informed solar decisions since 2024.
-            </p>
-            <div className="flex items-center text-gray-400 mb-2">
-              <MapPin className="w-4 h-4 mr-2" />
-              <span className="text-sm">London, United Kingdom</span>
-            </div>
-            <div className="flex items-center text-gray-400 mb-2">
-              <Mail className="w-4 h-4 mr-2" />
-              <span className="text-sm">hello@solarverify.co.uk</span>
-            </div>
-          </div>
-          
-          {/* Services */}
-          <div>
-            <h4 className="font-semibold mb-4">Services</h4>
-            <ul className="space-y-2 text-gray-400">
-              <li><a href="#analyzer" className="hover:text-white">Quote Analysis</a></li>
-              <li><a href="#analyzer" className="hover:text-white">Battery Analysis</a></li>
-              <li><Link to="/upgrade" className="hover:text-white">Premium Reports</Link></li>
-              <li><a href="#contact" className="hover:text-white">Expert Consultation</a></li>
-            </ul>
-          </div>
-          
-          {/* Company */}
-          <div>
-            <h4 className="font-semibold mb-4">Company</h4>
-            <ul className="space-y-2 text-gray-400">
-              <li><Link to="/about" className="hover:text-white">About Us</Link></li>
-              <li><Link to="/how-it-works" className="hover:text-white">How It Works</Link></li>
-              <li><a href="#" className="hover:text-white">Reviews</a></li>
-              <li><a href="#contact" className="hover:text-white">Contact</a></li>
-            </ul>
-          </div>
-          
-          {/* Legal */}
-          <div>
-            <h4 className="font-semibold mb-4">Legal</h4>
-            <ul className="space-y-2 text-gray-400">
-              <li><a href="#" className="hover:text-white">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-white">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-white">Cookie Policy</a></li>
-              <li><a href="#" className="hover:text-white">GDPR Compliance</a></li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 text-sm">
-            © 2024 SolarVerify Ltd. All rights reserved. Company No: 12345678
-          </p>
-          <div className="flex space-x-4 mt-4 md:mt-0">
-            <span className="text-gray-400 text-sm">🔒 SSL Secured</span>
-            <span className="text-gray-400 text-sm">🛡️ GDPR Compliant</span>
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
-};
-
-// Home Component with Quote Analyzer (keeping your existing functionality)
-const Home = () => {
-  const [formData, setFormData] = useState({
-    system_size: '',
-    total_price: '',
-    has_battery: false,
-    battery_brand: '',
-    battery_quantity: 1,
-    battery_capacity: ''
-  });
-  
-  const [batteryOptions, setBatteryOptions] = useState([]);
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [analysisCount, setAnalysisCount] = useState(0);
-  const [showEmailModal, setShowEmailModal] = useState(false);
-  const [userEmail, setUserEmail] = useState('');
-  const [isVerified, setIsVerified] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [pendingAnalysis, setPendingAnalysis] = useState(false);
-
-  // Fetch battery options on component mount
-  useEffect(() => {
-    fetchBatteryOptions();
-  }, []);
-
-  const fetchBatteryOptions = async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/battery-options`);
-      if (response.ok) {
-        const data = await response.json();
-        setBatteryOptions(data.battery_options || []);
-      }
-    } catch (error) {
-      console.error('Failed to fetch battery options:', error);
-    }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    
-    if (type === 'checkbox') {
-      setFormData(prev => ({
-        ...prev,
-        [name]: checked,
-        // Reset battery fields when unchecking
-        ...(name === 'has_battery' && !checked ? {
-          battery_brand: '',
-          battery_quantity: 1,
-          battery_capacity: ''
-        } : {})
-      }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        [name]: value
-      }));
-    }
-  };
-
-  const handleBatteryBrandChange = (e) => {
-    const selectedBrand = e.target.value;
-    const selectedBattery = batteryOptions.find(b => b.brand === selectedBrand);
-    
-    setFormData(prev => ({
-      ...prev,
-      battery_brand: selectedBrand,
-      battery_capacity: selectedBrand === "Other (specify capacity)" ? '' : 
-                      selectedBattery ? selectedBattery.capacity : ''
-    }));
-  };
-
-  const calculateTotalCapacity = () => {
-    if (!formData.has_battery) return 0;
-    
-    if (formData.battery_brand === "Other (specify capacity)") {
-      return parseFloat(formData.battery_capacity) * formData.battery_quantity || 0;
-    }
-    
-    const selectedBattery = batteryOptions.find(b => b.brand === formData.battery_brand);
-    return selectedBattery ? selectedBattery.capacity * formData.battery_quantity : 0;
-  };
-
-  const handleEmailVerified = (email, adminStatus = false) => {
-    setUserEmail(email);
-    setIsVerified(true);
-    setIsAdmin(adminStatus);
-    
-    // If analysis was pending, trigger it now
-    if (pendingAnalysis) {
-      setPendingAnalysis(false);
-      setTimeout(() => {
-        handleSubmit();
-      }, 100);
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    if (e) e.preventDefault();
-    
-    // Check if email verification is needed (non-admin users only)
-    if (!isAdmin && analysisCount >= 1 && !isVerified) {
-      setPendingAnalysis(true);
-      setShowEmailModal(true);
-      return;
-    }
-    
-    setLoading(true);
-    setError('');
-    
-    try {
-      const response = await fetch(`${API_BASE_URL}/analyze-quote`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          user_email: userEmail
-        })
-      });
-      
-      const data = await response.json();
-      
-      if (response.ok) {
-        setResult(data);
-        setAnalysisCount(data.analysis_count || analysisCount + 1);
-        setIsAdmin(data.is_admin || false);
-      } else {
-        setError(data.error || 'Analysis failed');
-      }
-    } catch (error) {
-      setError('Network error. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const resetForm = () => {
-    setFormData({
-      system_size: '',
-      total_price: '',
-      has_battery: false,
-      battery_brand: '',
-      battery_quantity: 1,
-      battery_capacity: ''
-    });
-    setResult(null);
-    setError('');
-  };
-
+// Enhanced Results Component with Safe Data Handling
+const EnhancedResults = ({ result, onUpgrade, onAnalyzeAnother }) => {
   const getGradeColor = (grade) => {
     const colors = {
       'A+': 'text-green-600 bg-green-50',
-      'A': 'text-green-600 bg-green-50',
+      'A': 'text-green-600 bg-green-50', 
       'B': 'text-blue-600 bg-blue-50',
       'C': 'text-yellow-600 bg-yellow-50',
       'D': 'text-orange-600 bg-orange-50',
@@ -725,439 +35,1159 @@ const Home = () => {
     return colors[grade] || 'text-gray-600 bg-gray-50';
   };
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <HeroSection />
-      
-      {/* Trust Section */}
-      <TrustSection />
+  // Safe data extraction with fallbacks
+  const systemSize = result?.system_details?.size || result?.system_size || 0;
+  const totalPrice = result?.system_details?.total_price || result?.total_price || 0;
+  const pricePerKw = result?.price_per_kw || (totalPrice && systemSize ? Math.round(totalPrice / systemSize) : 0);
+  const grade = result?.grade || 'N/A';
+  const verdict = result?.verdict || 'Analysis completed';
 
-      {/* Quote Analyzer Section */}
-      <section id="analyzer" className="py-16 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-            {/* Header */}
-            <div className="bg-gradient-to-r from-teal-600 to-blue-600 px-8 py-6">
-              <h2 className="text-2xl font-bold text-white mb-2">Solar Quote Analyzer</h2>
-              <p className="text-teal-100">Get your instant A-F grade • Enhanced with battery analysis</p>
-              
-              {/* Status indicators */}
-              <div className="mt-4 flex flex-wrap gap-4">
-                {isAdmin && (
-                  <div className="flex items-center bg-purple-500 bg-opacity-20 px-3 py-1 rounded-full">
-                    <span className="text-yellow-300 mr-2">👑</span>
-                    <span className="text-white text-sm font-medium">Admin Testing Mode</span>
-                  </div>
-                )}
-                
-                {!isAdmin && (
-                  <div className="bg-teal-500 bg-opacity-20 px-3 py-1 rounded-full">
-                    <span className="text-white text-sm">
-                      {analysisCount >= 1 && !isVerified 
-                        ? 'Next analysis requires email verification'
-                        : analysisCount === 0 
-                        ? 'First analysis free - no email required'
-                        : `${Math.max(0, 3 - analysisCount)} analyses remaining`
-                      }
-                    </span>
-                  </div>
-                )}
+  // Calculate premium insights with safe fallbacks
+  const fairPricePerKw = 1200;
+  const overpricePercentage = pricePerKw > fairPricePerKw ? Math.round(((pricePerKw - fairPricePerKw) / fairPricePerKw) * 100) : 0;
+  const potentialSavings = systemSize > 0 && pricePerKw > fairPricePerKw ? Math.round((pricePerKw - fairPricePerKw) * systemSize) : 0;
+  const fairTotalPrice = systemSize > 0 ? Math.round(fairPricePerKw * systemSize) : 0;
+
+  const PremiumSection = ({ title, icon: Icon, children, className = "" }) => (
+    <div className={`relative bg-white border-2 border-dashed border-gray-300 rounded-lg p-4 md:p-6 ${className}`}>
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-50/90 to-gray-100/90 backdrop-blur-sm rounded-lg"></div>
+      <div className="relative">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center">
+            <Icon className="w-4 h-4 md:w-5 md:h-5 text-gray-400 mr-2" />
+            <h4 className="font-semibold text-gray-500 text-sm md:text-base">{title}</h4>
+          </div>
+          <div className="flex items-center bg-amber-100 px-2 md:px-3 py-1 rounded-full">
+            <Crown className="w-3 h-3 md:w-4 md:h-4 text-amber-600 mr-1" />
+            <span className="text-xs font-medium text-amber-700">Premium</span>
+          </div>
+        </div>
+        <div className="filter blur-sm select-none text-sm">
+          {children}
+        </div>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <button
+            onClick={onUpgrade}
+            className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-3 md:px-6 py-2 md:py-3 rounded-lg font-semibold shadow-lg hover:from-amber-600 hover:to-orange-600 transition-all flex items-center text-xs md:text-base"
+          >
+            <Lock className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+            <span className="hidden sm:inline">Unlock Analysis</span>
+            <span className="sm:hidden">Unlock</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="mt-6 md:mt-8 space-y-4 md:space-y-6">
+      {/* Main Grade Display */}
+      <div className="text-center px-4">
+        <div className={`inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-full text-3xl md:text-4xl font-bold ${getGradeColor(grade)}`}>
+          {grade}
+        </div>
+        <h3 className="text-xl md:text-2xl font-bold text-gray-900 mt-4 mb-2">
+          Your Solar Quote Grade
+        </h3>
+        <p className="text-base md:text-lg text-gray-700">{verdict}</p>
+      </div>
+
+      {/* Basic Analysis (Free) */}
+      <div className="bg-gray-50 p-4 md:p-6 rounded-lg mx-4 md:mx-0">
+        <h4 className="font-semibold text-gray-900 mb-4 flex items-center text-sm md:text-base">
+          <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium mr-2">FREE</span>
+          Basic Analysis
+        </h4>
+        <div className="space-y-3 md:grid md:grid-cols-2 md:gap-4 md:space-y-0 text-sm">
+          <div className="flex justify-between md:block">
+            <span className="text-gray-600">System Size:</span>
+            <span className="font-medium md:ml-0">{systemSize} kW</span>
+          </div>
+          <div className="flex justify-between md:block">
+            <span className="text-gray-600">Total Price:</span>
+            <span className="font-medium md:ml-0">£{totalPrice.toLocaleString()}</span>
+          </div>
+          <div className="flex justify-between md:block">
+            <span className="text-gray-600">Price per kW:</span>
+            <span className="font-medium md:ml-0">£{pricePerKw.toLocaleString()}</span>
+          </div>
+          {result?.battery_details && (
+            <div className="flex justify-between md:block">
+              <span className="text-gray-600">Battery:</span>
+              <span className="font-medium md:ml-0">
+                {result.battery_details.quantity}× {result.battery_details.brand} 
+                ({result.battery_details.total_capacity} kWh)
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Premium Sections */}
+      <div className="space-y-4 md:space-y-6 px-4 md:px-0">
+        {/* Detailed Price Breakdown */}
+        <PremiumSection title="Detailed Price Breakdown" icon={Calculator}>
+          <div className="space-y-2">
+            <div className="flex justify-between text-xs md:text-sm">
+              <span>Solar Panels ({systemSize}kW):</span>
+              <span className="font-medium">£{Math.round(systemSize * 1200).toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between text-xs md:text-sm">
+              <span>Battery System:</span>
+              <span className="font-medium">£{Math.round(totalPrice * 0.4).toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between text-xs md:text-sm">
+              <span>Installation:</span>
+              <span className="font-medium">£{Math.round(totalPrice * 0.2).toLocaleString()}</span>
+            </div>
+            <div className="border-t pt-2 flex justify-between font-semibold text-xs md:text-sm">
+              <span>Fair Price:</span>
+              <span className="text-green-600">£{fairTotalPrice.toLocaleString()}</span>
+            </div>
+            {potentialSavings > 0 && (
+              <div className="flex justify-between text-red-600 font-semibold text-xs md:text-sm">
+                <span>Overprice:</span>
+                <span>£{potentialSavings.toLocaleString()} ({overpricePercentage}%)</span>
+              </div>
+            )}
+          </div>
+        </PremiumSection>
+
+        {/* Red Flags & Warnings */}
+        {overpricePercentage > 20 && (
+          <PremiumSection title="Red Flags & Warnings" icon={AlertTriangle} className="border-red-300">
+            <div className="space-y-2">
+              <div className="flex items-start">
+                <div className="w-2 h-2 bg-red-500 rounded-full mt-1 mr-2 flex-shrink-0"></div>
+                <div>
+                  <p className="font-medium text-red-700 text-xs md:text-sm">Extreme Overpricing</p>
+                  <p className="text-xs text-gray-600">{overpricePercentage}% above market rate</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <div className="w-2 h-2 bg-amber-500 rounded-full mt-1 mr-2 flex-shrink-0"></div>
+                <div>
+                  <p className="font-medium text-amber-700 text-xs md:text-sm">High-Pressure Sales</p>
+                  <p className="text-xs text-gray-600">Pricing suggests aggressive tactics</p>
+                </div>
               </div>
             </div>
+          </PremiumSection>
+        )}
 
-            {/* Form */}
-            <div className="p-8">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* System Size */}
+        {/* ROI Analysis */}
+        <PremiumSection title="ROI & Financial Analysis" icon={TrendingUp}>
+          <div className="grid grid-cols-2 gap-3 md:gap-6">
+            <div>
+              <h5 className="font-medium mb-2 text-xs md:text-sm">Your Quote</h5>
+              <div className="space-y-1 text-xs">
+                <div>Payback: <span className="font-medium text-red-600">18+ years</span></div>
+                <div>Savings: <span className="font-medium">£8,400</span></div>
+              </div>
+            </div>
+            <div>
+              <h5 className="font-medium mb-2 text-xs md:text-sm">Fair Price</h5>
+              <div className="space-y-1 text-xs">
+                <div>Payback: <span className="font-medium text-green-600">8-9 years</span></div>
+                <div>Savings: <span className="font-medium">£18,900</span></div>
+              </div>
+            </div>
+          </div>
+        </PremiumSection>
+
+        {/* Actionable Recommendations */}
+        <PremiumSection title="Action Plan" icon={Target}>
+          <div className="space-y-3">
+            <div className="bg-blue-50 p-3 rounded-lg">
+              <h5 className="font-medium text-blue-900 mb-1 text-xs md:text-sm">Next Steps</h5>
+              <ul className="space-y-1 text-xs text-blue-800">
+                <li>• Get 3 more quotes</li>
+                <li>• Negotiate 30% discount</li>
+                <li>• Check MCS certification</li>
+              </ul>
+            </div>
+            <div className="bg-green-50 p-3 rounded-lg">
+              <h5 className="font-medium text-green-900 mb-1 text-xs md:text-sm">Recommended</h5>
+              <p className="text-xs text-green-800">Fair price: £{fairTotalPrice.toLocaleString()} - £{Math.round(fairTotalPrice * 1.1).toLocaleString()}</p>
+            </div>
+          </div>
+        </PremiumSection>
+      </div>
+
+      {/* Mobile-Optimized Upgrade CTA */}
+      <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-4 md:p-6 text-center mx-4 md:mx-0">
+        <Crown className="w-10 h-10 md:w-12 md:h-12 text-amber-600 mx-auto mb-3 md:mb-4" />
+        <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">
+          Unlock Complete Analysis
+        </h3>
+        <p className="text-sm md:text-base text-gray-600 mb-4">
+          Get detailed breakdown, warnings, and recommendations to save thousands.
+        </p>
+        <div className="flex flex-wrap items-center justify-center gap-3 md:gap-6 mb-4 md:mb-6 text-xs md:text-sm">
+          <div className="flex items-center text-green-600">
+            <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+            Save £{potentialSavings > 0 ? potentialSavings.toLocaleString() : '8,500'}
+          </div>
+          <div className="flex items-center text-blue-600">
+            <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+            Avoid mistakes
+          </div>
+          <div className="flex items-center text-purple-600">
+            <span className="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+            Expert tips
+          </div>
+        </div>
+        <button
+          onClick={onUpgrade}
+          className="w-full md:w-auto bg-gradient-to-r from-amber-500 to-orange-500 text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg hover:from-amber-600 hover:to-orange-600 transition-all shadow-lg flex items-center justify-center"
+        >
+          Unlock Full Analysis - £24.99
+          <ArrowRight className="w-4 h-4 md:w-5 md:h-5 ml-2" />
+        </button>
+        <p className="text-xs text-gray-500 mt-3">
+          One-time payment • Instant access • Money-back guarantee
+        </p>
+      </div>
+
+      {/* Analyze Another Button */}
+      <div className="text-center px-4 md:px-0">
+        <button
+          onClick={onAnalyzeAnother}
+          className="w-full md:w-auto bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors"
+        >
+          Analyze Another Quote
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// Main App Component (keeping your existing structure)
+function App() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    systemSize: '',
+    totalPrice: '',
+    hasBattery: false,
+    batteryBrand: '',
+    batteryQuantity: 1,
+    userEmail: ''
+  });
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const [emailVerificationStep, setEmailVerificationStep] = useState('email');
+  const [verificationCode, setVerificationCode] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [emailSuccess, setEmailSuccess] = useState('');
+  const [analysisCount, setAnalysisCount] = useState(0);
+  const [isVerified, setIsVerified] = useState(false);
+  const [batteryOptions, setBatteryOptions] = useState([]);
+  const [pendingAnalysis, setPendingAnalysis] = useState(false);
+
+  // Battery brands with capacities
+  const batteryBrands = [
+    { name: 'Tesla Powerwall 3', capacity: 13.5 },
+    { name: 'Enphase IQ Battery 5P', capacity: 5.0 },
+    { name: 'LG Chem RESU', capacity: 9.8 },
+    { name: 'Pylontech US3000C', capacity: 3.5 },
+    { name: 'BYD Battery-Box Premium', capacity: 13.8 },
+    { name: 'Solax Triple Power', capacity: 11.6 },
+    { name: 'GivEnergy Giv-Bat', capacity: 9.5 },
+    { name: 'Alpha ESS Smile', capacity: 10.1 },
+    { name: 'Huawei LUNA2000', capacity: 15.0 },
+    { name: 'SolarEdge Energy Bank', capacity: 9.7 },
+    { name: 'Victron Energy Lithium', capacity: 12.8 },
+    { name: 'Fronius Solar Battery', capacity: 10.0 },
+    { name: 'Sonnen eco', capacity: 10.0 },
+    { name: 'Varta pulse', capacity: 6.5 },
+    { name: 'Moixa Smart Battery', capacity: 4.8 },
+    { name: 'PowerVault 3', capacity: 4.1 },
+    { name: 'Powervault P4', capacity: 8.2 },
+    { name: 'Other', capacity: 0 }
+  ];
+
+  const getBatteryCapacity = () => {
+    if (!formData.hasBattery) return 0;
+    const selectedBattery = batteryBrands.find(b => b.name === formData.batteryBrand);
+    if (!selectedBattery) return 0;
+    return selectedBattery.capacity * formData.batteryQuantity;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (analysisCount >= 1 && !isVerified) {
+      setShowEmailModal(true);
+      setPendingAnalysis(true);
+      return;
+    }
+
+    await performAnalysis();
+  };
+
+  const performAnalysis = async () => {
+    setLoading(true);
+    setError('');
+    
+    try {
+      const analysisData = {
+        system_size: parseFloat(formData.systemSize),
+        total_price: parseFloat(formData.totalPrice),
+        has_battery: formData.hasBattery,
+        battery_brand: formData.batteryBrand,
+        battery_quantity: formData.batteryQuantity,
+        battery_capacity: getBatteryCapacity(),
+        user_email: formData.userEmail
+      };
+
+      const response = await fetch(`${API_BASE_URL}/analyze-quote`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(analysisData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Analysis failed');
+      }
+
+      const data = await response.json();
+      setResult(data);
+      setAnalysisCount(prev => prev + 1);
+      setPendingAnalysis(false);
+    } catch (err) {
+      setError('Analysis failed: ' + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSendVerification = async () => {
+    if (!formData.userEmail) {
+      setEmailError('Please enter your email address');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/send-verification`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: formData.userEmail })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send verification');
+      }
+
+      setEmailError('');
+      setEmailSuccess('Verification code sent! Check Railway logs for testing.');
+      setEmailVerificationStep('code');
+    } catch (err) {
+      setEmailError('Failed to send verification: ' + err.message);
+    }
+  };
+
+  const handleVerifyEmail = async () => {
+    if (!verificationCode) {
+      setEmailError('Please enter the verification code');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/verify-email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          email: formData.userEmail, 
+          code: verificationCode 
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Verification failed');
+      }
+
+      setEmailError('');
+      setEmailSuccess('Email verified successfully!');
+      setIsVerified(true);
+      
+      setTimeout(() => {
+        setShowEmailModal(false);
+        setEmailSuccess('');
+        if (pendingAnalysis) {
+          performAnalysis();
+        }
+      }, 1500);
+    } catch (err) {
+      setEmailError('Verification failed: ' + err.message);
+    }
+  };
+
+  const handleUpgrade = () => {
+    window.location.href = '/upgrade';
+  };
+
+  const handleAnalyzeAnother = () => {
+    setResult(null);
+    setFormData({
+      systemSize: '',
+      totalPrice: '',
+      hasBattery: false,
+      batteryBrand: '',
+      batteryQuantity: 1,
+      userEmail: formData.userEmail
+    });
+    setError('');
+  };
+
+  // Navigation Component
+  const Navigation = () => {
+    const location = useLocation();
+    
+    return (
+      <nav className="bg-white shadow-sm border-b sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center">
+              <Link to="/" className="flex items-center">
+                <span className="text-2xl font-bold text-teal-600">Solar</span>
+                <span className="text-2xl font-bold text-gray-900">✓</span>
+                <span className="text-2xl font-bold text-teal-600">erify</span>
+                <span className="ml-2 bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">
+                  Trusted
+                </span>
+              </Link>
+            </div>
+            
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-8">
+              <Link to="/" className="text-gray-700 hover:text-teal-600 transition-colors">
+                Home
+              </Link>
+              <Link to="/about" className="text-gray-700 hover:text-teal-600 transition-colors">
+                About
+              </Link>
+              <Link to="/how-it-works" className="text-gray-700 hover:text-teal-600 transition-colors">
+                How It Works
+              </Link>
+              <Link to="/upgrade" className="text-gray-700 hover:text-teal-600 transition-colors">
+                Upgrade
+              </Link>
+              <button className="text-gray-700 hover:text-teal-600 transition-colors">
+                Contact
+              </button>
+              <Link 
+                to="/analyzer" 
+                className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors"
+              >
+                Quote Analyzer
+              </Link>
+            </div>
+
+            {/* Mobile Navigation */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-white border-t">
+            <div className="px-4 py-2 space-y-2">
+              <Link 
+                to="/" 
+                className="block py-2 text-gray-700 hover:text-teal-600"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Home
+              </Link>
+              <Link 
+                to="/about" 
+                className="block py-2 text-gray-700 hover:text-teal-600"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                About
+              </Link>
+              <Link 
+                to="/how-it-works" 
+                className="block py-2 text-gray-700 hover:text-teal-600"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                How It Works
+              </Link>
+              <Link 
+                to="/upgrade" 
+                className="block py-2 text-gray-700 hover:text-teal-600"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Upgrade
+              </Link>
+              <button 
+                className="block w-full text-left py-2 text-gray-700 hover:text-teal-600"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Contact
+              </button>
+              <Link 
+                to="/analyzer" 
+                className="block w-full bg-teal-600 text-white px-4 py-2 rounded-lg text-center hover:bg-teal-700 transition-colors mt-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Quote Analyzer
+              </Link>
+            </div>
+          </div>
+        )}
+      </nav>
+    );
+  };
+
+  // Home Page Component
+  const HomePage = () => (
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-gray-50 to-teal-50 py-12 md:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 md:mb-6">
+            Get Your Solar Quote <span className="text-teal-600">Verified</span>
+          </h1>
+          <p className="text-lg md:text-xl text-gray-700 mb-6 md:mb-8 max-w-3xl mx-auto px-4">
+            Don't get ripped off! Our AI-powered analyzer instantly grades your solar quote and tells 
+            you if you're getting a fair deal. Trusted by thousands of UK homeowners.
+          </p>
+          
+          {/* Trust Indicators */}
+          <div className="flex flex-wrap justify-center items-center gap-4 md:gap-8 mb-8 md:mb-12 text-sm md:text-base">
+            <div className="flex items-center text-green-600">
+              <CheckCircle className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+              Instant Analysis
+            </div>
+            <div className="flex items-center text-blue-600">
+              <Shield className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+              GDPR Compliant
+            </div>
+            <div className="flex items-center text-purple-600">
+              <BarChart3 className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+              5,000+ Quotes Analyzed
+            </div>
+          </div>
+
+          <Link 
+            to="/analyzer"
+            className="inline-block bg-teal-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-xl text-lg md:text-xl font-semibold hover:bg-teal-700 transition-colors shadow-lg"
+          >
+            Analyze My Quote - Free
+          </Link>
+          <p className="text-sm text-gray-600 mt-4">
+            No registration required • Results in 30 seconds
+          </p>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-12 md:py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-4 md:mb-6">
+            Trusted by UK Homeowners
+          </h2>
+          <p className="text-center text-gray-600 mb-8 md:mb-12 px-4">
+            Join thousands who've saved money with our solar quote analysis
+          </p>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+            <div className="text-center">
+              <div className="text-2xl md:text-3xl font-bold text-teal-600 mb-2">5,247</div>
+              <div className="text-sm md:text-base text-gray-600">Quotes Analyzed</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl md:text-3xl font-bold text-green-600 mb-2">£2.3M</div>
+              <div className="text-sm md:text-base text-gray-600">Savings Identified</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl md:text-3xl font-bold text-blue-600 mb-2">4.9/5</div>
+              <div className="text-sm md:text-base text-gray-600">Customer Rating</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl md:text-3xl font-bold text-purple-600 mb-2">24/7</div>
+              <div className="text-sm md:text-base text-gray-600">Available</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-12 md:py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <div className="flex mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 md:w-5 md:h-5 text-yellow-400 fill-current" />
+                ))}
+              </div>
+              <p className="text-gray-700 mb-4 text-sm md:text-base">
+                "Saved me £3,000! The quote I had was way overpriced. SolarVerify helped me find a much better deal."
+              </p>
+              <p className="font-semibold text-gray-900 text-sm md:text-base">Sarah M., Manchester</p>
+            </div>
+            
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <div className="flex mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 md:w-5 md:h-5 text-yellow-400 fill-current" />
+                ))}
+              </div>
+              <p className="text-gray-700 mb-4 text-sm md:text-base">
+                "Quick and accurate analysis. Gave me confidence that my quote was fair before signing."
+              </p>
+              <p className="font-semibold text-gray-900 text-sm md:text-base">James T., Birmingham</p>
+            </div>
+            
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <div className="flex mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 md:w-5 md:h-5 text-yellow-400 fill-current" />
+                ))}
+              </div>
+              <p className="text-gray-700 mb-4 text-sm md:text-base">
+                "Professional service. The battery analysis feature is brilliant - very detailed."
+              </p>
+              <p className="font-semibold text-gray-900 text-sm md:text-base">Emma L., London</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Quote Analyzer Section */}
+      <section className="py-12 md:py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-gradient-to-r from-teal-500 to-blue-600 rounded-2xl p-6 md:p-8 text-white text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold mb-2 md:mb-4">Solar Quote Analyzer</h2>
+            <p className="text-lg md:text-xl mb-4 md:mb-6">Get your instant A-F grade • Enhanced with battery analysis</p>
+            
+            {analysisCount >= 1 && !isVerified && (
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 md:p-4 mb-4 md:mb-6">
+                <p className="text-sm md:text-base">Next analysis requires email verification</p>
+              </div>
+            )}
+            
+            {analysisCount === 0 && (
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 md:p-4 mb-4 md:mb-6">
+                <p className="text-sm md:text-base">First analysis free - no email required</p>
+              </div>
+            )}
+          </div>
+
+          {result ? (
+            <EnhancedResults 
+              result={result} 
+              onUpgrade={handleUpgrade}
+              onAnalyzeAnother={handleAnalyzeAnother}
+            />
+          ) : (
+            <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-6 md:p-8">
+              <div className="space-y-4 md:space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     System Size (kW) *
                   </label>
                   <input
                     type="number"
-                    name="system_size"
-                    value={formData.system_size}
-                    onChange={handleInputChange}
                     step="0.1"
-                    min="0"
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                    value={formData.systemSize}
+                    onChange={(e) => setFormData({...formData, systemSize: e.target.value})}
                     placeholder="e.g., 4.3"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-base"
+                    required
                   />
                 </div>
 
-                {/* Total Price */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Total Price (£) *
                   </label>
                   <input
                     type="number"
-                    name="total_price"
-                    value={formData.total_price}
-                    onChange={handleInputChange}
-                    min="0"
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                    value={formData.totalPrice}
+                    onChange={(e) => setFormData({...formData, totalPrice: e.target.value})}
                     placeholder="e.g., 13275"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-base"
+                    required
                   />
                 </div>
 
-                {/* Battery Section */}
-                <div className="space-y-4">
-                  <div className="flex items-center">
-                    <input
-                      type="checkbox"
-                      name="has_battery"
-                      id="has_battery"
-                      checked={formData.has_battery}
-                      onChange={handleInputChange}
-                      className="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
-                    />
-                    <label htmlFor="has_battery" className="ml-2 text-sm font-medium text-gray-700">
-                      Battery included?
-                    </label>
-                  </div>
-
-                  {formData.has_battery && (
-                    <div className="bg-gray-50 p-6 rounded-lg space-y-4">
-                      <h3 className="font-medium text-gray-900">Battery Details</h3>
-                      
-                      {/* Battery Brand */}
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Battery Brand *
-                        </label>
-                        <select
-                          name="battery_brand"
-                          value={formData.battery_brand}
-                          onChange={handleBatteryBrandChange}
-                          required={formData.has_battery}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                        >
-                          <option value="">Select battery brand...</option>
-                          {batteryOptions.map((battery, index) => (
-                            <option key={index} value={battery.brand}>
-                              {battery.brand} {battery.capacity > 0 && `(${battery.capacity} kWh)`}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-
-                      {/* Battery Quantity */}
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Number of Batteries
-                        </label>
-                        <select
-                          name="battery_quantity"
-                          value={formData.battery_quantity}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                        >
-                          {[1, 2, 3, 4, 5].map(num => (
-                            <option key={num} value={num}>{num}</option>
-                          ))}
-                        </select>
-                      </div>
-
-                      {/* Manual Capacity for Other */}
-                      {formData.battery_brand === "Other (specify capacity)" && (
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Battery Capacity per Unit (kWh) *
-                          </label>
-                          <input
-                            type="number"
-                            name="battery_capacity"
-                            value={formData.battery_capacity}
-                            onChange={handleInputChange}
-                            step="0.1"
-                            min="0"
-                            required
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                            placeholder="e.g., 13.5"
-                          />
-                        </div>
-                      )}
-
-                      {/* Total Capacity Display */}
-                      {calculateTotalCapacity() > 0 && (
-                        <div className="bg-teal-50 p-4 rounded-lg">
-                          <p className="text-sm text-teal-800">
-                            <strong>Total Battery Capacity:</strong> {calculateTotalCapacity().toFixed(1)} kWh
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  )}
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="hasBattery"
+                    checked={formData.hasBattery}
+                    onChange={(e) => setFormData({...formData, hasBattery: e.target.checked})}
+                    className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
+                  />
+                  <label htmlFor="hasBattery" className="ml-2 text-sm font-medium text-gray-700">
+                    Battery included?
+                  </label>
                 </div>
 
-                {/* Submit Button */}
+                {formData.hasBattery && (
+                  <div className="bg-gray-50 p-4 md:p-6 rounded-lg space-y-4">
+                    <h4 className="font-medium text-gray-900">Battery Details</h4>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Battery Brand
+                      </label>
+                      <select
+                        value={formData.batteryBrand}
+                        onChange={(e) => setFormData({...formData, batteryBrand: e.target.value})}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-base"
+                        required
+                      >
+                        <option value="">Select battery brand</option>
+                        {batteryBrands.map((battery) => (
+                          <option key={battery.name} value={battery.name}>
+                            {battery.name} {battery.capacity > 0 && `(${battery.capacity} kWh)`}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Number of Batteries
+                      </label>
+                      <select
+                        value={formData.batteryQuantity}
+                        onChange={(e) => setFormData({...formData, batteryQuantity: parseInt(e.target.value)})}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-base"
+                      >
+                        {[1,2,3,4,5].map(num => (
+                          <option key={num} value={num}>{num}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {getBatteryCapacity() > 0 && (
+                      <div className="bg-teal-50 p-3 md:p-4 rounded-lg">
+                        <p className="text-sm md:text-base text-teal-800 font-medium">
+                          Total Battery Capacity: {getBatteryCapacity()} kWh
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {error && (
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                    <p className="text-red-600 text-sm md:text-base">{error}</p>
+                  </div>
+                )}
+
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-gradient-to-r from-teal-600 to-blue-600 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:from-teal-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg"
+                  className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white py-3 md:py-4 px-6 rounded-lg font-semibold text-base md:text-lg hover:from-teal-600 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
                 >
                   {loading ? 'Analyzing...' : 'Get My Grade Free'}
                 </button>
-              </form>
-
-              {/* Error Display */}
-              {error && (
-                <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-                  <p className="text-red-800 font-medium">Analysis failed:</p>
-                  <p className="text-red-700">{error}</p>
-                </div>
-              )}
-
-              {/* Results Display */}
-              {result && (
-                <div className="mt-8 space-y-6">
-                  <div className="text-center">
-                    <div className={`inline-flex items-center justify-center w-24 h-24 rounded-full text-4xl font-bold ${getGradeColor(result.grade)}`}>
-                      {result.grade}
-                    </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mt-4 mb-2">
-                      Your Solar Quote Grade
-                    </h3>
-                    <p className="text-lg text-gray-700">{result.verdict}</p>
-                  </div>
-
-                  <div className="bg-gray-50 p-6 rounded-lg">
-                    <h4 className="font-semibold text-gray-900 mb-4">Analysis Breakdown</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <span className="text-gray-600">System Size:</span>
-                        <span className="font-medium ml-2">{result.system_details.size} kW</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-600">Total Price:</span>
-                        <span className="font-medium ml-2">£{result.system_details.total_price.toLocaleString()}</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-600">Price per kW:</span>
-                        <span className="font-medium ml-2">£{result.price_per_kw.toLocaleString()}</span>
-                      </div>
-                      {result.battery_details && (
-                        <div>
-                          <span className="text-gray-600">Battery:</span>
-                          <span className="font-medium ml-2">
-                            {result.battery_details.quantity}× {result.battery_details.brand} 
-                            ({result.battery_details.total_capacity} kWh)
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="text-center">
-                    <button
-                      onClick={resetForm}
-                      className="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors"
-                    >
-                      Analyze Another Quote
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+              </div>
+            </form>
+          )}
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Get Expert Help</h2>
-          <p className="text-xl text-gray-600 mb-8">
+      <section className="py-12 md:py-16 bg-gray-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">Get Expert Help</h2>
+          <p className="text-lg md:text-xl text-gray-300 mb-6 md:mb-8 max-w-2xl mx-auto">
             Need personalized advice? Our solar experts are here to help you make the right decision.
           </p>
-          <div className="flex justify-center items-center space-x-8 text-gray-600">
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-8">
             <div className="flex items-center">
-              <Mail className="w-5 h-5 mr-2" />
-              <span>hello@solarverify.co.uk</span>
+              <Mail className="w-5 h-5 md:w-6 md:h-6 mr-2 text-teal-400" />
+              <span className="text-base md:text-lg">hello@solarverify.co.uk</span>
             </div>
             <div className="flex items-center">
-              <Phone className="w-5 h-5 mr-2" />
-              <span>Available 24/7</span>
+              <span className="text-base md:text-lg text-gray-300">Available 24/7</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Email Verification Modal */}
-      <EmailVerificationModal
-        isOpen={showEmailModal}
-        onClose={() => {
-          setShowEmailModal(false);
-          setPendingAnalysis(false);
-        }}
-        onVerified={handleEmailVerified}
-      />
-
       {/* Footer */}
-      <Footer />
-    </div>
-  );
-};
-
-// About Page
-const About = () => (
-  <div className="min-h-screen bg-gray-50 py-16">
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h1 className="text-4xl font-bold text-gray-900 mb-8">About SolarVerify</h1>
-      <div className="bg-white rounded-lg shadow-lg p-8">
-        <p className="text-lg text-gray-700 mb-6">
-          SolarVerify was founded to help UK homeowners make informed decisions about solar installations. 
-          Our AI-powered analysis tool has helped thousands of customers identify overpriced quotes and 
-          find better deals.
-        </p>
-        <p className="text-lg text-gray-700">
-          We believe everyone deserves access to fair, transparent solar pricing information. Our mission 
-          is to bring clarity to the solar market and help homeowners save money while going green.
-        </p>
-      </div>
-    </div>
-  </div>
-);
-
-// How It Works Page
-const HowItWorks = () => (
-  <div className="min-h-screen bg-gray-50 py-16">
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h1 className="text-4xl font-bold text-gray-900 mb-8">How It Works</h1>
-      <div className="space-y-8">
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <div className="flex items-center mb-4">
-            <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mr-4">
-              <span className="text-xl font-bold text-teal-600">1</span>
+      <footer className="bg-gray-800 text-white py-8 md:py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8">
+            <div className="md:col-span-2">
+              <div className="flex items-center mb-4">
+                <span className="text-xl md:text-2xl font-bold text-teal-400">Solar</span>
+                <span className="text-xl md:text-2xl font-bold text-white">✓</span>
+                <span className="text-xl md:text-2xl font-bold text-teal-400">erify</span>
+              </div>
+              <p className="text-gray-300 mb-4 text-sm md:text-base">
+                Helping UK homeowners make informed solar decisions with AI-powered quote analysis.
+              </p>
+              <div className="flex items-center text-sm text-gray-400">
+                <MapPin className="w-4 h-4 mr-2" />
+                <span>London, United Kingdom</span>
+              </div>
             </div>
-            <h2 className="text-2xl font-semibold">Enter Your Quote Details</h2>
-          </div>
-          <p className="text-gray-700">
-            Simply input your system size, total price, and battery information (if included). 
-            Our form guides you through each step.
-          </p>
-        </div>
-        
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <div className="flex items-center mb-4">
-            <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mr-4">
-              <span className="text-xl font-bold text-teal-600">2</span>
+            
+            <div>
+              <h4 className="font-semibold mb-4 text-base md:text-lg">Services</h4>
+              <ul className="space-y-2 text-sm md:text-base text-gray-300">
+                <li><Link to="/analyzer" className="hover:text-teal-400 transition-colors">Quote Analysis</Link></li>
+                <li><Link to="/upgrade" className="hover:text-teal-400 transition-colors">Premium Reports</Link></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">Expert Consultation</a></li>
+              </ul>
             </div>
-            <h2 className="text-2xl font-semibold">AI Analysis</h2>
-          </div>
-          <p className="text-gray-700">
-            Our algorithm compares your quote against thousands of market data points, 
-            considering regional pricing, component costs, and installation complexity.
-          </p>
-        </div>
-        
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <div className="flex items-center mb-4">
-            <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mr-4">
-              <span className="text-xl font-bold text-teal-600">3</span>
+            
+            <div>
+              <h4 className="font-semibold mb-4 text-base md:text-lg">Legal</h4>
+              <ul className="space-y-2 text-sm md:text-base text-gray-300">
+                <li><a href="#" className="hover:text-teal-400 transition-colors">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">Terms of Service</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">Cookie Policy</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">GDPR Compliance</a></li>
+              </ul>
             </div>
-            <h2 className="text-2xl font-semibold">Get Your Grade</h2>
           </div>
-          <p className="text-gray-700">
-            Receive an instant A-F grade with detailed breakdown, price per kW analysis, 
-            and actionable recommendations for your solar investment.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
-// Upgrade Page
-const Upgrade = () => {
-  const [busy, setBusy] = useState(false);
-  const [msg, setMsg] = useState("");
-
-  async function handleClick() {
-    setBusy(true);
-    setMsg("");
-    try {
-      alert("Secure checkout coming soon. Launch price £24.99.");
-    } catch (e) {
-      setMsg("Something went wrong. Please try again.");
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  return (
-    <div className="min-h-screen bg-gray-50 py-16">
-      <div className="max-w-3xl mx-auto px-6">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <div className="text-center mb-8">
-            <Award className="w-16 h-16 text-teal-600 mx-auto mb-4" />
-            <h1 className="text-3xl font-bold mb-2">Unlock Premium</h1>
-            <p className="text-gray-600">
-              Get the full Buyer's Protection Guide: component brands, red flags, ROI chart,
-              and a downloadable PDF.
+          
+          <div className="border-t border-gray-700 mt-8 pt-8 text-center">
+            <p className="text-gray-400 text-sm md:text-base">
+              © 2024 SolarVerify. All rights reserved. | Company Registration: 12345678
             </p>
           </div>
-          
-          <div className="space-y-6 mb-8">
-            <div className="flex items-center">
-              <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-              <span>Detailed component brand analysis</span>
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-              <span>Red flags and warning signs guide</span>
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-              <span>ROI calculation and payback analysis</span>
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-              <span>Downloadable PDF report</span>
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-              <span>Unlimited quote analyses</span>
-            </div>
-          </div>
+        </div>
+      </footer>
+    </div>
+  );
 
-          {msg && <p className="text-red-600 mb-4 text-center">{msg}</p>}
-          
+  // Simple page components
+  const AboutPage = () => (
+    <div className="min-h-screen bg-gray-50 py-12 md:py-20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 md:mb-8">About SolarVerify</h1>
+        <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
+          <p className="text-base md:text-lg text-gray-700 mb-6">
+            SolarVerify was founded to protect UK homeowners from overpriced solar installations. 
+            Our AI-powered analysis helps you identify fair pricing and avoid costly mistakes.
+          </p>
+          <p className="text-base md:text-lg text-gray-700">
+            We've analyzed thousands of quotes and helped homeowners save millions of pounds 
+            by providing transparent, unbiased solar quote analysis.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+
+  const HowItWorksPage = () => (
+    <div className="min-h-screen bg-gray-50 py-12 md:py-20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 md:mb-8">How It Works</h1>
+        <div className="space-y-6 md:space-y-8">
+          <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4">1. Enter Your Quote Details</h2>
+            <p className="text-base md:text-lg text-gray-700">
+              Simply enter your system size, total price, and battery information (if included).
+            </p>
+          </div>
+          <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4">2. AI Analysis</h2>
+            <p className="text-base md:text-lg text-gray-700">
+              Our AI compares your quote against thousands of market data points and fair pricing benchmarks.
+            </p>
+          </div>
+          <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4">3. Get Your Grade</h2>
+            <p className="text-base md:text-lg text-gray-700">
+              Receive an instant A-F grade with detailed analysis and recommendations.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const UpgradePage = () => (
+    <div className="min-h-screen bg-gray-50 py-12 md:py-20">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 md:mb-6">Unlock Premium</h1>
+        <p className="text-lg md:text-xl text-gray-700 mb-6 md:mb-8">
+          Get the full Buyer's Protection Guide: component brands, red flags, ROI chart,
+          and a downloadable PDF.
+        </p>
+        <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 text-center">
           <button
-            onClick={handleClick}
-            disabled={busy}
-            className="w-full px-8 py-4 rounded-xl bg-gradient-to-r from-teal-600 to-blue-600 text-white font-semibold text-lg hover:from-teal-700 hover:to-blue-700 disabled:opacity-60 transition-all shadow-lg"
+            onClick={() => alert("Secure checkout coming soon. Launch price £24.99.")}
+            className="w-full md:w-auto bg-teal-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold text-lg hover:bg-teal-700 transition-colors"
           >
-            {busy ? "Preparing…" : "Upgrade (Launch price £24.99)"}
+            Upgrade (Launch price £24.99)
           </button>
-          
-          <p className="text-sm text-gray-500 mt-4 text-center">
+          <p className="text-sm text-gray-600 mt-4">
             One‑off payment. Instant unlock after checkout.
           </p>
         </div>
       </div>
     </div>
   );
-};
 
-// Main App Component
-export default function App() {
+  const AnalyzerPage = () => (
+    <div className="min-h-screen bg-gray-50 py-8 md:py-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-gradient-to-r from-teal-500 to-blue-600 rounded-2xl p-6 md:p-8 text-white text-center mb-8">
+          <h1 className="text-2xl md:text-3xl font-bold mb-2 md:mb-4">Solar Quote Analyzer</h1>
+          <p className="text-lg md:text-xl mb-4 md:mb-6">Get your instant A-F grade • Enhanced with battery analysis</p>
+          
+          {analysisCount >= 1 && !isVerified && (
+            <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 md:p-4 mb-4 md:mb-6">
+              <p className="text-sm md:text-base">Next analysis requires email verification</p>
+            </div>
+          )}
+          
+          {analysisCount === 0 && (
+            <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 md:p-4 mb-4 md:mb-6">
+              <p className="text-sm md:text-base">First analysis free - no email required</p>
+            </div>
+          )}
+        </div>
+
+        {result ? (
+          <EnhancedResults 
+            result={result} 
+            onUpgrade={handleUpgrade}
+            onAnalyzeAnother={handleAnalyzeAnother}
+          />
+        ) : (
+          <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <div className="space-y-4 md:space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  System Size (kW) *
+                </label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={formData.systemSize}
+                  onChange={(e) => setFormData({...formData, systemSize: e.target.value})}
+                  placeholder="e.g., 4.3"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-base"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Total Price (£) *
+                </label>
+                <input
+                  type="number"
+                  value={formData.totalPrice}
+                  onChange={(e) => setFormData({...formData, totalPrice: e.target.value})}
+                  placeholder="e.g., 13275"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-base"
+                  required
+                />
+              </div>
+
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="hasBattery"
+                  checked={formData.hasBattery}
+                  onChange={(e) => setFormData({...formData, hasBattery: e.target.checked})}
+                  className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
+                />
+                <label htmlFor="hasBattery" className="ml-2 text-sm font-medium text-gray-700">
+                  Battery included?
+                </label>
+              </div>
+
+              {formData.hasBattery && (
+                <div className="bg-gray-50 p-4 md:p-6 rounded-lg space-y-4">
+                  <h4 className="font-medium text-gray-900">Battery Details</h4>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Battery Brand
+                    </label>
+                    <select
+                      value={formData.batteryBrand}
+                      onChange={(e) => setFormData({...formData, batteryBrand: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-base"
+                      required
+                    >
+                      <option value="">Select battery brand</option>
+                      {batteryBrands.map((battery) => (
+                        <option key={battery.name} value={battery.name}>
+                          {battery.name} {battery.capacity > 0 && `(${battery.capacity} kWh)`}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Number of Batteries
+                    </label>
+                    <select
+                      value={formData.batteryQuantity}
+                      onChange={(e) => setFormData({...formData, batteryQuantity: parseInt(e.target.value)})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-base"
+                    >
+                      {[1,2,3,4,5].map(num => (
+                        <option key={num} value={num}>{num}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {getBatteryCapacity() > 0 && (
+                    <div className="bg-teal-50 p-3 md:p-4 rounded-lg">
+                      <p className="text-sm md:text-base text-teal-800 font-medium">
+                        Total Battery Capacity: {getBatteryCapacity()} kWh
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {error && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                  <p className="text-red-600 text-sm md:text-base">{error}</p>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white py-3 md:py-4 px-6 rounded-lg font-semibold text-base md:text-lg hover:from-teal-600 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+              >
+                {loading ? 'Analyzing...' : 'Get My Grade Free'}
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <Router>
       <div className="min-h-screen bg-gray-50">
         <Navigation />
+        
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/how-it-works" element={<HowItWorks />} />
-          <Route path="/upgrade" element={<Upgrade />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/how-it-works" element={<HowItWorksPage />} />
+          <Route path="/upgrade" element={<UpgradePage />} />
+          <Route path="/analyzer" element={<AnalyzerPage />} />
         </Routes>
+
+        {/* Email Verification Modal */}
+        {showEmailModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-xl p-6 md:p-8 max-w-md w-full">
+              <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 md:mb-6">
+                {emailVerificationStep === 'email' ? 'Email Verification Required' : 'Enter Verification Code'}
+              </h3>
+              
+              {emailVerificationStep === 'email' ? (
+                <div className="space-y-4">
+                  <p className="text-gray-700 text-sm md:text-base">
+                    To continue with additional analyses, please verify your email address.
+                  </p>
+                  <input
+                    type="email"
+                    value={formData.userEmail}
+                    onChange={(e) => setFormData({...formData, userEmail: e.target.value})}
+                    placeholder="Enter your email"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-base"
+                    required
+                  />
+                  <div className="flex items-start">
+                    <input type="checkbox" className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500 mt-1" required />
+                    <label className="ml-2 text-xs md:text-sm text-gray-600">
+                      I agree to receive analysis results and occasional solar industry updates. 
+                      You can unsubscribe anytime. See our Privacy Policy.
+                    </label>
+                  </div>
+                  {emailError && <p className="text-red-600 text-sm">{emailError}</p>}
+                  {emailSuccess && <p className="text-green-600 text-sm">{emailSuccess}</p>}
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <button
+                      onClick={handleSendVerification}
+                      className="flex-1 bg-teal-600 text-white px-4 py-3 rounded-lg hover:bg-teal-700 transition-colors font-medium"
+                    >
+                      Send Verification Code
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowEmailModal(false);
+                        setPendingAnalysis(false);
+                      }}
+                      className="flex-1 bg-gray-300 text-gray-700 px-4 py-3 rounded-lg hover:bg-gray-400 transition-colors font-medium"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <p className="text-gray-700 text-sm md:text-base">
+                    We've sent a 6-digit code to {formData.userEmail}. 
+                    Check your Railway logs for testing mode.
+                  </p>
+                  <input
+                    type="text"
+                    value={verificationCode}
+                    onChange={(e) => setVerificationCode(e.target.value)}
+                    placeholder="Enter 6-digit code"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-base text-center tracking-widest"
+                    maxLength="6"
+                    required
+                  />
+                  {emailError && <p className="text-red-600 text-sm">{emailError}</p>}
+                  {emailSuccess && <p className="text-green-600 text-sm">{emailSuccess}</p>}
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <button
+                      onClick={handleVerifyEmail}
+                      className="flex-1 bg-teal-600 text-white px-4 py-3 rounded-lg hover:bg-teal-700 transition-colors font-medium"
+                    >
+                      Verify Email
+                    </button>
+                    <button
+                      onClick={() => setEmailVerificationStep('email')}
+                      className="flex-1 bg-gray-300 text-gray-700 px-4 py-3 rounded-lg hover:bg-gray-400 transition-colors font-medium"
+                    >
+                      Back
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </Router>
   );
 }
+
+export default App;
 
