@@ -45,7 +45,7 @@ function About() {
           <div className="flex flex-wrap justify-center gap-8 text-center">
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 min-w-[200px]">
               <div className="text-3xl font-bold">5,247+</div>
-              <div className="text-sm opacity-80">Quotes Analyzed</div>
+              <div className="text-sm opacity-80">Quotes Analysed</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 min-w-[200px]">
               <div className="text-3xl font-bold">£2.3M+</div>
@@ -91,7 +91,7 @@ function About() {
                   Your Protection Shield
                 </h4>
                 <p className="text-gray-600">
-                  We analyze thousands of data points to identify overpricing, 
+                  We analyse thousands of data points to identify overpricing, 
                   red flags, and help you save money on your solar investment.
                 </p>
               </div>
@@ -199,7 +199,7 @@ function About() {
               Join thousands of homeowners who've saved money with our analysis
             </p>
             <Link to="/analyzer" className="bg-white text-teal-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block">
-              Analyze My Quote Now
+              Analyse My Quote Now
             </Link>
           </div>
         </div>
@@ -437,7 +437,7 @@ function HowItWorks() {
       <section className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Ready to Analyze Your Quote?
+            Ready to Analyse Your Quote?
           </h2>
           <p className="text-lg text-gray-600 mb-8">
             Join thousands of homeowners who've saved money with our analysis
@@ -449,7 +449,7 @@ function HowItWorks() {
               No signup required for your first analysis
             </p>
             <Link to="/analyzer" className="bg-white text-teal-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors inline-block">
-              Analyze My Quote Now
+              Analyse My Quote Now
             </Link>
           </div>
         </div>
@@ -955,7 +955,7 @@ function App() {
                 Contact
               </Link>
               <Link to="/analyzer" className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors">
-                Quote Analyzer
+                Quote Analyser
               </Link>
             </div>
           </div>
@@ -1010,7 +1010,7 @@ function App() {
               </div>
               <div className="flex items-center space-x-2">
                 <Users className="w-5 h-5 text-blue-600" />
-                <span className="text-sm font-medium text-gray-700">5,247+ Quotes Analyzed</span>
+                <span className="text-sm font-medium text-gray-700">5,247+ Quotes Analysed</span>
               </div>
               <div className="flex items-center space-x-2">
                 <TrendingUp className="w-5 h-5 text-purple-600" />
@@ -1025,7 +1025,7 @@ function App() {
           <div className="max-w-4xl mx-auto px-6">
             <div className="bg-gradient-to-br from-teal-500 to-blue-600 rounded-2xl shadow-2xl overflow-hidden">
               <div className="p-8 text-white text-center">
-                <h2 className="text-3xl font-bold mb-4">Solar Quote Analyzer</h2>
+                <h2 className="text-3xl font-bold mb-4">Solar Quote Analyser</h2>
                 <p className="text-lg opacity-90 mb-6">Get your instant A-F grade • Enhanced with battery analysis</p>
                 
                 {/* Analysis Status */}
@@ -1240,7 +1240,7 @@ function App() {
                         }}
                         className="bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors"
                       >
-                        Analyze Another Quote
+                        Analyse Another Quote
                       </button>
                     </div>
                   </div>
@@ -1475,7 +1475,7 @@ function App() {
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/upgrade" element={<Upgrade />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/analyzer" element={<Analyzer />} />
+          <Route path="/analyzer" element={<Analyser />} />
         </Routes>
       </div>
     </Router>
