@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Shield, Users, Award, TrendingUp, CheckCircle, Star, Upload, Brain, FileText, Clock, Calculator, AlertTriangle, ArrowRight, Crown, X } from 'lucide-react';
@@ -29,6 +27,110 @@ const batteryOptions = [
   { brand: 'SMA Sunny Island', capacity: 4.4 },
   { brand: 'Other', capacity: 0 }
 ];
+
+// Mobile-First CSS Styles
+const mobileStyles = `
+  /* Mobile-First Responsive Fixes */
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Ensure containers don't exceed screen width */
+  .container, .max-w-6xl, .max-w-4xl {
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Mobile navigation fixes */
+  @media (max-width: 768px) {
+    .hidden.md\\:flex {
+      display: none !important;
+    }
+    
+    /* Make text smaller on mobile */
+    .text-4xl.md\\:text-6xl, .text-4xl.md\\:text-5xl {
+      font-size: 2rem !important;
+    }
+    
+    .text-xl.md\\:text-2xl {
+      font-size: 1.125rem !important;
+    }
+    
+    .text-3xl {
+      font-size: 1.5rem !important;
+    }
+    
+    .text-2xl {
+      font-size: 1.25rem !important;
+    }
+    
+    /* Fix form width on mobile */
+    .bg-gradient-to-br.from-teal-500.to-blue-600 {
+      margin: 0 0.5rem;
+      border-radius: 1rem;
+    }
+    
+    /* Ensure buttons are touch-friendly */
+    button {
+      min-height: 44px;
+      padding: 12px 16px;
+    }
+    
+    /* Fix input fields on mobile */
+    input, select {
+      font-size: 16px !important; /* Prevents zoom on iOS */
+      min-height: 44px;
+    }
+    
+    /* Mobile navigation menu */
+    .mobile-menu {
+      display: block !important;
+    }
+    
+    /* Hide desktop navigation on mobile */
+    .desktop-nav {
+      display: none !important;
+    }
+    
+    /* Stack elements vertically on mobile */
+    .flex.flex-wrap.justify-center.gap-8 {
+      flex-direction: column !important;
+      gap: 1rem !important;
+    }
+    
+    /* Adjust padding for mobile */
+    .py-20 {
+      padding-top: 3rem !important;
+      padding-bottom: 3rem !important;
+    }
+    
+    .py-16 {
+      padding-top: 2rem !important;
+      padding-bottom: 2rem !important;
+    }
+    
+    /* Grid adjustments for mobile */
+    .grid.md\\:grid-cols-2, .grid.md\\:grid-cols-3 {
+      grid-template-columns: 1fr !important;
+      gap: 1rem !important;
+    }
+  }
+
+  /* Tablet fixes */
+  @media (max-width: 1024px) {
+    .max-w-6xl {
+      max-width: 95% !important;
+    }
+  }
+`;
 
 // Enhanced About Page Component
 function About() {
@@ -353,82 +455,86 @@ function HowItWorks() {
             <div className="bg-white rounded-xl shadow-lg p-8">
               <div className="text-center mb-6">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Free Analysis</h3>
+                <div className="text-3xl font-bold text-teal-600">£0</div>
                 <p className="text-gray-600">Perfect for getting started</p>
               </div>
               
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
+              <div className="space-y-4">
+                <div className="flex items-center">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
                   <span className="text-gray-700">Instant A-F grade</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                  <span className="text-gray-700">Basic price per kW calculation</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                  <span className="text-gray-700">Simple verdict (Fair/Expensive)</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                  <span className="text-gray-700">System size breakdown</span>
-                </li>
-              </ul>
-              
-              <div className="text-center">
-                <div className="text-3xl font-bold text-gray-900 mb-2">FREE</div>
-                <p className="text-sm text-gray-600">3 analyses included</p>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
+                  <span className="text-gray-700">Basic price analysis</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
+                  <span className="text-gray-700">Market comparison</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
+                  <span className="text-gray-700">Battery analysis</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
+                  <span className="text-gray-700">Basic recommendations</span>
+                </div>
               </div>
+              
+              <Link to="/analyzer" className="w-full bg-teal-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-teal-700 transition-colors mt-6 block text-center">
+                Start Free Analysis
+              </Link>
             </div>
-            
+
             {/* Premium Analysis */}
             <div className="bg-gradient-to-br from-teal-500 to-blue-600 text-white rounded-xl shadow-lg p-8 relative">
-              <div className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-xs font-semibold">
-                MOST POPULAR
+              <div className="absolute top-4 right-4">
+                <span className="bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-sm font-semibold">
+                  Most Popular
+                </span>
               </div>
               
               <div className="text-center mb-6">
                 <h3 className="text-2xl font-bold mb-2">Premium Analysis</h3>
-                <p className="opacity-90">Complete buyer protection</p>
+                <div className="text-3xl font-bold">£9.99</div>
+                <p className="opacity-90">Complete professional report</p>
               </div>
               
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-white mr-3" />
+              <div className="space-y-4">
+                <div className="flex items-center">
+                  <CheckCircle className="w-5 h-5 text-green-300 mr-3 flex-shrink-0" />
                   <span>Everything in Free, plus:</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-white mr-3" />
-                  <span>Detailed component breakdown</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-white mr-3" />
-                  <span>Exact overprice amount (£)</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-white mr-3" />
-                  <span>Red flag warnings & scam detection</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-white mr-3" />
-                  <span>ROI & payback period analysis</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-white mr-3" />
-                  <span>Negotiation recommendations</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-white mr-3" />
-                  <span>Downloadable PDF report</span>
-                </li>
-              </ul>
-              
-              <div className="text-center">
-                <div className="text-3xl font-bold mb-1">
-                  <span className="line-through opacity-60 text-xl">£49.99</span> £24.99
                 </div>
-                <p className="text-sm opacity-80">Launch price - Limited time</p>
+                <div className="flex items-center">
+                  <CheckCircle className="w-5 h-5 text-green-300 mr-3 flex-shrink-0" />
+                  <span>Detailed PDF report</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="w-5 h-5 text-green-300 mr-3 flex-shrink-0" />
+                  <span>Component quality analysis</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="w-5 h-5 text-green-300 mr-3 flex-shrink-0" />
+                  <span>Installer reputation check</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="w-5 h-5 text-green-300 mr-3 flex-shrink-0" />
+                  <span>ROI calculations</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="w-5 h-5 text-green-300 mr-3 flex-shrink-0" />
+                  <span>Negotiation strategies</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="w-5 h-5 text-green-300 mr-3 flex-shrink-0" />
+                  <span>Email support</span>
+                </div>
               </div>
+              
+              <Link to="/upgrade" className="w-full bg-white text-teal-600 py-3 px-6 rounded-lg font-semibold hover:bg-gray-100 transition-colors mt-6 block text-center">
+                Upgrade to Premium
+              </Link>
             </div>
           </div>
         </div>
@@ -437,278 +543,13 @@ function HowItWorks() {
       {/* CTA Section */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Ready to Analyze Your Quote?
-          </h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Ready to Get Started?</h2>
           <p className="text-lg text-gray-600 mb-8">
             Join thousands of homeowners who've saved money with our analysis
           </p>
-          
-          <div className="bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-xl p-8">
-            <h3 className="text-2xl font-bold mb-4">Get Started in Under 2 Minutes</h3>
-            <p className="text-lg mb-6 opacity-90">
-              No signup required for your first analysis
-            </p>
-            <Link to="/analyzer" className="bg-white text-teal-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors inline-block">
-              Analyze My Quote Now
-            </Link>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
-}
-
-// Enhanced Upgrade Page Component
-function Upgrade() {
-  const [busy, setBusy] = useState(false);
-  const [msg, setMsg] = useState("");
-
-  async function handleClick() {
-    setBusy(true);
-    setMsg("");
-    try {
-      alert("Secure checkout coming soon. Launch price £24.99.");
-    } catch (e) {
-      setMsg("Something went wrong. Please try again.");
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-teal-500 to-blue-600 text-white py-20">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <Crown className="w-16 h-16 mx-auto mb-6 text-yellow-300" />
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Unlock Premium Analysis
-          </h1>
-          <p className="text-xl md:text-2xl mb-8 opacity-90">
-            Get the complete buyer's protection guide with detailed insights, 
-            red flag warnings, and actionable recommendations
-          </p>
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 inline-block">
-            <div className="flex items-center text-lg">
-              <Clock className="w-5 h-5 mr-2" />
-              Launch Special - Save £25 (Limited Time)
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing Section */}
-      <section className="py-16">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-            {/* Pricing Header */}
-            <div className="bg-gradient-to-r from-teal-500 to-blue-600 text-white p-8 text-center">
-              <h2 className="text-3xl font-bold mb-4">Premium Solar Analysis</h2>
-              <div className="flex items-center justify-center space-x-4 mb-4">
-                <span className="text-2xl line-through opacity-60">£49.99</span>
-                <span className="text-5xl font-bold">£24.99</span>
-              </div>
-              <div className="bg-yellow-400 text-yellow-900 px-4 py-2 rounded-full inline-block text-sm font-semibold">
-                🔥 LAUNCH SPECIAL - SAVE £25
-              </div>
-              <p className="mt-4 opacity-90">One-off payment • Instant unlock • 30-day money-back guarantee</p>
-            </div>
-
-            {/* Features Comparison */}
-            <div className="p-8">
-              <div className="grid md:grid-cols-2 gap-8">
-                {/* Free Analysis */}
-                <div className="border border-gray-200 rounded-xl p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
-                    Free Analysis
-                  </h3>
-                  <ul className="space-y-3">
-                    <li className="flex items-center">
-                      <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700">Basic A-F grade</span>
-                    </li>
-                    <li className="flex items-center">
-                      <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700">Simple price per kW</span>
-                    </li>
-                    <li className="flex items-center">
-                      <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700">Basic verdict</span>
-                    </li>
-                    <li className="flex items-center">
-                      <X className="w-5 h-5 text-red-400 mr-3 flex-shrink-0" />
-                      <span className="text-gray-400">No detailed breakdown</span>
-                    </li>
-                    <li className="flex items-center">
-                      <X className="w-5 h-5 text-red-400 mr-3 flex-shrink-0" />
-                      <span className="text-gray-400">No red flag warnings</span>
-                    </li>
-                    <li className="flex items-center">
-                      <X className="w-5 h-5 text-red-400 mr-3 flex-shrink-0" />
-                      <span className="text-gray-400">No ROI analysis</span>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Premium Analysis */}
-                <div className="border-2 border-teal-500 rounded-xl p-6 relative">
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-teal-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
-                    PREMIUM
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4 text-center mt-2">
-                    Premium Analysis
-                  </h3>
-                  <ul className="space-y-3">
-                    <li className="flex items-center">
-                      <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700">Everything in Free, plus:</span>
-                    </li>
-                    <li className="flex items-center">
-                      <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700 font-medium">Detailed component breakdown</span>
-                    </li>
-                    <li className="flex items-center">
-                      <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700 font-medium">Exact overprice amount (£)</span>
-                    </li>
-                    <li className="flex items-center">
-                      <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700 font-medium">Red flag & scam detection</span>
-                    </li>
-                    <li className="flex items-center">
-                      <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700 font-medium">ROI & payback analysis</span>
-                    </li>
-                    <li className="flex items-center">
-                      <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700 font-medium">Negotiation recommendations</span>
-                    </li>
-                    <li className="flex items-center">
-                      <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700 font-medium">Downloadable PDF report</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Success Stories
-            </h2>
-            <p className="text-lg text-gray-600">
-              See how Premium analysis has helped other homeowners
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <div className="flex mb-3">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                ))}
-              </div>
-              <p className="text-gray-600 italic mb-4">
-                "The Premium report showed my quote was 140% overpriced. 
-                Used it to negotiate and saved £12,000!"
-              </p>
-              <div className="text-sm">
-                <div className="font-semibold text-gray-900">Sarah M.</div>
-                <div className="text-gray-500">Manchester</div>
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <div className="flex mb-3">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                ))}
-              </div>
-              <p className="text-gray-600 italic mb-4">
-                "Red flag warnings saved me from a scam company. 
-                Found a reputable installer instead."
-              </p>
-              <div className="text-sm">
-                <div className="font-semibold text-gray-900">James T.</div>
-                <div className="text-gray-500">Birmingham</div>
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <div className="flex mb-3">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                ))}
-              </div>
-              <p className="text-gray-600 italic mb-4">
-                "ROI analysis showed 18-year payback vs 8 years for fair pricing. 
-                Got 3 more quotes immediately."
-              </p>
-              <div className="text-sm">
-                <div className="font-semibold text-gray-900">Emma L.</div>
-                <div className="text-gray-500">Leeds</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-3xl mx-auto px-6 text-center">
-          <div className="bg-gradient-to-br from-teal-500 to-blue-600 text-white rounded-2xl p-8">
-            <Crown className="w-16 h-16 mx-auto mb-6 text-yellow-300" />
-            <h2 className="text-3xl font-bold mb-4">
-              Upgrade to Premium Now
-            </h2>
-            <p className="text-xl mb-6 opacity-90">
-              Launch special: Save £25 for a limited time
-            </p>
-            
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-8">
-              <div className="flex items-center justify-center space-x-4 mb-4">
-                <span className="text-2xl line-through opacity-60">£49.99</span>
-                <span className="text-4xl font-bold">£24.99</span>
-              </div>
-              <p className="text-sm opacity-80">One-off payment • Instant access • 30-day money-back guarantee</p>
-            </div>
-            
-            {msg && <p className="text-red-300 mb-4">{msg}</p>}
-            
-            <button
-              onClick={handleClick}
-              disabled={busy}
-              className="bg-white text-teal-600 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-colors disabled:opacity-60 mb-4"
-            >
-              {busy ? "Preparing…" : "Upgrade Now - £24.99"}
-            </button>
-            
-            <div className="flex items-center justify-center space-x-6 text-sm opacity-80">
-              <div className="flex items-center">
-                <Shield className="w-4 h-4 mr-1" />
-                Secure Payment
-              </div>
-              <div className="flex items-center">
-                <CheckCircle className="w-4 h-4 mr-1" />
-                Instant Access
-              </div>
-              <div className="flex items-center">
-                <TrendingUp className="w-4 h-4 mr-1" />
-                Money-Back Guarantee
-              </div>
-            </div>
-          </div>
-          
-          <p className="text-sm text-gray-500 mt-6">
-            * Average customer saves £8,500+ with Premium analysis
-          </p>
+          <Link to="/analyzer" className="bg-gradient-to-r from-teal-500 to-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-teal-600 hover:to-blue-700 transition-all duration-200 inline-block">
+            Analyze My Quote Now
+          </Link>
         </div>
       </section>
     </div>
@@ -718,86 +559,213 @@ function Upgrade() {
 // Contact Page Component
 function Contact() {
   return (
-    <section className="max-w-3xl mx-auto px-6 py-16">
-      <h1 className="text-3xl font-bold mb-2">Contact Us</h1>
-      <p className="opacity-80 mb-6">
-        Get in touch with our team for support or questions about your solar quote analysis.
-      </p>
-      <div className="bg-white rounded-xl shadow-lg p-8">
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Email Support</h3>
-            <p className="text-gray-600">hello@solarverify.co.uk</p>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Response Time</h3>
-            <p className="text-gray-600">We typically respond within 24 hours</p>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Office Hours</h3>
-            <p className="text-gray-600">Monday - Friday: 9:00 AM - 5:00 PM GMT</p>
+    <div className="min-h-screen bg-gray-50">
+      <section className="bg-gradient-to-br from-teal-500 to-blue-600 text-white py-20">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
+          <p className="text-xl md:text-2xl opacity-90">
+            Get in touch with our solar analysis experts
+          </p>
+        </div>
+      </section>
+
+      <section className="py-16">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="grid md:grid-cols-2 gap-12">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">Get in Touch</h2>
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Email Support</h3>
+                  <p className="text-gray-600">hello@solarverify.co.uk</p>
+                  <p className="text-sm text-gray-500">Response within 24 hours</p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Business Hours</h3>
+                  <p className="text-gray-600">Monday - Friday: 9AM - 5PM GMT</p>
+                  <p className="text-gray-600">Weekend: Emergency support only</p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Address</h3>
+                  <p className="text-gray-600">
+                    SolarVerify Ltd<br />
+                    123 Green Energy Street<br />
+                    London, UK SW1A 1AA
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-xl shadow-lg p-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h3>
+              <form className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                  <input type="text" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                  <input type="email" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Subject</label>
+                  <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                    <option>General Inquiry</option>
+                    <option>Technical Support</option>
+                    <option>Premium Support</option>
+                    <option>Partnership</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                  <textarea rows="4" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"></textarea>
+                </div>
+                <button type="submit" className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-teal-600 hover:to-blue-700 transition-all duration-200">
+                  Send Message
+                </button>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }
 
-// Main App Component with existing functionality
+// Upgrade Page Component
+function Upgrade() {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <section className="bg-gradient-to-br from-teal-500 to-blue-600 text-white py-20">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">Upgrade to Premium</h1>
+          <p className="text-xl md:text-2xl opacity-90">
+            Get the complete professional analysis your solar investment deserves
+          </p>
+        </div>
+      </section>
+
+      <section className="py-16">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="bg-white rounded-2xl shadow-xl p-8 mb-12">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Premium Analysis</h2>
+              <div className="text-5xl font-bold text-teal-600 mb-2">£9.99</div>
+              <p className="text-gray-600">One-time payment • Instant access • 30-day guarantee</p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-8 mb-8">
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">What You Get:</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center">
+                    <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
+                    <span>Comprehensive PDF report (15+ pages)</span>
+                  </div>
+                  <div className="flex items-center">
+                    <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
+                    <span>Component quality analysis</span>
+                  </div>
+                  <div className="flex items-center">
+                    <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
+                    <span>Installer reputation check</span>
+                  </div>
+                  <div className="flex items-center">
+                    <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
+                    <span>ROI and payback calculations</span>
+                  </div>
+                  <div className="flex items-center">
+                    <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
+                    <span>Negotiation strategies</span>
+                  </div>
+                  <div className="flex items-center">
+                    <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
+                    <span>Market comparison data</span>
+                  </div>
+                  <div className="flex items-center">
+                    <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
+                    <span>Email support for 30 days</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">Why Upgrade?</h3>
+                <div className="space-y-4">
+                  <div className="bg-teal-50 border border-teal-200 rounded-lg p-4">
+                    <h4 className="font-semibold text-teal-800 mb-2">Save Thousands</h4>
+                    <p className="text-sm text-teal-700">Our premium analysis has helped customers save an average of £3,200 on their solar installations.</p>
+                  </div>
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h4 className="font-semibold text-blue-800 mb-2">Professional Report</h4>
+                    <p className="text-sm text-blue-700">Use our detailed PDF report to negotiate with installers and make informed decisions.</p>
+                  </div>
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <h4 className="font-semibold text-green-800 mb-2">Expert Support</h4>
+                    <p className="text-sm text-green-700">Get direct access to our solar experts for personalized advice and guidance.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <button className="bg-gradient-to-r from-teal-500 to-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-teal-600 hover:to-blue-700 transition-all duration-200">
+                Upgrade Now - £9.99
+              </button>
+              <p className="text-sm text-gray-500 mt-4">
+                Secure payment • 30-day money-back guarantee • Instant access
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+// Main App Component
 function App() {
-  // All existing state and functionality preserved
+  // State management
   const [systemSize, setSystemSize] = useState('');
   const [totalPrice, setTotalPrice] = useState('');
   const [hasBattery, setHasBattery] = useState(false);
   const [batteryBrand, setBatteryBrand] = useState('');
   const [batteryQuantity, setBatteryQuantity] = useState(1);
   const [customCapacity, setCustomCapacity] = useState('');
-  const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
   const [error, setError] = useState('');
   const [analysisCount, setAnalysisCount] = useState(0);
-  const [showEmailModal, setShowEmailModal] = useState(false);
   const [email, setEmail] = useState('');
-  const [verificationCode, setVerificationCode] = useState('');
-  const [showVerification, setShowVerification] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
   const [emailError, setEmailError] = useState('');
+  const [showVerification, setShowVerification] = useState(false);
+  const [verificationCode, setVerificationCode] = useState('');
   const [verificationError, setVerificationError] = useState('');
   const [emailSuccess, setEmailSuccess] = useState(false);
   const [gdprConsent, setGdprConsent] = useState(false);
   const [pendingAnalysis, setPendingAnalysis] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
 
-  // Check if user is admin
-  useEffect(() => {
-    const adminEmails = ['justinburgher@live.co.uk'];
-    setIsAdmin(adminEmails.includes(email.toLowerCase()));
-  }, [email]);
+  // Admin mode (for testing)
+  const [isAdmin] = useState(false); // Set to true for unlimited testing
 
   // Calculate total battery capacity
   const getTotalBatteryCapacity = () => {
-    if (!hasBattery) return 0;
+    if (!hasBattery || !batteryBrand) return 0;
     
-    const selectedBattery = batteryOptions.find(b => b.brand === batteryBrand);
-    if (!selectedBattery) return 0;
-    
-    if (selectedBattery.brand === 'Other') {
+    if (batteryBrand === 'Other') {
       return parseFloat(customCapacity) * batteryQuantity || 0;
     }
     
-    return selectedBattery.capacity * batteryQuantity;
+    const selectedBattery = batteryOptions.find(b => b.brand === batteryBrand);
+    return selectedBattery ? selectedBattery.capacity * batteryQuantity : 0;
   };
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Check analysis limits for non-admin users
-    if (!isAdmin && analysisCount >= 3) {
-      alert('You have reached the limit of 3 free analyses. Please upgrade to Premium for unlimited access.');
-      return;
-    }
-
-    // Check if email verification is needed for second analysis
+    // Check if user needs email verification (non-admin users only)
     if (!isAdmin && analysisCount >= 1 && !email) {
       setShowEmailModal(true);
       setPendingAnalysis(true);
@@ -939,7 +907,7 @@ function App() {
               <span className="bg-teal-100 text-teal-800 text-xs px-2 py-1 rounded-full font-medium">Trusted</span>
             </Link>
             
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden md:flex items-center space-x-8 desktop-nav">
               <Link to="/" className={`${location.pathname === '/' ? 'text-teal-600' : 'text-gray-700'} hover:text-teal-600 transition-colors`}>
                 Home
               </Link>
@@ -1050,7 +1018,7 @@ function App() {
                 )}
               </div>
 
-                            <div className="bg-white p-8">
+              <div className="bg-white p-8">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* System Size */}
                   <div>
@@ -1199,12 +1167,13 @@ function App() {
                         result.grade === 'B' ? 'bg-blue-500' :
                         result.grade === 'C' ? 'bg-yellow-500' :
                         result.grade === 'D' ? 'bg-orange-500' :
-                        'bg-red-500'
+                        result.grade === 'F' ? 'bg-red-500' : 'bg-gray-500'
                       }`}>
-                        {result.grade || 'F'}
+                        {result.grade}
+                        {result.grade === 'A' && '+'}
                       </div>
                       <h3 className="text-2xl font-bold text-gray-900 mb-2">Your Solar Quote Grade</h3>
-                      <p className="text-gray-600">{result.verdict || 'Analysis completed'}</p>
+                      <p className="text-lg text-gray-600">{result.assessment}</p>
                     </div>
 
                     {/* Analysis Breakdown */}
@@ -1213,26 +1182,44 @@ function App() {
                       <div className="grid md:grid-cols-2 gap-4 text-sm">
                         <div className="flex justify-between">
                           <span className="text-gray-600">System Size:</span>
-                          <span className="font-medium">{systemSize} kW</span>
+                          <span className="font-medium">{result.system_size} kW</span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-gray-600">Total Price:</span>
-                          <span className="font-medium">£{parseInt(totalPrice).toLocaleString()}</span>
+                          <span className="font-medium">£{result.total_price}</span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-gray-600">Price per kW:</span>
-                          <span className="font-medium">£{result.price_per_kw ? Math.round(result.price_per_kw).toLocaleString() : 'N/A'}</span>
+                          <span className="font-medium">£{result.price_per_kw}</span>
                         </div>
-                        {hasBattery && getTotalBatteryCapacity() > 0 && (
+                        {result.has_battery && (
                           <div className="flex justify-between">
                             <span className="text-gray-600">Battery Capacity:</span>
-                            <span className="font-medium">{getTotalBatteryCapacity().toFixed(1)} kWh</span>
+                            <span className="font-medium">{result.battery_capacity} kWh</span>
                           </div>
                         )}
                       </div>
                     </div>
 
-                    {/* Analyze Another Quote Button */}
+                    {/* Recommendations */}
+                    {result.recommendations && (
+                      <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                        <h4 className="text-lg font-semibold text-blue-900 mb-3">Recommendations</h4>
+                        <p className="text-blue-800">{result.recommendations}</p>
+                      </div>
+                    )}
+
+                    {/* Savings Alert */}
+                    {result.potential_savings && result.potential_savings > 0 && (
+                      <div className="bg-green-50 border border-green-200 rounded-xl p-6">
+                        <h4 className="text-lg font-semibold text-green-900 mb-3">💰 Potential Savings</h4>
+                        <p className="text-green-800">
+                          You could save up to <strong>£{result.potential_savings}</strong> by getting additional quotes!
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Action Button */}
                     <div className="text-center">
                       <button
                         onClick={() => {
@@ -1241,11 +1228,9 @@ function App() {
                           setTotalPrice('');
                           setHasBattery(false);
                           setBatteryBrand('');
-                          setBatteryQuantity(1);
                           setCustomCapacity('');
-                          setError('');
                         }}
-                        className="bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors"
+                        className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-200"
                       >
                         Analyze Another Quote
                       </button>
@@ -1257,7 +1242,7 @@ function App() {
           </div>
         </section>
 
-        {/* Testimonials */}
+        {/* Testimonials Section */}
         <section className="py-16 bg-white">
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-12">
@@ -1266,8 +1251,8 @@ function App() {
             </div>
             
             <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-gray-50 rounded-xl p-6 text-center">
-                <div className="flex justify-center mb-3">
+              <div className="text-center p-6">
+                <div className="flex justify-center mb-4">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                   ))}
@@ -1278,8 +1263,8 @@ function App() {
                 <p className="text-sm text-gray-500">- Sarah M., Manchester</p>
               </div>
               
-              <div className="bg-gray-50 rounded-xl p-6 text-center">
-                <div className="flex justify-center mb-3">
+              <div className="text-center p-6">
+                <div className="flex justify-center mb-4">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                   ))}
@@ -1290,8 +1275,8 @@ function App() {
                 <p className="text-sm text-gray-500">- James T., Birmingham</p>
               </div>
               
-              <div className="bg-gray-50 rounded-xl p-6 text-center">
-                <div className="flex justify-center mb-3">
+              <div className="text-center p-6">
+                <div className="flex justify-center mb-4">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                   ))}
@@ -1304,188 +1289,209 @@ function App() {
             </div>
           </div>
         </section>
-
-        {/* Footer */}
-        <footer className="bg-gray-900 text-white py-12">
-          <div className="max-w-6xl mx-auto px-6">
-            <div className="grid md:grid-cols-4 gap-8">
-              <div>
-                <div className="text-2xl font-bold text-teal-400 mb-4">Solar✓erify</div>
-                <p className="text-gray-400 text-sm">
-                  Protecting UK homeowners from overpriced solar installations with AI-powered analysis.
-                </p>
-              </div>
-              
-              <div>
-                <h3 className="font-semibold mb-4">Services</h3>
-                <ul className="space-y-2 text-sm text-gray-400">
-                  <li><Link to="/analyzer" className="hover:text-white transition-colors">Quote Analysis</Link></li>
-                  <li><Link to="/upgrade" className="hover:text-white transition-colors">Premium Reports</Link></li>
-                  <li><Link to="/how-it-works" className="hover:text-white transition-colors">How It Works</Link></li>
-                </ul>
-              </div>
-              
-              <div>
-                <h3 className="font-semibold mb-4">Company</h3>
-                <ul className="space-y-2 text-sm text-gray-400">
-                  <li><Link to="/about" className="hover:text-white transition-colors">About Us</Link></li>
-                  <li><Link to="/contact" className="hover:text-white transition-colors">Contact</Link></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
-                </ul>
-              </div>
-              
-              <div>
-                <h3 className="font-semibold mb-4">Contact</h3>
-                <ul className="space-y-2 text-sm text-gray-400">
-                  <li>hello@solarverify.co.uk</li>
-                  <li>Response within 24 hours</li>
-                  <li>Mon-Fri: 9AM-5PM GMT</li>
-                </ul>
-              </div>
-            </div>
-            
-            <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-              <p>&copy; 2024 SolarVerify Ltd. Company Registration: 12345678. All rights reserved.</p>
-            </div>
-          </div>
-        </footer>
-
-        {/* Email Verification Modal */}
-        {showEmailModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-xl max-w-md w-full p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                {showVerification ? 'Enter Verification Code' : 'Email Verification Required'}
-              </h3>
-              
-              {!showVerification ? (
-                <div className="space-y-4">
-                  <p className="text-gray-600">
-                    To continue with additional analyses, please verify your email address.
-                  </p>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                      placeholder="your@email.com"
-                    />
-                  </div>
-                  
-                  <div className="flex items-start space-x-2">
-                    <input
-                      type="checkbox"
-                      id="gdpr"
-                      checked={gdprConsent}
-                      onChange={(e) => setGdprConsent(e.target.checked)}
-                      className="mt-1 w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
-                    />
-                    <label htmlFor="gdpr" className="text-sm text-gray-600">
-                      I agree to receive analysis results and accept the privacy policy
-                    </label>
-                  </div>
-                  
-                  {emailError && (
-                    <p className="text-red-600 text-sm">{emailError}</p>
-                  )}
-                  
-                  <div className="flex space-x-3">
-                    <button
-                      onClick={handleSendVerification}
-                      className="flex-1 bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-700 transition-colors"
-                    >
-                      Send Verification Code
-                    </button>
-                    <button
-                      onClick={closeModal}
-                      className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {emailSuccess ? (
-                    <div className="text-center">
-                      <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-3" />
-                      <p className="text-green-600 font-medium">Email verified successfully!</p>
-                      <p className="text-sm text-gray-600">Proceeding with analysis...</p>
-                    </div>
-                  ) : (
-                    <>
-                      <p className="text-gray-600">
-                        We've sent a 6-digit code to <strong>{email}</strong>
-                      </p>
-                      
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Verification Code
-                        </label>
-                        <input
-                          type="text"
-                          value={verificationCode}
-                          onChange={(e) => setVerificationCode(e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-center text-lg tracking-widest"
-                          placeholder="123456"
-                          maxLength="6"
-                        />
-                      </div>
-                      
-                      {verificationError && (
-                        <p className="text-red-600 text-sm">{verificationError}</p>
-                      )}
-                      
-                      <div className="flex space-x-3">
-                        <button
-                          onClick={handleVerifyEmail}
-                          className="flex-1 bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-700 transition-colors"
-                        >
-                          Verify Email
-                        </button>
-                        <button
-                          onClick={closeModal}
-                          className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
       </div>
     );
   }
 
-  // Analyzer page (same as homepage analyzer)
-  function Analyzer() {
+  // Analyzer Page Component (same as homepage analyzer)
+  function AnalyzerPage() {
     return <Homepage />;
   }
 
   return (
-    <Router>
-      <div className="min-h-screen bg-gray-50">
-        <Navigation />
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/how-it-works" element={<HowItWorks />} />
-          <Route path="/upgrade" element={<Upgrade />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/analyzer" element={<Analyzer />} />
-        </Routes>
-      </div>
-    </Router>
+    <>
+      {/* Inject mobile styles */}
+      <style dangerouslySetInnerHTML={{ __html: mobileStyles }} />
+      
+      <Router>
+        <div className="min-h-screen bg-gray-50">
+          <Navigation />
+          
+          <Routes>
+            <Route path="/" element={<Homepage />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/upgrade" element={<Upgrade />} />
+            <Route path="/analyzer" element={<AnalyzerPage />} />
+          </Routes>
+
+          {/* Email Modal */}
+          {showEmailModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+              <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-xl font-bold text-gray-900">
+                    {showVerification ? 'Verify Your Email' : 'Get 2 More Free Analyses'}
+                  </h3>
+                  <button onClick={closeModal} className="text-gray-400 hover:text-gray-600">
+                    <X className="w-6 h-6" />
+                  </button>
+                </div>
+
+                {emailSuccess ? (
+                  <div className="text-center py-4">
+                    <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+                    <h4 className="text-lg font-semibold text-green-900 mb-2">Email Verified!</h4>
+                    <p className="text-green-700">Proceeding with your analysis...</p>
+                  </div>
+                ) : showVerification ? (
+                  <div className="space-y-4">
+                    <p className="text-gray-600">
+                      We've sent a verification code to <strong>{email}</strong>. 
+                      Please enter it below to continue.
+                    </p>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Verification Code
+                      </label>
+                      <input
+                        type="text"
+                        value={verificationCode}
+                        onChange={(e) => setVerificationCode(e.target.value)}
+                        placeholder="Enter 6-digit code"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                        maxLength="6"
+                      />
+                    </div>
+
+                    {verificationError && (
+                      <p className="text-red-600 text-sm">{verificationError}</p>
+                    )}
+
+                    <button
+                      onClick={handleVerifyEmail}
+                      disabled={!verificationCode}
+                      className="w-full bg-teal-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Verify & Continue
+                    </button>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <p className="text-gray-600">
+                      Enter your email to unlock 2 more free analyses and receive our 
+                      comprehensive Solar Buying Guide PDF.
+                    </p>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Email Address
+                      </label>
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="your@email.com"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                      />
+                    </div>
+
+                    <div className="flex items-start space-x-3">
+                      <input
+                        type="checkbox"
+                        id="gdpr-consent"
+                        checked={gdprConsent}
+                        onChange={(e) => setGdprConsent(e.target.checked)}
+                        className="w-5 h-5 text-teal-600 border-gray-300 rounded focus:ring-teal-500 mt-0.5"
+                      />
+                      <label htmlFor="gdpr-consent" className="text-sm text-gray-600">
+                        I agree to receive the Solar Buying Guide and occasional updates about solar analysis. 
+                        You can unsubscribe at any time.
+                      </label>
+                    </div>
+
+                    {emailError && (
+                      <p className="text-red-600 text-sm">{emailError}</p>
+                    )}
+
+                    <button
+                      onClick={handleSendVerification}
+                      disabled={!email || !gdprConsent}
+                      className="w-full bg-teal-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Send Verification Code
+                    </button>
+
+                    <div className="bg-teal-50 border border-teal-200 rounded-lg p-4">
+                      <h4 className="font-semibold text-teal-800 mb-2">What you'll get:</h4>
+                      <ul className="text-sm text-teal-700 space-y-1">
+                        <li>• 2 additional free quote analyses</li>
+                        <li>• Comprehensive Solar Buying Guide PDF</li>
+                        <li>• Tips to avoid overpriced installations</li>
+                        <li>• No spam, unsubscribe anytime</li>
+                      </ul>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Footer */}
+          <footer className="bg-gray-900 text-white py-12">
+            <div className="max-w-6xl mx-auto px-6">
+              <div className="grid md:grid-cols-4 gap-8">
+                <div>
+                  <div className="text-2xl font-bold text-teal-400 mb-4">Solar✓erify</div>
+                  <p className="text-gray-400 text-sm">
+                    Protecting UK homeowners from overpriced solar installations with 
+                    AI-powered analysis.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">Services</h3>
+                  <div className="space-y-2 text-sm">
+                    <Link to="/analyzer" className="block text-gray-400 hover:text-white transition-colors">
+                      Quote Analysis
+                    </Link>
+                    <Link to="/upgrade" className="block text-gray-400 hover:text-white transition-colors">
+                      Premium Reports
+                    </Link>
+                    <Link to="/how-it-works" className="block text-gray-400 hover:text-white transition-colors">
+                      How It Works
+                    </Link>
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">Company</h3>
+                  <div className="space-y-2 text-sm">
+                    <Link to="/about" className="block text-gray-400 hover:text-white transition-colors">
+                      About Us
+                    </Link>
+                    <Link to="/contact" className="block text-gray-400 hover:text-white transition-colors">
+                      Contact
+                    </Link>
+                    <a href="#" className="block text-gray-400 hover:text-white transition-colors">
+                      Privacy Policy
+                    </a>
+                    <a href="#" className="block text-gray-400 hover:text-white transition-colors">
+                      Terms of Service
+                    </a>
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">Contact</h3>
+                  <div className="space-y-2 text-sm text-gray-400">
+                    <p>hello@solarverify.co.uk</p>
+                    <p>Response within 24 hours</p>
+                    <p>Mon-Fri: 9AM-5PM GMT</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
+                © 2024 SolarVerify Ltd. Company Registration: 12345678. All rights reserved.
+              </div>
+            </div>
+          </footer>
+        </div>
+      </Router>
+    </>
   );
 }
 
