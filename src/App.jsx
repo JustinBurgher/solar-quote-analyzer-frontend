@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Shield, Users, Award, TrendingUp, CheckCircle, Star, Upload, Brain, FileText, Clock, Calculator, AlertTriangle, ArrowRight, Crown, X } from 'lucide-react';
@@ -1056,16 +1057,15 @@ function App() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       System Size (kW) *
                     </label>
-                   <input
-  key="system-size-input"
-  type="number"
-  step="0.1"
-  value={systemSize}
-  onChange={(e) => setSystemSize(e.target.value)}
-  placeholder="e.g., 4.3"
-  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-  required
-/>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={systemSize}
+                      onChange={(e) => setSystemSize(e.target.value)}
+                      placeholder="e.g., 4.3"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                      required
+                    />
                   </div>
 
                   {/* Total Price */}
