@@ -1050,7 +1050,7 @@ function App() {
                 )}
               </div>
 
-              <div className="bg-white p-8">
+                            <div className="bg-white p-8">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* System Size */}
                   <div>
@@ -1058,6 +1058,7 @@ function App() {
                       System Size (kW) *
                     </label>
                     <input
+                      key="system-size-input"
                       type="number"
                       step="0.1"
                       value={systemSize}
@@ -1074,6 +1075,7 @@ function App() {
                       Total Price (£) *
                     </label>
                     <input
+                      key="total-price-input"
                       type="number"
                       value={totalPrice}
                       onChange={(e) => setTotalPrice(e.target.value)}
@@ -1087,6 +1089,7 @@ function App() {
                   <div>
                     <label className="flex items-center space-x-3 cursor-pointer">
                       <input
+                        key="battery-checkbox"
                         type="checkbox"
                         checked={hasBattery}
                         onChange={(e) => setHasBattery(e.target.checked)}
@@ -1106,6 +1109,7 @@ function App() {
                           Battery Brand
                         </label>
                         <select
+                          key="battery-brand-select"
                           value={batteryBrand}
                           onChange={(e) => setBatteryBrand(e.target.value)}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
@@ -1126,6 +1130,7 @@ function App() {
                           Number of Batteries
                         </label>
                         <select
+                          key="battery-quantity-select"
                           value={batteryQuantity}
                           onChange={(e) => setBatteryQuantity(parseInt(e.target.value))}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
@@ -1143,6 +1148,7 @@ function App() {
                             Battery Capacity (kWh each)
                           </label>
                           <input
+                            key="custom-capacity-input"
                             type="number"
                             step="0.1"
                             value={customCapacity}
