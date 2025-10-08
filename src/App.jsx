@@ -1063,6 +1063,9 @@ function App() {
                       step="0.1"
                       value={systemSize}
                       onChange={(e) => setSystemSize(e.target.value)}
+                      onKeyDown={(e) => e.stopPropagation()}
+                      onKeyPress={(e) => e.stopPropagation()}
+                      onKeyUp={(e) => e.stopPropagation()}
                       placeholder="e.g., 4.3"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                       required
@@ -1079,6 +1082,9 @@ function App() {
                       type="number"
                       value={totalPrice}
                       onChange={(e) => setTotalPrice(e.target.value)}
+                      onKeyDown={(e) => e.stopPropagation()}
+                      onKeyPress={(e) => e.stopPropagation()}
+                      onKeyUp={(e) => e.stopPropagation()}
                       placeholder="e.g., 13275"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                       required
@@ -1153,6 +1159,9 @@ function App() {
                             step="0.1"
                             value={customCapacity}
                             onChange={(e) => setCustomCapacity(e.target.value)}
+                            onKeyDown={(e) => e.stopPropagation()}
+                            onKeyPress={(e) => e.stopPropagation()}
+                            onKeyUp={(e) => e.stopPropagation()}
                             placeholder="e.g., 5.0"
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                             required
