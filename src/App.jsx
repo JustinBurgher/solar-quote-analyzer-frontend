@@ -773,8 +773,21 @@ function App() {
     setIsAdmin(adminEmails.includes(email.toLowerCase()));
   }, [email]);
 
-  // NUCLEAR OPTION: Block number keys everywhere except in input fields
+  // ULTIMATE FIX: Block programmatic clicks that cause page jumps
   useEffect(() => {
+    // Block untrusted (programmatic) clicks on links
+    const handleClick = (e) => {
+      // isTrusted = false means it's a programmatic click, not a real user click
+      if (!e.isTrusted && e.target.tagName === 'A') {
+        console.log('Blocked programmatic link click:', e.target.href);
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        return false;
+      }
+    };
+
+    // Block keyboard shortcuts in input fields
     const handleKeyEvent = (e) => {
       const activeElement = document.activeElement;
       const isInputField = activeElement && (
@@ -784,31 +797,23 @@ function App() {
         activeElement.isContentEditable
       );
 
-      // Check if it's a number key (0-9)
-      const isNumberKey = /^[0-9]$/.test(e.key);
-
       if (isInputField) {
-        // In input fields: just stop propagation to prevent shortcuts
-        // But allow the typing to work normally
+        // In input fields: stop propagation to prevent shortcuts
         e.stopPropagation();
         e.stopImmediatePropagation();
-      } else if (isNumberKey) {
-        // Outside input fields: BLOCK all number keys completely
-        // This prevents ANY shortcuts from firing
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        return false;
       }
     };
 
-    // Add listeners at the VERY TOP of the capture phase
-    // This ensures we catch the event before ANYTHING else
+    // Add click blocker - this catches the programmatic clicks
+    document.addEventListener('click', handleClick, {capture: true, passive: false});
+    
+    // Add keyboard handlers
     document.addEventListener('keydown', handleKeyEvent, {capture: true, passive: false});
     document.addEventListener('keypress', handleKeyEvent, {capture: true, passive: false});
     document.addEventListener('keyup', handleKeyEvent, {capture: true, passive: false});
 
     return () => {
+      document.removeEventListener('click', handleClick, {capture: true});
       document.removeEventListener('keydown', handleKeyEvent, {capture: true});
       document.removeEventListener('keypress', handleKeyEvent, {capture: true});
       document.removeEventListener('keyup', handleKeyEvent, {capture: true});
