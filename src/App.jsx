@@ -1581,6 +1581,18 @@ function App() {
                           type="text"
                           value={verificationCode}
                           onChange={(e) => setVerificationCode(e.target.value)}
+                          onKeyDown={(e) => {
+                            e.stopPropagation();
+                            e.stopImmediatePropagation();
+                          }}
+                          onKeyPress={(e) => {
+                            e.stopPropagation();
+                            e.stopImmediatePropagation();
+                          }}
+                          onKeyUp={(e) => {
+                            e.stopPropagation();
+                            e.stopImmediatePropagation();
+                          }}
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-center text-lg tracking-widest"
                           placeholder="123456"
                           maxLength="6"
