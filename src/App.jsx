@@ -1125,13 +1125,27 @@ function App() {
                       required={!showCustomSystemSize}
                     >
                       <option value="">Select system size...</option>
-                      <option value="3">3 kW (Small home)</option>
-                      <option value="4">4 kW (Average home)</option>
-                      <option value="5">5 kW (Large home)</option>
-                      <option value="6">6 kW (Large home)</option>
-                      <option value="8">8 kW (Very large home)</option>
-                      <option value="10">10 kW (Very large home)</option>
-                      <option value="custom">Custom size...</option>
+                      <option value="2.5">2.5 kW</option>
+                      <option value="3">3.0 kW</option>
+                      <option value="3.5">3.5 kW</option>
+                      <option value="4">4.0 kW</option>
+                      <option value="4.5">4.5 kW</option>
+                      <option value="5">5.0 kW</option>
+                      <option value="5.5">5.5 kW</option>
+                      <option value="6">6.0 kW</option>
+                      <option value="6.5">6.5 kW</option>
+                      <option value="7">7.0 kW</option>
+                      <option value="7.5">7.5 kW</option>
+                      <option value="8">8.0 kW</option>
+                      <option value="8.5">8.5 kW</option>
+                      <option value="9">9.0 kW</option>
+                      <option value="9.5">9.5 kW</option>
+                      <option value="10">10.0 kW</option>
+                      <option value="10.5">10.5 kW</option>
+                      <option value="11">11.0 kW</option>
+                      <option value="11.5">11.5 kW</option>
+                      <option value="12">12.0 kW</option>
+                      <option value="custom">Other size (custom)...</option>
                     </select>
                     
                     {showCustomSystemSize && (
@@ -1168,15 +1182,41 @@ function App() {
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white"
                       required={!showCustomPrice}
                     >
-                      <option value="">Select price range...</option>
-                      <option value="5000">£5,000 (Budget system)</option>
-                      <option value="7000">£7,000 (Entry level)</option>
-                      <option value="9000">£9,000 (Mid-range)</option>
-                      <option value="11000">£11,000 (Mid-range)</option>
-                      <option value="13000">£13,000 (Premium)</option>
-                      <option value="15000">£15,000 (Premium)</option>
-                      <option value="18000">£18,000 (High-end)</option>
-                      <option value="custom">Custom price...</option>
+                      <option value="">Select total price...</option>
+                      <option value="4000">£4,000</option>
+                      <option value="4500">£4,500</option>
+                      <option value="5000">£5,000</option>
+                      <option value="5500">£5,500</option>
+                      <option value="6000">£6,000</option>
+                      <option value="6500">£6,500</option>
+                      <option value="7000">£7,000</option>
+                      <option value="7500">£7,500</option>
+                      <option value="8000">£8,000</option>
+                      <option value="8500">£8,500</option>
+                      <option value="9000">£9,000</option>
+                      <option value="9500">£9,500</option>
+                      <option value="10000">£10,000</option>
+                      <option value="10500">£10,500</option>
+                      <option value="11000">£11,000</option>
+                      <option value="11500">£11,500</option>
+                      <option value="12000">£12,000</option>
+                      <option value="12500">£12,500</option>
+                      <option value="13000">£13,000</option>
+                      <option value="13500">£13,500</option>
+                      <option value="14000">£14,000</option>
+                      <option value="14500">£14,500</option>
+                      <option value="15000">£15,000</option>
+                      <option value="15500">£15,500</option>
+                      <option value="16000">£16,000</option>
+                      <option value="16500">£16,500</option>
+                      <option value="17000">£17,000</option>
+                      <option value="17500">£17,500</option>
+                      <option value="18000">£18,000</option>
+                      <option value="18500">£18,500</option>
+                      <option value="19000">£19,000</option>
+                      <option value="19500">£19,500</option>
+                      <option value="20000">£20,000</option>
+                      <option value="custom">Other price (custom)...</option>
                     </select>
                     
                     {showCustomPrice && (
