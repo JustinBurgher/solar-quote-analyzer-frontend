@@ -748,6 +748,10 @@ function App() {
   // All existing state and functionality preserved
   const [systemSize, setSystemSize] = useState('');
   const [totalPrice, setTotalPrice] = useState('');
+  const [systemSizeOption, setSystemSizeOption] = useState('');
+  const [totalPriceOption, setTotalPriceOption] = useState('');
+  const [showCustomSystemSize, setShowCustomSystemSize] = useState(false);
+  const [showCustomPrice, setShowCustomPrice] = useState(false);
   const [hasBattery, setHasBattery] = useState(false);
   const [batteryBrand, setBatteryBrand] = useState('');
   const [batteryQuantity, setBatteryQuantity] = useState(1);
@@ -1104,19 +1108,43 @@ function App() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       System Size (kW) *
                     </label>
-                    <input
-                      key="system-size-input"
-                      type="number"
-                      step="0.1"
-                      value={systemSize}
-                      onChange={(e) => setSystemSize(e.target.value)}
-                      onKeyDown={(e) => e.stopPropagation()}
-                      onKeyPress={(e) => e.stopPropagation()}
-                      onKeyUp={(e) => e.stopPropagation()}
-                      placeholder="e.g., 4.3"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                      required
-                    />
+                    <select
+                      value={systemSizeOption}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setSystemSizeOption(value);
+                        if (value === 'custom') {
+                          setShowCustomSystemSize(true);
+                          setSystemSize('');
+                        } else {
+                          setShowCustomSystemSize(false);
+                          setSystemSize(value);
+                        }
+                      }}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white"
+                      required={!showCustomSystemSize}
+                    >
+                      <option value="">Select system size...</option>
+                      <option value="3">3 kW (Small home)</option>
+                      <option value="4">4 kW (Average home)</option>
+                      <option value="5">5 kW (Large home)</option>
+                      <option value="6">6 kW (Large home)</option>
+                      <option value="8">8 kW (Very large home)</option>
+                      <option value="10">10 kW (Very large home)</option>
+                      <option value="custom">Custom size...</option>
+                    </select>
+                    
+                    {showCustomSystemSize && (
+                      <input
+                        type="number"
+                        step="0.1"
+                        value={systemSize}
+                        onChange={(e) => setSystemSize(e.target.value)}
+                        placeholder="Enter custom size (e.g., 4.3)"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent mt-2"
+                        required
+                      />
+                    )}
                   </div>
 
                   {/* Total Price */}
@@ -1124,18 +1152,43 @@ function App() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Total Price (£) *
                     </label>
-                    <input
-                      key="total-price-input"
-                      type="number"
-                      value={totalPrice}
-                      onChange={(e) => setTotalPrice(e.target.value)}
-                      onKeyDown={(e) => e.stopPropagation()}
-                      onKeyPress={(e) => e.stopPropagation()}
-                      onKeyUp={(e) => e.stopPropagation()}
-                      placeholder="e.g., 13275"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                      required
-                    />
+                    <select
+                      value={totalPriceOption}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setTotalPriceOption(value);
+                        if (value === 'custom') {
+                          setShowCustomPrice(true);
+                          setTotalPrice('');
+                        } else {
+                          setShowCustomPrice(false);
+                          setTotalPrice(value);
+                        }
+                      }}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white"
+                      required={!showCustomPrice}
+                    >
+                      <option value="">Select price range...</option>
+                      <option value="5000">£5,000 (Budget system)</option>
+                      <option value="7000">£7,000 (Entry level)</option>
+                      <option value="9000">£9,000 (Mid-range)</option>
+                      <option value="11000">£11,000 (Mid-range)</option>
+                      <option value="13000">£13,000 (Premium)</option>
+                      <option value="15000">£15,000 (Premium)</option>
+                      <option value="18000">£18,000 (High-end)</option>
+                      <option value="custom">Custom price...</option>
+                    </select>
+                    
+                    {showCustomPrice && (
+                      <input
+                        type="number"
+                        value={totalPrice}
+                        onChange={(e) => setTotalPrice(e.target.value)}
+                        placeholder="Enter exact price (e.g., 13275)"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent mt-2"
+                        required
+                      />
+                    )}
                   </div>
 
                   {/* Battery Section */}
