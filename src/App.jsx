@@ -773,7 +773,7 @@ function App() {
     setIsAdmin(adminEmails.includes(email.toLowerCase()));
   }, [email]);
 
-  // Prevent keyboard shortcuts when typing in input fields
+  // NUCLEAR OPTION: Block number keys everywhere except in input fields
   useEffect(() => {
     const handleKeyEvent = (e) => {
       const activeElement = document.activeElement;
@@ -784,19 +784,34 @@ function App() {
         activeElement.isContentEditable
       );
 
+      // Check if it's a number key (0-9)
+      const isNumberKey = /^[0-9]$/.test(e.key);
+
       if (isInputField) {
+        // In input fields: just stop propagation to prevent shortcuts
+        // But allow the typing to work normally
         e.stopPropagation();
+        e.stopImmediatePropagation();
+      } else if (isNumberKey) {
+        // Outside input fields: BLOCK all number keys completely
+        // This prevents ANY shortcuts from firing
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        return false;
       }
     };
 
-    document.addEventListener('keydown', handleKeyEvent, true);
-    document.addEventListener('keypress', handleKeyEvent, true);
-    document.addEventListener('keyup', handleKeyEvent, true);
+    // Add listeners at the VERY TOP of the capture phase
+    // This ensures we catch the event before ANYTHING else
+    document.addEventListener('keydown', handleKeyEvent, {capture: true, passive: false});
+    document.addEventListener('keypress', handleKeyEvent, {capture: true, passive: false});
+    document.addEventListener('keyup', handleKeyEvent, {capture: true, passive: false});
 
     return () => {
-      document.removeEventListener('keydown', handleKeyEvent, true);
-      document.removeEventListener('keypress', handleKeyEvent, true);
-      document.removeEventListener('keyup', handleKeyEvent, true);
+      document.removeEventListener('keydown', handleKeyEvent, {capture: true});
+      document.removeEventListener('keypress', handleKeyEvent, {capture: true});
+      document.removeEventListener('keyup', handleKeyEvent, {capture: true});
     };
   }, []);
 
