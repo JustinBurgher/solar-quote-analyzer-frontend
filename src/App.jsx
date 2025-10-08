@@ -773,6 +773,33 @@ function App() {
     setIsAdmin(adminEmails.includes(email.toLowerCase()));
   }, [email]);
 
+  // Prevent keyboard shortcuts when typing in input fields
+  useEffect(() => {
+    const handleKeyEvent = (e) => {
+      const activeElement = document.activeElement;
+      const isInputField = activeElement && (
+        activeElement.tagName === 'INPUT' ||
+        activeElement.tagName === 'TEXTAREA' ||
+        activeElement.tagName === 'SELECT' ||
+        activeElement.isContentEditable
+      );
+
+      if (isInputField) {
+        e.stopPropagation();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyEvent, true);
+    document.addEventListener('keypress', handleKeyEvent, true);
+    document.addEventListener('keyup', handleKeyEvent, true);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyEvent, true);
+      document.removeEventListener('keypress', handleKeyEvent, true);
+      document.removeEventListener('keyup', handleKeyEvent, true);
+    };
+  }, []);
+
   // Calculate total battery capacity
   const getTotalBatteryCapacity = () => {
     if (!hasBattery) return 0;
