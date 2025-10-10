@@ -1,8 +1,10 @@
 
 
+
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Shield, Users, Award, TrendingUp, CheckCircle, Star, Upload, Brain, FileText, Clock, Calculator, AlertTriangle, ArrowRight, Crown, X } from 'lucide-react';
+import Verify from './pages/Verify';
 
 // API Configuration
 const API_BASE_URL = 'https://solar-verify-backend-production.up.railway.app/api';
@@ -1644,6 +1646,7 @@ function App() {
           <Route path="/upgrade" element={<Upgrade />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/analyzer" element={<Analyzer />} />
+          <Route path="/verify" element={<Verify />} />
         </Routes>
       </div>
     </Router>
