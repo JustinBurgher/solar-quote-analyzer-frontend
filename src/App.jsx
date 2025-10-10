@@ -1386,14 +1386,11 @@ function App() {
                     <div className="text-center">
                       <button
                         onClick={() => {
+                          // Only clear the result and error, keep form values so user can modify them
                           setResult(null);
-                          setSystemSize('');
-                          setTotalPrice('');
-                          setHasBattery(false);
-                          setBatteryBrand('');
-                          setBatteryQuantity(1);
-                          setCustomCapacity('');
                           setError('');
+                          // Scroll back to the form
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
                         className="bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors"
                       >
