@@ -53,12 +53,14 @@ function Verify() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-blue-50 flex items-center justify-center p-6">
       <div className="max-w-2xl w-full">
-        {/* Logo/Header */}
+        {/* Enhanced Logo/Header with White Box */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Solar<span className="text-teal-600">✓</span>erify
-          </h1>
-          <p className="text-gray-600">Email Verification</p>
+          <div className="inline-block bg-white px-8 py-4 rounded-xl shadow-lg border-3 border-teal-500 mb-4">
+            <h1 className="text-4xl font-bold text-gray-900 m-0">
+              Solar<span className="text-teal-600">✓</span>erify
+            </h1>
+          </div>
+          <p className="text-gray-700 text-lg font-medium">Email Verification</p>
         </div>
 
         {/* Verification Card */}
@@ -198,3 +200,4 @@ function Verify() {
 }
 
 export default Verify;
+
