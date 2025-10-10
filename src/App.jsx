@@ -780,9 +780,10 @@ function App() {
     setIsAdmin(adminEmails.includes(email.toLowerCase()));
   }, [email]);
 
-  // FIXED: Block programmatic clicks and only specific keyboard shortcuts
+  // COMPLETELY REMOVED keyboard event blocking to fix input jumping issue
+  // Only keep programmatic click blocking for navigation safety
   useEffect(() => {
-    // Block untrusted (programmatic) clicks on links
+    // Block untrusted (programmatic) clicks on links only
     const handleClick = (e) => {
       // isTrusted = false means it's a programmatic click, not a real user click
       if (!e.isTrusted && e.target.tagName === 'A') {
@@ -794,31 +795,11 @@ function App() {
       }
     };
 
-    // Only block specific problematic keyboard shortcuts, not all keyboard events
-    const handleKeyDown = (e) => {
-      // Only block browser navigation shortcuts (Ctrl+K, Ctrl+L, etc.)
-      // Allow all normal typing and text input
-      const isNavigationShortcut = (
-        (e.ctrlKey || e.metaKey) && 
-        (e.key === 'k' || e.key === 'l' || e.key === 'K' || e.key === 'L')
-      );
-
-      if (isNavigationShortcut) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-      // Don't block any other keys - let React handle them normally
-    };
-
-    // Add click blocker - this catches the programmatic clicks
+    // Add click blocker only - NO keyboard blocking at all
     document.addEventListener('click', handleClick, {capture: true, passive: false});
-    
-    // Add keyboard handler - only for keydown, only block specific shortcuts
-    document.addEventListener('keydown', handleKeyDown, {capture: true, passive: false});
 
     return () => {
       document.removeEventListener('click', handleClick, {capture: true});
-      document.removeEventListener('keydown', handleKeyDown, {capture: true});
     };
   }, []);
 
@@ -846,14 +827,14 @@ function App() {
       return;
     }
 
-    // Check if email verification is needed for second analysis
+    // ALWAYS run the analysis first to get the data
+    await performAnalysis();
+    
+    // THEN check if email verification is needed for second analysis
     if (!isAdmin && analysisCount >= 1 && !email) {
       setShowEmailModal(true);
-      setPendingAnalysis(true);
       return;
     }
-
-    await performAnalysis();
   };
 
   // Perform the actual analysis
