@@ -1,6 +1,7 @@
 
 
 
+
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Shield, Users, Award, TrendingUp, CheckCircle, Star, Upload, Brain, FileText, Clock, Calculator, AlertTriangle, ArrowRight, Crown, X } from 'lucide-react';
@@ -779,7 +780,7 @@ function App() {
     setIsAdmin(adminEmails.includes(email.toLowerCase()));
   }, [email]);
 
-  // ULTIMATE FIX: Block programmatic clicks that cause page jumps
+  // FIXED: Block programmatic clicks and only specific keyboard shortcuts
   useEffect(() => {
     // Block untrusted (programmatic) clicks on links
     const handleClick = (e) => {
@@ -793,36 +794,31 @@ function App() {
       }
     };
 
-    // Block keyboard shortcuts in input fields
-    const handleKeyEvent = (e) => {
-      const activeElement = document.activeElement;
-      const isInputField = activeElement && (
-        activeElement.tagName === 'INPUT' ||
-        activeElement.tagName === 'TEXTAREA' ||
-        activeElement.tagName === 'SELECT' ||
-        activeElement.isContentEditable
+    // Only block specific problematic keyboard shortcuts, not all keyboard events
+    const handleKeyDown = (e) => {
+      // Only block browser navigation shortcuts (Ctrl+K, Ctrl+L, etc.)
+      // Allow all normal typing and text input
+      const isNavigationShortcut = (
+        (e.ctrlKey || e.metaKey) && 
+        (e.key === 'k' || e.key === 'l' || e.key === 'K' || e.key === 'L')
       );
 
-      if (isInputField) {
-        // In input fields: stop propagation to prevent shortcuts
+      if (isNavigationShortcut) {
+        e.preventDefault();
         e.stopPropagation();
-        e.stopImmediatePropagation();
       }
+      // Don't block any other keys - let React handle them normally
     };
 
     // Add click blocker - this catches the programmatic clicks
     document.addEventListener('click', handleClick, {capture: true, passive: false});
     
-    // Add keyboard handlers
-    document.addEventListener('keydown', handleKeyEvent, {capture: true, passive: false});
-    document.addEventListener('keypress', handleKeyEvent, {capture: true, passive: false});
-    document.addEventListener('keyup', handleKeyEvent, {capture: true, passive: false});
+    // Add keyboard handler - only for keydown, only block specific shortcuts
+    document.addEventListener('keydown', handleKeyDown, {capture: true, passive: false});
 
     return () => {
       document.removeEventListener('click', handleClick, {capture: true});
-      document.removeEventListener('keydown', handleKeyEvent, {capture: true});
-      document.removeEventListener('keypress', handleKeyEvent, {capture: true});
-      document.removeEventListener('keyup', handleKeyEvent, {capture: true});
+      document.removeEventListener('keydown', handleKeyDown, {capture: true});
     };
   }, []);
 
@@ -913,22 +909,44 @@ function App() {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/send-verification`, {
+      // Prepare analysis data to send with magic link
+      const analysisData = {
+        grade: result?.grade || 'Pending',
+        verdict: result?.verdict || 'Analysis in progress',
+        system_size: `${systemSize} kW`,
+        price_per_watt: result?.pricePerKw ? `£${result.pricePerKw.toFixed(2)}` : '£0.00',
+        total_cost: `£${parseFloat(totalPrice).toLocaleString()}`
+      };
+
+      const response = await fetch(`${API_BASE_URL}/send-magic-link`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ 
+          email,
+          analysis_data: analysisData
+        }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to send verification');
+        throw new Error('Failed to send magic link');
       }
 
-      setShowVerification(true);
+      // Show success message
+      setEmailSuccess(true);
       setEmailError('');
+      
+      // Close modal after showing success
+      setTimeout(() => {
+        setShowEmailModal(false);
+        setEmailSuccess(false);
+        setEmail('');
+        setGdprConsent(false);
+      }, 3000);
+      
     } catch (err) {
-      setEmailError('Failed to send verification. Please try again.');
+      setEmailError('Failed to send verification email. Please try again.');
     }
   };
 
@@ -1502,18 +1520,38 @@ function App() {
           </div>
         </footer>
 
-        {/* Email Verification Modal */}
+        {/* Email Verification Modal - Magic Link */}
         {showEmailModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-xl max-w-md w-full p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                {showVerification ? 'Enter Verification Code' : 'Email Verification Required'}
-              </h3>
-              
-              {!showVerification ? (
-                <div className="space-y-4">
+              {emailSuccess ? (
+                <div className="text-center space-y-4">
+                  <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
+                  <h3 className="text-xl font-bold text-gray-900">
+                    Check Your Email!
+                  </h3>
                   <p className="text-gray-600">
-                    To continue with additional analyses, please verify your email address.
+                    We've sent a verification link to <strong>{email}</strong>
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Click the link in the email to verify your address and receive your detailed analysis PDF.
+                  </p>
+                  <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 text-sm text-gray-700">
+                    <p className="font-medium text-teal-800 mb-1">📧 What happens next:</p>
+                    <ul className="text-left space-y-1 ml-4">
+                      <li>• Check your inbox (and spam folder)</li>
+                      <li>• Click the verification link</li>
+                      <li>• Receive your professional PDF guide</li>
+                    </ul>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold text-gray-900">
+                    Email Verification Required
+                  </h3>
+                  <p className="text-gray-600">
+                    To continue with additional analyses and receive your detailed PDF report, please verify your email address.
                   </p>
                   
                   <div>
@@ -1526,6 +1564,7 @@ function App() {
                       onChange={(e) => setEmail(e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                       placeholder="your@email.com"
+                      autoComplete="email"
                     />
                   </div>
                   
@@ -1551,7 +1590,7 @@ function App() {
                       onClick={handleSendVerification}
                       className="flex-1 bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-700 transition-colors"
                     >
-                      Send Verification Code
+                      Send Verification Link
                     </button>
                     <button
                       onClick={closeModal}
@@ -1560,67 +1599,6 @@ function App() {
                       Cancel
                     </button>
                   </div>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {emailSuccess ? (
-                    <div className="text-center">
-                      <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-3" />
-                      <p className="text-green-600 font-medium">Email verified successfully!</p>
-                      <p className="text-sm text-gray-600">Proceeding with analysis...</p>
-                    </div>
-                  ) : (
-                    <>
-                      <p className="text-gray-600">
-                        We've sent a 6-digit code to <strong>{email}</strong>
-                      </p>
-                      
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Verification Code
-                        </label>
-                        <input
-                          type="text"
-                          value={verificationCode}
-                          onChange={(e) => setVerificationCode(e.target.value)}
-                          onKeyDown={(e) => {
-                            e.stopPropagation();
-                            e.stopImmediatePropagation();
-                          }}
-                          onKeyPress={(e) => {
-                            e.stopPropagation();
-                            e.stopImmediatePropagation();
-                          }}
-                          onKeyUp={(e) => {
-                            e.stopPropagation();
-                            e.stopImmediatePropagation();
-                          }}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-center text-lg tracking-widest"
-                          placeholder="123456"
-                          maxLength="6"
-                        />
-                      </div>
-                      
-                      {verificationError && (
-                        <p className="text-red-600 text-sm">{verificationError}</p>
-                      )}
-                      
-                      <div className="flex space-x-3">
-                        <button
-                          onClick={handleVerifyEmail}
-                          className="flex-1 bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-700 transition-colors"
-                        >
-                          Verify Email
-                        </button>
-                        <button
-                          onClick={closeModal}
-                          className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </>
-                  )}
                 </div>
               )}
             </div>
