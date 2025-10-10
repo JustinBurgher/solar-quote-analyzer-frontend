@@ -53,14 +53,16 @@ function Verify() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-blue-50 flex items-center justify-center p-6">
       <div className="max-w-2xl w-full">
-        {/* Enhanced Logo/Header with White Box */}
+        {/* Logo/Header */}
         <div className="text-center mb-8">
-          <div className="inline-block bg-white px-8 py-4 rounded-xl shadow-lg border-3 border-teal-500 mb-4">
-            <h1 className="text-4xl font-bold text-gray-900 m-0">
-              Solar<span className="text-teal-600">✓</span>erify
-            </h1>
+          <div className="inline-flex items-center justify-center mb-4">
+            <div className="bg-white rounded-xl shadow-lg px-6 py-3 border-2 border-teal-500">
+              <h1 className="text-4xl font-bold text-gray-900">
+                Solar<span className="text-teal-600">✓</span>erify
+              </h1>
+            </div>
           </div>
-          <p className="text-gray-700 text-lg font-medium">Email Verification</p>
+          <p className="text-gray-600 text-lg">Email Verification</p>
         </div>
 
         {/* Verification Card */}
@@ -138,7 +140,7 @@ function Verify() {
                   Return to Home
                 </button>
                 <button
-                  onClick={() => navigate('/quote-analyzer')}
+                  onClick={() => navigate('/analyzer')}
                   className="px-6 py-3 bg-white text-teal-600 border-2 border-teal-600 rounded-lg font-semibold hover:bg-teal-50 transition-colors"
                 >
                   Analyze Another Quote
@@ -180,7 +182,7 @@ function Verify() {
                   Return to Home
                 </button>
                 <button
-                  onClick={() => navigate('/quote-analyzer')}
+                  onClick={() => navigate('/analyzer')}
                   className="px-6 py-3 bg-white text-teal-600 border-2 border-teal-600 rounded-lg font-semibold hover:bg-teal-50 transition-colors"
                 >
                   Try Again
@@ -200,4 +202,3 @@ function Verify() {
 }
 
 export default Verify;
-
