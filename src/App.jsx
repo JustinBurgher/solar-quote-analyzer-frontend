@@ -1,11 +1,12 @@
 
 
-
-
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Shield, Users, Award, TrendingUp, CheckCircle, Star, Upload, Brain, FileText, Clock, Calculator, AlertTriangle, ArrowRight, Crown, X } from 'lucide-react';
 import Verify from './pages/Verify';
+import UpgradeModal from './components/UpgradeModal';
+import { getSession, incrementAnalysisCount, markEmailVerified, needsEmailVerification, shouldShowUpgradeModal, getSessionStatus } from './utils/sessionTracking';
+
 
 // API Configuration
 const API_BASE_URL = 'https://solar-verify-backend-production.up.railway.app/api';
@@ -762,7 +763,11 @@ function App() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [analysisCount, setAnalysisCount] = useState(0);
+  const [analysisCount, setAnalysisCount] = useState(() => {
+  const session = getSession();
+  return session.analysisCount;
+});
+const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [email, setEmail] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
@@ -780,10 +785,18 @@ function App() {
     setIsAdmin(adminEmails.includes(email.toLowerCase()));
   }, [email]);
 
-  // COMPLETELY REMOVED keyboard event blocking to fix input jumping issue
-  // Only keep programmatic click blocking for navigation safety
+  // Sync with localStorage session
   useEffect(() => {
-    // Block untrusted (programmatic) clicks on links only
+    const session = getSession();
+    setAnalysisCount(session.analysisCount);
+    if (session.isVerified && session.email) {
+      setEmail(session.email);
+    }
+  }, []);
+
+  // FIXED: Block programmatic clicks and only specific keyboard shortcuts
+  useEffect(() => {
+    // Block untrusted (programmatic) clicks on links
     const handleClick = (e) => {
       // isTrusted = false means it's a programmatic click, not a real user click
       if (!e.isTrusted && e.target.tagName === 'A') {
@@ -795,11 +808,31 @@ function App() {
       }
     };
 
-    // Add click blocker only - NO keyboard blocking at all
+    // Only block specific problematic keyboard shortcuts, not all keyboard events
+    const handleKeyDown = (e) => {
+      // Only block browser navigation shortcuts (Ctrl+K, Ctrl+L, etc.)
+      // Allow all normal typing and text input
+      const isNavigationShortcut = (
+        (e.ctrlKey || e.metaKey) && 
+        (e.key === 'k' || e.key === 'l' || e.key === 'K' || e.key === 'L')
+      );
+
+      if (isNavigationShortcut) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      // Don't block any other keys - let React handle them normally
+    };
+
+    // Add click blocker - this catches the programmatic clicks
     document.addEventListener('click', handleClick, {capture: true, passive: false});
+    
+    // Add keyboard handler - only for keydown, only block specific shortcuts
+    document.addEventListener('keydown', handleKeyDown, {capture: true, passive: false});
 
     return () => {
       document.removeEventListener('click', handleClick, {capture: true});
+      document.removeEventListener('keydown', handleKeyDown, {capture: true});
     };
   }, []);
 
@@ -821,20 +854,20 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Check analysis limits for non-admin users
-    if (!isAdmin && analysisCount >= 3) {
-      alert('You have reached the limit of 3 free analyses. Please upgrade to Premium for unlimited access.');
+    // Check if user should see upgrade modal (after 3 analyses)
+    if (!isAdmin && shouldShowUpgradeModal()) {
+      setShowUpgradeModal(true);
       return;
     }
 
-    // ALWAYS run the analysis first to get the data
-    await performAnalysis();
-    
-    // THEN check if email verification is needed for second analysis
-    if (!isAdmin && analysisCount >= 1 && !email) {
+    // Check if email verification is needed for second analysis
+    if (!isAdmin && needsEmailVerification()) {
       setShowEmailModal(true);
+      setPendingAnalysis(true);
       return;
     }
+
+    await performAnalysis();
   };
 
   // Perform the actual analysis
@@ -871,7 +904,8 @@ function App() {
       
       // Increment analysis count for non-admin users
       if (!isAdmin) {
-        setAnalysisCount(prev => prev + 1);
+        const newCount = incrementAnalysisCount();
+        setAnalysisCount(newCount);
       }
       
     } catch (err) {
@@ -890,44 +924,22 @@ function App() {
     }
 
     try {
-      // Prepare analysis data to send with magic link
-      const analysisData = {
-        grade: result?.grade || 'Pending',
-        verdict: result?.verdict || 'Analysis in progress',
-        system_size: `${systemSize} kW`,
-        price_per_watt: result?.pricePerKw ? `£${result.pricePerKw.toFixed(2)}` : '£0.00',
-        total_cost: `£${parseFloat(totalPrice).toLocaleString()}`
-      };
-
-      const response = await fetch(`${API_BASE_URL}/send-magic-link`, {
+      const response = await fetch(`${API_BASE_URL}/send-verification`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          email,
-          analysis_data: analysisData
-        }),
+        body: JSON.stringify({ email }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to send magic link');
+        throw new Error('Failed to send verification');
       }
 
-      // Show success message
-      setEmailSuccess(true);
+      setShowVerification(true);
       setEmailError('');
-      
-      // Close modal after showing success
-      setTimeout(() => {
-        setShowEmailModal(false);
-        setEmailSuccess(false);
-        setEmail('');
-        setGdprConsent(false);
-      }, 3000);
-      
     } catch (err) {
-      setEmailError('Failed to send verification email. Please try again.');
+      setEmailError('Failed to send verification. Please try again.');
     }
   };
 
@@ -1386,11 +1398,14 @@ function App() {
                     <div className="text-center">
                       <button
                         onClick={() => {
-                          // Only clear the result and error, keep form values so user can modify them
                           setResult(null);
+                          setSystemSize('');
+                          setTotalPrice('');
+                          setHasBattery(false);
+                          setBatteryBrand('');
+                          setBatteryQuantity(1);
+                          setCustomCapacity('');
                           setError('');
-                          // Scroll back to the form
-                          window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
                         className="bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors"
                       >
@@ -1498,38 +1513,18 @@ function App() {
           </div>
         </footer>
 
-        {/* Email Verification Modal - Magic Link */}
+        {/* Email Verification Modal */}
         {showEmailModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-xl max-w-md w-full p-6">
-              {emailSuccess ? (
-                <div className="text-center space-y-4">
-                  <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
-                  <h3 className="text-xl font-bold text-gray-900">
-                    Check Your Email!
-                  </h3>
-                  <p className="text-gray-600">
-                    We've sent a verification link to <strong>{email}</strong>
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    Click the link in the email to verify your address and receive your detailed analysis PDF.
-                  </p>
-                  <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 text-sm text-gray-700">
-                    <p className="font-medium text-teal-800 mb-1">📧 What happens next:</p>
-                    <ul className="text-left space-y-1 ml-4">
-                      <li>• Check your inbox (and spam folder)</li>
-                      <li>• Click the verification link</li>
-                      <li>• Receive your professional PDF guide</li>
-                    </ul>
-                  </div>
-                </div>
-              ) : (
+              <h3 className="text-xl font-bold text-gray-900 mb-4">
+                {showVerification ? 'Enter Verification Code' : 'Email Verification Required'}
+              </h3>
+              
+              {!showVerification ? (
                 <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-gray-900">
-                    Email Verification Required
-                  </h3>
                   <p className="text-gray-600">
-                    To continue with additional analyses and receive your detailed PDF report, please verify your email address.
+                    To continue with additional analyses, please verify your email address.
                   </p>
                   
                   <div>
@@ -1542,7 +1537,6 @@ function App() {
                       onChange={(e) => setEmail(e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                       placeholder="your@email.com"
-                      autoComplete="email"
                     />
                   </div>
                   
@@ -1568,7 +1562,7 @@ function App() {
                       onClick={handleSendVerification}
                       className="flex-1 bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-700 transition-colors"
                     >
-                      Send Verification Link
+                      Send Verification Code
                     </button>
                     <button
                       onClick={closeModal}
@@ -1577,6 +1571,67 @@ function App() {
                       Cancel
                     </button>
                   </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {emailSuccess ? (
+                    <div className="text-center">
+                      <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-3" />
+                      <p className="text-green-600 font-medium">Email verified successfully!</p>
+                      <p className="text-sm text-gray-600">Proceeding with analysis...</p>
+                    </div>
+                  ) : (
+                    <>
+                      <p className="text-gray-600">
+                        We've sent a 6-digit code to <strong>{email}</strong>
+                      </p>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Verification Code
+                        </label>
+                        <input
+                          type="text"
+                          value={verificationCode}
+                          onChange={(e) => setVerificationCode(e.target.value)}
+                          onKeyDown={(e) => {
+                            e.stopPropagation();
+                            e.stopImmediatePropagation();
+                          }}
+                          onKeyPress={(e) => {
+                            e.stopPropagation();
+                            e.stopImmediatePropagation();
+                          }}
+                          onKeyUp={(e) => {
+                            e.stopPropagation();
+                            e.stopImmediatePropagation();
+                          }}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-center text-lg tracking-widest"
+                          placeholder="123456"
+                          maxLength="6"
+                        />
+                      </div>
+                      
+                      {verificationError && (
+                        <p className="text-red-600 text-sm">{verificationError}</p>
+                      )}
+                      
+                      <div className="flex space-x-3">
+                        <button
+                          onClick={handleVerifyEmail}
+                          className="flex-1 bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-700 transition-colors"
+                        >
+                          Verify Email
+                        </button>
+                        <button
+                          onClick={closeModal}
+                          className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
             </div>
@@ -1605,6 +1660,12 @@ function App() {
           <Route path="/verify" element={<Verify />} />
         </Routes>
       </div>
+    {showUpgradeModal && (
+        <UpgradeModal
+          isOpen={showUpgradeModal}
+          onClose={() => setShowUpgradeModal(false)}
+        />
+      )}
     </Router>
   );
 }
