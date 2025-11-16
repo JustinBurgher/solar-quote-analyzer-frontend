@@ -1,3 +1,6 @@
+
+
+
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Shield, Users, Award, TrendingUp, CheckCircle, Star, Upload, Brain, FileText, Clock, Calculator, AlertTriangle, ArrowRight, Crown, X } from 'lucide-react';
@@ -983,7 +986,8 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
       
     } catch (err) {
       console.error('Analysis error:', err);
-      setError('Analysis failed');
+      console.error('Error details:', err.message);
+      setError(err.message || 'Analysis failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -1456,7 +1460,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                         </div>
                         <div className="flex justify-between">
                           <span className="text-gray-600">Price per kW:</span>
-                          <span className="font-medium">£{result.price_per_kw ? Math.round(result.price_per_kw).toLocaleString() : 'N/A'}</span>
+                          <span className="font-medium">£{result.analysis?.price_per_kw ? result.analysis.price_per_kw.toLocaleString('en-GB', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : 'N/A'}</span>
                         </div>
                         {hasBattery && getTotalBatteryCapacity() > 0 && (
                           <div className="flex justify-between">
