@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { CheckCircle, XCircle, Loader2, Mail } from 'lucide-react';
+import { CheckCircle, XCircle, Loader2, Mail, ArrowRight } from 'lucide-react';
+import { markEmailVerified } from '../utils/sessionTracking';
 
 const API_BASE_URL = 'https://solar-verify-backend-production.up.railway.app/api';
 
@@ -10,6 +11,7 @@ function Verify() {
   const [status, setStatus] = useState('verifying'); // 'verifying', 'success', 'error'
   const [message, setMessage] = useState('');
   const [analysisData, setAnalysisData] = useState(null);
+  const [email, setEmail] = useState('');
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -36,6 +38,12 @@ function Verify() {
           setStatus('success');
           setMessage(data.message || 'Email verified successfully!');
           setAnalysisData(data.analysis_data);
+          setEmail(data.email || '');
+          
+          // Mark email as verified in localStorage session
+          if (data.email) {
+            markEmailVerified(data.email);
+          }
         } else {
           setStatus('error');
           setMessage(data.error || 'Verification failed. The link may have expired or been used already.');
@@ -50,9 +58,27 @@ function Verify() {
     verifyToken();
   }, [searchParams]);
 
+  // Helper function to get grade color
+  const getGradeColor = (grade) => {
+    if (!grade || grade === 'N/A') return 'text-gray-600';
+    const gradeUpper = grade.toUpperCase();
+    if (gradeUpper === 'A') return 'text-green-600';
+    if (gradeUpper === 'B') return 'text-teal-600';
+    if (gradeUpper === 'C') return 'text-yellow-600';
+    if (gradeUpper === 'D') return 'text-orange-600';
+    if (gradeUpper === 'E' || gradeUpper === 'F') return 'text-red-600';
+    return 'text-gray-600';
+  };
+
+  // Helper function to format price
+  const formatPrice = (price) => {
+    if (!price || price === 0) return '£0';
+    return `£${parseFloat(price).toLocaleString('en-GB')}`;
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-blue-50 flex items-center justify-center p-6">
-      <div className="max-w-2xl w-full">
+      <div className="max-w-3xl w-full">
         {/* Logo/Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center mb-4">
@@ -62,7 +88,7 @@ function Verify() {
               </h1>
             </div>
           </div>
-          <p className="text-gray-600 text-lg">Email Verification</p>
+          <p className="text-gray-600 text-lg">Your Solar Quote Analysis & Free Buyer's Guide</p>
         </div>
 
         {/* Verification Card */}
@@ -82,35 +108,92 @@ function Verify() {
           )}
 
           {status === 'success' && (
-            <div className="text-center">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-6">
-                <CheckCircle className="w-10 h-10 text-green-600" />
+            <div>
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-6">
+                  <CheckCircle className="w-10 h-10 text-green-600" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-3">
+                  Email Verified Successfully! 🎉
+                </h2>
+                <p className="text-gray-600 mb-2">
+                  {message}
+                </p>
+                <p className="text-sm text-teal-600 font-medium">
+                  You now have 2 more free analyses remaining
+                </p>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-3">
-                Email Verified Successfully! 🎉
-              </h2>
-              <p className="text-gray-600 mb-6">
-                {message}
-              </p>
 
               {/* Analysis Results */}
               {analysisData && (
-                <div className="bg-gradient-to-br from-teal-50 to-blue-50 rounded-xl p-6 mb-6 text-left">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                    Your Quote Analysis
-                  </h3>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-600">Grade:</span>
-                      <span className="text-2xl font-bold text-teal-600">
-                        {analysisData.grade}
-                      </span>
+                <div className="mb-8">
+                  <div className="bg-gradient-to-br from-teal-500 to-blue-600 rounded-xl p-8 mb-6 text-white text-center">
+                    <h3 className="text-xl font-semibold mb-4">
+                      Your Quote Grade
+                    </h3>
+                    <div className={`text-8xl font-bold mb-2 ${analysisData.grade && analysisData.grade !== 'N/A' ? '' : 'text-white/70'}`}>
+                      {analysisData.grade || 'N/A'}
                     </div>
-                    <div className="border-t border-gray-200 pt-3">
-                      <p className="text-gray-700">
-                        <strong>Verdict:</strong> {analysisData.verdict}
-                      </p>
+                    <p className="text-lg opacity-90">
+                      {analysisData.verdict || 'Analysis complete'}
+                    </p>
+                  </div>
+
+                  <div className="bg-gray-50 rounded-xl p-6 space-y-4">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                      Analysis Breakdown
+                    </h3>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="bg-white rounded-lg p-4 shadow-sm">
+                        <p className="text-sm text-gray-600 mb-1">System Size</p>
+                        <p className="text-2xl font-bold text-gray-900">
+                          {analysisData.system_size || 0} <span className="text-lg">kW</span>
+                        </p>
+                      </div>
+                      
+                      <div className="bg-white rounded-lg p-4 shadow-sm">
+                        <p className="text-sm text-gray-600 mb-1">Total Price</p>
+                        <p className="text-2xl font-bold text-gray-900">
+                          {formatPrice(analysisData.total_price)}
+                        </p>
+                      </div>
+                      
+                      <div className="bg-white rounded-lg p-4 shadow-sm">
+                        <p className="text-sm text-gray-600 mb-1">Price per kW</p>
+                        <p className="text-2xl font-bold text-gray-900">
+                          {analysisData.system_size && analysisData.total_price && analysisData.system_size > 0
+                            ? formatPrice(analysisData.total_price / analysisData.system_size)
+                            : '£N/A'}
+                        </p>
+                      </div>
+                      
+                      <div className="bg-white rounded-lg p-4 shadow-sm">
+                        <p className="text-sm text-gray-600 mb-1">Battery</p>
+                        <p className="text-lg font-semibold text-gray-900">
+                          {analysisData.has_battery ? 'Included' : 'Not Included'}
+                        </p>
+                        {analysisData.has_battery && analysisData.battery_capacity && (
+                          <p className="text-sm text-gray-600 mt-1">
+                            {analysisData.battery_capacity} kWh
+                          </p>
+                        )}
+                      </div>
                     </div>
+
+                    {analysisData.has_battery && analysisData.battery_brand && (
+                      <div className="bg-white rounded-lg p-4 shadow-sm">
+                        <p className="text-sm text-gray-600 mb-1">Battery Details</p>
+                        <p className="text-lg font-semibold text-gray-900">
+                          {analysisData.battery_brand}
+                        </p>
+                        {analysisData.battery_quantity && (
+                          <p className="text-sm text-gray-600">
+                            Quantity: {analysisData.battery_quantity}
+                          </p>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
@@ -124,8 +207,23 @@ function Verify() {
                       Check Your Email
                     </p>
                     <p className="text-sm text-blue-700">
-                      We've sent your comprehensive Solar Buyer's Guide PDF to your email address. 
+                      We've sent your comprehensive <strong>Solar Buyer's Guide PDF</strong> with 7 red flags to watch for. 
                       Check your inbox (and spam folder) for the complete analysis and recommendations.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Session Info */}
+              <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 mb-6">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-teal-600 mt-0.5 flex-shrink-0" />
+                  <div className="text-left">
+                    <p className="text-sm font-semibold text-teal-900 mb-1">
+                      Your Account is Active
+                    </p>
+                    <p className="text-sm text-teal-700">
+                      You can now analyze <strong>2 more quotes for free</strong>. Your verified email ({email}) has been saved for your convenience.
                     </p>
                   </div>
                 </div>
@@ -134,18 +232,24 @@ function Verify() {
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <button
+                  onClick={() => navigate('/analyzer')}
+                  className="px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition-colors flex items-center justify-center gap-2"
+                >
+                  Analyze Another Quote
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+                <button
                   onClick={() => navigate('/')}
-                  className="px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition-colors"
+                  className="px-6 py-3 bg-white text-teal-600 border-2 border-teal-600 rounded-lg font-semibold hover:bg-teal-50 transition-colors"
                 >
                   Return to Home
                 </button>
-                <button
-                  onClick={() => navigate('/analyzer')}
-                  className="px-6 py-3 bg-white text-teal-600 border-2 border-teal-600 rounded-lg font-semibold hover:bg-teal-50 transition-colors"
-                >
-                  Analyze Another Quote
-                </button>
               </div>
+
+              {/* Close Tab Hint */}
+              <p className="text-center text-sm text-gray-500 mt-6">
+                You can close this tab and return to your original window to continue
+              </p>
             </div>
           )}
 
@@ -176,16 +280,16 @@ function Verify() {
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <button
-                  onClick={() => navigate('/')}
+                  onClick={() => navigate('/analyzer')}
                   className="px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition-colors"
                 >
-                  Return to Home
+                  Try Again
                 </button>
                 <button
-                  onClick={() => navigate('/analyzer')}
+                  onClick={() => navigate('/')}
                   className="px-6 py-3 bg-white text-teal-600 border-2 border-teal-600 rounded-lg font-semibold hover:bg-teal-50 transition-colors"
                 >
-                  Try Again
+                  Return to Home
                 </button>
               </div>
             </div>
