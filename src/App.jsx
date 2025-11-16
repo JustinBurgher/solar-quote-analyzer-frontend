@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Shield, Users, Award, TrendingUp, CheckCircle, Star, Upload, Brain, FileText, Clock, Calculator, AlertTriangle, ArrowRight, Crown, X } from 'lucide-react';
@@ -864,9 +862,15 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     if (!isAdmin && needsEmailVerification()) {
       // Use browser native prompt instead of buggy modal
       const userEmail = window.prompt(
-        "📧 Email Verification Required\n\n" +
-        "To continue with additional analyses, please enter your email address:\n\n" +
-        "(You'll receive a verification link to unlock 2 more free analyses)"
+        "📧 Get 2 More Free Analyses + Expert Guide\n\n" +
+        "Enter your email to unlock:\n" +
+        "✓ 2 additional free quote analyses\n" +
+        "✓ PDF guide: 7 Red Flags in Solar Quotes\n" +
+        "✓ Price comparison insights\n\n" +
+        "We respect your privacy. Your email is used only for verification " +
+        "and sending your analysis results. We never share your data. " +
+        "See our Privacy Policy at solarverify.co.uk/privacy\n\n" +
+        "Enter your email address:"
       );
       
       // If user cancelled or entered nothing
@@ -914,8 +918,11 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
         // Show success message
         alert(
           "✅ Verification Email Sent!\n\n" +
-          "Please check your inbox for a verification link.\n\n" +
-          "Click the link to verify your email and unlock 2 more free analyses!"
+          "Check your inbox for:\n" +
+          "• Verification link to unlock 2 more free analyses\n" +
+          "• PDF guide: 7 Red Flags in Solar Quotes\n" +
+          "• Your analysis results\n\n" +
+          "Click the link to verify and access your results!"
         );
         
         // Reset form for next analysis
