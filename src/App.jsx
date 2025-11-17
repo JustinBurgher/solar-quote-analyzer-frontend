@@ -1584,7 +1584,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                         </div>
                         <div className="flex justify-between">
                           <span className="text-gray-600">Price per kW:</span>
-                          <span className="font-medium">£{result.price_per_kw ? Math.round(result.price_per_kw).toLocaleString() : 'N/A'}</span>
+                          <span className="font-medium">£{(result.price_per_kw || result.analysis?.price_per_kw) ? Math.round(result.price_per_kw || result.analysis?.price_per_kw).toLocaleString() : 'N/A'}</span>
                         </div>
                         {hasBattery && getTotalBatteryCapacity() > 0 && (
                           <div className="flex justify-between">
