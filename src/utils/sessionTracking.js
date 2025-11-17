@@ -46,6 +46,8 @@ const createNewSession = () => {
     email: null,
     isVerified: false,
     verifiedAt: null,
+    premiumAccess: false,
+    premiumEmail: null,
     createdAt: new Date().toISOString()
   };
   
@@ -118,12 +120,36 @@ export const getRemainingAnalyses = () => {
 };
 
 /**
+ * Check if user has premium access
+ * @returns {boolean} True if user has premium access
+ */
+export const hasPremiumAccess = () => {
+  const session = getSession();
+  return session.premiumAccess === true;
+};
+
+/**
  * Check if user should see upgrade modal
  * @returns {boolean} True if upgrade modal should be shown
  */
 export const shouldShowUpgradeModal = () => {
   const session = getSession();
+  // Don't show upgrade modal if user has premium access
+  if (session.premiumAccess) {
+    return false;
+  }
   return session.analysisCount >= 3;
+};
+
+/**
+ * Grant premium access to user
+ * @param {string} email - User's email address
+ */
+export const grantPremiumAccess = (email) => {
+  const session = getSession();
+  session.premiumAccess = true;
+  session.premiumEmail = email;
+  saveSession(session);
 };
 
 /**
