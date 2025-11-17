@@ -1,88 +1,69 @@
 import React, { useState } from 'react';
 import { X, Crown, CheckCircle, Shield, TrendingUp, MapPin, Award, FileText, Zap } from 'lucide-react';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://solar-verify-backend-production.up.railway.app';
+const API_BASE_URL = 'https://solar-verify-backend-production.up.railway.app/api';
 
 const UpgradeModal = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [email, setEmail] = useState('');
+  const [showEmailInput, setShowEmailInput] = useState(false);
 
   if (!isOpen) return null;
 
-  const handleUpgrade = async () => {
+  const handleUpgradeClick = async () => {
+    // Check if we have email from session
+    const session = localStorage.getItem('solarverify_session');
+    let userEmail = '';
+    
+    if (session) {
+      try {
+        const sessionData = JSON.parse(session);
+        userEmail = sessionData.email || '';
+      } catch (e) {
+        console.error('Error parsing session:', e);
+      }
+    }
+
+    // If no email, show email input
+    if (!userEmail && !email) {
+      setShowEmailInput(true);
+      return;
+    }
+
+    const emailToUse = userEmail || email;
+
     setLoading(true);
     setError('');
 
     try {
-      // Get email from session storage (from email verification)
-      const sessionData = localStorage.getItem('solarverify_session');
-      const session = sessionData ? JSON.parse(sessionData) : null;
-      const email = session?.verifiedEmail;
+      // Call backend to create Stripe checkout session
+      const response = await fetch(`${API_BASE_URL}/create-checkout-session`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: emailToUse
+        }),
+      });
 
-      if (!email) {
-        // If no email in session, prompt for it
-        const userEmail = window.prompt(
-          "Enter your email to proceed with payment:\n\n" +
-          "This will be used for your receipt and premium access."
-        );
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to start checkout');
+      }
 
-        if (!userEmail || userEmail.trim() === '') {
-          setError('Email is required for payment');
-          setLoading(false);
-          return;
-        }
+      const data = await response.json();
 
-        // Basic email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(userEmail.trim())) {
-          setError('Please enter a valid email address');
-          setLoading(false);
-          return;
-        }
-
-        // Create checkout session with the provided email
-        const response = await fetch(`${API_BASE_URL}/create-checkout-session`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: userEmail.trim()
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to create checkout session');
-        }
-
-        const data = await response.json();
-
-        // Redirect to Stripe checkout
+      // Redirect to Stripe checkout
+      if (data.url) {
         window.location.href = data.url;
       } else {
-        // Use email from session
-        const response = await fetch(`${API_BASE_URL}/create-checkout-session`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: email
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to create checkout session');
-        }
-
-        const data = await response.json();
-
-        // Redirect to Stripe checkout
-        window.location.href = data.url;
+        throw new Error('No checkout URL received');
       }
     } catch (err) {
-      console.error('Upgrade error:', err);
-      setError('Failed to start checkout. Please try again.');
+      console.error('Checkout error:', err);
+      setError(err.message || 'Failed to start checkout. Please try again.');
       setLoading(false);
     }
   };
@@ -153,7 +134,6 @@ const UpgradeModal = ({ isOpen, onClose }) => {
             <button
               onClick={onClose}
               className="text-white hover:bg-white/20 rounded-lg p-2 transition-colors"
-              disabled={loading}
             >
               <X className="w-6 h-6" />
             </button>
@@ -162,13 +142,6 @@ const UpgradeModal = ({ isOpen, onClose }) => {
 
         {/* Content */}
         <div className="p-6 md:p-8">
-          {/* Error Message */}
-          {error && (
-            <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
-              {error}
-            </div>
-          )}
-
           {/* Pricing Section */}
           <div className="bg-gradient-to-br from-teal-50 to-blue-50 rounded-xl p-6 mb-8 text-center">
             <div className="mb-4">
@@ -181,8 +154,30 @@ const UpgradeModal = ({ isOpen, onClose }) => {
             <p className="text-gray-700 mb-4">
               One-time payment • Instant unlock • 30-day money-back guarantee
             </p>
+            
+            {/* Error Message */}
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+                {error}
+              </div>
+            )}
+
+            {/* Email Input (if needed) */}
+            {showEmailInput && (
+              <div className="mb-4">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent mb-2"
+                />
+                <p className="text-sm text-gray-600">We'll send your receipt and premium access confirmation to this email</p>
+              </div>
+            )}
+
             <button 
-              onClick={handleUpgrade}
+              onClick={handleUpgradeClick}
               disabled={loading}
               className="w-full md:w-auto px-8 py-4 bg-teal-600 text-white rounded-lg font-bold text-lg hover:bg-teal-700 transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -253,7 +248,7 @@ const UpgradeModal = ({ isOpen, onClose }) => {
           {/* CTA Section */}
           <div className="text-center">
             <button 
-              onClick={handleUpgrade}
+              onClick={handleUpgradeClick}
               disabled={loading}
               className="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-teal-600 to-blue-600 text-white rounded-lg font-bold text-lg hover:from-teal-700 hover:to-blue-700 transition-all shadow-lg transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
