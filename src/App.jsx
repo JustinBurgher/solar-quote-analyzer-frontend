@@ -1,13 +1,12 @@
 
 
-
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Shield, Users, Award, TrendingUp, CheckCircle, Star, Upload, Brain, FileText, Clock, Calculator, AlertTriangle, ArrowRight, Crown, X } from 'lucide-react';
 import Verify from './pages/Verify';
-import PremiumSuccess from './pages/PremiumSuccess';
 import UpgradeModal from './components/UpgradeModal';
-import { getSession, incrementAnalysisCount, markEmailVerified, needsEmailVerification, shouldShowUpgradeModal, getSessionStatus } from './utils/sessionTracking';
+import PremiumAnalysisForm from './components/PremiumAnalysisForm';
+import { getSession, incrementAnalysisCount, markEmailVerified, needsEmailVerification, shouldShowUpgradeModal, getSessionStatus, hasPremiumAccess } from './utils/sessionTracking';
 
 
 // API Configuration
@@ -780,6 +779,8 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [gdprConsent, setGdprConsent] = useState(false);
   const [pendingAnalysis, setPendingAnalysis] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [showPremiumForm, setShowPremiumForm] = useState(false);
+  const [isPremium, setIsPremium] = useState(false);
 
   // Check if user is admin
   useEffect(() => {
@@ -794,6 +795,8 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     if (session.isVerified && session.email) {
       setEmail(session.email);
     }
+    // Check premium access
+    setIsPremium(hasPremiumAccess());
   }, []);
 
   // FIXED: Block programmatic clicks and only specific keyboard shortcuts
@@ -947,6 +950,101 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     await performAnalysis();
   };
 
+  // Handle premium form submission
+  const handlePremiumSubmit = async (formData) => {
+    setLoading(true);
+    setError('');
+    setResult(null);
+
+    try {
+      // Prepare premium analysis data
+      const premiumData = {
+        // Basic fields
+        system_size: parseFloat(formData.systemSize) || 0,
+        total_price: parseFloat(formData.totalCost) || 0,
+        location: formData.location,
+        user_email: formData.email,
+        
+        // Premium fields - Panel details
+        panel_brand: formData.panelBrand,
+        panel_model: formData.panelModel,
+        panel_wattage: parseFloat(formData.panelWattage) || 0,
+        panel_quantity: parseInt(formData.panelQuantity) || 0,
+        
+        // Premium fields - Inverter details
+        inverter_brand: formData.inverterBrand,
+        inverter_model: formData.inverterModel,
+        inverter_type: formData.inverterType,
+        inverter_capacity: parseFloat(formData.inverterCapacity) || 0,
+        
+        // Premium fields - Battery details
+        has_battery: formData.batteryIncluded,
+        battery_brand: formData.batteryIncluded ? formData.batteryBrand : '',
+        battery_model: formData.batteryIncluded ? formData.batteryModel : '',
+        battery_capacity: formData.batteryIncluded ? parseFloat(formData.batteryCapacity) || 0 : 0,
+        battery_quantity: formData.batteryIncluded ? parseInt(formData.batteryQuantity) || 1 : 0,
+        battery_warranty: formData.batteryIncluded ? parseInt(formData.batteryWarranty) || 0 : 0,
+        
+        // Premium fields - Installation details
+        scaffolding_included: formData.scaffoldingIncluded,
+        scaffolding_cost: formData.scaffoldingIncluded ? parseFloat(formData.scaffoldingCost) || 0 : 0,
+        bird_protection_included: formData.birdProtectionIncluded,
+        bird_protection_cost: formData.birdProtectionIncluded ? parseFloat(formData.birdProtectionCost) || 0 : 0,
+        roof_type: formData.roofType,
+        roof_material: formData.roofMaterial,
+        
+        // Premium fields - Installer information
+        installer_company: formData.installerCompany,
+        installer_location: formData.installerLocation,
+        installer_mcs: formData.installerMCS,
+        installer_years_in_business: formData.installerYearsInBusiness ? parseInt(formData.installerYearsInBusiness) || 0 : 0,
+        installer_warranty_years: formData.installerWarrantyYears ? parseInt(formData.installerWarrantyYears) || 0 : 0,
+        installation_timeline: formData.installationTimeline,
+        
+        // Mark as premium analysis
+        is_premium: true
+      };
+
+      // If PDF is uploaded, we'll need to handle it separately
+      // For now, we'll send the data without the PDF
+      // TODO: Implement PDF upload handling
+
+      const response = await fetch(`${API_BASE_URL}/analyze-premium-quote`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(premiumData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      // Show success message
+      alert(
+        "✅ Premium Analysis Complete!\n\n" +
+        "Your comprehensive analysis report has been generated and sent to your email.\n\n" +
+        "Check your inbox for:\n" +
+        "• Detailed component assessment\n" +
+        "• Red flags and things to consider\n" +
+        "• Questions to ask your installer\n" +
+        "• Comprehensive PDF report"
+      );
+      
+      // Reset form
+      setShowPremiumForm(false);
+      
+    } catch (err) {
+      console.error('Premium analysis error:', err);
+      setError('Premium analysis failed. Please try again or contact support.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Perform the actual analysis
   const performAnalysis = async () => {
     setLoading(true);
@@ -987,8 +1085,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
       
     } catch (err) {
       console.error('Analysis error:', err);
-      console.error('Error details:', err.message);
-      setError(err.message || 'Analysis failed. Please try again.');
+      setError('Analysis failed');
     } finally {
       setLoading(false);
     }
@@ -1190,10 +1287,35 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                     <span className="text-sm font-medium">Admin Testing Mode - Unlimited Analyses</span>
                   </div>
                 )}
+
+                {/* Premium Status */}
+                {isPremium && !isAdmin && (
+                  <div className="bg-gradient-to-r from-yellow-400/20 to-orange-400/20 backdrop-blur-sm rounded-lg p-4 mb-6">
+                    <div className="flex items-center justify-center gap-2 mb-3">
+                      <Crown className="w-5 h-5 text-yellow-300" />
+                      <span className="text-sm font-medium">Premium Access Active</span>
+                    </div>
+                    {!showPremiumForm && (
+                      <button
+                        onClick={() => setShowPremiumForm(true)}
+                        className="px-6 py-2 bg-white text-teal-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-sm"
+                      >
+                        Start Premium Analysis →
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
 
-                            <div className="bg-white p-8">
-                <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="bg-white p-8">
+                {/* Show Premium Form for premium users who clicked the button */}
+                {showPremiumForm && isPremium ? (
+                  <PremiumAnalysisForm 
+                    onSubmit={handlePremiumSubmit}
+                    onCancel={() => setShowPremiumForm(false)}
+                  />
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-6">
                   {/* System Size */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -1420,6 +1542,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                     {loading ? 'Analyzing...' : 'Get My Grade Free'}
                   </button>
                 </form>
+                )}
 
                 {/* Error Display */}
                 {error && (
@@ -1461,7 +1584,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                         </div>
                         <div className="flex justify-between">
                           <span className="text-gray-600">Price per kW:</span>
-                          <span className="font-medium">£{result.analysis?.price_per_kw ? result.analysis.price_per_kw.toLocaleString('en-GB', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : 'N/A'}</span>
+                          <span className="font-medium">£{result.price_per_kw ? Math.round(result.price_per_kw).toLocaleString() : 'N/A'}</span>
                         </div>
                         {hasBattery && getTotalBatteryCapacity() > 0 && (
                           <div className="flex justify-between">
@@ -1736,7 +1859,6 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
           <Route path="/contact" element={<Contact />} />
           <Route path="/analyzer" element={<Analyzer />} />
           <Route path="/verify" element={<Verify />} />
-          <Route path="/premium-success" element={<PremiumSuccess />} />
         </Routes>
       </div>
     {showUpgradeModal && (
