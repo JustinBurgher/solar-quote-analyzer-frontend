@@ -858,12 +858,6 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Check if user should see upgrade modal (after 3 analyses)
-    if (!isAdmin && shouldShowUpgradeModal()) {
-      setShowUpgradeModal(true);
-      return;
-    }
 
     // Check if email verification is needed for second analysis
     if (!isAdmin && needsEmailVerification()) {
@@ -931,6 +925,12 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
           "• Your analysis results\n\n" +
           "Click the link to verify and access your results!"
         );
+
+                // Increment analysis count for the email-gated analysis
+        if (!isAdmin) {
+          const newCount = incrementAnalysisCount();
+          setAnalysisCount(newCount);
+        }
         
         // Reset form for next analysis
         setSystemSize('');
@@ -947,7 +947,13 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
       return;
     }
 
+    // Perform analysis and show results
     await performAnalysis();
+    
+    // After showing results, check if upgrade modal should appear
+    if (!isAdmin && shouldShowUpgradeModal()) {
+      setShowUpgradeModal(true);
+    }
   };
 
   // Handle premium form submission
