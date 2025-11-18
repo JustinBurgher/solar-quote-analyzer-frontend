@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { CheckCircle, Crown, ArrowRight, Loader } from 'lucide-react';
-import { grantPremiumAccess } from '../utils/sessionTracking';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://solar-verify-backend-production.up.railway.app';
 
@@ -24,7 +23,7 @@ const PremiumSuccess = () => {
       }
 
       try {
-        const response = await fetch(`${API_BASE_URL}/api/verify-payment`, {
+        const response = await fetch(`${API_BASE_URL}/verify-payment`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -44,8 +43,12 @@ const PremiumSuccess = () => {
           setVerified(true);
           setEmail(data.email);
 
-          // Grant premium access using session tracking utility
-          grantPremiumAccess(data.email);
+          // Store premium access in session
+          const sessionData = localStorage.getItem('solarverify_session');
+          const session = sessionData ? JSON.parse(sessionData) : {};
+          session.premiumAccess = true;
+          session.premiumEmail = data.email;
+          localStorage.setItem('solarverify_session', JSON.stringify(session));
         } else {
           setError('Payment verification failed. Please contact support.');
         }
