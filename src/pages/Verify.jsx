@@ -73,7 +73,7 @@ function Verify() {
   // Helper function to format price
   const formatPrice = (price) => {
     if (!price || price === 0) return '£0';
-    return `£${parseFloat(price).toLocaleString('en-GB')}`;
+    return `£${Math.round(parseFloat(price)).toLocaleString('en-GB')}`;
   };
 
   return (
