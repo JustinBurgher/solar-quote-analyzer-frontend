@@ -70,6 +70,11 @@ const UpgradeModal = ({ isOpen, onClose }) => {
 
   const premiumFeatures = [
     {
+      icon: <FileText className="w-6 h-6" />,
+      title: 'Professional PDF Report',
+      description: 'Comprehensive analysis report emailed to you with detailed breakdowns and recommendations'
+    },
+    {
       icon: <Zap className="w-6 h-6" />,
       title: 'Panel Brand Analysis',
       description: 'Detailed assessment of solar panel quality, efficiency ratings, and manufacturer reputation'
@@ -86,33 +91,28 @@ const UpgradeModal = ({ isOpen, onClose }) => {
     },
     {
       icon: <CheckCircle className="w-6 h-6" />,
-      title: 'Scaffolding Inclusion',
-      description: 'Verify if scaffolding costs are included and fairly priced in your quote'
-    },
-    {
-      icon: <Shield className="w-6 h-6" />,
-      title: 'Bird Protection Verification',
-      description: 'Check if bird protection measures are included to protect your investment'
+      title: 'Component Validation',
+      description: 'Verify all components (scaffolding, bird protection, etc.) are included and fairly priced'
     },
     {
       icon: <MapPin className="w-6 h-6" />,
-      title: 'Installer Location Analysis',
-      description: 'Regional pricing insights based on installer location across the UK'
+      title: 'Regional Pricing Analysis',
+      description: 'UK-wide pricing insights based on installer location and regional market rates'
     },
     {
       icon: <Award className="w-6 h-6" />,
-      title: 'MCS Registration Check',
-      description: 'Verify installer credentials and MCS certification status'
+      title: 'Installer Verification',
+      description: 'Check MCS registration, years in business, and warranty coverage'
     },
     {
       icon: <TrendingUp className="w-6 h-6" />,
-      title: 'Regional Pricing Insights',
-      description: 'Understand how costs vary by region and get location-specific recommendations'
+      title: 'Value-for-Money Score',
+      description: 'Detailed breakdown showing if you\'re getting good value compared to market rates'
     },
     {
       icon: <FileText className="w-6 h-6" />,
-      title: 'Personalized Recommendations',
-      description: 'Custom advice tailored to your specific quote and circumstances'
+      title: 'Red Flags & Questions',
+      description: 'Specific concerns to address and questions to ask your installer before signing'
     }
   ];
 
@@ -127,8 +127,8 @@ const UpgradeModal = ({ isOpen, onClose }) => {
                 <Crown className="w-8 h-8 text-yellow-300" />
                 <h2 className="text-3xl font-bold">Upgrade to Premium</h2>
               </div>
-              <p className="text-lg opacity-90">
-                You've used your 3 free analyses! Unlock unlimited access with detailed insights.
+                            <p className="text-lg opacity-90">
+                You've used your 3 free analyses! Unlock unlimited premium analyses with comprehensive PDF reports.
               </p>
             </div>
             <button
