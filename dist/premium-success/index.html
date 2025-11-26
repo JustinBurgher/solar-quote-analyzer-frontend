@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Redirecting to Premium Access…</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        background: #f0fdf4;
+        color: #0f766e;
+      }
+    </style>
+    <script>
+      (function () {
+        var search = window.location.search || '';
+        var suffix = search ? '&' + search.slice(1) : '';
+        // include original params so the SPA can verify the Stripe session
+        window.location.replace('/?premiumRedirect=1' + suffix);
+      })();
+    </script>
+  </head>
+  <body>
+    <div>
+      <p><strong>Almost there…</strong></p>
+      <p>Loading your premium access.</p>
+    </div>
+  </body>
+</html>

@@ -9,6 +9,17 @@ import UpgradeModal from './components/UpgradeModal';
 import PremiumAnalysisForm from './components/PremiumAnalysisForm';
 import { getSession, incrementAnalysisCount, markEmailVerified, needsEmailVerification, shouldShowUpgradeModal, getSessionStatus, hasPremiumAccess } from './utils/sessionTracking';
 
+// Handle redirects from the static /premium-success fallback page.
+if (typeof window !== 'undefined') {
+  const currentUrl = new URL(window.location.href);
+  if (currentUrl.searchParams.has('premiumRedirect')) {
+    currentUrl.searchParams.delete('premiumRedirect');
+    const remainingParams = currentUrl.searchParams.toString();
+    const nextUrl = `/premium-success${remainingParams ? `?${remainingParams}` : ''}`;
+    window.history.replaceState(null, '', nextUrl);
+  }
+}
+
 
 // API Configuration
 const API_BASE_URL = 'https://solar-verify-backend-production.up.railway.app/api';
