@@ -4,9 +4,21 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Shield, Users, Award, TrendingUp, CheckCircle, Star, Upload, Brain, FileText, Clock, Calculator, AlertTriangle, ArrowRight, Crown, X } from 'lucide-react';
 import Verify from './pages/Verify';
+import PremiumSuccess from './pages/PremiumSuccess';
 import UpgradeModal from './components/UpgradeModal';
 import PremiumAnalysisForm from './components/PremiumAnalysisForm';
 import { getSession, incrementAnalysisCount, markEmailVerified, needsEmailVerification, shouldShowUpgradeModal, getSessionStatus, hasPremiumAccess } from './utils/sessionTracking';
+
+// Handle redirects from the static /premium-success fallback page.
+if (typeof window !== 'undefined') {
+  const currentUrl = new URL(window.location.href);
+  if (currentUrl.searchParams.has('premiumRedirect')) {
+    currentUrl.searchParams.delete('premiumRedirect');
+    const remainingParams = currentUrl.searchParams.toString();
+    const nextUrl = `/premium-success${remainingParams ? `?${remainingParams}` : ''}`;
+    window.history.replaceState(null, '', nextUrl);
+  }
+}
 
 
 // API Configuration
@@ -472,10 +484,64 @@ function Upgrade() {
   async function handleClick() {
     setBusy(true);
     setMsg("");
+
+    let userEmail = "";
+    const sessionData = localStorage.getItem("solarverify_session");
+
+    if (sessionData) {
+      try {
+        const parsed = JSON.parse(sessionData);
+        userEmail = parsed?.email || "";
+      } catch (error) {
+        console.error("Failed to parse session data", error);
+      }
+    }
+
+    if (!userEmail) {
+      const promptEmail = window.prompt(
+        "📧 Enter the email you'd like us to send your receipt and premium access to:"
+      );
+
+      if (!promptEmail) {
+        setMsg("Email is required to continue to checkout.");
+        setBusy(false);
+        return;
+      }
+
+      const trimmed = promptEmail.trim();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(trimmed)) {
+        setMsg("Please enter a valid email address.");
+        setBusy(false);
+        return;
+      }
+
+      userEmail = trimmed;
+    }
+
     try {
-      alert("Secure checkout coming soon. Launch price £24.99.");
-    } catch (e) {
-      setMsg("Something went wrong. Please try again.");
+      const response = await fetch(`${API_BASE_URL}/create-checkout-session`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: userEmail }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || "Failed to start checkout. Please try again.");
+      }
+
+      const data = await response.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error("Checkout session created without a redirect URL.");
+      }
+    } catch (error) {
+      console.error("Checkout error:", error);
+      setMsg(error.message || "Something went wrong. Please try again.");
     } finally {
       setBusy(false);
     }
@@ -1865,6 +1931,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
           <Route path="/contact" element={<Contact />} />
           <Route path="/analyzer" element={<Analyzer />} />
           <Route path="/verify" element={<Verify />} />
+          <Route path="/premium-success" element={<PremiumSuccess />} />
         </Routes>
       </div>
     {showUpgradeModal && (
