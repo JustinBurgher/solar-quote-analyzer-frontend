@@ -69,7 +69,7 @@ const PremiumSuccess = () => {
     setSubmitting(true);
     try {
       // Submit premium analysis
-      const response = await fetch(`${API_BASE_URL}/api/analyze-premium`, {
+      const response = await fetch(`${API_BASE_URL}/analyze-premium-quote`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
