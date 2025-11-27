@@ -1865,6 +1865,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
           <Route path="/contact" element={<Contact />} />
           <Route path="/analyzer" element={<Analyzer />} />
           <Route path="/verify" element={<Verify />} />
+          <Route path="/premium-success" element={<PremiumSuccess />} />
         </Routes>
       </div>
     {showUpgradeModal && (
