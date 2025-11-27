@@ -431,7 +431,7 @@ function HowItWorks() {
               
               <div className="text-center">
                 <div className="text-3xl font-bold mb-1">
-                  <span className="line-through opacity-60 text-xl">£49.99</span> £24.99
+                  <span className="line-through opacity-60 text-xl">£49.99</span> £44.99
                 </div>
                 <p className="text-sm opacity-80">Launch price - Limited time</p>
               </div>
@@ -474,7 +474,7 @@ function Upgrade() {
     setBusy(true);
     setMsg("");
     try {
-      alert("Secure checkout coming soon. Launch price £24.99.");
+      alert("Secure checkout coming soon. Launch price £44.99.");
     } catch (e) {
       setMsg("Something went wrong. Please try again.");
     } finally {
@@ -513,7 +513,7 @@ function Upgrade() {
               <h2 className="text-3xl font-bold mb-4">Premium Solar Analysis</h2>
               <div className="flex items-center justify-center space-x-4 mb-4">
                 <span className="text-2xl line-through opacity-60">£49.99</span>
-                <span className="text-5xl font-bold">£24.99</span>
+                <span className="text-5xl font-bold">£44.99</span>
               </div>
               <div className="bg-yellow-400 text-yellow-900 px-4 py-2 rounded-full inline-block text-sm font-semibold">
                 🔥 LAUNCH SPECIAL - SAVE £25
@@ -681,7 +681,7 @@ function Upgrade() {
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-8">
               <div className="flex items-center justify-center space-x-4 mb-4">
                 <span className="text-2xl line-through opacity-60">£49.99</span>
-                <span className="text-4xl font-bold">£24.99</span>
+                <span className="text-4xl font-bold">£44.99</span>
               </div>
               <p className="text-sm opacity-80">One-off payment • Instant access • 30-day money-back guarantee</p>
             </div>
@@ -693,7 +693,7 @@ function Upgrade() {
               disabled={busy}
               className="bg-white text-teal-600 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-colors disabled:opacity-60 mb-4"
             >
-              {busy ? "Preparing…" : "Upgrade Now - £24.99"}
+              {busy ? "Preparing…" : "Upgrade Now - £44.99"}
             </button>
             
             <div className="flex items-center justify-center space-x-6 text-sm opacity-80">
