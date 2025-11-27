@@ -1,111 +1,133 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
+const desktopLinks = [
+  { label: 'Home', to: '/' },
+  { label: 'About', to: '/about' },
+  { label: 'How It Works', to: '/how-it-works' },
+  { label: 'Upgrade', to: '/upgrade' },
+];
 
 function Navigation() {
   const navigate = useNavigate();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  const handleQuoteAnalyzer = () => {
+  const scrollToSection = (sectionId) => {
     navigate('/');
+    setMobileOpen(false);
     setTimeout(() => {
-      const element = document.getElementById('analyzer');
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+      const el = document.getElementById(sectionId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
       }
-    }, 100);
-  };
-
-  const handleContact = () => {
-    navigate('/');
-    setTimeout(() => {
-      const element = document.getElementById('contact');
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 100);
+    }, 150);
   };
 
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
           <div className="flex items-center">
-            <div className="flex-shrink-0 flex items-center">
-              <div className="logo-icon bg-teal-600 w-8 h-8 rounded-lg flex items-center justify-center mr-3">
-                <span className="text-white text-sm">🏠</span>
+            <Link to="/" className="flex items-center space-x-3">
+              <div className="bg-teal-600 w-9 h-9 rounded-lg flex items-center justify-center text-white text-xl">
+                ✓
               </div>
-              <Link to="/" className="logo-text text-xl font-bold text-gray-900">
-                solar<span className="text-teal-600">✓</span>erify
-              </Link>
-            </div>
+              <span className="text-xl font-bold text-gray-900">
+                solar<span className="text-teal-600">verify</span>
+              </span>
+            </Link>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
+          <div className="hidden md:flex items-center space-x-6">
+            {desktopLinks.map((link) => (
               <Link
-  to="/"
-  className="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
->
-  Home
-</Link>
-
-<Link
-  to="/about"
-  className="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
->
-  About
-</Link>
-
-<Link
-  to="/how-it-works"
-  className="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
->
-  How It Works
-</Link>
-
-<Link
-  to="/upgrade"
-  className="text-gray-700 hover:text-teal-600 transition-colors"
->
-  Upgrade
-</Link>
-
+                key={link.to}
+                to={link.to}
+                className="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              >
+                {link.label}
               </Link>
-            </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => scrollToSection('analyzer')}
+              className="text-sm font-semibold text-gray-700 hover:text-teal-600 transition-colors"
+            >
+              Free Analyzer
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollToSection('contact')}
+              className="text-sm font-semibold text-gray-700 hover:text-teal-600 transition-colors"
+            >
+              Contact
+            </button>
+            <Link
+              to="/upgrade"
+              className="bg-teal-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-teal-700 transition-colors"
+            >
+              Upgrade £44.99
+            </Link>
           </div>
 
-          {/* Mobile menu button */}
- <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-  <Link
-    to="/"
-    className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-teal-600 hover:bg-gray-50 transition-colors"
-  >
-    Home
-  </Link>
-  <Link
-    to="/about"
-    className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-teal-600 hover:bg-gray-50 transition-colors"
-  >
-    About
-  </Link>
-  <Link
-    to="/how-it-works"
-    className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-teal-600 hover:bg-gray-50 transition-colors"
-  >
-    How It Works
-  </Link>
-  <Link
-    to="/upgrade"
-    className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-teal-600 hover:bg-gray-50 transition-colors"
-  >
-    Upgrade
-  </Link>
-</div>
-
+          <div className="md:hidden">
+            <button
+              type="button"
+              onClick={() => setMobileOpen((prev) => !prev)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              aria-label="Toggle mobile menu"
+            >
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {mobileOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
+        </div>
       </div>
+
+      {mobileOpen && (
+        <div className="md:hidden border-t border-gray-200 bg-white">
+          <div className="px-4 pt-4 pb-6 space-y-3">
+            {desktopLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                onClick={() => setMobileOpen(false)}
+                className="block text-gray-700 px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50"
+              >
+                {link.label}
+              </Link>
+            ))}
+            <button
+              type="button"
+              onClick={() => scrollToSection('analyzer')}
+              className="w-full text-left text-gray-700 px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50"
+            >
+              Free Analyzer
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollToSection('contact')}
+              className="w-full text-left text-gray-700 px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50"
+            >
+              Contact
+            </button>
+            <Link
+              to="/upgrade"
+              onClick={() => setMobileOpen(false)}
+              className="block text-center bg-teal-600 text-white px-3 py-2 rounded-md text-base font-semibold hover:bg-teal-700"
+            >
+              Upgrade £44.99
+            </Link>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
 
 export default Navigation;
-
