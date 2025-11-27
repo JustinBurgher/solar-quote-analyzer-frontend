@@ -764,17 +764,6 @@ function Upgrade() {
   );
 }
 
-                Secure Payment
-            
-          <p className="text-sm text-gray-500 mt-6">
-            * Average customer saves £8,500+ with Premium analysis
-          </p>
-        </div>
-      </section>
-    </div>
-  );
-}
-
 // Contact Page Component
 function Contact() {
   return (
