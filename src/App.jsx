@@ -471,41 +471,40 @@ function Upgrade() {
   const [msg, setMsg] = useState("");
 
   async function handleClick() {
-  setBusy(true);
-  setMsg("");
-  try {
-    // Call backend to create Stripe checkout session
-    const response = await fetch(`${API_BASE_URL}/create-checkout-session`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email: 'user@example.com' }), // You can add email input later
-    });
+    setBusy(true);
+    setMsg("");
+    try {
+      // Call backend to create Stripe checkout session
+      const response = await fetch(`${API_BASE_URL}/create-checkout-session`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: 'user@example.com' }),
+      });
 
-    if (!response.ok) {
-      throw new Error('Failed to create checkout session');
-    }
+      if (!response.ok) {
+        throw new Error('Failed to create checkout session');
+      }
 
-    const data = await response.json();
-    
-    // Redirect to Stripe checkout
-    if (data.url) {
-      window.location.href = data.url;
-    } else {
-      throw new Error('No checkout URL returned');
+      const data = await response.json();
+      
+      // Redirect to Stripe checkout
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL returned');
+      }
+    } catch (e) {
+      setMsg("Something went wrong. Please try again.");
+    } finally {
+      setBusy(false);
     }
-  } catch (e) {
-    setMsg("Something went wrong. Please try again.");
-  } finally {
-    setBusy(false);
   }
-}
-
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
+      {/* Hero Section with CTA */}
       <section className="bg-gradient-to-br from-teal-500 to-blue-600 text-white py-20">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <Crown className="w-16 h-16 mx-auto mb-6 text-yellow-300" />
@@ -516,33 +515,55 @@ function Upgrade() {
             Get the complete buyer's protection guide with detailed insights, 
             red flag warnings, and actionable recommendations
           </p>
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 inline-block">
-            <div className="flex items-center text-lg">
-              <Clock className="w-5 h-5 mr-2" />
-              One Time Offer - £44.99 (Limited Time)
+          
+          {/* Price Display */}
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-8 inline-block">
+            <div className="text-5xl font-bold mb-2">£44.99</div>
+            <p className="text-sm opacity-90">One-off payment • Instant access • 30-day money-back guarantee</p>
+          </div>
+          
+          {/* Top CTA Button */}
+          <div className="mb-4">
+            {msg && <p className="text-red-300 mb-4 bg-red-900/20 px-4 py-2 rounded-lg inline-block">{msg}</p>}
+            <button
+              onClick={handleClick}
+              disabled={busy}
+              className="bg-white text-teal-600 px-10 py-5 rounded-xl font-bold text-xl hover:bg-gray-100 transition-all transform hover:scale-105 disabled:opacity-60 disabled:hover:scale-100 shadow-2xl"
+            >
+              {busy ? "Preparing Checkout..." : "Upgrade Now - £44.99"}
+            </button>
+          </div>
+          
+          <div className="flex items-center justify-center space-x-6 text-sm opacity-90">
+            <div className="flex items-center">
+              <Shield className="w-4 h-4 mr-1" />
+              Secure Payment
+            </div>
+            <div className="flex items-center">
+              <CheckCircle className="w-4 h-4 mr-1" />
+              Instant Access
+            </div>
+            <div className="flex items-center">
+              <TrendingUp className="w-4 h-4 mr-1" />
+              Money-Back Guarantee
             </div>
           </div>
         </div>
       </section>
 
-      {/* Pricing Section */}
+      {/* Features Comparison */}
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              What's Included in Premium?
+            </h2>
+            <p className="text-lg text-gray-600">
+              Everything you need to make an informed decision
+            </p>
+          </div>
+          
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-            {/* Pricing Header */}
-            <div className="bg-gradient-to-r from-teal-500 to-blue-600 text-white p-8 text-center">
-              <h2 className="text-3xl font-bold mb-4">Premium Solar Analysis</h2>
-              <div className="flex items-center justify-center space-x-4 mb-4">
-                
-                <span className="text-5xl font-bold">£44.99</span>
-              </div>
-              <div className="bg-yellow-400 text-yellow-900 px-4 py-2 rounded-full inline-block text-sm font-semibold">
-                🔥 ONE TIME OFFER - £44.99
-              </div>
-              <p className="mt-4 opacity-90">One-off payment • Instant unlock • 30-day money-back guarantee</p>
-            </div>
-
-            {/* Features Comparison */}
             <div className="p-8">
               <div className="grid md:grid-cols-2 gap-8">
                 {/* Free Analysis */}
@@ -575,11 +596,15 @@ function Upgrade() {
                       <X className="w-5 h-5 text-red-400 mr-3 flex-shrink-0" />
                       <span className="text-gray-400">No ROI analysis</span>
                     </li>
+                    <li className="flex items-center">
+                      <X className="w-5 h-5 text-red-400 mr-3 flex-shrink-0" />
+                      <span className="text-gray-400">No PDF report</span>
+                    </li>
                   </ul>
                 </div>
 
                 {/* Premium Analysis */}
-                <div className="border-2 border-teal-500 rounded-xl p-6 relative">
+                <div className="border-2 border-teal-500 rounded-xl p-6 relative bg-gradient-to-br from-teal-50 to-blue-50">
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-teal-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
                     PREMIUM
                   </div>
@@ -687,39 +712,58 @@ function Upgrade() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Bottom CTA Section */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <div className="bg-gradient-to-br from-teal-500 to-blue-600 text-white rounded-2xl p-8">
             <Crown className="w-16 h-16 mx-auto mb-6 text-yellow-300" />
             <h2 className="text-3xl font-bold mb-4">
-              Upgrade to Premium Now
+              Ready to Unlock Premium?
             </h2>
-            <p className="text-xl mb-6 opacity-90">
-              Launch special: Save £25 for a limited time
+            <p className="text-xl mb-8 opacity-90">
+              Get instant access to your comprehensive solar quote analysis
             </p>
             
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-8">
-              <div className="flex items-center justify-center space-x-4 mb-4">
-                
-                <span className="text-4xl font-bold">£44.99</span>
-              </div>
-              <p className="text-sm opacity-80">One-off payment • Instant access • 30-day money-back guarantee</p>
+              <div className="text-4xl font-bold mb-2">£44.99</div>
+              <p className="text-sm opacity-90">One-off payment • Instant access • 30-day money-back guarantee</p>
             </div>
             
-            {msg && <p className="text-red-300 mb-4">{msg}</p>}
+            {msg && <p className="text-red-300 mb-4 bg-red-900/20 px-4 py-2 rounded-lg inline-block">{msg}</p>}
             
             <button
               onClick={handleClick}
               disabled={busy}
-              className="bg-white text-teal-600 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-colors disabled:opacity-60 mb-4"
+              className="bg-white text-teal-600 px-10 py-5 rounded-xl font-bold text-xl hover:bg-gray-100 transition-all transform hover:scale-105 disabled:opacity-60 disabled:hover:scale-100 shadow-2xl mb-6"
             >
-              {busy ? "Preparing…" : "Upgrade Now - £44.99"}
+              {busy ? "Preparing Checkout..." : "Upgrade Now - £44.99"}
             </button>
             
-            <div className="flex items-center justify-center space-x-6 text-sm opacity-80">
+            <div className="flex items-center justify-center space-x-6 text-sm opacity-90">
               <div className="flex items-center">
                 <Shield className="w-4 h-4 mr-1" />
+                Secure Payment
+              </div>
+              <div className="flex items-center">
+                <CheckCircle className="w-4 h-4 mr-1" />
+                Instant Access
+              </div>
+              <div className="flex items-center">
+                <TrendingUp className="w-4 h-4 mr-1" />
+                Money-Back Guarantee
+              </div>
+            </div>
+          </div>
+          
+          <p className="text-sm text-gray-500 mt-6">
+            * Average customer saves £8,500+ with Premium analysis
+          </p>
+        </div>
+      </section>
+    </div>
+  );
+}
+
                 Secure Payment
               </div>
               <div className="flex items-center">
