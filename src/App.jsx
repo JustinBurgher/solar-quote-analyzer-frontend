@@ -471,16 +471,37 @@ function Upgrade() {
   const [msg, setMsg] = useState("");
 
   async function handleClick() {
-    setBusy(true);
-    setMsg("");
-    try {
-      alert("Secure checkout coming soon. Launch price £44.99.");
-    } catch (e) {
-      setMsg("Something went wrong. Please try again.");
-    } finally {
-      setBusy(false);
+  setBusy(true);
+  setMsg("");
+  try {
+    // Call backend to create Stripe checkout session
+    const response = await fetch(`${API_BASE_URL}/create-checkout-session`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: 'user@example.com' }), // You can add email input later
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to create checkout session');
     }
+
+    const data = await response.json();
+    
+    // Redirect to Stripe checkout
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      throw new Error('No checkout URL returned');
+    }
+  } catch (e) {
+    setMsg("Something went wrong. Please try again.");
+  } finally {
+    setBusy(false);
   }
+}
+
 
   return (
     <div className="min-h-screen bg-gray-50">
