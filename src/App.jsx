@@ -519,7 +519,7 @@ function Upgrade() {
           <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 inline-block">
             <div className="flex items-center text-lg">
               <Clock className="w-5 h-5 mr-2" />
-              Launch Special - Save £25 (Limited Time)
+              One Time Offer - £44.99 (Limited Time)
             </div>
           </div>
         </div>
@@ -537,7 +537,7 @@ function Upgrade() {
                 <span className="text-5xl font-bold">£44.99</span>
               </div>
               <div className="bg-yellow-400 text-yellow-900 px-4 py-2 rounded-full inline-block text-sm font-semibold">
-                🔥 LAUNCH SPECIAL - SAVE £25
+                🔥 ONE TIME OFFER - £44.99
               </div>
               <p className="mt-4 opacity-90">One-off payment • Instant unlock • 30-day money-back guarantee</p>
             </div>
