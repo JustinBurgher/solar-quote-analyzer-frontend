@@ -431,7 +431,7 @@ function HowItWorks() {
               
               <div className="text-center">
                 <div className="text-3xl font-bold mb-1">
-                  <span className="line-through opacity-60 text-xl">£49.99</span> £44.99
+                  
                 </div>
                 <p className="text-sm opacity-80">Launch price - Limited time</p>
               </div>
@@ -533,7 +533,7 @@ function Upgrade() {
             <div className="bg-gradient-to-r from-teal-500 to-blue-600 text-white p-8 text-center">
               <h2 className="text-3xl font-bold mb-4">Premium Solar Analysis</h2>
               <div className="flex items-center justify-center space-x-4 mb-4">
-                <span className="text-2xl line-through opacity-60">£49.99</span>
+                
                 <span className="text-5xl font-bold">£44.99</span>
               </div>
               <div className="bg-yellow-400 text-yellow-900 px-4 py-2 rounded-full inline-block text-sm font-semibold">
@@ -701,7 +701,7 @@ function Upgrade() {
             
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-8">
               <div className="flex items-center justify-center space-x-4 mb-4">
-                <span className="text-2xl line-through opacity-60">£49.99</span>
+                
                 <span className="text-4xl font-bold">£44.99</span>
               </div>
               <p className="text-sm opacity-80">One-off payment • Instant access • 30-day money-back guarantee</p>
