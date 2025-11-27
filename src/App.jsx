@@ -430,9 +430,7 @@ function HowItWorks() {
               </ul>
               
               <div className="text-center">
-                <div className="text-3xl font-bold mb-1">
-                  <span className="line-through opacity-60 text-xl">£49.99</span> £44.99
-                </div>
+                <div className="text-3xl font-bold mb-1">£44.99</div>
                 <p className="text-sm opacity-80">Launch price - Limited time</p>
               </div>
             </div>
@@ -496,9 +494,9 @@ function Upgrade() {
             red flag warnings, and actionable recommendations
           </p>
           <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 inline-block">
-            <div className="flex items-center text-lg">
+              <div className="flex items-center text-lg">
               <Clock className="w-5 h-5 mr-2" />
-              Launch Special - Save £25 (Limited Time)
+                Launch Special - £44.99 (Limited Time)
             </div>
           </div>
         </div>
@@ -511,12 +509,11 @@ function Upgrade() {
             {/* Pricing Header */}
             <div className="bg-gradient-to-r from-teal-500 to-blue-600 text-white p-8 text-center">
               <h2 className="text-3xl font-bold mb-4">Premium Solar Analysis</h2>
-              <div className="flex items-center justify-center space-x-4 mb-4">
-                <span className="text-2xl line-through opacity-60">£49.99</span>
+              <div className="flex items-center justify-center mb-4">
                 <span className="text-5xl font-bold">£44.99</span>
               </div>
               <div className="bg-yellow-400 text-yellow-900 px-4 py-2 rounded-full inline-block text-sm font-semibold">
-                🔥 LAUNCH SPECIAL - SAVE £25
+                🔥 LAUNCH SPECIAL - £44.99
               </div>
               <p className="mt-4 opacity-90">One-off payment • Instant unlock • 30-day money-back guarantee</p>
             </div>
@@ -675,12 +672,11 @@ function Upgrade() {
               Upgrade to Premium Now
             </h2>
             <p className="text-xl mb-6 opacity-90">
-              Launch special: Save £25 for a limited time
+              Launch special price: £44.99 for a limited time
             </p>
             
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-8">
-              <div className="flex items-center justify-center space-x-4 mb-4">
-                <span className="text-2xl line-through opacity-60">£49.99</span>
+              <div className="flex items-center justify-center mb-4">
                 <span className="text-4xl font-bold">£44.99</span>
               </div>
               <p className="text-sm opacity-80">One-off payment • Instant access • 30-day money-back guarantee</p>

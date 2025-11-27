@@ -145,10 +145,9 @@ const UpgradeModal = ({ isOpen, onClose }) => {
           {/* Pricing Section */}
           <div className="bg-gradient-to-br from-teal-50 to-blue-50 rounded-xl p-6 mb-8 text-center">
             <div className="mb-4">
-              <div className="text-gray-500 line-through text-xl mb-1">£49.99</div>
-              <div className="text-5xl font-bold text-teal-600 mb-2">£24.99</div>
+              <div className="text-5xl font-bold text-teal-600 mb-2">£44.99</div>
               <div className="inline-block bg-yellow-400 text-gray-900 px-4 py-1 rounded-full font-semibold text-sm">
-                🔥 LAUNCH SPECIAL - SAVE £25
+                🔥 LAUNCH SPECIAL - £44.99
               </div>
             </div>
             <p className="text-gray-700 mb-4">
@@ -181,7 +180,7 @@ const UpgradeModal = ({ isOpen, onClose }) => {
               disabled={loading}
               className="w-full md:w-auto px-8 py-4 bg-teal-600 text-white rounded-lg font-bold text-lg hover:bg-teal-700 transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Processing...' : 'Upgrade Now - £24.99'}
+              {loading ? 'Processing...' : 'Upgrade Now - £44.99'}
             </button>
           </div>
 
@@ -253,7 +252,7 @@ const UpgradeModal = ({ isOpen, onClose }) => {
               className="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-teal-600 to-blue-600 text-white rounded-lg font-bold text-lg hover:from-teal-700 hover:to-blue-700 transition-all shadow-lg transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
               <Crown className="w-5 h-5 inline mr-2" />
-              {loading ? 'Processing...' : 'Unlock Premium Analysis - £24.99'}
+              {loading ? 'Processing...' : 'Unlock Premium Analysis - £44.99'}
             </button>
             <p className="text-sm text-gray-500 mt-3">
               Secure payment • Instant access • Cancel anytime
