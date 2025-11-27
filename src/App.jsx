@@ -765,18 +765,7 @@ function Upgrade() {
 }
 
                 Secure Payment
-              </div>
-              <div className="flex items-center">
-                <CheckCircle className="w-4 h-4 mr-1" />
-                Instant Access
-              </div>
-              <div className="flex items-center">
-                <TrendingUp className="w-4 h-4 mr-1" />
-                Money-Back Guarantee
-              </div>
-            </div>
-          </div>
-          
+            
           <p className="text-sm text-gray-500 mt-6">
             * Average customer saves £8,500+ with Premium analysis
           </p>
