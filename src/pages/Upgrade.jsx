@@ -77,7 +77,7 @@ export default function Upgrade() {
         disabled={busy}
         className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-teal-600 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {busy ? 'Loading...' : 'Upgrade Now - £24.99'}
+        {busy ? 'Loading...' : 'Upgrade Now - £44.99'}
       </button>
       
       <div className="mt-6 text-center text-sm text-gray-600">
