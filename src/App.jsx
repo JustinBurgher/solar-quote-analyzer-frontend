@@ -551,15 +551,15 @@ function Upgrade() {
         </div>
       </section>
 
-      {/* Features Comparison */}
+      {/* What You'll Discover Section */}
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              What's Included in Premium?
+              What You'll Discover in Your Premium Report
             </h2>
             <p className="text-lg text-gray-600">
-              Everything you need to make an informed decision
+              Get specific, actionable insights that could save you thousands
             </p>
           </div>
           
@@ -572,33 +572,37 @@ function Upgrade() {
                     Free Analysis
                   </h3>
                   <ul className="space-y-3">
-                    <li className="flex items-center">
-                      <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700">Basic A-F grade</span>
+                    <li className="flex items-start">
+                      <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-700">Basic A-F grade rating</span>
                     </li>
-                    <li className="flex items-center">
-                      <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700">Simple price per kW</span>
+                    <li className="flex items-start">
+                      <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-700">Simple £/kW calculation</span>
                     </li>
-                    <li className="flex items-center">
-                      <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700">Basic verdict</span>
+                    <li className="flex items-start">
+                      <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-700">General verdict (Fair/Overpriced)</span>
                     </li>
-                    <li className="flex items-center">
-                      <X className="w-5 h-5 text-red-400 mr-3 flex-shrink-0" />
-                      <span className="text-gray-400">No detailed breakdown</span>
+                    <li className="flex items-start">
+                      <X className="w-5 h-5 text-red-400 mr-3 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-400">No component-by-component pricing</span>
                     </li>
-                    <li className="flex items-center">
-                      <X className="w-5 h-5 text-red-400 mr-3 flex-shrink-0" />
-                      <span className="text-gray-400">No red flag warnings</span>
+                    <li className="flex items-start">
+                      <X className="w-5 h-5 text-red-400 mr-3 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-400">No equipment quality ratings</span>
                     </li>
-                    <li className="flex items-center">
-                      <X className="w-5 h-5 text-red-400 mr-3 flex-shrink-0" />
-                      <span className="text-gray-400">No ROI analysis</span>
+                    <li className="flex items-start">
+                      <X className="w-5 h-5 text-red-400 mr-3 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-400">No installer verification</span>
                     </li>
-                    <li className="flex items-center">
-                      <X className="w-5 h-5 text-red-400 mr-3 flex-shrink-0" />
-                      <span className="text-gray-400">No PDF report</span>
+                    <li className="flex items-start">
+                      <X className="w-5 h-5 text-red-400 mr-3 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-400">No specific £ overprice amount</span>
+                    </li>
+                    <li className="flex items-start">
+                      <X className="w-5 h-5 text-red-400 mr-3 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-400">No negotiation strategy</span>
                     </li>
                   </ul>
                 </div>
@@ -612,33 +616,61 @@ function Upgrade() {
                     Premium Analysis
                   </h3>
                   <ul className="space-y-3">
-                    <li className="flex items-center">
-                      <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700">Everything in Free, plus:</span>
+                    <li className="flex items-start">
+                      <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <span className="text-gray-900 font-semibold">Component Breakdown:</span>
+                        <span className="text-gray-700"> Exact pricing for panels, inverter, battery, scaffolding, labor</span>
+                      </div>
                     </li>
-                    <li className="flex items-center">
-                      <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700 font-medium">Detailed component breakdown</span>
+                    <li className="flex items-start">
+                      <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <span className="text-gray-900 font-semibold">Equipment Quality Rating:</span>
+                        <span className="text-gray-700"> Are your panels Tier 1, 2, or 3? Is your inverter a premium brand?</span>
+                      </div>
                     </li>
-                    <li className="flex items-center">
-                      <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700 font-medium">Exact overprice amount (£)</span>
+                    <li className="flex items-start">
+                      <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <span className="text-gray-900 font-semibold">Exact Overprice Amount:</span>
+                        <span className="text-gray-700"> "Your £15,000 quote should be £9,200 - you're overpaying by £5,800"</span>
+                      </div>
                     </li>
-                    <li className="flex items-center">
-                      <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700 font-medium">Red flag & scam detection</span>
+                    <li className="flex items-start">
+                      <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <span className="text-gray-900 font-semibold">Installer Verification:</span>
+                        <span className="text-gray-700"> MCS certification status, Companies House check, trading history</span>
+                      </div>
                     </li>
-                    <li className="flex items-center">
-                      <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700 font-medium">ROI & payback analysis</span>
+                    <li className="flex items-start">
+                      <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <span className="text-gray-900 font-semibold">Red Flag Warnings:</span>
+                        <span className="text-gray-700"> Excessive markup alerts, missing warranties, unlicensed installers</span>
+                      </div>
                     </li>
-                    <li className="flex items-center">
-                      <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700 font-medium">Negotiation recommendations</span>
+                    <li className="flex items-start">
+                      <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <span className="text-gray-900 font-semibold">Real ROI Analysis:</span>
+                        <span className="text-gray-700"> Actual payback period based on your usage (not salesperson fantasy numbers)</span>
+                      </div>
                     </li>
-                    <li className="flex items-center">
-                      <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700 font-medium">Downloadable PDF report</span>
+                    <li className="flex items-start">
+                      <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <span className="text-gray-900 font-semibold">Negotiation Script:</span>
+                        <span className="text-gray-700"> Specific talking points and target prices to negotiate down</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <span className="text-gray-900 font-semibold">Professional PDF Report:</span>
+                        <span className="text-gray-700"> Take to other installers for competitive quotes</span>
+                      </div>
                     </li>
                   </ul>
                 </div>
