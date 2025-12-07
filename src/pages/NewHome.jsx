@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import LandingHero from '../components/LandingHero';
 import LandingMockup from '../components/LandingMockup';
 import LandingHowItWorks from '../components/LandingHowItWorks';
@@ -30,7 +31,7 @@ function NewHome() {
       <LandingHowItWorks />
       <LandingTrust />
       
-      {/* Placeholder for Analyzer - Will be integrated later */}
+      {/* Embedded Quote Analyzer - Link to Verify page for now */}
       <section id="analyzer" ref={analyzerRef} className="py-20 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -41,21 +42,20 @@ function NewHome() {
               Get your free basic analysis in seconds. No signup required for your first quote.
             </p>
             
-            {/* Temporary message - analyzer will be integrated next */}
-            <div className="bg-primary-orange/10 border-2 border-primary-orange rounded-xl p-8 max-w-2xl mx-auto">
+            {/* Temporary CTA to working analyzer */}
+            <div className="bg-white border-2 border-primary-orange rounded-xl p-8 max-w-2xl mx-auto shadow-xl">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                🚀 Analyzer Coming Soon!
+                Ready to Analyze Your Quote?
               </h3>
               <p className="text-gray-700 mb-6">
-                The quote analyzer is being integrated into this new landing page. 
-                For now, you can use the existing analyzer at the main homepage.
+                Click below to access our free solar quote analyzer. Get your A-F grade instantly!
               </p>
-              <a 
-                href="/"
+              <Link 
+                to="/verify"
                 className="inline-block px-8 py-4 bg-primary-orange hover:bg-orange-600 text-gray-900 font-bold rounded-lg shadow-lg transition duration-300"
               >
-                Use Current Analyzer →
-              </a>
+                Start Free Analysis →
+              </Link>
             </div>
           </div>
         </div>
