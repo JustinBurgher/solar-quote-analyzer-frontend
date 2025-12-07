@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import { Shield, Users, Award, TrendingUp, CheckCircle, Star, Upload, Brain, FileText, Clock, Calculator, AlertTriangle, ArrowRight, Crown, X } from 'lucide-react';
 import Verify from './pages/Verify';
 import PremiumSuccess from './pages/PremiumSuccess';
@@ -79,7 +80,7 @@ function About() {
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Mission</h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-300">
               Empowering homeowners with transparent, unbiased solar quote analysis
             </p>
           </div>
@@ -90,12 +91,12 @@ function About() {
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
                   Why We Started SolarVerify
                 </h3>
-                <p className="text-gray-600 mb-4">
+                <p className="text-gray-300 mb-4">
                   After seeing countless homeowners fall victim to overpriced solar installations, 
                   we knew something had to change. Door-to-door salespeople and aggressive marketing 
                   tactics were costing families thousands of pounds.
                 </p>
-                <p className="text-gray-600">
+                <p className="text-gray-300">
                   Our AI-powered analysis tool levels the playing field, giving you the knowledge 
                   to make informed decisions and negotiate fair prices.
                 </p>
@@ -105,7 +106,7 @@ function About() {
                 <h4 className="text-xl font-semibold text-gray-900 mb-2">
                   Your Protection Shield
                 </h4>
-                <p className="text-gray-600">
+                <p className="text-gray-300">
                   We analyse thousands of data points to identify overpricing, 
                   red flags, and help you save money on your solar investment.
                 </p>
@@ -120,7 +121,7 @@ function About() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Values</h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-300">
               The principles that guide everything we do
             </p>
           </div>
@@ -131,7 +132,7 @@ function About() {
                 <CheckCircle className="w-8 h-8 ext-orange-600" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Transparency</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-300">
                 No hidden agendas. We provide clear, honest analysis with 
                 detailed explanations of our findings.
               </p>
@@ -142,7 +143,7 @@ function About() {
                 <Users className="w-8 h-8 text-blue-600" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Customer First</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-300">
                 Your interests come first. We're not affiliated with any 
                 installers - our loyalty is to you.
               </p>
@@ -153,7 +154,7 @@ function About() {
                 <TrendingUp className="w-8 h-8 text-green-600" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Innovation</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-300">
                 Cutting-edge AI technology combined with market expertise 
                 to deliver the most accurate analysis.
               </p>
@@ -174,7 +175,7 @@ function About() {
                   <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                 ))}
               </div>
-              <p className="text-gray-600 italic mb-3">
+              <p className="text-gray-300 italic mb-3">
                 "Saved me £12,000! The analysis showed my quote was massively overpriced. 
                 Got 3 more quotes and found a much better deal."
               </p>
@@ -187,7 +188,7 @@ function About() {
                   <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                 ))}
               </div>
-              <p className="text-gray-600 italic mb-3">
+              <p className="text-gray-300 italic mb-3">
                 "Brilliant service! The detailed report helped me negotiate a 
                 25% discount with my installer. Highly recommended."
               </p>
@@ -200,7 +201,7 @@ function About() {
                   <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                 ))}
               </div>
-              <p className="text-gray-600 italic mb-3">
+              <p className="text-gray-300 italic mb-3">
                 "Finally, an honest assessment! No sales pressure, just 
                 facts and data. Exactly what I needed to make the right choice."
               </p>
@@ -258,20 +259,20 @@ function HowItWorks() {
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
                   1. Enter Your Quote Details
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-300 mb-6">
                   Simply enter your system size, total price, and battery information 
                   (if included). Our form guides you through each step.
                 </p>
                 <div className="space-y-3 text-left">
-                  <div className="flex items-center text-sm text-gray-600">
+                  <div className="flex items-center text-sm text-gray-300">
                     <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
                     System size in kW (e.g., 4.3kW)
                   </div>
-                  <div className="flex items-center text-sm text-gray-600">
+                  <div className="flex items-center text-sm text-gray-300">
                     <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
                     Total price including installation
                   </div>
-                  <div className="flex items-center text-sm text-gray-600">
+                  <div className="flex items-center text-sm text-gray-300">
                     <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
                     Battery details (brand & quantity)
                   </div>
@@ -293,20 +294,20 @@ function HowItWorks() {
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
                   2. AI Analysis
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-300 mb-6">
                   Our AI compares your quote against thousands of market data points 
                   and fair pricing benchmarks in real-time.
                 </p>
                 <div className="space-y-3 text-left">
-                  <div className="flex items-center text-sm text-gray-600">
+                  <div className="flex items-center text-sm text-gray-300">
                     <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
                     Market price comparison
                   </div>
-                  <div className="flex items-center text-sm text-gray-600">
+                  <div className="flex items-center text-sm text-gray-300">
                     <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
                     Component-level analysis
                   </div>
-                  <div className="flex items-center text-sm text-gray-600">
+                  <div className="flex items-center text-sm text-gray-300">
                     <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
                     Red flag detection
                   </div>
@@ -328,20 +329,20 @@ function HowItWorks() {
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
                   3. Get Your Grade & Report
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-300 mb-6">
                   Receive an instant A-F grade with detailed analysis, 
                   recommendations, and actionable next steps.
                 </p>
                 <div className="space-y-3 text-left">
-                  <div className="flex items-center text-sm text-gray-600">
+                  <div className="flex items-center text-sm text-gray-300">
                     <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
                     Instant A-F grade
                   </div>
-                  <div className="flex items-center text-sm text-gray-600">
+                  <div className="flex items-center text-sm text-gray-300">
                     <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
                     Detailed breakdown
                   </div>
-                  <div className="flex items-center text-sm text-gray-600">
+                  <div className="flex items-center text-sm text-gray-300">
                     <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
                     Clear recommendations
                   </div>
@@ -357,7 +358,7 @@ function HowItWorks() {
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Free vs Premium Analysis</h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-300">
               See what's included in each tier
             </p>
           </div>
@@ -367,31 +368,31 @@ function HowItWorks() {
             <div className="bg-white rounded-xl shadow-lg p-8">
               <div className="text-center mb-6">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Free Analysis</h3>
-                <p className="text-gray-600">Perfect for getting started</p>
+                <p className="text-gray-300">Perfect for getting started</p>
               </div>
               
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                  <span className="text-gray-700">Instant A-F grade</span>
+                  <span className="text-gray-300">Instant A-F grade</span>
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                  <span className="text-gray-700">Basic price per kW calculation</span>
+                  <span className="text-gray-300">Basic price per kW calculation</span>
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                  <span className="text-gray-700">Simple verdict (Fair/Expensive)</span>
+                  <span className="text-gray-300">Simple verdict (Fair/Expensive)</span>
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                  <span className="text-gray-700">System size breakdown</span>
+                  <span className="text-gray-300">System size breakdown</span>
                 </li>
               </ul>
               
               <div className="text-center">
                 <div className="text-3xl font-bold text-gray-900 mb-2">FREE</div>
-                <p className="text-sm text-gray-600">3 analyses included</p>
+                <p className="text-sm text-gray-300">3 analyses included</p>
               </div>
             </div>
             
@@ -454,7 +455,7 @@ function HowItWorks() {
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
             Ready to analyse Your Quote?
           </h2>
-          <p className="text-lg text-gray-600 mb-8">
+          <p className="text-lg text-gray-300 mb-8">
             Join thousands of homeowners who've saved money with our analysis
           </p>
           
@@ -566,7 +567,7 @@ function Upgrade() {
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
               What You'll Discover in Your Premium Report
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-300">
               Get specific, actionable insights that could save you thousands
             </p>
           </div>
@@ -582,15 +583,15 @@ function Upgrade() {
                   <ul className="space-y-3">
                     <li className="flex items-start">
                       <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700">Basic A-F grade rating</span>
+                      <span className="text-gray-300">Basic A-F grade rating</span>
                     </li>
                     <li className="flex items-start">
                       <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700">Simple £/kW calculation</span>
+                      <span className="text-gray-300">Simple £/kW calculation</span>
                     </li>
                     <li className="flex items-start">
                       <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700">General verdict (Fair/Overpriced)</span>
+                      <span className="text-gray-300">General verdict (Fair/Overpriced)</span>
                     </li>
                     <li className="flex items-start">
                       <X className="w-5 h-5 text-red-400 mr-3 flex-shrink-0 mt-0.5" />
@@ -628,56 +629,56 @@ function Upgrade() {
                       <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0 mt-0.5" />
                       <div>
                         <span className="text-gray-900 font-semibold">Component Breakdown:</span>
-                        <span className="text-gray-700"> Exact pricing for panels, inverter, battery, scaffolding, labor</span>
+                        <span className="text-gray-300"> Exact pricing for panels, inverter, battery, scaffolding, labor</span>
                       </div>
                     </li>
                     <li className="flex items-start">
                       <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0 mt-0.5" />
                       <div>
                         <span className="text-gray-900 font-semibold">Equipment Quality Rating:</span>
-                        <span className="text-gray-700"> Are your panels Tier 1, 2, or 3? Is your inverter a premium brand?</span>
+                        <span className="text-gray-300"> Are your panels Tier 1, 2, or 3? Is your inverter a premium brand?</span>
                       </div>
                     </li>
                     <li className="flex items-start">
                       <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0 mt-0.5" />
                       <div>
                         <span className="text-gray-900 font-semibold">Exact Overprice Amount:</span>
-                        <span className="text-gray-700"> "Your £15,000 quote should be £9,200 - you're overpaying by £5,800"</span>
+                        <span className="text-gray-300"> "Your £15,000 quote should be £9,200 - you're overpaying by £5,800"</span>
                       </div>
                     </li>
                     <li className="flex items-start">
                       <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0 mt-0.5" />
                       <div>
                         <span className="text-gray-900 font-semibold">Installer Verification:</span>
-                        <span className="text-gray-700"> MCS certification status, Companies House check, trading history</span>
+                        <span className="text-gray-300"> MCS certification status, Companies House check, trading history</span>
                       </div>
                     </li>
                     <li className="flex items-start">
                       <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0 mt-0.5" />
                       <div>
                         <span className="text-gray-900 font-semibold">Red Flag Warnings:</span>
-                        <span className="text-gray-700"> Excessive markup alerts, missing warranties, unlicensed installers</span>
+                        <span className="text-gray-300"> Excessive markup alerts, missing warranties, unlicensed installers</span>
                       </div>
                     </li>
                     <li className="flex items-start">
                       <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0 mt-0.5" />
                       <div>
                         <span className="text-gray-900 font-semibold">Real ROI Analysis:</span>
-                        <span className="text-gray-700"> Actual payback period based on your usage (not salesperson fantasy numbers)</span>
+                        <span className="text-gray-300"> Actual payback period based on your usage (not salesperson fantasy numbers)</span>
                       </div>
                     </li>
                     <li className="flex items-start">
                       <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0 mt-0.5" />
                       <div>
                         <span className="text-gray-900 font-semibold">Negotiation Script:</span>
-                        <span className="text-gray-700"> Specific talking points and target prices to negotiate down</span>
+                        <span className="text-gray-300"> Specific talking points and target prices to negotiate down</span>
                       </div>
                     </li>
                     <li className="flex items-start">
                       <Crown className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0 mt-0.5" />
                       <div>
                         <span className="text-gray-900 font-semibold">Professional PDF Report:</span>
-                        <span className="text-gray-700"> Take to other installers for competitive quotes</span>
+                        <span className="text-gray-300"> Take to other installers for competitive quotes</span>
                       </div>
                     </li>
                   </ul>
@@ -695,7 +696,7 @@ function Upgrade() {
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
               Success Stories
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-300">
               See how Premium analysis has helped other homeowners
             </p>
           </div>
@@ -707,7 +708,7 @@ function Upgrade() {
                   <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
                 ))}
               </div>
-              <p className="text-gray-600 italic mb-4">
+              <p className="text-gray-300 italic mb-4">
                 "The Premium report showed my quote was 140% overpriced. 
                 Used it to negotiate and saved £12,000!"
               </p>
@@ -723,7 +724,7 @@ function Upgrade() {
                   <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
                 ))}
               </div>
-              <p className="text-gray-600 italic mb-4">
+              <p className="text-gray-300 italic mb-4">
                 "Red flag warnings saved me from a scam company. 
                 Found a reputable installer instead."
               </p>
@@ -739,7 +740,7 @@ function Upgrade() {
                   <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
                 ))}
               </div>
-              <p className="text-gray-600 italic mb-4">
+              <p className="text-gray-300 italic mb-4">
                 "ROI analysis showed 18-year payback vs 8 years for fair pricing. 
                 Got 3 more quotes immediately."
               </p>
@@ -816,15 +817,15 @@ function Contact() {
         <div className="space-y-6">
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Email Support</h3>
-            <p className="text-gray-600">hello@solarverify.co.uk</p>
+            <p className="text-gray-300">hello@solarverify.co.uk</p>
           </div>
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Response Time</h3>
-            <p className="text-gray-600">We typically respond within 24 hours</p>
+            <p className="text-gray-300">We typically respond within 24 hours</p>
           </div>
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Office Hours</h3>
-            <p className="text-gray-600">Monday - Friday: 9:00 AM - 5:00 PM GMT</p>
+            <p className="text-gray-300">Monday - Friday: 9:00 AM - 5:00 PM GMT</p>
           </div>
         </div>
       </div>
@@ -1269,19 +1270,19 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
             </Link>
             
             <div className="hidden md:flex items-center space-x-8">
-              <Link to="/" className={`${location.pathname === '/' ? 'ext-orange-600' : 'text-gray-700'} hover:ext-orange-600 transition-colors`}>
+              <Link to="/" className={`${location.pathname === '/' ? 'ext-orange-600' : 'text-gray-300'} hover:ext-orange-600 transition-colors`}>
                 Home
               </Link>
-              <Link to="/about" className={`${location.pathname === '/about' ? 'ext-orange-600' : 'text-gray-700'} hover:ext-orange-600 transition-colors`}>
+              <Link to="/about" className={`${location.pathname === '/about' ? 'ext-orange-600' : 'text-gray-300'} hover:ext-orange-600 transition-colors`}>
                 About
               </Link>
-              <Link to="/how-it-works" className={`${location.pathname === '/how-it-works' ? 'ext-orange-600' : 'text-gray-700'} hover:ext-orange-600 transition-colors`}>
+              <Link to="/how-it-works" className={`${location.pathname === '/how-it-works' ? 'ext-orange-600' : 'text-gray-300'} hover:ext-orange-600 transition-colors`}>
                 How It Works
               </Link>
-              <Link to="/upgrade" className={`${location.pathname === '/upgrade' ? 'ext-orange-600' : 'text-gray-700'} hover:ext-orange-600 transition-colors`}>
+              <Link to="/upgrade" className={`${location.pathname === '/upgrade' ? 'ext-orange-600' : 'text-gray-300'} hover:ext-orange-600 transition-colors`}>
                 Upgrade
               </Link>
-              <Link to="/contact" className={`${location.pathname === '/contact' ? 'ext-orange-600' : 'text-gray-700'} hover:ext-orange-600 transition-colors`}>
+              <Link to="/contact" className={`${location.pathname === '/contact' ? 'ext-orange-600' : 'text-gray-300'} hover:ext-orange-600 transition-colors`}>
                 Contact
               </Link>
               <Link to="/analyser" className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors">
@@ -1332,19 +1333,19 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
             <div className="flex flex-wrap justify-center items-center gap-8 text-center">
               <div className="flex items-center space-x-2">
                 <Shield className="w-5 h-5 ext-orange-600" />
-                <span className="text-sm font-medium text-gray-700">SSL Secured</span>
+                <span className="text-sm font-medium text-gray-300">SSL Secured</span>
               </div>
               <div className="flex items-center space-x-2">
                 <CheckCircle className="w-5 h-5 text-green-600" />
-                <span className="text-sm font-medium text-gray-700">GDPR Compliant</span>
+                <span className="text-sm font-medium text-gray-300">GDPR Compliant</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Users className="w-5 h-5 text-blue-600" />
-                <span className="text-sm font-medium text-gray-700">5,247+ Quotes analysed</span>
+                <span className="text-sm font-medium text-gray-300">5,247+ Quotes analysed</span>
               </div>
               <div className="flex items-center space-x-2">
                 <TrendingUp className="w-5 h-5 text-purple-600" />
-                <span className="text-sm font-medium text-gray-700">£2.3M+ Savings Identified</span>
+                <span className="text-sm font-medium text-gray-300">£2.3M+ Savings Identified</span>
               </div>
             </div>
           </div>
@@ -1408,7 +1409,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                   <form onSubmit={handleSubmit} className="space-y-6">
                   {/* System Size */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
                       System Size (kW) *
                     </label>
                     <select
@@ -1466,7 +1467,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
                   {/* Total Price */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
                       Total Price (£) *
                     </label>
                     <select
@@ -1544,7 +1545,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                         onChange={(e) => setHasBattery(e.target.checked)}
                         className="w-5 h-5 ext-orange-600 border-gray-300 rounded focus:ring-orange-500"
                       />
-                      <span className="text-sm font-medium text-gray-700">Battery included?</span>
+                      <span className="text-sm font-medium text-gray-300">Battery included?</span>
                     </label>
                   </div>
 
@@ -1554,7 +1555,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                       
                       {/* Battery Brand */}
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
                           Battery Brand
                         </label>
                         <select
@@ -1575,7 +1576,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
                       {/* Battery Quantity */}
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
                           Number of Batteries
                         </label>
                         <select
@@ -1593,7 +1594,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                       {/* Custom Capacity for "Other" */}
                       {batteryBrand === 'Other' && (
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
                             Battery Capacity (kWh each)
                           </label>
                           <input
@@ -1657,7 +1658,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                         {result.grade || 'F'}
                       </div>
                       <h3 className="text-2xl font-bold text-gray-900 mb-2">Your Solar Quote Grade</h3>
-                      <p className="text-gray-600">{result.verdict || 'Analysis completed'}</p>
+                      <p className="text-gray-300">{result.verdict || 'Analysis completed'}</p>
                     </div>
 
                     {/* Analysis Breakdown */}
@@ -1665,20 +1666,20 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                       <h4 className="text-lg font-semibold text-gray-900 mb-4">Analysis Breakdown</h4>
                       <div className="grid md:grid-cols-2 gap-4 text-sm">
                         <div className="flex justify-between">
-                          <span className="text-gray-600">System Size:</span>
+                          <span className="text-gray-300">System Size:</span>
                           <span className="font-medium">{systemSize} kW</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-600">Total Price:</span>
+                          <span className="text-gray-300">Total Price:</span>
                           <span className="font-medium">£{parseInt(totalPrice).toLocaleString()}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-600">Price per kW:</span>
+                          <span className="text-gray-300">Price per kW:</span>
                           <span className="font-medium">£{(result.price_per_kw || result.analysis?.price_per_kw) ? Math.round(result.price_per_kw || result.analysis?.price_per_kw).toLocaleString() : 'N/A'}</span>
                         </div>
                         {hasBattery && getTotalBatteryCapacity() > 0 && (
                           <div className="flex justify-between">
-                            <span className="text-gray-600">Battery Capacity:</span>
+                            <span className="text-gray-300">Battery Capacity:</span>
                             <span className="font-medium">{getTotalBatteryCapacity().toFixed(1)} kWh</span>
                           </div>
                         )}
@@ -1715,7 +1716,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Trusted by Homeowners</h2>
-              <p className="text-lg text-gray-600">See how we've helped others save money</p>
+              <p className="text-lg text-gray-300">See how we've helped others save money</p>
             </div>
             
             <div className="grid md:grid-cols-3 gap-8">
@@ -1725,7 +1726,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                     <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-gray-600 italic mb-4">
+                <p className="text-gray-300 italic mb-4">
                   "Saved me £12,000! The analysis showed my quote was massively overpriced."
                 </p>
                 <p className="text-sm text-gray-500">- Sarah M., Manchester</p>
@@ -1737,7 +1738,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                     <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-gray-600 italic mb-4">
+                <p className="text-gray-300 italic mb-4">
                   "Brilliant service! Used the report to negotiate a 25% discount."
                 </p>
                 <p className="text-sm text-gray-500">- James T., Birmingham</p>
@@ -1749,7 +1750,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                     <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-gray-600 italic mb-4">
+                <p className="text-gray-300 italic mb-4">
                   "Finally, an honest assessment! No sales pressure, just facts."
                 </p>
                 <p className="text-sm text-gray-500">- Emma L., Leeds</p>
@@ -1814,12 +1815,12 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
               
               {!showVerification ? (
                 <div className="space-y-4">
-                  <p className="text-gray-600">
+                  <p className="text-gray-300">
                     To continue with additional analyses, please verify your email address.
                   </p>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
                       Email Address
                     </label>
                     <input
@@ -1839,7 +1840,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                       onChange={(e) => setGdprConsent(e.target.checked)}
                       className="mt-1 w-4 h-4 ext-orange-600 border-gray-300 rounded focus:ring-orange-500"
                     />
-                    <label htmlFor="gdpr" className="text-sm text-gray-600">
+                    <label htmlFor="gdpr" className="text-sm text-gray-300">
                       I agree to receive analysis results and accept the privacy policy
                     </label>
                   </div>
@@ -1857,7 +1858,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                     </button>
                     <button
                       onClick={closeModal}
-                      className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                      className="px-4 py-2 text-gray-300 hover:text-gray-800 transition-colors"
                     >
                       Cancel
                     </button>
@@ -1869,16 +1870,16 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                     <div className="text-center">
                       <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-3" />
                       <p className="text-green-600 font-medium">Email verified successfully!</p>
-                      <p className="text-sm text-gray-600">Proceeding with analysis...</p>
+                      <p className="text-sm text-gray-300">Proceeding with analysis...</p>
                     </div>
                   ) : (
                     <>
-                      <p className="text-gray-600">
+                      <p className="text-gray-300">
                         We've sent a 6-digit code to <strong>{email}</strong>
                       </p>
                       
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
                           Verification Code
                         </label>
                         <input
@@ -1916,7 +1917,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                         </button>
                         <button
                           onClick={closeModal}
-                          className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                          className="px-4 py-2 text-gray-300 hover:text-gray-800 transition-colors"
                         >
                           Cancel
                         </button>
@@ -1933,8 +1934,10 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   }
 
   // analyser page (same as homepage analyser)
-  function analyser() {
-    return <Homepage />;
+  function Analyser() {
+  return <Navigate to="/old-home" replace />;
+}
+
   }
 
   return (
