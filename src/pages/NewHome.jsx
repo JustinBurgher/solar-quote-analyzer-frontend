@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
-import LandingHero from '../components/landing/LandingHero';
-import LandingMockup from '../components/landing/LandingMockup';
-import LandingHowItWorks from '../components/landing/LandingHowItWorks';
-import LandingTrust from '../components/landing/LandingTrust';
-import LandingChecklist from '../components/landing/LandingChecklist';
-import LandingUpgradePreview from '../components/landing/LandingUpgradePreview';
-import LandingFinalCTA from '../components/landing/LandingFinalCTA';
+import LandingHero from '../components/LandingHero';
+import LandingMockup from '../components/LandingMockup';
+import LandingHowItWorks from '../components/LandingHowItWorks';
+import LandingTrust from '../components/LandingTrust';
+import LandingChecklist from '../components/LandingChecklist';
+import LandingUpgradePreview from '../components/LandingUpgradePreview';
+import LandingFinalCTA from '../components/LandingFinalCTA';
 
 function NewHome() {
   const analyzerRef = useRef(null);
