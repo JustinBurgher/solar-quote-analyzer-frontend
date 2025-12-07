@@ -49,7 +49,7 @@ function About() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br  from-orange-500  to-orange-600 text-white py-20">
+      <section className="bg-dark-bg  from-orange-500  to-orange-600 text-white py-20">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             About SolarVerify
@@ -100,7 +100,7 @@ function About() {
                   to make informed decisions and negotiate fair prices.
                 </p>
               </div>
-              <div className="bg-gradient-to-br from-teal-50 to-blue-50 rounded-xl p-6">
+              <div className="bg-dark-bg from-teal-50 to-blue-50 rounded-xl p-6">
                 <Shield className="w-16 h-16 ext-orange-600 mb-4" />
                 <h4 className="text-xl font-semibold text-gray-900 mb-2">
                   Your Protection Shield
@@ -228,7 +228,7 @@ function HowItWorks() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br  from-orange-500  to-orange-600 text-white py-20">
+      <section className="bg-dark-bg  from-orange-500  to-orange-600 text-white py-20">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             How It Works
@@ -251,7 +251,7 @@ function HowItWorks() {
           <div className="grid md:grid-cols-3 gap-8 mb-16">
             {/* Step 1 */}
             <div className="text-center">
-              <div className="bg-gradient-to-br  from-orange-500 to-teal-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+              <div className="bg-dark-bg  from-orange-500 to-teal-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                 <Upload className="w-10 h-10 text-white" />
               </div>
               <div className="bg-white rounded-xl shadow-lg p-8 h-full">
@@ -286,7 +286,7 @@ function HowItWorks() {
 
             {/* Step 2 */}
             <div className="text-center">
-              <div className="bg-gradient-to-br from-blue-500  to-orange-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+              <div className="bg-dark-bg from-blue-500  to-orange-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                 <Brain className="w-10 h-10 text-white" />
               </div>
               <div className="bg-white rounded-xl shadow-lg p-8 h-full">
@@ -321,7 +321,7 @@ function HowItWorks() {
 
             {/* Step 3 */}
             <div className="text-center">
-              <div className="bg-gradient-to-br from-green-500 to-green-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+              <div className="bg-dark-bg from-green-500 to-green-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                 <FileText className="w-10 h-10 text-white" />
               </div>
               <div className="bg-white rounded-xl shadow-lg p-8 h-full">
@@ -396,7 +396,7 @@ function HowItWorks() {
             </div>
             
             {/* Premium Analysis */}
-            <div className="bg-gradient-to-br  from-orange-500  to-orange-600 text-white rounded-xl shadow-lg p-8 relative">
+            <div className="bg-dark-bg  from-orange-500  to-orange-600 text-white rounded-xl shadow-lg p-8 relative">
               <div className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-xs font-semibold">
                 MOST POPULAR
               </div>
@@ -513,7 +513,7 @@ function Upgrade() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section with CTA */}
-      <section className="bg-gradient-to-br  from-orange-500  to-orange-600 text-white py-20">
+      <section className="bg-dark-bg  from-orange-500  to-orange-600 text-white py-20">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <Crown className="w-16 h-16 mx-auto mb-6 text-yellow-300" />
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
@@ -616,7 +616,7 @@ function Upgrade() {
                 </div>
 
                 {/* Premium Analysis */}
-                <div className="border-2 border-teal-500 rounded-xl p-6 relative bg-gradient-to-br from-teal-50 to-blue-50">
+                <div className="border-2 border-teal-500 rounded-xl p-6 relative bg-dark-bg from-teal-50 to-blue-50">
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-teal-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
                     PREMIUM
                   </div>
@@ -755,7 +755,7 @@ function Upgrade() {
       {/* Bottom CTA Section */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-3xl mx-auto px-6 text-center">
-          <div className="bg-gradient-to-br  from-orange-500  to-orange-600 text-white rounded-2xl p-8">
+          <div className="bg-dark-bg  from-orange-500  to-orange-600 text-white rounded-2xl p-8">
             <Crown className="w-16 h-16 mx-auto mb-6 text-yellow-300" />
             <h2 className="text-3xl font-bold mb-4">
               Ready to Unlock Premium?
@@ -1299,7 +1299,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     return (
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br  from-orange-500  to-orange-600 text-white py-20">
+        <section className="bg-dark-bg  from-orange-500  to-orange-600 text-white py-20">
           <div className="max-w-6xl mx-auto px-6 text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Get Your Solar Quote <span className="text-teal-200">Verified</span>
@@ -1353,7 +1353,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
         {/* Main analyser Section */}
         <section className="py-16">
           <div className="max-w-4xl mx-auto px-6">
-            <div className="bg-gradient-to-br  from-orange-500  to-orange-600 rounded-2xl shadow-2xl overflow-hidden">
+            <div className="bg-dark-bg  from-orange-500  to-orange-600 rounded-2xl shadow-2xl overflow-hidden">
               <div className="p-8 text-white text-center">
                 <h2 className="text-3xl font-bold mb-4">Solar Quote analyser</h2>
                 <p className="text-lg opacity-90 mb-6">Get your instant A-F grade • Enhanced with battery analysis</p>
