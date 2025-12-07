@@ -1935,8 +1935,6 @@ function Analyser() {
   return <Navigate to="/old-home" replace />;
 }
 
-  }
-
   return (
     <Router>
       <div className="min-h-screen bg-gray-50">
