@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import { Shield, Users, Award, TrendingUp, CheckCircle, Star, Upload, Brain, FileText, Clock, Calculator, AlertTriangle, ArrowRight, Crown, X } from 'lucide-react';
 import Verify from './pages/Verify';
 import PremiumSuccess from './pages/PremiumSuccess';
@@ -1931,8 +1931,10 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   }
 
   // analyser page (same as homepage analyser)
-  function analyser() {
-    return <Homepage />;
+function Analyser() {
+  return <Navigate to="/old-home" replace />;
+}
+
   }
 
   return (
