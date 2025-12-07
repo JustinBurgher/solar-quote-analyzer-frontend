@@ -8,6 +8,7 @@ import PremiumSuccess from './pages/PremiumSuccess';
 import UpgradeModal from './components/UpgradeModal';
 import PremiumAnalysisForm from './components/PremiumAnalysisForm';
 import { getSession, incrementAnalysisCount, markEmailVerified, needsEmailVerification, shouldShowUpgradeModal, getSessionStatus, hasPremiumAccess } from './utils/sessionTracking';
+import NewHome from './pages/NewHome';
 
 
 // API Configuration
@@ -1942,6 +1943,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
           <Route path="/analyzer" element={<Analyzer />} />
           <Route path="/verify" element={<Verify />} />
           <Route path="/premium-success" element={<PremiumSuccess />} />
+          <Route path="/new-home" element={<NewHome />} />
         </Routes>
       </div>
     {showUpgradeModal && (
