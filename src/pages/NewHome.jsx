@@ -31,7 +31,7 @@ function NewHome() {
       <LandingHowItWorks />
       <LandingTrust />
       
-      {/* Embedded Quote Analyzer - Link to Verify page for now */}
+      {/* Embedded Quote Analyzer - Link to old-home page with working analyzer */}
       <section id="analyzer" ref={analyzerRef} className="py-20 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -42,7 +42,7 @@ function NewHome() {
               Get your free basic analysis in seconds. No signup required for your first quote.
             </p>
             
-            {/* Temporary CTA to working analyzer */}
+            {/* CTA to working analyzer */}
             <div className="bg-white border-2 border-primary-orange rounded-xl p-8 max-w-2xl mx-auto shadow-xl">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
                 Ready to Analyze Your Quote?
@@ -51,7 +51,7 @@ function NewHome() {
                 Click below to access our free solar quote analyzer. Get your A-F grade instantly!
               </p>
               <Link 
-                to="/verify"
+                to="/old-home"
                 className="inline-block px-8 py-4 bg-primary-orange hover:bg-orange-600 text-gray-900 font-bold rounded-lg shadow-lg transition duration-300"
               >
                 Start Free Analysis →
