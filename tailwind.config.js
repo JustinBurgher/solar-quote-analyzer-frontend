@@ -18,6 +18,13 @@ const config = {
     },
     extend: {
       colors: {
+        // New Solar Verify Brand Colors
+        'primary-orange': '#f97316',
+        'secondary-blue': '#3b82f6',
+        'dark-bg': '#0f172a',
+        'dark-card': '#1e293b',
+        
+        // Shadcn UI Colors (preserved for compatibility)
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
