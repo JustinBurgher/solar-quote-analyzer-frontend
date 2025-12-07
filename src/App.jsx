@@ -9,6 +9,13 @@ import UpgradeModal from './components/UpgradeModal';
 import PremiumAnalysisForm from './components/PremiumAnalysisForm';
 import { getSession, incrementAnalysisCount, markEmailVerified, needsEmailVerification, shouldShowUpgradeModal, getSessionStatus, hasPremiumAccess } from './utils/sessionTracking';
 import NewHome from './pages/NewHome';
+import LandingHero from './components/LandingHero';
+import LandingMockup from './components/LandingMockup';
+import LandingHowItWorks from './components/LandingHowItWorks';
+import LandingTrust from './components/LandingTrust';
+import LandingChecklist from './components/LandingChecklist';
+import LandingUpgradePreview from './components/LandingUpgradePreview';
+import LandingFinalCTA from './components/LandingFinalCTA';
 
 
 // API Configuration
@@ -1935,7 +1942,8 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
       <div className="min-h-screen bg-gray-50">
         <Navigation />
         <Routes>
-          <Route path="/" element={<Homepage />} />
+          <Route path="/" element={<NewHome />} />
+          <Route path="/old-home" element={<Homepage />} />
           <Route path="/about" element={<About />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/upgrade" element={<Upgrade />} />
