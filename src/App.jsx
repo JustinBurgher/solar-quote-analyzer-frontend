@@ -49,7 +49,7 @@ function About() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-teal-500 to-blue-600 text-white py-20">
+      <section className="bg-gradient-to-br  from-orange-500  to-orange-600 text-white py-20">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             About SolarVerify
@@ -60,7 +60,7 @@ function About() {
           <div className="flex flex-wrap justify-center gap-8 text-center">
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 min-w-[200px]">
               <div className="text-3xl font-bold">5,247+</div>
-              <div className="text-sm opacity-80">Quotes Analyzed</div>
+              <div className="text-sm opacity-80">Quotes analysed</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 min-w-[200px]">
               <div className="text-3xl font-bold">£2.3M+</div>
@@ -101,12 +101,12 @@ function About() {
                 </p>
               </div>
               <div className="bg-gradient-to-br from-teal-50 to-blue-50 rounded-xl p-6">
-                <Shield className="w-16 h-16 text-teal-600 mb-4" />
+                <Shield className="w-16 h-16 ext-orange-600 mb-4" />
                 <h4 className="text-xl font-semibold text-gray-900 mb-2">
                   Your Protection Shield
                 </h4>
                 <p className="text-gray-600">
-                  We analyze thousands of data points to identify overpricing, 
+                  We analyse thousands of data points to identify overpricing, 
                   red flags, and help you save money on your solar investment.
                 </p>
               </div>
@@ -127,8 +127,8 @@ function About() {
           
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center p-6">
-              <div className="bg-teal-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <CheckCircle className="w-8 h-8 text-teal-600" />
+              <div className="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="w-8 h-8 ext-orange-600" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Transparency</h3>
               <p className="text-gray-600">
@@ -208,13 +208,13 @@ function About() {
             </div>
           </div>
           
-          <div className="bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-xl p-8">
+          <div className="bg-gradient-to-r  from-orange-500  to-orange-600 text-white rounded-xl p-8">
             <h3 className="text-2xl font-bold mb-4">Ready to Protect Your Investment?</h3>
             <p className="text-lg mb-6 opacity-90">
               Join thousands of homeowners who've saved money with our analysis
             </p>
-            <Link to="/analyzer" className="bg-white text-teal-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block">
-              Analyze My Quote Now
+            <Link to="/analyser" className="bg-white ext-orange-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block">
+              analyse My Quote Now
             </Link>
           </div>
         </div>
@@ -228,13 +228,13 @@ function HowItWorks() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-teal-500 to-blue-600 text-white py-20">
+      <section className="bg-gradient-to-br  from-orange-500  to-orange-600 text-white py-20">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             How It Works
           </h1>
           <p className="text-xl md:text-2xl mb-8 opacity-90">
-            Get your solar quote analyzed in 3 simple steps
+            Get your solar quote analysed in 3 simple steps
           </p>
           <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 inline-block">
             <div className="flex items-center text-lg">
@@ -251,7 +251,7 @@ function HowItWorks() {
           <div className="grid md:grid-cols-3 gap-8 mb-16">
             {/* Step 1 */}
             <div className="text-center">
-              <div className="bg-gradient-to-br from-teal-500 to-teal-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+              <div className="bg-gradient-to-br  from-orange-500 to-teal-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                 <Upload className="w-10 h-10 text-white" />
               </div>
               <div className="bg-white rounded-xl shadow-lg p-8 h-full">
@@ -286,7 +286,7 @@ function HowItWorks() {
 
             {/* Step 2 */}
             <div className="text-center">
-              <div className="bg-gradient-to-br from-blue-500 to-blue-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+              <div className="bg-gradient-to-br from-blue-500  to-orange-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                 <Brain className="w-10 h-10 text-white" />
               </div>
               <div className="bg-white rounded-xl shadow-lg p-8 h-full">
@@ -396,7 +396,7 @@ function HowItWorks() {
             </div>
             
             {/* Premium Analysis */}
-            <div className="bg-gradient-to-br from-teal-500 to-blue-600 text-white rounded-xl shadow-lg p-8 relative">
+            <div className="bg-gradient-to-br  from-orange-500  to-orange-600 text-white rounded-xl shadow-lg p-8 relative">
               <div className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-xs font-semibold">
                 MOST POPULAR
               </div>
@@ -452,19 +452,19 @@ function HowItWorks() {
       <section className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Ready to Analyze Your Quote?
+            Ready to analyse Your Quote?
           </h2>
           <p className="text-lg text-gray-600 mb-8">
             Join thousands of homeowners who've saved money with our analysis
           </p>
           
-          <div className="bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-xl p-8">
+          <div className="bg-gradient-to-r  from-orange-500  to-orange-600 text-white rounded-xl p-8">
             <h3 className="text-2xl font-bold mb-4">Get Started in Under 2 Minutes</h3>
             <p className="text-lg mb-6 opacity-90">
               No signup required for your first analysis
             </p>
-            <Link to="/analyzer" className="bg-white text-teal-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors inline-block">
-              Analyze My Quote Now
+            <Link to="/analyser" className="bg-white ext-orange-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors inline-block">
+              analyse My Quote Now
             </Link>
           </div>
         </div>
@@ -513,7 +513,7 @@ function Upgrade() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section with CTA */}
-      <section className="bg-gradient-to-br from-teal-500 to-blue-600 text-white py-20">
+      <section className="bg-gradient-to-br  from-orange-500  to-orange-600 text-white py-20">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <Crown className="w-16 h-16 mx-auto mb-6 text-yellow-300" />
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
@@ -536,7 +536,7 @@ function Upgrade() {
             <button
               onClick={handleClick}
               disabled={busy}
-              className="bg-white text-teal-600 px-10 py-5 rounded-xl font-bold text-xl hover:bg-gray-100 transition-all transform hover:scale-105 disabled:opacity-60 disabled:hover:scale-100 shadow-2xl"
+              className="bg-white ext-orange-600 px-10 py-5 rounded-xl font-bold text-xl hover:bg-gray-100 transition-all transform hover:scale-105 disabled:opacity-60 disabled:hover:scale-100 shadow-2xl"
             >
               {busy ? "Preparing Checkout..." : "Upgrade Now - £44.99"}
             </button>
@@ -755,7 +755,7 @@ function Upgrade() {
       {/* Bottom CTA Section */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-3xl mx-auto px-6 text-center">
-          <div className="bg-gradient-to-br from-teal-500 to-blue-600 text-white rounded-2xl p-8">
+          <div className="bg-gradient-to-br  from-orange-500  to-orange-600 text-white rounded-2xl p-8">
             <Crown className="w-16 h-16 mx-auto mb-6 text-yellow-300" />
             <h2 className="text-3xl font-bold mb-4">
               Ready to Unlock Premium?
@@ -774,7 +774,7 @@ function Upgrade() {
             <button
               onClick={handleClick}
               disabled={busy}
-              className="bg-white text-teal-600 px-10 py-5 rounded-xl font-bold text-xl hover:bg-gray-100 transition-all transform hover:scale-105 disabled:opacity-60 disabled:hover:scale-100 shadow-2xl mb-6"
+              className="bg-white ext-orange-600 px-10 py-5 rounded-xl font-bold text-xl hover:bg-gray-100 transition-all transform hover:scale-105 disabled:opacity-60 disabled:hover:scale-100 shadow-2xl mb-6"
             >
               {busy ? "Preparing Checkout..." : "Upgrade Now - £44.99"}
             </button>
@@ -1099,7 +1099,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
       // For now, we'll send the data without the PDF
       // TODO: Implement PDF upload handling
 
-      const response = await fetch(`${API_BASE_URL}/analyze-premium-quote`, {
+      const response = await fetch(`${API_BASE_URL}/analyse-premium-quote`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1152,7 +1152,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
         user_email: email || ''
       };
 
-      const response = await fetch(`${API_BASE_URL}/analyze-quote`, {
+      const response = await fetch(`${API_BASE_URL}/analyse-quote`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1264,28 +1264,28 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex justify-between items-center h-16">
             <Link to="/" className="flex items-center space-x-2">
-              <div className="text-2xl font-bold text-teal-600">Solar✓erify</div>
-              <span className="bg-teal-100 text-teal-800 text-xs px-2 py-1 rounded-full font-medium">Trusted</span>
+              <div className="text-2xl font-bold ext-orange-600">Solar✓erify</div>
+              <span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full font-medium">Trusted</span>
             </Link>
             
             <div className="hidden md:flex items-center space-x-8">
-              <Link to="/" className={`${location.pathname === '/' ? 'text-teal-600' : 'text-gray-700'} hover:text-teal-600 transition-colors`}>
+              <Link to="/" className={`${location.pathname === '/' ? 'ext-orange-600' : 'text-gray-700'} hover:ext-orange-600 transition-colors`}>
                 Home
               </Link>
-              <Link to="/about" className={`${location.pathname === '/about' ? 'text-teal-600' : 'text-gray-700'} hover:text-teal-600 transition-colors`}>
+              <Link to="/about" className={`${location.pathname === '/about' ? 'ext-orange-600' : 'text-gray-700'} hover:ext-orange-600 transition-colors`}>
                 About
               </Link>
-              <Link to="/how-it-works" className={`${location.pathname === '/how-it-works' ? 'text-teal-600' : 'text-gray-700'} hover:text-teal-600 transition-colors`}>
+              <Link to="/how-it-works" className={`${location.pathname === '/how-it-works' ? 'ext-orange-600' : 'text-gray-700'} hover:ext-orange-600 transition-colors`}>
                 How It Works
               </Link>
-              <Link to="/upgrade" className={`${location.pathname === '/upgrade' ? 'text-teal-600' : 'text-gray-700'} hover:text-teal-600 transition-colors`}>
+              <Link to="/upgrade" className={`${location.pathname === '/upgrade' ? 'ext-orange-600' : 'text-gray-700'} hover:ext-orange-600 transition-colors`}>
                 Upgrade
               </Link>
-              <Link to="/contact" className={`${location.pathname === '/contact' ? 'text-teal-600' : 'text-gray-700'} hover:text-teal-600 transition-colors`}>
+              <Link to="/contact" className={`${location.pathname === '/contact' ? 'ext-orange-600' : 'text-gray-700'} hover:ext-orange-600 transition-colors`}>
                 Contact
               </Link>
-              <Link to="/analyzer" className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors">
-                Quote Analyzer
+              <Link to="/analyser" className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors">
+                Quote analyser
               </Link>
             </div>
           </div>
@@ -1294,18 +1294,18 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     );
   }
 
-  // Homepage component with existing analyzer
+  // Homepage component with existing analyser
   function Homepage() {
     return (
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-teal-500 to-blue-600 text-white py-20">
+        <section className="bg-gradient-to-br  from-orange-500  to-orange-600 text-white py-20">
           <div className="max-w-6xl mx-auto px-6 text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Get Your Solar Quote <span className="text-teal-200">Verified</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 opacity-90 max-w-3xl mx-auto">
-              Don't get ripped off! Our AI-powered analyzer instantly grades your solar quote and tells 
+              Don't get ripped off! Our AI-powered analyser instantly grades your solar quote and tells 
               you if you're getting a fair deal.
             </p>
             
@@ -1331,7 +1331,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
           <div className="max-w-6xl mx-auto px-6">
             <div className="flex flex-wrap justify-center items-center gap-8 text-center">
               <div className="flex items-center space-x-2">
-                <Shield className="w-5 h-5 text-teal-600" />
+                <Shield className="w-5 h-5 ext-orange-600" />
                 <span className="text-sm font-medium text-gray-700">SSL Secured</span>
               </div>
               <div className="flex items-center space-x-2">
@@ -1340,7 +1340,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
               </div>
               <div className="flex items-center space-x-2">
                 <Users className="w-5 h-5 text-blue-600" />
-                <span className="text-sm font-medium text-gray-700">5,247+ Quotes Analyzed</span>
+                <span className="text-sm font-medium text-gray-700">5,247+ Quotes analysed</span>
               </div>
               <div className="flex items-center space-x-2">
                 <TrendingUp className="w-5 h-5 text-purple-600" />
@@ -1350,12 +1350,12 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
           </div>
         </section>
 
-        {/* Main Analyzer Section */}
+        {/* Main analyser Section */}
         <section className="py-16">
           <div className="max-w-4xl mx-auto px-6">
-            <div className="bg-gradient-to-br from-teal-500 to-blue-600 rounded-2xl shadow-2xl overflow-hidden">
+            <div className="bg-gradient-to-br  from-orange-500  to-orange-600 rounded-2xl shadow-2xl overflow-hidden">
               <div className="p-8 text-white text-center">
-                <h2 className="text-3xl font-bold mb-4">Solar Quote Analyzer</h2>
+                <h2 className="text-3xl font-bold mb-4">Solar Quote analyser</h2>
                 <p className="text-lg opacity-90 mb-6">Get your instant A-F grade • Enhanced with battery analysis</p>
                 
                 {/* Analysis Status */}
@@ -1388,7 +1388,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                     {!showPremiumForm && (
                       <button
                         onClick={() => setShowPremiumForm(true)}
-                        className="px-6 py-2 bg-white text-teal-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-sm"
+                        className="px-6 py-2 bg-white ext-orange-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-sm"
                       >
                         Start Premium Analysis →
                       </button>
@@ -1424,7 +1424,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                           setSystemSize(value);
                         }
                       }}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white"
                       required={!showCustomSystemSize}
                     >
                       <option value="">Select system size...</option>
@@ -1458,7 +1458,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                         value={systemSize}
                         onChange={(e) => setSystemSize(e.target.value)}
                         placeholder="Enter custom size (e.g., 4.3)"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent mt-2"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent mt-2"
                         required
                       />
                     )}
@@ -1482,7 +1482,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                           setTotalPrice(value);
                         }
                       }}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white"
                       required={!showCustomPrice}
                     >
                       <option value="">Select total price...</option>
@@ -1528,7 +1528,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                         value={totalPrice}
                         onChange={(e) => setTotalPrice(e.target.value)}
                         placeholder="Enter exact price (e.g., 13275)"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent mt-2"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent mt-2"
                         required
                       />
                     )}
@@ -1542,7 +1542,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                         type="checkbox"
                         checked={hasBattery}
                         onChange={(e) => setHasBattery(e.target.checked)}
-                        className="w-5 h-5 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
+                        className="w-5 h-5 ext-orange-600 border-gray-300 rounded focus:ring-orange-500"
                       />
                       <span className="text-sm font-medium text-gray-700">Battery included?</span>
                     </label>
@@ -1561,7 +1561,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                           key="battery-brand-select"
                           value={batteryBrand}
                           onChange={(e) => setBatteryBrand(e.target.value)}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                           required
                         >
                           <option value="">Select battery brand</option>
@@ -1582,7 +1582,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                           key="battery-quantity-select"
                           value={batteryQuantity}
                           onChange={(e) => setBatteryQuantity(parseInt(e.target.value))}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                         >
                           {[1, 2, 3, 4, 5].map(num => (
                             <option key={num} value={num}>{num}</option>
@@ -1606,7 +1606,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                             onKeyPress={(e) => e.stopPropagation()}
                             onKeyUp={(e) => e.stopPropagation()}
                             placeholder="e.g., 5.0"
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                             required
                           />
                         </div>
@@ -1615,7 +1615,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                       {/* Total Capacity Display */}
                       {batteryBrand && getTotalBatteryCapacity() > 0 && (
                         <div className="bg-teal-50 border border-teal-200 rounded-lg p-4">
-                          <p className="text-sm font-medium text-teal-800">
+                          <p className="text-sm font-medium text-orange-800">
                             Total Battery Capacity: {getTotalBatteryCapacity().toFixed(1)} kWh
                           </p>
                         </div>
@@ -1627,7 +1627,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:from-teal-600 hover:to-blue-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-gradient-to-r  from-orange-500  to-orange-600 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? 'Analyzing...' : 'Get My Grade Free'}
                   </button>
@@ -1685,7 +1685,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                       </div>
                     </div>
 
-                    {/* Analyze Another Quote Button */}
+                    {/* analyse Another Quote Button */}
                     <div className="text-center">
                       <button
                         onClick={() => {
@@ -1700,7 +1700,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                         }}
                         className="bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors"
                       >
-                        Analyze Another Quote
+                        analyse Another Quote
                       </button>
                     </div>
                   </div>
@@ -1772,7 +1772,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
               <div>
                 <h3 className="font-semibold mb-4">Services</h3>
                 <ul className="space-y-2 text-sm text-gray-400">
-                  <li><Link to="/analyzer" className="hover:text-white transition-colors">Quote Analysis</Link></li>
+                  <li><Link to="/analyser" className="hover:text-white transition-colors">Quote Analysis</Link></li>
                   <li><Link to="/upgrade" className="hover:text-white transition-colors">Premium Reports</Link></li>
                   <li><Link to="/how-it-works" className="hover:text-white transition-colors">How It Works</Link></li>
                 </ul>
@@ -1826,7 +1826,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                       placeholder="your@email.com"
                     />
                   </div>
@@ -1837,7 +1837,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                       id="gdpr"
                       checked={gdprConsent}
                       onChange={(e) => setGdprConsent(e.target.checked)}
-                      className="mt-1 w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
+                      className="mt-1 w-4 h-4 ext-orange-600 border-gray-300 rounded focus:ring-orange-500"
                     />
                     <label htmlFor="gdpr" className="text-sm text-gray-600">
                       I agree to receive analysis results and accept the privacy policy
@@ -1851,7 +1851,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                   <div className="flex space-x-3">
                     <button
                       onClick={handleSendVerification}
-                      className="flex-1 bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-700 transition-colors"
+                      className="flex-1 bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 transition-colors"
                     >
                       Send Verification Code
                     </button>
@@ -1897,7 +1897,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                             e.stopPropagation();
                             e.stopImmediatePropagation();
                           }}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-center text-lg tracking-widest"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-center text-lg tracking-widest"
                           placeholder="123456"
                           maxLength="6"
                         />
@@ -1910,7 +1910,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                       <div className="flex space-x-3">
                         <button
                           onClick={handleVerifyEmail}
-                          className="flex-1 bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-700 transition-colors"
+                          className="flex-1 bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 transition-colors"
                         >
                           Verify Email
                         </button>
@@ -1932,8 +1932,8 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     );
   }
 
-  // Analyzer page (same as homepage analyzer)
-  function Analyzer() {
+  // analyser page (same as homepage analyser)
+  function analyser() {
     return <Homepage />;
   }
 
@@ -1948,7 +1948,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/upgrade" element={<Upgrade />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/analyzer" element={<Analyzer />} />
+          <Route path="/analyser" element={<analyser />} />
           <Route path="/verify" element={<Verify />} />
           <Route path="/premium-success" element={<PremiumSuccess />} />
           <Route path="/new-home" element={<NewHome />} />
