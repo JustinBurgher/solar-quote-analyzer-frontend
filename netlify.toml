@@ -5,6 +5,18 @@
   force = true
 
 [[redirects]]
+  from = "http://www.solarverify.co.uk/*"
+  to = "https://solarverify.co.uk/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.solarverify.co.uk/*"
+  to = "https://solarverify.co.uk/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200

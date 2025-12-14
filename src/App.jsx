@@ -1946,7 +1946,7 @@ function Analyser() {
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/upgrade" element={<Upgrade />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/analyser" element={<analyser />} />
+          <Route path="/analyser" element={<Analyser />} />
           <Route path="/verify" element={<Verify />} />
           <Route path="/premium-success" element={<PremiumSuccess />} />
           <Route path="/new-home" element={<NewHome />} />
