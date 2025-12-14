@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Upload, X, Info, AlertCircle } from 'lucide-react';
+import { Upload, X, Info, FileText } from 'lucide-react';
 
 const PremiumAnalysisForm = ({ onSubmit, onCancel }) => {
   const [formData, setFormData] = useState({
