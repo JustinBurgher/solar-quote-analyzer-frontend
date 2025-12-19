@@ -10,6 +10,7 @@ const FeedbackButton = () => {
   const [feedbackType, setFeedbackType] = useState('general');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
@@ -38,19 +39,18 @@ const FeedbackButton = () => {
         }),
       });
 
+      const data = await response.json();
+      
       if (!response.ok) {
-        throw new Error('Failed to submit feedback');
+        throw new Error(data.error || 'Failed to submit feedback');
       }
 
       setSuccess(true);
+      setSuccessMessage(data.message || 'Thank you for your feedback!');
       setFeedback('');
       setEmail('');
       
-      // Close modal after 2 seconds
-      setTimeout(() => {
-        setIsOpen(false);
-        setSuccess(false);
-      }, 2000);
+      // Don't auto-close, let user close manually
 
     } catch (err) {
       console.error('Feedback error:', err);
@@ -99,7 +99,22 @@ const FeedbackButton = () => {
                     <Send className="w-8 h-8 text-green-600" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">Thank You!</h3>
-                  <p className="text-gray-600">Your feedback has been sent successfully.</p>
+                  <p className="text-gray-600 mb-4">{successMessage || 'Your feedback has been saved successfully.'}</p>
+                  <button
+                    onClick={() => {
+                      setIsOpen(false);
+                      setTimeout(() => {
+                        setSuccess(false);
+                        setFeedback('');
+                        setEmail('');
+                        setFeedbackType('general');
+                        setSuccessMessage('');
+                      }, 300);
+                    }}
+                    className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+                  >
+                    Close
+                  </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit}>
