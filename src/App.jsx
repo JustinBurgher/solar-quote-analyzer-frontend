@@ -1277,13 +1277,10 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
               <Link to="/how-it-works" className={`${location.pathname === '/how-it-works' ? 'ext-orange-600' : 'text-gray-700'} hover:ext-orange-600 transition-colors`}>
                 How It Works
               </Link>
-              <Link to="/upgrade" className={`${location.pathname === '/upgrade' ? 'ext-orange-600' : 'text-gray-700'} hover:ext-orange-600 transition-colors`}>
-                Upgrade
-              </Link>
               <Link to="/contact" className={`${location.pathname === '/contact' ? 'ext-orange-600' : 'text-gray-700'} hover:ext-orange-600 transition-colors`}>
                 Contact
               </Link>
-              <Link to="/analyser" className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors">
+              <Link to="/old-home" className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors">
                 Quote analyser
               </Link>
             </div>
@@ -1787,8 +1784,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
               <div>
                 <h3 className="font-semibold mb-4">Services</h3>
                 <ul className="space-y-2 text-sm text-gray-400">
-                  <li><Link to="/analyser" className="hover:text-white transition-colors">Quote Analysis</Link></li>
-                  <li><Link to="/upgrade" className="hover:text-white transition-colors">Premium Reports</Link></li>
+                  <li><Link to="/old-home" className="hover:text-white transition-colors">Quote Analysis</Link></li>
                   <li><Link to="/how-it-works" className="hover:text-white transition-colors">How It Works</Link></li>
                 </ul>
               </div>
