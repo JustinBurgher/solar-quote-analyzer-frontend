@@ -941,8 +941,8 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if email verification is needed for second analysis
-    if (!isAdmin && needsEmailVerification()) {
+    // Email verification disabled for MVP launch - collect emails optionally
+    if (false && !isAdmin && needsEmailVerification()) {
       // Use browser native prompt instead of buggy modal
       const userEmail = window.prompt(
         "📧 Get 2 More Free Analyses + Expert Guide\n\n" +
@@ -1361,8 +1361,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                   <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 mb-6">
                     <p className="text-sm">
                       {analysisCount === 0 ? "First analysis is completely free!" :
-                       analysisCount === 1 ? "Next analysis requires email verification" :
-                       analysisCount === 2 ? "1 more free analysis remaining" :
+                       analysisCount < 3 ? `${3 - analysisCount} more free ${3 - analysisCount === 1 ? 'analysis' : 'analyses'} remaining` :
                        "Upgrade to Premium for unlimited analyses"}
                     </p>
                   </div>

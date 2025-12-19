@@ -104,9 +104,8 @@ export const hasFreeAnalysesRemaining = () => {
  * @returns {boolean} True if email verification is needed
  */
 export const needsEmailVerification = () => {
-  const session = getSession();
-  // Need verification on 2nd analysis if not yet verified
-  return session.analysisCount >= 1 && !session.isVerified;
+  // Email verification disabled - collect emails optionally instead
+  return false;
 };
 
 /**
