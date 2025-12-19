@@ -36,7 +36,7 @@ function LandingHero({ onCheckQuoteClick, onChecklistClick }) {
               onClick={onCheckQuoteClick}
               className="w-full sm:w-auto px-10 py-4 bg-primary-orange hover:bg-orange-600 text-gray-900 font-bold text-lg rounded-xl shadow-2xl shadow-primary-orange/50 transition duration-300 transform hover:scale-[1.02]"
             >
-              Check My Quote (Free Basic Analysis)
+              Check My Quote (Free & Unlimited)
             </button>
             <button
               onClick={onChecklistClick}

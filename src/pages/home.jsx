@@ -204,7 +204,7 @@ function Home() {
               <div className="space-y-4">
                 <div className="flex items-center">
                   <span className="text-teal-600 mr-3">📧</span>
-                  <span className="text-gray-600">hello@solarverify.co.uk</span>
+                  <span className="text-gray-600">support@solarverify.co.uk</span>
                 </div>
                 <div className="flex items-center">
                   <span className="text-teal-600 mr-3">⏰</span>

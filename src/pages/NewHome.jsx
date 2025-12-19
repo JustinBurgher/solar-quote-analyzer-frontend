@@ -39,7 +39,7 @@ function NewHome() {
               Check Your Quote Now
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Get your free basic analysis in seconds. No signup required for your first quote.
+              Get your free analysis in seconds. No signup required - analyze unlimited quotes.
             </p>
             
             {/* CTA to working analyzer */}

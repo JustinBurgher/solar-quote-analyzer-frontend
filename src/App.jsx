@@ -390,7 +390,7 @@ function HowItWorks() {
               
               <div className="text-center">
                 <div className="text-3xl font-bold text-gray-900 mb-2">FREE</div>
-                <p className="text-sm text-gray-600">3 analyses included</p>
+                <p className="text-sm text-gray-600">Unlimited analyses</p>
               </div>
             </div>
             
@@ -460,7 +460,7 @@ function HowItWorks() {
           <div className="bg-gradient-to-r  from-orange-500  to-orange-600 text-white rounded-xl p-8">
             <h3 className="text-2xl font-bold mb-4">Get Started in Under 2 Minutes</h3>
             <p className="text-lg mb-6 opacity-90">
-              No signup required for your first analysis
+              No signup required - Analyze unlimited quotes
             </p>
             <Link to="/analyser" className="bg-white ext-orange-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors inline-block">
               analyse My Quote Now
@@ -815,7 +815,7 @@ function Contact() {
         <div className="space-y-6">
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Email Support</h3>
-            <p className="text-gray-600">hello@solarverify.co.uk</p>
+            <p className="text-gray-600">support@solarverify.co.uk</p>
           </div>
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Response Time</h3>
@@ -1806,7 +1806,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
               <div>
                 <h3 className="font-semibold mb-4">Contact</h3>
                 <ul className="space-y-2 text-sm text-gray-400">
-                  <li>hello@solarverify.co.uk</li>
+                  <li>support@solarverify.co.uk</li>
                   <li>Response within 24 hours</li>
                   <li>Mon-Fri: 9AM-5PM GMT</li>
                 </ul>

@@ -30,7 +30,9 @@ function Navigation({ onSkipToTool }) {
           ) : (
             <>
               <Link to="/" className="text-sm font-medium text-gray-300 hover:text-primary-orange transition duration-300">Home</Link>
-              <Link to="/upgrade" className="text-sm font-medium text-gray-300 hover:text-primary-orange transition duration-300">Upgrade</Link>
+              <Link to="/about" className="text-sm font-medium text-gray-300 hover:text-primary-orange transition duration-300">About</Link>
+              <Link to="/how-it-works" className="text-sm font-medium text-gray-300 hover:text-primary-orange transition duration-300">How It Works</Link>
+              <Link to="/contact" className="text-sm font-medium text-gray-300 hover:text-primary-orange transition duration-300">Contact</Link>
             </>
           )}
         </nav>
@@ -45,10 +47,10 @@ function Navigation({ onSkipToTool }) {
           </button>
         ) : (
           <Link
-            to="/"
+            to="/old-home"
             className="px-4 py-2 bg-primary-orange hover:bg-orange-600 text-gray-900 font-semibold rounded-lg shadow-lg shadow-primary-orange/40 transition duration-300 hidden sm:block"
           >
-            Check Quote
+            Quote analyser
           </Link>
         )}
         
