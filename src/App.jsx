@@ -1361,9 +1361,7 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                 {!isAdmin && (
                   <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 mb-6">
                     <p className="text-sm">
-                      {analysisCount === 0 ? "First analysis is completely free!" :
-                       analysisCount < 3 ? `${3 - analysisCount} more free ${3 - analysisCount === 1 ? 'analysis' : 'analyses'} remaining` :
-                       "Upgrade to Premium for unlimited analyses"}
+                      Analyze unlimited quotes for free • Premium features coming soon
                     </p>
                   </div>
                 )}
@@ -1681,6 +1679,25 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
                           </div>
                         )}
                       </div>
+                    </div>
+
+                    {/* Feedback Prompt */}
+                    <div className="bg-gradient-to-r from-orange-50 to-orange-100 border-2 border-orange-200 rounded-xl p-6 text-center">
+                      <h4 className="text-lg font-semibold text-gray-900 mb-2">How was your experience?</h4>
+                      <p className="text-gray-600 mb-4">Help us improve SolarVerify by sharing your feedback</p>
+                      <button
+                        onClick={() => {
+                          // Trigger feedback modal by clicking the floating button
+                          const feedbackButton = document.querySelector('[aria-label="Send Feedback"]');
+                          if (feedbackButton) feedbackButton.click();
+                        }}
+                        className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors inline-flex items-center gap-2"
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                        </svg>
+                        Share Feedback
+                      </button>
                     </div>
 
                     {/* analyse Another Quote Button */}
