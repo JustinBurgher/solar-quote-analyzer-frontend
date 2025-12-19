@@ -132,12 +132,8 @@ export const hasPremiumAccess = () => {
  * @returns {boolean} True if upgrade modal should be shown
  */
 export const shouldShowUpgradeModal = () => {
-  const session = getSession();
-  // Don't show upgrade modal if user has premium access
-  if (session.premiumAccess) {
-    return false;
-  }
-  return session.analysisCount >= 3;
+  // Upgrade modal disabled for MVP launch - unlimited free analyses
+  return false;
 };
 
 /**

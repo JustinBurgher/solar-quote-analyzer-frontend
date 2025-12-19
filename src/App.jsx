@@ -14,6 +14,7 @@ import LandingTrust from './components/LandingTrust';
 import LandingChecklist from './components/LandingChecklist';
 import LandingUpgradePreview from './components/LandingUpgradePreview';
 import LandingFinalCTA from './components/LandingFinalCTA';
+import FeedbackButton from './components/FeedbackButton';
 
 
 // API Configuration
@@ -1957,6 +1958,7 @@ function Analyser() {
           onClose={() => setShowUpgradeModal(false)}
         />
       )}
+      <FeedbackButton />
     </Router>
   );
 }
