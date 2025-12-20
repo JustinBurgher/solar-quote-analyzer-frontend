@@ -99,12 +99,12 @@ function About() {
                   to make informed decisions and negotiate fair prices.
                 </p>
               </div>
-              <div className="bg-dark-bg from-teal-50 to-blue-50 rounded-xl p-6">
+              <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6">
                 <Shield className="w-16 h-16 ext-orange-600 mb-4" />
-                <h4 className="text-xl font-semibold text-gray-900 mb-2">
+                <h4 className="text-xl font-semibold text-white mb-2">
                   Your Protection Shield
                 </h4>
-                <p className="text-gray-600">
+                <p className="text-gray-300">
                   We analyse thousands of data points to identify overpricing, 
                   red flags, and help you save money on your solar investment.
                 </p>
@@ -212,8 +212,8 @@ function About() {
             <p className="text-lg mb-6 opacity-90">
               Join thousands of homeowners who've saved money with our analysis
             </p>
-            <Link to="/analyser" className="bg-white ext-orange-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block">
-              analyse My Quote Now
+            <Link to="/old-home" className="bg-white text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block">
+              Start Free Analysis →
             </Link>
           </div>
         </div>
@@ -462,8 +462,8 @@ function HowItWorks() {
             <p className="text-lg mb-6 opacity-90">
               No signup required - Analyze unlimited quotes
             </p>
-            <Link to="/analyser" className="bg-white ext-orange-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors inline-block">
-              analyse My Quote Now
+            <Link to="/old-home" className="bg-white text-gray-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors inline-block">
+              Start Free Analysis →
             </Link>
           </div>
         </div>

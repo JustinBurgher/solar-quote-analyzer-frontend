@@ -287,8 +287,8 @@ function HowItWorks() {
           <p className="text-xl text-teal-100 mb-8 max-w-2xl mx-auto">
             Get professional analysis in minutes and make your solar decision with confidence.
           </p>
-          <a href="/" className="bg-white text-teal-600 hover:bg-gray-100 px-8 py-3 rounded-md text-lg font-medium transition-colors">
-            Start Free Analysis
+          <a href="/old-home" className="bg-white text-gray-900 hover:bg-gray-100 px-8 py-3 rounded-md text-lg font-medium transition-colors">
+            Start Free Analysis →
           </a>
         </div>
       </section>
