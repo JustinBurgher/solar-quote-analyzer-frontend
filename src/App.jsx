@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
-import { Shield, Users, TrendingUp, CheckCircle, Star, Crown } from 'lucide-react';
+import { Shield, Users, TrendingUp, CheckCircle, Star, Crown, Lock, AlertCircle } from 'lucide-react';
 
 // Page imports
 import Verify from './pages/Verify';
@@ -630,30 +630,58 @@ function App() {
           </div>
         </section>
 
-        {/* Testimonials */}
-        <section className="py-16 bg-white">
+        {/* Why Trust Us */}
+        <section className="py-16 bg-gray-900">
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Trusted by Homeowners</h2>
-              <p className="text-lg text-gray-600">See how we've helped others save money</p>
+              <h2 className="text-3xl font-bold text-white mb-4">Why Trust SolarVerify?</h2>
+              <p className="text-lg text-gray-400">We're different from other solar services</p>
             </div>
             
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                { quote: "Saved me £12,000! The analysis showed my quote was massively overpriced.", name: "Sarah M., Manchester" },
-                { quote: "Brilliant service! Used the report to negotiate a 25% discount.", name: "James T., Birmingham" },
-                { quote: "Finally, an honest assessment! No sales pressure, just facts.", name: "Emma L., Leeds" }
-              ].map((testimonial, i) => (
-                <div key={i} className="bg-gray-50 rounded-xl p-6 text-center">
-                  <div className="flex justify-center mb-3">
-                    {[...Array(5)].map((_, j) => (
-                      <Star key={j} className="w-5 h-5 text-yellow-400 fill-current" />
-                    ))}
-                  </div>
-                  <p className="text-gray-600 italic mb-4">"{testimonial.quote}"</p>
-                  <p className="text-sm text-gray-500">- {testimonial.name}</p>
+            <div className="grid md:grid-cols-4 gap-6">
+              {/* 100% Independent */}
+              <div className="bg-gray-800/50 rounded-xl p-6 text-center border border-gray-700 hover:border-primary-orange/50 transition-colors">
+                <div className="w-14 h-14 bg-primary-orange/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Shield className="w-7 h-7 text-primary-orange" />
                 </div>
-              ))}
+                <h3 className="text-lg font-semibold text-white mb-2">100% Independent</h3>
+                <p className="text-gray-400 text-sm">No installer partnerships or affiliations. Our only loyalty is to you.</p>
+              </div>
+
+              {/* Zero Commission */}
+              <div className="bg-gray-800/50 rounded-xl p-6 text-center border border-gray-700 hover:border-primary-orange/50 transition-colors">
+                <div className="w-14 h-14 bg-primary-orange/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle className="w-7 h-7 text-primary-orange" />
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">Zero Commission</h3>
+                <p className="text-gray-400 text-sm">We don't profit from your decision. No referral fees, ever.</p>
+              </div>
+
+              {/* Data Protected */}
+              <div className="bg-gray-800/50 rounded-xl p-6 text-center border border-gray-700 hover:border-primary-orange/50 transition-colors">
+                <div className="w-14 h-14 bg-primary-orange/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Lock className="w-7 h-7 text-primary-orange" />
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">Data Protected</h3>
+                <p className="text-gray-400 text-sm">GDPR compliant. Your data is encrypted and never shared with third parties.</p>
+              </div>
+
+              {/* No Sales Pressure */}
+              <div className="bg-gray-800/50 rounded-xl p-6 text-center border border-gray-700 hover:border-primary-orange/50 transition-colors">
+                <div className="w-14 h-14 bg-primary-orange/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <AlertCircle className="w-7 h-7 text-primary-orange" />
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">No Sales Pressure</h3>
+                <p className="text-gray-400 text-sm">Just honest facts and analysis. We'll never try to sell you anything.</p>
+              </div>
+            </div>
+
+            {/* Our Promise */}
+            <div className="mt-12 bg-gradient-to-r from-primary-orange/10 to-orange-600/5 rounded-xl p-8 border border-primary-orange/30 text-center">
+              <h3 className="text-xl font-semibold text-white mb-3">Our Promise</h3>
+              <p className="text-gray-300 max-w-2xl mx-auto">
+                We built SolarVerify because we saw too many homeowners getting ripped off. Our mission is simple: give you the facts so you can make an informed decision. No hidden agendas, no sales tactics — just honest analysis.
+              </p>
             </div>
           </div>
         </section>
