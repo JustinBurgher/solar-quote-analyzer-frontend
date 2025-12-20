@@ -691,7 +691,7 @@ function App() {
           <div className="max-w-6xl mx-auto px-6">
             <div className="grid md:grid-cols-4 gap-8">
               <div>
-                <div className="text-2xl font-bold text-teal-400 mb-4">Solar✓erify</div>
+                <div className="text-2xl font-bold text-primary-orange mb-4">SolarVerify</div>
                 <p className="text-gray-400 text-sm">
                   Protecting UK homeowners from overpriced solar installations with AI-powered analysis.
                 </p>
@@ -710,8 +710,7 @@ function App() {
                 <ul className="space-y-2 text-sm text-gray-400">
                   <li><Link to="/about" className="hover:text-white transition-colors">About Us</Link></li>
                   <li><Link to="/contact" className="hover:text-white transition-colors">Contact</Link></li>
-                  <li><a href="/privacy" className="hover:text-white transition-colors">Privacy Policy</a></li>
-                  <li><a href="/terms" className="hover:text-white transition-colors">Terms of Service</a></li>
+
                 </ul>
               </div>
               
