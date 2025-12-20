@@ -546,46 +546,122 @@ function App() {
                   </div>
                 )}
 
-                {/* Results Display */}
+                {/* Results Display - New 4-Verdict System */}
                 {result && (
                   <div className="mt-8 space-y-6">
-                    <div className="text-center">
-                      <div className={`inline-flex items-center justify-center w-24 h-24 rounded-full text-4xl font-bold text-white mb-4 ${
-                        result.grade === 'A' ? 'bg-green-500' :
-                        result.grade === 'B' ? 'bg-blue-500' :
-                        result.grade === 'C' ? 'bg-yellow-500' :
-                        result.grade === 'D' ? 'bg-orange-500' :
-                        'bg-red-500'
+                    {/* Verdict Header */}
+                    <div className={`text-center p-6 rounded-xl border-2 ${
+                      result.verdict_type === 'GOOD_VALUE' ? 'bg-green-50 border-green-300' :
+                      result.verdict_type === 'UNDERPRICED' ? 'bg-amber-50 border-amber-300' :
+                      result.verdict_type === 'OVERPRICED' ? 'bg-red-50 border-red-300' :
+                      'bg-gray-50 border-gray-300'
+                    }`}>
+                      <div className={`inline-flex items-center justify-center w-20 h-20 rounded-full text-4xl mb-4 ${
+                        result.verdict_type === 'GOOD_VALUE' ? 'bg-green-500' :
+                        result.verdict_type === 'UNDERPRICED' ? 'bg-amber-500' :
+                        result.verdict_type === 'OVERPRICED' ? 'bg-red-500' :
+                        'bg-gray-500'
                       }`}>
-                        {result.grade || 'F'}
+                        {result.verdict_type === 'GOOD_VALUE' ? '✅' :
+                         result.verdict_type === 'UNDERPRICED' ? '⚠️' :
+                         result.verdict_type === 'OVERPRICED' ? '❌' : '❓'}
                       </div>
-                      <h3 className="text-2xl font-bold text-gray-900 mb-2">Your Solar Quote Grade</h3>
-                      <p className="text-gray-600">{result.verdict || 'Analysis completed'}</p>
+                      <h3 className={`text-2xl font-bold mb-2 ${
+                        result.verdict_type === 'GOOD_VALUE' ? 'text-green-800' :
+                        result.verdict_type === 'UNDERPRICED' ? 'text-amber-800' :
+                        result.verdict_type === 'OVERPRICED' ? 'text-red-800' :
+                        'text-gray-800'
+                      }`}>
+                        {result.verdict_label || 'Analysis Complete'}
+                      </h3>
+                      <p className="text-gray-700 max-w-lg mx-auto">
+                        {result.verdict_summary || result.verdict || 'Your quote has been analyzed.'}
+                      </p>
                     </div>
 
+                    {/* Analysis Breakdown */}
                     <div className="bg-gray-50 rounded-xl p-6">
                       <h4 className="text-lg font-semibold text-gray-900 mb-4">Analysis Breakdown</h4>
                       <div className="grid md:grid-cols-2 gap-4 text-sm">
                         <div className="flex justify-between">
                           <span className="text-gray-600">System Size:</span>
-                          <span className="font-medium">{systemSize} kW</span>
+                          <span className="font-medium">{systemSize} kWp</span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-gray-600">Total Price:</span>
                           <span className="font-medium">£{parseInt(totalPrice).toLocaleString()}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-600">Price per kW:</span>
-                          <span className="font-medium">£{(result.price_per_kw || result.analysis?.price_per_kw) ? Math.round(result.price_per_kw || result.analysis?.price_per_kw).toLocaleString() : 'N/A'}</span>
+                          <span className="text-gray-600">Solar Cost per kWp:</span>
+                          <span className="font-medium">£{result.solar_cost_per_kwp ? Math.round(result.solar_cost_per_kwp).toLocaleString() : (result.price_per_kw ? Math.round(result.price_per_kw).toLocaleString() : 'N/A')}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Expected Market Price:</span>
+                          <span className="font-medium">£{result.expected_total ? Math.round(result.expected_total).toLocaleString() : 'N/A'}</span>
                         </div>
                         {hasBattery && getTotalBatteryCapacity() > 0 && (
-                          <div className="flex justify-between">
-                            <span className="text-gray-600">Battery Capacity:</span>
-                            <span className="font-medium">{getTotalBatteryCapacity().toFixed(1)} kWh</span>
+                          <>
+                            <div className="flex justify-between">
+                              <span className="text-gray-600">Battery Capacity:</span>
+                              <span className="font-medium">{getTotalBatteryCapacity().toFixed(1)} kWh</span>
+                            </div>
+                            {result.battery_cost_per_kwh && (
+                              <div className="flex justify-between">
+                                <span className="text-gray-600">Battery Cost per kWh:</span>
+                                <span className="font-medium">£{Math.round(result.battery_cost_per_kwh).toLocaleString()}</span>
+                              </div>
+                            )}
+                          </>
+                        )}
+                        {result.delta_vs_expected !== undefined && result.delta_vs_expected !== 0 && (
+                          <div className="flex justify-between col-span-2 pt-2 border-t border-gray-200">
+                            <span className="text-gray-600">Difference from Market:</span>
+                            <span className={`font-bold ${
+                              result.delta_vs_expected > 0 ? 'text-red-600' : 'text-green-600'
+                            }`}>
+                              {result.delta_vs_expected > 0 ? '+' : ''}{result.delta_vs_expected.toFixed(1)}%
+                            </span>
                           </div>
                         )}
                       </div>
                     </div>
+
+                    {/* Recommendations */}
+                    {result.recommendations && result.recommendations.length > 0 && (
+                      <div className={`rounded-xl p-6 ${
+                        result.verdict_type === 'GOOD_VALUE' ? 'bg-green-50' :
+                        result.verdict_type === 'UNDERPRICED' ? 'bg-amber-50' :
+                        result.verdict_type === 'OVERPRICED' ? 'bg-red-50' :
+                        'bg-gray-50'
+                      }`}>
+                        <h4 className="text-lg font-semibold text-gray-900 mb-3">Our Recommendations</h4>
+                        <ul className="space-y-2">
+                          {result.recommendations.map((rec, index) => (
+                            <li key={index} className="flex items-start gap-2 text-gray-700">
+                              <span className="text-lg">•</span>
+                              <span>{rec}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* Next Checks */}
+                    {result.next_checks && result.next_checks.length > 0 && (
+                      <div className="bg-blue-50 rounded-xl p-6">
+                        <h4 className="text-lg font-semibold text-gray-900 mb-3">
+                          {result.verdict_type === 'UNDERPRICED' ? '✅ Things to Verify' : '📝 Next Steps'}
+                        </h4>
+                        <ul className="space-y-2">
+                          {result.next_checks.map((check, index) => (
+                            <li key={index} className="flex items-start gap-2 text-gray-700">
+                              <input type="checkbox" className="mt-1 rounded border-gray-300" />
+                              <span>{check}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
 
                     <div className="bg-gradient-to-r from-orange-50 to-orange-100 border-2 border-orange-200 rounded-xl p-6 text-center">
                       <h4 className="text-lg font-semibold text-gray-900 mb-2">How was your experience?</h4>
