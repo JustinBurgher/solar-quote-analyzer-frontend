@@ -1260,38 +1260,113 @@ const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     setPendingAnalysis(false);
   };
 
-  // Navigation component
+  // Navigation component with mobile menu
   function Navigation() {
     const location = useLocation();
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+
+    const toggleMobileMenu = () => {
+      setIsMobileMenuOpen(!isMobileMenuOpen);
+    };
+
+    const closeMobileMenu = () => {
+      setIsMobileMenuOpen(false);
+    };
     
     return (
-      <nav className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-6">
+      <nav className="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex justify-between items-center h-16">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="text-2xl font-bold ext-orange-600">Solar✓erify</div>
+            <Link to="/" className="flex items-center space-x-2" onClick={closeMobileMenu}>
+              <div className="text-2xl font-bold text-orange-600">Solar✓erify</div>
               <span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full font-medium">Trusted</span>
             </Link>
             
+            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <Link to="/" className={`${location.pathname === '/' ? 'ext-orange-600' : 'text-gray-700'} hover:ext-orange-600 transition-colors`}>
+              <Link to="/" className={`${location.pathname === '/' ? 'text-orange-600' : 'text-gray-700'} hover:text-orange-600 transition-colors`}>
                 Home
               </Link>
-              <Link to="/about" className={`${location.pathname === '/about' ? 'ext-orange-600' : 'text-gray-700'} hover:ext-orange-600 transition-colors`}>
+              <Link to="/about" className={`${location.pathname === '/about' ? 'text-orange-600' : 'text-gray-700'} hover:text-orange-600 transition-colors`}>
                 About
               </Link>
-              <Link to="/how-it-works" className={`${location.pathname === '/how-it-works' ? 'ext-orange-600' : 'text-gray-700'} hover:ext-orange-600 transition-colors`}>
+              <Link to="/how-it-works" className={`${location.pathname === '/how-it-works' ? 'text-orange-600' : 'text-gray-700'} hover:text-orange-600 transition-colors`}>
                 How It Works
               </Link>
-              <Link to="/contact" className={`${location.pathname === '/contact' ? 'ext-orange-600' : 'text-gray-700'} hover:ext-orange-600 transition-colors`}>
+              <Link to="/contact" className={`${location.pathname === '/contact' ? 'text-orange-600' : 'text-gray-700'} hover:text-orange-600 transition-colors`}>
                 Contact
               </Link>
               <Link to="/old-home" className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors">
                 Quote analyser
               </Link>
             </div>
+
+            {/* Mobile Menu Button */}
+            <button 
+              className="md:hidden text-gray-700 hover:text-orange-600 p-2"
+              onClick={toggleMobileMenu}
+              aria-label="Toggle mobile menu"
+            >
+              {isMobileMenuOpen ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="4" x2="20" y1="12" y2="12"></line>
+                  <line x1="4" x2="20" y1="6" y2="6"></line>
+                  <line x1="4" x2="20" y1="18" y2="18"></line>
+                </svg>
+              )}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Menu Dropdown */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden bg-white border-t border-gray-200">
+            <div className="flex flex-col px-4 py-4 space-y-4">
+              <Link 
+                to="/" 
+                className={`${location.pathname === '/' ? 'text-orange-600' : 'text-gray-700'} hover:text-orange-600 transition-colors py-2 text-base font-medium`}
+                onClick={closeMobileMenu}
+              >
+                Home
+              </Link>
+              <Link 
+                to="/about" 
+                className={`${location.pathname === '/about' ? 'text-orange-600' : 'text-gray-700'} hover:text-orange-600 transition-colors py-2 text-base font-medium`}
+                onClick={closeMobileMenu}
+              >
+                About
+              </Link>
+              <Link 
+                to="/how-it-works" 
+                className={`${location.pathname === '/how-it-works' ? 'text-orange-600' : 'text-gray-700'} hover:text-orange-600 transition-colors py-2 text-base font-medium`}
+                onClick={closeMobileMenu}
+              >
+                How It Works
+              </Link>
+              <Link 
+                to="/contact" 
+                className={`${location.pathname === '/contact' ? 'text-orange-600' : 'text-gray-700'} hover:text-orange-600 transition-colors py-2 text-base font-medium`}
+                onClick={closeMobileMenu}
+              >
+                Contact
+              </Link>
+              <div className="pt-4 border-t border-gray-200">
+                <Link 
+                  to="/old-home" 
+                  className="block w-full bg-orange-600 text-white px-4 py-3 rounded-lg hover:bg-orange-700 transition-colors text-center font-semibold"
+                  onClick={closeMobileMenu}
+                >
+                  Quote analyser
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
       </nav>
     );
   }
