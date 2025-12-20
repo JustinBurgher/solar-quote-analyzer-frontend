@@ -5,7 +5,6 @@ import LandingMockup from '../components/LandingMockup';
 import LandingHowItWorks from '../components/LandingHowItWorks';
 import LandingTrust from '../components/LandingTrust';
 import LandingChecklist from '../components/LandingChecklist';
-import LandingUpgradePreview from '../components/LandingUpgradePreview';
 import LandingFinalCTA from '../components/LandingFinalCTA';
 
 function NewHome() {
@@ -65,9 +64,6 @@ function NewHome() {
       <div ref={checklistRef}>
         <LandingChecklist />
       </div>
-      
-      {/* Upgrade Preview */}
-      <LandingUpgradePreview />
       
       {/* Final CTA */}
       <LandingFinalCTA onCheckQuoteClick={scrollToAnalyzer} />
