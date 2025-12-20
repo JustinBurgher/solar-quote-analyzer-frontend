@@ -244,24 +244,25 @@ function HowItWorks() {
         </div>
       </section>
 
-      {/* Main Steps */}
+      {/* Main Steps - Vertical Stack Layout */}
       <section className="py-20">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
+        <div className="max-w-2xl mx-auto px-6">
+          <div className="flex flex-col items-center space-y-6">
+            
             {/* Step 1 */}
-            <div className="text-center">
-              <div className="bg-dark-bg  from-orange-500 to-teal-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+            <div className="w-full">
+              <div className="bg-dark-bg from-orange-500 to-teal-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                 <Upload className="w-10 h-10 text-white" />
               </div>
-              <div className="bg-white rounded-xl shadow-lg p-8 h-full">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              <div className="bg-white rounded-xl shadow-lg p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
                   1. Enter Your Quote Details
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-600 mb-6 text-center">
                   Simply enter your system size, total price, and battery information 
                   (if included). Our form guides you through each step.
                 </p>
-                <div className="space-y-3 text-left">
+                <div className="space-y-3">
                   <div className="flex items-center text-sm text-gray-600">
                     <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
                     System size in kW (e.g., 4.3kW)
@@ -278,25 +279,27 @@ function HowItWorks() {
               </div>
             </div>
 
-            {/* Arrow */}
-            <div className="hidden md:flex items-center justify-center">
-              <ArrowRight className="w-8 h-8 text-teal-500" />
+            {/* Arrow Down */}
+            <div className="flex items-center justify-center py-2">
+              <svg className="w-8 h-8 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+              </svg>
             </div>
 
             {/* Step 2 */}
-            <div className="text-center">
-              <div className="bg-dark-bg from-blue-500  to-orange-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+            <div className="w-full">
+              <div className="bg-dark-bg from-blue-500 to-orange-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                 <Brain className="w-10 h-10 text-white" />
               </div>
-              <div className="bg-white rounded-xl shadow-lg p-8 h-full">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              <div className="bg-white rounded-xl shadow-lg p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
                   2. AI Analysis
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-600 mb-6 text-center">
                   Our AI compares your quote against thousands of market data points 
                   and fair pricing benchmarks in real-time.
                 </p>
-                <div className="space-y-3 text-left">
+                <div className="space-y-3">
                   <div className="flex items-center text-sm text-gray-600">
                     <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
                     Market price comparison
@@ -313,25 +316,27 @@ function HowItWorks() {
               </div>
             </div>
 
-            {/* Arrow */}
-            <div className="hidden md:flex items-center justify-center">
-              <ArrowRight className="w-8 h-8 text-blue-500" />
+            {/* Arrow Down */}
+            <div className="flex items-center justify-center py-2">
+              <svg className="w-8 h-8 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+              </svg>
             </div>
 
             {/* Step 3 */}
-            <div className="text-center">
+            <div className="w-full">
               <div className="bg-dark-bg from-green-500 to-green-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                 <FileText className="w-10 h-10 text-white" />
               </div>
-              <div className="bg-white rounded-xl shadow-lg p-8 h-full">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              <div className="bg-white rounded-xl shadow-lg p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
                   3. Get Your Grade & Report
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-600 mb-6 text-center">
                   Receive an instant A-F grade with detailed analysis, 
                   recommendations, and actionable next steps.
                 </p>
-                <div className="space-y-3 text-left">
+                <div className="space-y-3">
                   <div className="flex items-center text-sm text-gray-600">
                     <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
                     Instant A-F grade
@@ -347,6 +352,7 @@ function HowItWorks() {
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </section>
