@@ -28,40 +28,21 @@ function Navigation({ onSkipToTool }) {
           <span className="text-2xl font-bold text-gray-50">SolarVerify</span>
         </Link>
 
-        {/* Navigation Links (Hidden on mobile) */}
+        {/* Navigation Links - Consistent on all pages (Hidden on mobile) */}
         <nav className="hidden md:flex space-x-8 items-center">
-          {isHomePage ? (
-            <>
-              <a href="#how-it-works" className="text-sm font-medium text-gray-300 hover:text-primary-orange transition duration-300">How It Works</a>
-              <a href="#trust" className="text-sm font-medium text-gray-300 hover:text-primary-orange transition duration-300">Why Trust Us</a>
-              <a href="#checklist" className="text-sm font-medium text-gray-300 hover:text-primary-orange transition duration-300">Free Checklist</a>
-            </>
-          ) : (
-            <>
-              <Link to="/" className="text-sm font-medium text-gray-300 hover:text-primary-orange transition duration-300">Home</Link>
-              <Link to="/about" className="text-sm font-medium text-gray-300 hover:text-primary-orange transition duration-300">About</Link>
-              <Link to="/how-it-works" className="text-sm font-medium text-gray-300 hover:text-primary-orange transition duration-300">How It Works</Link>
-              <Link to="/contact" className="text-sm font-medium text-gray-300 hover:text-primary-orange transition duration-300">Contact</Link>
-            </>
-          )}
+          <Link to="/" className="text-sm font-medium text-gray-300 hover:text-primary-orange transition duration-300">Home</Link>
+          <Link to="/about" className="text-sm font-medium text-gray-300 hover:text-primary-orange transition duration-300">About</Link>
+          <Link to="/how-it-works" className="text-sm font-medium text-gray-300 hover:text-primary-orange transition duration-300">How It Works</Link>
+          <Link to="/contact" className="text-sm font-medium text-gray-300 hover:text-primary-orange transition duration-300">Contact</Link>
         </nav>
 
         {/* CTA Button (Hidden on mobile) */}
-        {isHomePage && onSkipToTool ? (
-          <button
-            onClick={onSkipToTool}
-            className="px-4 py-2 bg-primary-orange hover:bg-orange-600 text-gray-900 font-semibold rounded-lg shadow-lg shadow-primary-orange/40 transition duration-300 hidden md:block"
-          >
-            Skip to Tool →
-          </button>
-        ) : (
-          <Link
-            to="/old-home"
-            className="px-4 py-2 bg-primary-orange hover:bg-orange-600 text-gray-900 font-semibold rounded-lg shadow-lg shadow-primary-orange/40 transition duration-300 hidden md:block"
-          >
-            Quote analyser
-          </Link>
-        )}
+        <Link
+          to="/old-home"
+          className="px-4 py-2 bg-primary-orange hover:bg-orange-600 text-gray-900 font-semibold rounded-lg shadow-lg shadow-primary-orange/40 transition duration-300 hidden md:block"
+        >
+          Quote Analyser
+        </Link>
         
         {/* Mobile Menu Button */}
         <button 
@@ -86,88 +67,48 @@ function Navigation({ onSkipToTool }) {
         </button>
       </div>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Menu Dropdown - Consistent on all pages */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-dark-bg border-t border-gray-700">
           <nav className="flex flex-col px-4 py-4 space-y-4">
-            {isHomePage ? (
-              <>
-                <a 
-                  href="#how-it-works" 
-                  className="text-base font-medium text-gray-300 hover:text-primary-orange transition duration-300 py-2"
-                  onClick={closeMobileMenu}
-                >
-                  How It Works
-                </a>
-                <a 
-                  href="#trust" 
-                  className="text-base font-medium text-gray-300 hover:text-primary-orange transition duration-300 py-2"
-                  onClick={closeMobileMenu}
-                >
-                  Why Trust Us
-                </a>
-                <a 
-                  href="#checklist" 
-                  className="text-base font-medium text-gray-300 hover:text-primary-orange transition duration-300 py-2"
-                  onClick={closeMobileMenu}
-                >
-                  Free Checklist
-                </a>
-              </>
-            ) : (
-              <>
-                <Link 
-                  to="/" 
-                  className="text-base font-medium text-gray-300 hover:text-primary-orange transition duration-300 py-2"
-                  onClick={closeMobileMenu}
-                >
-                  Home
-                </Link>
-                <Link 
-                  to="/about" 
-                  className="text-base font-medium text-gray-300 hover:text-primary-orange transition duration-300 py-2"
-                  onClick={closeMobileMenu}
-                >
-                  About
-                </Link>
-                <Link 
-                  to="/how-it-works" 
-                  className="text-base font-medium text-gray-300 hover:text-primary-orange transition duration-300 py-2"
-                  onClick={closeMobileMenu}
-                >
-                  How It Works
-                </Link>
-                <Link 
-                  to="/contact" 
-                  className="text-base font-medium text-gray-300 hover:text-primary-orange transition duration-300 py-2"
-                  onClick={closeMobileMenu}
-                >
-                  Contact
-                </Link>
-              </>
-            )}
+            <Link 
+              to="/" 
+              className="text-base font-medium text-gray-300 hover:text-primary-orange transition duration-300 py-2"
+              onClick={closeMobileMenu}
+            >
+              Home
+            </Link>
+            <Link 
+              to="/about" 
+              className="text-base font-medium text-gray-300 hover:text-primary-orange transition duration-300 py-2"
+              onClick={closeMobileMenu}
+            >
+              About
+            </Link>
+            <Link 
+              to="/how-it-works" 
+              className="text-base font-medium text-gray-300 hover:text-primary-orange transition duration-300 py-2"
+              onClick={closeMobileMenu}
+            >
+              How It Works
+            </Link>
+            <Link 
+              to="/contact" 
+              className="text-base font-medium text-gray-300 hover:text-primary-orange transition duration-300 py-2"
+              onClick={closeMobileMenu}
+            >
+              Contact
+            </Link>
             
             {/* Mobile CTA Button */}
             <div className="pt-4 border-t border-gray-700">
-              {isHomePage && onSkipToTool ? (
-                <button
-                  onClick={() => {
-                    closeMobileMenu();
-                    onSkipToTool();
-                  }}
-                  className="w-full px-4 py-3 bg-primary-orange hover:bg-orange-600 text-gray-900 font-semibold rounded-lg shadow-lg shadow-primary-orange/40 transition duration-300 text-center"
-                >
-                  Skip to Tool →
-                </button>
-              ) : (
-                <Link
-                  to="/old-home"
-                  className="block w-full px-4 py-3 bg-primary-orange hover:bg-orange-600 text-gray-900 font-semibold rounded-lg shadow-lg shadow-primary-orange/40 transition duration-300 text-center"
-                  onClick={closeMobileMenu}
-                >
-                  Quote analyser
-                </Link>
-              )}
+              <Link
+                to="/old-home"
+                className="block w-full px-4 py-3 bg-primary-orange hover:bg-orange-600 text-gray-900 font-semibold rounded-lg shadow-lg shadow-primary-orange/40 transition duration-300 text-center"
+                onClick={closeMobileMenu}
+              >
+                Quote Analyser
+              </Link>
             </div>
           </nav>
         </div>
